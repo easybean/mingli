@@ -166,11 +166,19 @@
         font-size: 18px;
       }
 
+      .board-shell {
+        margin-top: 22px;
+        overflow-x: auto;
+        padding-bottom: 10px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-color: rgba(181, 66, 47, 0.5) rgba(255, 253, 245, 0.5);
+      }
+
       .board {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 12px;
-        margin-top: 22px;
+        min-width: 920px;
       }
 
       .palace {
@@ -233,6 +241,41 @@
         line-height: 1.7;
       }
 
+      .mobile-palace-list {
+        display: none;
+        margin-top: 12px;
+        gap: 10px;
+      }
+
+      .mobile-palace {
+        display: grid;
+        grid-template-columns: 78px 1fr;
+        gap: 12px;
+        padding: 14px;
+        border: 1px solid rgba(52, 38, 24, 0.16);
+        border-radius: 20px;
+        background: rgba(255, 253, 245, 0.72);
+      }
+
+      .mobile-palace-title {
+        display: grid;
+        align-content: start;
+        gap: 4px;
+      }
+
+      .mobile-palace-title strong {
+        font-size: 18px;
+      }
+
+      .mobile-palace-title span {
+        color: var(--red);
+        font-weight: 700;
+      }
+
+      .mobile-palace .stars {
+        margin: 0 0 7px;
+      }
+
       .panel {
         margin-top: 22px;
         padding: 22px;
@@ -266,14 +309,132 @@
         }
 
         .board {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
+          min-width: 820px;
+          gap: 10px;
+        }
+
+        .palace {
+          min-height: 184px;
+          padding: 13px;
+          border-radius: 20px;
+        }
+
+        .palace h2 {
+          font-size: 19px;
+        }
+
+        .star {
+          padding: 4px 8px;
+          font-size: 12px;
+        }
+
+        .meta {
+          font-size: 12px;
         }
       }
 
       @media (max-width: 560px) {
-        form,
-        .board {
+        main {
+          width: min(100% - 20px, 1180px);
+          padding: 16px 0 34px;
+        }
+
+        .title-card,
+        .control-card,
+        .panel {
+          border-radius: 22px;
+        }
+
+        .title-card {
+          padding: 24px;
+        }
+
+        h1 {
+          font-size: clamp(38px, 15vw, 64px);
+        }
+
+        .subtitle {
+          font-size: 15px;
+          line-height: 1.7;
+        }
+
+        form {
           grid-template-columns: 1fr;
+        }
+
+        input,
+        select,
+        button {
+          min-height: 46px;
+          font-size: 16px;
+        }
+
+        .summary {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 10px;
+        }
+
+        .chip {
+          padding: 13px;
+          border-radius: 17px;
+        }
+
+        .chip strong {
+          font-size: 16px;
+        }
+
+        .board-shell {
+          margin-left: -10px;
+          margin-right: -10px;
+          padding: 0 10px 10px;
+        }
+
+        .board {
+          min-width: 740px;
+          gap: 8px;
+        }
+
+        .palace {
+          min-height: 162px;
+          padding: 11px;
+          border-radius: 18px;
+        }
+
+        .palace header {
+          gap: 6px;
+          margin-bottom: 8px;
+        }
+
+        .palace h2 {
+          font-size: 17px;
+        }
+
+        .stars {
+          gap: 5px;
+          margin: 7px 0;
+        }
+
+        .star {
+          padding: 3px 7px;
+          font-size: 11px;
+        }
+
+        .meta {
+          font-size: 11px;
+          line-height: 1.55;
+        }
+
+        .mobile-palace-list {
+          display: grid;
+        }
+
+        .horoscope-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .raw {
+          max-height: 300px;
+          font-size: 11px;
         }
       }
     </style>
@@ -345,7 +506,10 @@
       </section>
 
       <section class="summary" id="summary"></section>
-      <section class="board" id="board"></section>
+      <section class="board-shell" aria-label="紫微斗数十二宫横向滚动命盘">
+        <div class="board" id="board"></div>
+      </section>
+      <section class="mobile-palace-list" id="mobilePalaces" aria-label="十二宫手机列表"></section>
 
       <section class="panel">
         <h2>运限快照</h2>
@@ -363,6 +527,7 @@
       const statusEl = document.querySelector('#status');
       const summaryEl = document.querySelector('#summary');
       const boardEl = document.querySelector('#board');
+      const mobilePalacesEl = document.querySelector('#mobilePalaces');
       const horoscopeEl = document.querySelector('#horoscope');
       const rawEl = document.querySelector('#raw');
 
@@ -374,6 +539,10 @@
       ];
 
       const starNames = (stars) => stars.map((star) => star.mutagen ? `${star.name}${star.mutagen}` : star.name);
+      const visibleStars = (stars, limit = 6) => stars.slice(0, limit).map((name) => `<span class="star">${name}</span>`).join('');
+      const visibleMajorStars = (stars) => stars.length
+        ? stars.map((name) => `<span class="star major">${name}</span>`).join('')
+        : '<span class="star">空宫</span>';
 
       const chip = (label, value) => `
         <div class="chip">
@@ -408,16 +577,37 @@
                 <span class="branch">${palace.stem}${palace.branch}</span>
               </header>
               <div class="stars">
-                ${major.length ? major.map((name) => `<span class="star major">${name}</span>`).join('') : '<span class="star">空宫</span>'}
+                ${visibleMajorStars(major)}
               </div>
               <div class="stars">
-                ${minor.slice(0, 6).map((name) => `<span class="star">${name}</span>`).join('')}
+                ${visibleStars(minor, 6)}
               </div>
               <p class="meta">
                 大限：${palace.decadal.range[0]}-${palace.decadal.range[1]} 岁<br>
                 长生：${palace.changsheng12 || '-'} ｜ 博士：${palace.boshi12 || '-'}<br>
                 杂曜：${adjective.slice(0, 5).join('、') || '-'}
               </p>
+            </article>
+          `;
+        }).join('');
+
+        mobilePalacesEl.innerHTML = data.palaces.map((palace) => {
+          const major = starNames(palace.majorStars);
+          const minor = starNames(palace.minorStars);
+          const adjective = starNames(palace.adjectiveStars);
+
+          return `
+            <article class="mobile-palace">
+              <div class="mobile-palace-title">
+                <strong>${palace.name}${palace.isBodyPalace ? ' · 身' : ''}</strong>
+                <span>${palace.stem}${palace.branch}</span>
+                <small>${palace.decadal.range[0]}-${palace.decadal.range[1]} 岁</small>
+              </div>
+              <div>
+                <div class="stars">${visibleMajorStars(major)}</div>
+                <div class="stars">${visibleStars(minor, 5)}</div>
+                <p class="meta">长生：${palace.changsheng12 || '-'} ｜ 杂曜：${adjective.slice(0, 4).join('、') || '-'}</p>
+              </div>
             </article>
           `;
         }).join('');
