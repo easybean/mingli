@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>紫微斗数排盘 API Demo</title>
+    <style>
+      :root {
+        --ink: #1f1a15;
+        --muted: #766a5d;
+        --paper: #fff8ea;
+        --panel: rgba(255, 251, 239, 0.86);
+        --line: rgba(61, 44, 26, 0.16);
+        --gold: #c9852d;
+        --red: #b5422f;
+        --blue: #1d5d78;
+        --green: #596f35;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--ink);
+        font-family: "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+        background:
+          radial-gradient(circle at 18% 14%, rgba(201, 133, 45, 0.22), transparent 28rem),
+          radial-gradient(circle at 88% 8%, rgba(29, 93, 120, 0.2), transparent 24rem),
+          linear-gradient(135deg, #f4dfb5 0%, #fff8ea 42%, #ead4a5 100%);
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.18;
+        background-image:
+          linear-gradient(var(--line) 1px, transparent 1px),
+          linear-gradient(90deg, var(--line) 1px, transparent 1px);
+        background-size: 36px 36px;
+      }
+
+      main {
+        position: relative;
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 42px 0 54px;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 22px;
+        align-items: stretch;
+      }
+
+      .title-card,
+      .control-card,
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background: var(--panel);
+        box-shadow: 0 22px 70px rgba(56, 41, 21, 0.16);
+        backdrop-filter: blur(10px);
+      }
+
+      .title-card {
+        padding: 34px;
+        overflow: hidden;
+      }
+
+      .eyebrow {
+        margin: 0 0 14px;
+        color: var(--red);
+        font-size: 14px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(42px, 7vw, 86px);
+        line-height: 0.94;
+        letter-spacing: -0.06em;
+      }
+
+      .subtitle {
+        max-width: 620px;
+        margin: 22px 0 0;
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.8;
+      }
+
+      .control-card {
+        padding: 22px;
+      }
+
+      form {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      label {
+        display: grid;
+        gap: 7px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      input,
+      select,
+      button {
+        width: 100%;
+        border: 1px solid rgba(52, 38, 24, 0.18);
+        border-radius: 16px;
+        padding: 12px 13px;
+        color: var(--ink);
+        background: rgba(255, 253, 245, 0.86);
+        font: inherit;
+      }
+
+      button {
+        grid-column: 1 / -1;
+        cursor: pointer;
+        border: 0;
+        color: #fff9ec;
+        background: linear-gradient(135deg, var(--red), var(--gold));
+        font-weight: 700;
+        box-shadow: 0 12px 28px rgba(181, 66, 47, 0.22);
+      }
+
+      .status {
+        grid-column: 1 / -1;
+        min-height: 22px;
+        color: var(--blue);
+        font-size: 13px;
+      }
+
+      .summary {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 22px;
+      }
+
+      .chip {
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: rgba(255, 253, 245, 0.68);
+      }
+
+      .chip small {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--muted);
+      }
+
+      .chip strong {
+        font-size: 18px;
+      }
+
+      .board {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 22px;
+      }
+
+      .palace {
+        min-height: 212px;
+        padding: 16px;
+        border: 1px solid rgba(52, 38, 24, 0.16);
+        border-radius: 22px;
+        background: rgba(255, 253, 245, 0.74);
+      }
+
+      .palace.empty-slot {
+        display: grid;
+        place-items: center;
+        color: rgba(31, 26, 21, 0.28);
+        background: rgba(255, 253, 245, 0.34);
+      }
+
+      .palace header {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: baseline;
+        margin-bottom: 10px;
+      }
+
+      .palace h2 {
+        margin: 0;
+        font-size: 22px;
+      }
+
+      .branch {
+        color: var(--red);
+        font-weight: 700;
+      }
+
+      .stars {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+        margin: 10px 0;
+      }
+
+      .star {
+        padding: 5px 9px;
+        border-radius: 999px;
+        background: rgba(201, 133, 45, 0.14);
+        color: #5b3c15;
+        font-size: 13px;
+      }
+
+      .star.major {
+        background: rgba(181, 66, 47, 0.13);
+        color: var(--red);
+        font-weight: 700;
+      }
+
+      .meta {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.7;
+      }
+
+      .panel {
+        margin-top: 22px;
+        padding: 22px;
+      }
+
+      .panel h2 {
+        margin: 0 0 14px;
+      }
+
+      .horoscope-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .raw {
+        max-height: 420px;
+        overflow: auto;
+        padding: 18px;
+        border-radius: 18px;
+        background: #211b16;
+        color: #f8e8c8;
+        font: 12px/1.65 ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+
+      @media (max-width: 900px) {
+        .hero,
+        .summary,
+        .horoscope-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .board {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 560px) {
+        form,
+        .board {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="hero">
+        <div class="title-card">
+          <p class="eyebrow">Zi Wei API Prototype</p>
+          <h1>人生剧本<br>排盘底座</h1>
+          <p class="subtitle">
+            这里先不做 AI 解读，只验证一件事：输入出生信息后，后端用确定性规则返回命盘 JSON，前端把十二宫、大限和流年信息展示出来。
+          </p>
+        </div>
+
+        <div class="control-card">
+          <form id="form">
+            <label>
+              历法
+              <select name="calendar">
+                <option value="solar">阳历</option>
+                <option value="lunar">农历</option>
+              </select>
+            </label>
+            <label>
+              出生日期
+              <input name="date" value="2000-8-16" placeholder="YYYY-M-D">
+            </label>
+            <label>
+              时辰
+              <select name="timeIndex">
+                <option value="0">早子时 00:00-00:59</option>
+                <option value="1">丑时 01:00-02:59</option>
+                <option value="2" selected>寅时 03:00-04:59</option>
+                <option value="3">卯时 05:00-06:59</option>
+                <option value="4">辰时 07:00-08:59</option>
+                <option value="5">巳时 09:00-10:59</option>
+                <option value="6">午时 11:00-12:59</option>
+                <option value="7">未时 13:00-14:59</option>
+                <option value="8">申时 15:00-16:59</option>
+                <option value="9">酉时 17:00-18:59</option>
+                <option value="10">戌时 19:00-20:59</option>
+                <option value="11">亥时 21:00-22:59</option>
+                <option value="12">晚子时 23:00-23:59</option>
+              </select>
+            </label>
+            <label>
+              性别
+              <select name="gender">
+                <option>女</option>
+                <option>男</option>
+              </select>
+            </label>
+            <label>
+              流年目标时间
+              <input name="target" value="2023-8-19 3:12" placeholder="YYYY-M-D HH:mm">
+            </label>
+            <label>
+              算法
+              <select name="algorithm">
+                <option value="default">默认：《紫微斗数全书》</option>
+                <option value="zhongzhou">中州派</option>
+              </select>
+            </label>
+            <button type="submit">生成排盘</button>
+            <div class="status" id="status"></div>
+          </form>
+        </div>
+      </section>
+
+      <section class="summary" id="summary"></section>
+      <section class="board" id="board"></section>
+
+      <section class="panel">
+        <h2>运限快照</h2>
+        <div class="horoscope-grid" id="horoscope"></div>
+      </section>
+
+      <section class="panel">
+        <h2>API 原始 JSON</h2>
+        <pre class="raw" id="raw"></pre>
+      </section>
+    </main>
+
+    <script>
+      const form = document.querySelector('#form');
+      const statusEl = document.querySelector('#status');
+      const summaryEl = document.querySelector('#summary');
+      const boardEl = document.querySelector('#board');
+      const horoscopeEl = document.querySelector('#horoscope');
+      const rawEl = document.querySelector('#raw');
+
+      const boardSlots = [
+        3, 4, 5, 6,
+        2, null, null, 7,
+        1, null, null, 8,
+        0, 11, 10, 9,
+      ];
+
+      const starNames = (stars) => stars.map((star) => star.mutagen ? `${star.name}${star.mutagen}` : star.name);
+
+      const chip = (label, value) => `
+        <div class="chip">
+          <small>${label}</small>
+          <strong>${value || '-'}</strong>
+        </div>
+      `;
+
+      const render = (data) => {
+        summaryEl.innerHTML = [
+          chip('阳历', data.summary.solarDate),
+          chip('农历', data.summary.lunarDate),
+          chip('四柱', data.summary.chineseDate),
+          chip('命主 / 身主', `${data.summary.soul} / ${data.summary.body}`),
+          chip('五行局', data.summary.fiveElementsClass),
+        ].join('');
+
+        boardEl.innerHTML = boardSlots.map((index) => {
+          if (index === null) {
+            return '<article class="palace empty-slot">中宫</article>';
+          }
+
+          const palace = data.palaces[index];
+          const major = starNames(palace.majorStars);
+          const minor = starNames(palace.minorStars);
+          const adjective = starNames(palace.adjectiveStars);
+
+          return `
+            <article class="palace">
+              <header>
+                <h2>${palace.name}${palace.isBodyPalace ? ' · 身' : ''}</h2>
+                <span class="branch">${palace.stem}${palace.branch}</span>
+              </header>
+              <div class="stars">
+                ${major.length ? major.map((name) => `<span class="star major">${name}</span>`).join('') : '<span class="star">空宫</span>'}
+              </div>
+              <div class="stars">
+                ${minor.slice(0, 6).map((name) => `<span class="star">${name}</span>`).join('')}
+              </div>
+              <p class="meta">
+                大限：${palace.decadal.range[0]}-${palace.decadal.range[1]} 岁<br>
+                长生：${palace.changsheng12 || '-'} ｜ 博士：${palace.boshi12 || '-'}<br>
+                杂曜：${adjective.slice(0, 5).join('、') || '-'}
+              </p>
+            </article>
+          `;
+        }).join('');
+
+        const sections = [
+          ['大限', data.horoscope.decadal],
+          ['流年', data.horoscope.yearly],
+          ['流月', data.horoscope.monthly],
+          ['流日', data.horoscope.daily],
+          ['流时', data.horoscope.hourly],
+        ];
+
+        horoscopeEl.innerHTML = sections.map(([label, item]) => `
+          <div class="chip">
+            <small>${label}</small>
+            <strong>${item.heavenlyStem}${item.earthlyBranch}</strong>
+            <p class="meta">四化：${item.mutagen.join('、')}</p>
+          </div>
+        `).join('');
+
+        rawEl.textContent = JSON.stringify(data, null, 2);
+      };
+
+      const load = async () => {
+        const params = new URLSearchParams(new FormData(form));
+        statusEl.textContent = '排盘中...';
+
+        try {
+          const response = await fetch(`/api/astrolabe?${params.toString()}`);
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.error || '请求失败');
+          }
+
+          render(data);
+          statusEl.textContent = `已生成：${data.summary.time}，命宫在${data.summary.soulPalaceBranch}，身宫在${data.summary.bodyPalaceBranch}`;
+        } catch (error) {
+          statusEl.textContent = error.message;
+        }
+      };
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        load();
+      });
+
+      load();
+    </script>
+  </body>
+</html>
