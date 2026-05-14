@@ -190,10 +190,47 @@
       }
 
       .palace.empty-slot {
+        color: var(--ink);
+        background: rgba(255, 253, 245, 0.5);
+      }
+
+      .center-info {
         display: grid;
-        place-items: center;
-        color: rgba(31, 26, 21, 0.28);
-        background: rgba(255, 253, 245, 0.34);
+        grid-column: 2 / span 2;
+        grid-row: 2 / span 2;
+        align-content: center;
+        justify-items: center;
+        gap: 16px;
+        height: 100%;
+        min-height: 436px;
+        padding: 28px;
+      }
+
+      .center-info h2 {
+        margin: 0;
+        color: var(--red);
+        font-size: 30px;
+        line-height: 1;
+      }
+
+      .center-info dl {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 10px 16px;
+        margin: 0;
+        width: min(360px, 100%);
+        font-size: 17px;
+        line-height: 1.35;
+      }
+
+      .center-info dt {
+        color: var(--muted);
+      }
+
+      .center-info dd {
+        margin: 0;
+        color: var(--ink);
+        font-weight: 700;
       }
 
       .palace header {
@@ -222,6 +259,9 @@
       }
 
       .star {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
         padding: 5px 9px;
         border-radius: 999px;
         background: rgba(201, 133, 45, 0.14);
@@ -233,6 +273,35 @@
         background: rgba(181, 66, 47, 0.13);
         color: var(--red);
         font-weight: 700;
+      }
+
+      .star-name {
+        line-height: 1;
+      }
+
+      .brightness,
+      .mutagen {
+        display: inline-grid;
+        place-items: center;
+        min-width: 18px;
+        height: 18px;
+        padding: 0 4px;
+        border-radius: 999px;
+        font-size: 11px;
+        line-height: 1;
+      }
+
+      .brightness {
+        border: 1px solid rgba(29, 93, 120, 0.26);
+        color: var(--blue);
+        background: rgba(29, 93, 120, 0.08);
+        font-weight: 700;
+      }
+
+      .mutagen {
+        color: #fff9ec;
+        background: var(--red);
+        font-weight: 800;
       }
 
       .meta {
@@ -323,9 +392,24 @@
           font-size: 19px;
         }
 
+        .center-info h2 {
+          font-size: 26px;
+        }
+
+        .center-info dl {
+          font-size: 15px;
+        }
+
         .star {
           padding: 4px 8px;
           font-size: 12px;
+        }
+
+        .brightness,
+        .mutagen {
+          min-width: 17px;
+          height: 17px;
+          font-size: 10px;
         }
 
         .meta {
@@ -409,6 +493,21 @@
           font-size: 17px;
         }
 
+        .center-info {
+          gap: 12px;
+          min-height: 376px;
+          padding: 20px;
+        }
+
+        .center-info h2 {
+          font-size: 22px;
+        }
+
+        .center-info dl {
+          gap: 7px 10px;
+          font-size: 13px;
+        }
+
         .stars {
           gap: 5px;
           margin: 7px 0;
@@ -417,6 +516,13 @@
         .star {
           padding: 3px 7px;
           font-size: 11px;
+        }
+
+        .brightness,
+        .mutagen {
+          min-width: 16px;
+          height: 16px;
+          font-size: 10px;
         }
 
         .meta {
@@ -505,7 +611,6 @@
         </div>
       </section>
 
-      <section class="summary" id="summary"></section>
       <section class="board-shell" aria-label="紫微斗数十二宫横向滚动命盘">
         <div class="board" id="board"></div>
       </section>
@@ -525,7 +630,6 @@
     <script>
       const form = document.querySelector('#form');
       const statusEl = document.querySelector('#status');
-      const summaryEl = document.querySelector('#summary');
       const boardEl = document.querySelector('#board');
       const mobilePalacesEl = document.querySelector('#mobilePalaces');
       const horoscopeEl = document.querySelector('#horoscope');
@@ -538,11 +642,35 @@
         0, 11, 10, 9,
       ];
 
-      const starNames = (stars) => stars.map((star) => star.mutagen ? `${star.name}${star.mutagen}` : star.name);
-      const visibleStars = (stars, limit = 6) => stars.slice(0, limit).map((name) => `<span class="star">${name}</span>`).join('');
+      const starLabel = (star, isMajor = false) => `
+        <span class="star${isMajor ? ' major' : ''}">
+          <span class="star-name">${star.name}</span>
+          ${star.brightness ? `<span class="brightness">${star.brightness}</span>` : ''}
+          ${star.mutagen ? `<span class="mutagen">${star.mutagen}</span>` : ''}
+        </span>
+      `;
+      const adjectiveNames = (stars) => stars.map((star) => star.mutagen ? `${star.name}${star.mutagen}` : star.name);
+      const visibleStars = (stars, limit = 6) => stars.slice(0, limit).map((star) => starLabel(star)).join('');
       const visibleMajorStars = (stars) => stars.length
-        ? stars.map((name) => `<span class="star major">${name}</span>`).join('')
+        ? stars.map((star) => starLabel(star, true)).join('')
         : '<span class="star">空宫</span>';
+
+      const centerInfo = (summary) => `
+        <article class="palace empty-slot center-info">
+          <h2>命盘信息</h2>
+          <dl>
+            <dt>阳历</dt><dd>${summary.solarDate || '-'}</dd>
+            <dt>农历</dt><dd>${summary.lunarDate || '-'}</dd>
+            <dt>四柱</dt><dd>${summary.chineseDate || '-'}</dd>
+            <dt>时辰</dt><dd>${summary.time || '-'}</dd>
+            <dt>生肖</dt><dd>${summary.zodiac || '-'}</dd>
+            <dt>星座</dt><dd>${summary.sign || '-'}</dd>
+            <dt>命主</dt><dd>${summary.soul || '-'}</dd>
+            <dt>身主</dt><dd>${summary.body || '-'}</dd>
+            <dt>五行局</dt><dd>${summary.fiveElementsClass || '-'}</dd>
+          </dl>
+        </article>
+      `;
 
       const chip = (label, value) => `
         <div class="chip">
@@ -552,23 +680,20 @@
       `;
 
       const render = (data) => {
-        summaryEl.innerHTML = [
-          chip('阳历', data.summary.solarDate),
-          chip('农历', data.summary.lunarDate),
-          chip('四柱', data.summary.chineseDate),
-          chip('命主 / 身主', `${data.summary.soul} / ${data.summary.body}`),
-          chip('五行局', data.summary.fiveElementsClass),
-        ].join('');
+        let centerRendered = false;
 
         boardEl.innerHTML = boardSlots.map((index) => {
           if (index === null) {
-            return '<article class="palace empty-slot">中宫</article>';
+            if (centerRendered) {
+              return '';
+            }
+
+            centerRendered = true;
+            return centerInfo(data.summary);
           }
 
           const palace = data.palaces[index];
-          const major = starNames(palace.majorStars);
-          const minor = starNames(palace.minorStars);
-          const adjective = starNames(palace.adjectiveStars);
+          const adjective = adjectiveNames(palace.adjectiveStars);
 
           return `
             <article class="palace">
@@ -577,10 +702,10 @@
                 <span class="branch">${palace.stem}${palace.branch}</span>
               </header>
               <div class="stars">
-                ${visibleMajorStars(major)}
+                ${visibleMajorStars(palace.majorStars)}
               </div>
               <div class="stars">
-                ${visibleStars(minor, 6)}
+                ${visibleStars(palace.minorStars, 6)}
               </div>
               <p class="meta">
                 大限：${palace.decadal.range[0]}-${palace.decadal.range[1]} 岁<br>
@@ -592,9 +717,7 @@
         }).join('');
 
         mobilePalacesEl.innerHTML = data.palaces.map((palace) => {
-          const major = starNames(palace.majorStars);
-          const minor = starNames(palace.minorStars);
-          const adjective = starNames(palace.adjectiveStars);
+          const adjective = adjectiveNames(palace.adjectiveStars);
 
           return `
             <article class="mobile-palace">
@@ -604,8 +727,8 @@
                 <small>${palace.decadal.range[0]}-${palace.decadal.range[1]} 岁</small>
               </div>
               <div>
-                <div class="stars">${visibleMajorStars(major)}</div>
-                <div class="stars">${visibleStars(minor, 5)}</div>
+                <div class="stars">${visibleMajorStars(palace.majorStars)}</div>
+                <div class="stars">${visibleStars(palace.minorStars, 5)}</div>
                 <p class="meta">长生：${palace.changsheng12 || '-'} ｜ 杂曜：${adjective.slice(0, 4).join('、') || '-'}</p>
               </div>
             </article>
