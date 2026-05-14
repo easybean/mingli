@@ -31,7 +31,11 @@ GET /api/astrolabe
 
 - `calendar`: `solar` 或 `lunar`
 - `date`: 出生日期，格式 `YYYY-M-D`
-- `timeIndex`: 时辰序号，`0` 到 `12`
+- `birthTime`: 出生时间，格式 `HH:mm`
+- `birthPlace`: 出生地城市名，开启真太阳时时会自动匹配经度
+- `trueSolarTime`: 可选，`true` 或 `false`，默认 `false`；启用时按出生地经度和均时差修正排盘时辰，需要阳历输入
+- `daylightSaving`: 可选，`true` 或 `false`，默认 `false`；启用时会先把钟表时间减 1 小时再排盘
+- `timeIndex`: 可选，时辰序号，`0` 到 `12`；通常不用传，后端会从 `birthTime` 推导
 - `gender`: `男` 或 `女`
 - `target`: 运限目标时间，例如 `2023-8-19 3:12`
 - `algorithm`: `default` 或 `zhongzhou`

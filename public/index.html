@@ -113,6 +113,13 @@
         font-size: 13px;
       }
 
+      .checkbox-label {
+        grid-template-columns: 18px 1fr;
+        gap: 9px;
+        align-items: center;
+        padding-top: 22px;
+      }
+
       input,
       select,
       button {
@@ -123,6 +130,13 @@
         color: var(--ink);
         background: rgba(255, 253, 245, 0.86);
         font: inherit;
+      }
+
+      input[type="checkbox"] {
+        width: 18px;
+        min-height: 18px;
+        padding: 0;
+        accent-color: var(--red);
       }
 
       button {
@@ -570,22 +584,40 @@
               <input name="date" type="date" value="2000-08-16">
             </label>
             <label>
-              时辰
-              <select name="timeIndex">
-                <option value="0">早子时 00:00-00:59</option>
-                <option value="1">丑时 01:00-02:59</option>
-                <option value="2" selected>寅时 03:00-04:59</option>
-                <option value="3">卯时 05:00-06:59</option>
-                <option value="4">辰时 07:00-08:59</option>
-                <option value="5">巳时 09:00-10:59</option>
-                <option value="6">午时 11:00-12:59</option>
-                <option value="7">未时 13:00-14:59</option>
-                <option value="8">申时 15:00-16:59</option>
-                <option value="9">酉时 17:00-18:59</option>
-                <option value="10">戌时 19:00-20:59</option>
-                <option value="11">亥时 21:00-22:59</option>
-                <option value="12">晚子时 23:00-23:59</option>
-              </select>
+              出生时间
+              <input name="birthTime" type="time" value="03:30">
+            </label>
+            <label>
+              出生地
+              <input name="birthPlace" list="cityList" value="北京" placeholder="输入城市名">
+              <datalist id="cityList">
+                <option value="北京"></option>
+                <option value="上海"></option>
+                <option value="广州"></option>
+                <option value="深圳"></option>
+                <option value="成都"></option>
+                <option value="重庆"></option>
+                <option value="杭州"></option>
+                <option value="武汉"></option>
+                <option value="西安"></option>
+                <option value="南京"></option>
+                <option value="天津"></option>
+                <option value="苏州"></option>
+                <option value="郑州"></option>
+                <option value="长沙"></option>
+                <option value="沈阳"></option>
+                <option value="青岛"></option>
+                <option value="昆明"></option>
+                <option value="乌鲁木齐"></option>
+              </datalist>
+            </label>
+            <label class="checkbox-label">
+              <input name="trueSolarTime" type="checkbox" value="true">
+              <span>使用真太阳时</span>
+            </label>
+            <label class="checkbox-label">
+              <input name="daylightSaving" type="checkbox" value="true">
+              <span>使用夏令时</span>
             </label>
             <label>
               性别
@@ -654,7 +686,6 @@
       const visibleMajorStars = (stars) => stars.length
         ? stars.map((star) => starLabel(star, true)).join('')
         : '<span class="star">空宫</span>';
-
       const centerInfo = (summary) => `
         <article class="palace empty-slot center-info">
           <h2>命盘信息</h2>
@@ -767,7 +798,16 @@
           }
 
           render(data);
-          statusEl.textContent = `已生成：${data.summary.time}，命宫在${data.summary.soulPalaceBranch}，身宫在${data.summary.bodyPalaceBranch}`;
+          const dstText = data.input.daylightSaving
+            ? `，${data.input.daylightSavingMode === 'auto' ? '自动识别夏令时' : '手动指定夏令时'}，已折算为标准时间 ${data.input.normalizedBirth.standardTime}`
+            : `，${data.input.daylightSavingMode === 'auto' ? '自动判定非夏令时' : '手动指定标准时'}`;
+          const estimateText = data.input.normalizedBirth.estimatedFromTimeIndex
+            ? '，未填出生时间时按时辰中点估算'
+            : '';
+          const solarText = data.input.trueSolarTime
+            ? `，真太阳时 ${data.input.normalizedBirth.trueSolarClockTime}`
+            : '';
+          statusEl.textContent = `已生成：${data.summary.time}${dstText}${solarText}${estimateText}，命宫在${data.summary.soulPalaceBranch}，身宫在${data.summary.bodyPalaceBranch}`;
         } catch (error) {
           statusEl.textContent = error.message;
         }
