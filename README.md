@@ -32,7 +32,7 @@ GET /api/astrolabe
 - `calendar`: `solar` 或 `lunar`
 - `date`: 出生日期，格式 `YYYY-M-D`
 - `birthTime`: 出生时间，格式 `HH:mm`
-- `birthPlace`: 出生地城市名，开启真太阳时时会自动匹配经度
+- `birthPlace`: 出生地城市名，开启真太阳时时会自动匹配经度；本地内置 339 个中国地级行政区经度
 - `trueSolarTime`: 可选，`true` 或 `false`，默认 `false`；启用时按出生地经度和均时差修正排盘时辰，需要阳历输入
 - `daylightSaving`: 可选，`true` 或 `false`，默认 `false`；启用时会先把钟表时间减 1 小时再排盘
 - `timeIndex`: 可选，时辰序号，`0` 到 `12`；通常不用传，后端会从 `birthTime` 推导
@@ -48,5 +48,5 @@ http://127.0.0.1:3000/api/astrolabe?date=2000-8-16&timeIndex=2&gender=女&target
 
 ## 当前范围
 
-- 已实现：阳历/农历排盘、十二宫展示、大限、流年、流月、流日、流时快照。
+- 已实现：阳历/农历排盘、十二宫展示、大限、流年、流月、流日、流时快照、八字详盘、一生大运流年。
 - 未实现：AI 解读、漫画人生手册、剧本杀关卡、用户系统、持久化。

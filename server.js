@@ -3,54 +3,15 @@ const fs = require('fs');
 const path = require('path');
 const { URL } = require('url');
 const { astro } = require('iztro');
+const { LunarUtil, Solar } = require('lunar-typescript');
 
 const PORT = Number(process.env.PORT || 3000);
 const HOST = process.env.HOST || '127.0.0.1';
 const PUBLIC_DIR = path.join(__dirname, 'public');
 const MINUTES_PER_DAY = 24 * 60;
 const CHINA_STANDARD_LONGITUDE = 120;
-const CITY_LONGITUDES = {
-  北京: 116.4,
-  上海: 121.47,
-  天津: 117.2,
-  重庆: 106.55,
-  哈尔滨: 126.63,
-  长春: 125.32,
-  沈阳: 123.43,
-  呼和浩特: 111.75,
-  石家庄: 114.52,
-  太原: 112.55,
-  济南: 117.12,
-  郑州: 113.62,
-  西安: 108.93,
-  兰州: 103.82,
-  西宁: 101.78,
-  银川: 106.23,
-  乌鲁木齐: 87.62,
-  南京: 118.78,
-  合肥: 117.25,
-  杭州: 120.15,
-  南昌: 115.85,
-  福州: 119.3,
-  广州: 113.27,
-  南宁: 108.37,
-  海口: 110.32,
-  武汉: 114.3,
-  长沙: 112.93,
-  成都: 104.07,
-  贵阳: 106.63,
-  昆明: 102.72,
-  拉萨: 91.13,
-  香港: 114.17,
-  澳门: 113.55,
-  台北: 121.57,
-  深圳: 114.06,
-  厦门: 118.08,
-  青岛: 120.38,
-  大连: 121.62,
-  宁波: 121.55,
-  苏州: 120.58,
-};
+const CITY_LONGITUDES = require('./data/city-longitudes.json');
+const CITY_NAMES = Object.keys(CITY_LONGITUDES);
 const CHINA_DAYLIGHT_SAVING_RANGES = [
   ['1986-5-4', '1986-9-14'],
   ['1987-4-12', '1987-9-13'],
@@ -59,6 +20,44 @@ const CHINA_DAYLIGHT_SAVING_RANGES = [
   ['1990-4-15', '1990-9-16'],
   ['1991-4-14', '1991-9-15'],
 ];
+const STEM_ELEMENTS = {
+  甲: '木',
+  乙: '木',
+  丙: '火',
+  丁: '火',
+  戊: '土',
+  己: '土',
+  庚: '金',
+  辛: '金',
+  壬: '水',
+  癸: '水',
+};
+const STEM_YANG = {
+  甲: true,
+  乙: false,
+  丙: true,
+  丁: false,
+  戊: true,
+  己: false,
+  庚: true,
+  辛: false,
+  壬: true,
+  癸: false,
+};
+const GENERATES = {
+  木: '火',
+  火: '土',
+  土: '金',
+  金: '水',
+  水: '木',
+};
+const CONTROLS = {
+  木: '土',
+  火: '金',
+  土: '水',
+  金: '木',
+  水: '火',
+};
 
 const json = (res, statusCode, payload) => {
   res.writeHead(statusCode, {
@@ -126,6 +125,58 @@ const compactHoroscope = (item) => ({
   mutagen: item.mutagen,
 });
 
+const toList = (value) => (Array.isArray(value) ? value : String(value || '').split(',').filter(Boolean));
+
+const tenGod = (dayStem, targetStem) => {
+  const dayElement = STEM_ELEMENTS[dayStem];
+  const targetElement = STEM_ELEMENTS[targetStem];
+  const samePolarity = STEM_YANG[dayStem] === STEM_YANG[targetStem];
+
+  if (!dayElement || !targetElement) {
+    return '';
+  }
+
+  if (dayElement === targetElement) {
+    return samePolarity ? '比肩' : '劫财';
+  }
+
+  if (GENERATES[dayElement] === targetElement) {
+    return samePolarity ? '食神' : '伤官';
+  }
+
+  if (GENERATES[targetElement] === dayElement) {
+    return samePolarity ? '偏印' : '正印';
+  }
+
+  if (CONTROLS[dayElement] === targetElement) {
+    return samePolarity ? '偏财' : '正财';
+  }
+
+  if (CONTROLS[targetElement] === dayElement) {
+    return samePolarity ? '七杀' : '正官';
+  }
+
+  return '';
+};
+
+const ganZhiDetails = (ganZhi, dayStem) => {
+  const gan = ganZhi[0];
+  const zhi = ganZhi[1];
+  const hiddenGan = LunarUtil.ZHI_HIDE_GAN[zhi] || [];
+
+  return {
+    ganZhi,
+    gan,
+    zhi,
+    ganWuXing: LunarUtil.WU_XING_GAN[gan],
+    zhiWuXing: LunarUtil.WU_XING_ZHI[zhi],
+    ganShiShen: tenGod(dayStem, gan),
+    hiddenGan,
+    hiddenShiShen: hiddenGan.map((item) => tenGod(dayStem, item)),
+    naYin: LunarUtil.NAYIN[ganZhi],
+  };
+};
+
 const parseBool = (value) => value === 'true' || value === '1' || value === 'yes' || value === 'on';
 
 const parseDateParts = (date) => {
@@ -158,6 +209,19 @@ const dateSerial = (date) => {
   const { year, month, day } = parseDateParts(date);
   return Date.UTC(year, month - 1, day);
 };
+
+const serialFromParts = (year, month, day) => Date.UTC(year, month - 1, day);
+
+const datePartsFromSerial = (serial) => {
+  const date = new Date(serial);
+  return {
+    year: date.getUTCFullYear(),
+    month: date.getUTCMonth() + 1,
+    day: date.getUTCDate(),
+  };
+};
+
+const solarToYmd = (solar) => `${solar.getYear()}-${solar.getMonth()}-${solar.getDay()}`;
 
 const dayOfYear = (date) => {
   const { year } = parseDateParts(date);
@@ -254,7 +318,7 @@ const resolveBirthLongitude = (birthPlace, explicitLongitude, trueSolarTime) => 
     return parseLongitude(explicitLongitude);
   }
 
-  const normalizedPlace = normalizePlaceName(birthPlace);
+  const normalizedPlace = normalizePlaceName(birthPlace || '北京');
   const matchedCity = Object.keys(CITY_LONGITUDES).find((city) => (
     normalizePlaceName(city) === normalizedPlace || normalizedPlace.includes(normalizePlaceName(city))
   ));
@@ -264,7 +328,7 @@ const resolveBirthLongitude = (birthPlace, explicitLongitude, trueSolarTime) => 
   }
 
   if (trueSolarTime) {
-    const err = new Error('birthPlace is not recognized; choose a supported city before using trueSolarTime.');
+    const err = new Error('未识别出生地城市；使用真太阳时时请填写支持的城市名，例如 北京、上海、广州、成都、乌鲁木齐。');
     err.statusCode = 400;
     throw err;
   }
@@ -310,6 +374,207 @@ const normalizeBirthTime = ({ calendar, date, timeIndex, birthTime, daylightSavi
   };
 };
 
+const baziPillar = (eightChar, key, label) => {
+  const wuXing = eightChar[`get${key}WuXing`]();
+
+  return {
+    key,
+    label,
+    ganzhi: eightChar[`get${key}`](),
+    gan: eightChar[`get${key}Gan`](),
+    zhi: eightChar[`get${key}Zhi`](),
+    wuXing,
+    ganWuXing: wuXing[0],
+    zhiWuXing: wuXing[1],
+    ganShiShen: eightChar[`get${key}ShiShenGan`](),
+    hiddenGan: toList(eightChar[`get${key}HideGan`]()),
+    hiddenShiShen: toList(eightChar[`get${key}ShiShenZhi`]()),
+    diShi: eightChar[`get${key}DiShi`](),
+    naYin: eightChar[`get${key}NaYin`](),
+    xun: eightChar[`get${key}Xun`](),
+    xunKong: eightChar[`get${key}XunKong`](),
+  };
+};
+
+const compactLiuNian = (liuNian, dayStem) => ({
+  index: liuNian.getIndex(),
+  year: liuNian.getYear(),
+  age: liuNian.getAge(),
+  xun: liuNian.getXun(),
+  xunKong: liuNian.getXunKong(),
+  ...ganZhiDetails(liuNian.getGanZhi(), dayStem),
+  liuYue: liuNian.getLiuYue().map((liuYue) => ({
+    index: liuYue.getIndex(),
+    month: liuYue.getIndex() + 1,
+    monthName: `${liuYue.getMonthInChinese()}月`,
+    xun: liuYue.getXun(),
+    xunKong: liuYue.getXunKong(),
+    ...ganZhiDetails(liuYue.getGanZhi(), dayStem),
+  })),
+});
+
+const compactDaYun = (daYun, dayStem) => ({
+  index: daYun.getIndex(),
+  startAge: daYun.getStartAge(),
+  endAge: daYun.getEndAge(),
+  startYear: daYun.getStartYear(),
+  endYear: daYun.getEndYear(),
+  xun: daYun.getXun(),
+  xunKong: daYun.getXunKong(),
+  ...ganZhiDetails(daYun.getGanZhi(), dayStem),
+  liuNian: daYun.getLiuNian().map((item) => compactLiuNian(item, dayStem)),
+});
+
+const FLOW_MONTH_START_TERMS = ['立春', '惊蛰', '清明', '立夏', '芒种', '小暑', '立秋', '白露', '寒露', '立冬', '大雪', '小寒'];
+const FLOW_MONTH_NAMES = ['正月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '冬月', '腊月'];
+const FLOW_TIME_SLOTS = [
+  ['子时', 0, '00:00-00:59'],
+  ['丑时', 2, '01:00-02:59'],
+  ['寅时', 4, '03:00-04:59'],
+  ['卯时', 6, '05:00-06:59'],
+  ['辰时', 8, '07:00-08:59'],
+  ['巳时', 10, '09:00-10:59'],
+  ['午时', 12, '11:00-12:59'],
+  ['未时', 14, '13:00-14:59'],
+  ['申时', 16, '15:00-16:59'],
+  ['酉时', 18, '17:00-18:59'],
+  ['戌时', 20, '19:00-20:59'],
+  ['亥时', 22, '21:00-22:59'],
+];
+
+const getJieQiSolar = (year, term) => Solar.fromYmd(year, 7, 1).getLunar().getJieQiTable()[term];
+
+const getFlowMonthRange = (year, monthIndex) => {
+  const startTerm = FLOW_MONTH_START_TERMS[monthIndex];
+  const endTerm = monthIndex === 11 ? '立春' : FLOW_MONTH_START_TERMS[monthIndex + 1];
+  const startYear = monthIndex === 11 ? year + 1 : year;
+  const endYear = monthIndex >= 10 ? year + 1 : year;
+  const start = getJieQiSolar(startYear, startTerm);
+  const end = getJieQiSolar(endYear, endTerm);
+
+  return {
+    startTerm,
+    endTerm,
+    startDate: solarToYmd(start),
+    endDate: solarToYmd(end),
+    startSerial: serialFromParts(start.getYear(), start.getMonth(), start.getDay()),
+    endSerial: serialFromParts(end.getYear(), end.getMonth(), end.getDay()),
+  };
+};
+
+const buildFlowDay = ({ year, month, day, dayStem }) => {
+  const lunar = Solar.fromYmdHms(year, month, day, 0, 0, 0).getLunar();
+  const ganZhi = lunar.getDayInGanZhi();
+
+  return {
+    date: `${year}-${month}-${day}`,
+    lunarMonth: `${lunar.getMonthInChinese()}月`,
+    lunarDay: lunar.getDayInChinese(),
+    lunarDate: `${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`,
+    xun: lunar.getDayXun(),
+    xunKong: lunar.getDayXunKong(),
+    tianShen: lunar.getDayTianShen(),
+    tianShenType: lunar.getDayTianShenType(),
+    yi: toList(lunar.getDayYi()),
+    ji: toList(lunar.getDayJi()),
+    ...ganZhiDetails(ganZhi, dayStem),
+    hours: FLOW_TIME_SLOTS.map(([label, hour, range]) => {
+      const timeLunar = Solar.fromYmdHms(year, month, day, hour, 0, 0).getLunar();
+
+      return {
+        label,
+        range,
+        xun: timeLunar.getTimeXun(),
+        xunKong: timeLunar.getTimeXunKong(),
+        tianShen: timeLunar.getTimeTianShen(),
+        tianShenType: timeLunar.getTimeTianShenType(),
+        ...ganZhiDetails(timeLunar.getTimeInGanZhi(), dayStem),
+      };
+    }),
+  };
+};
+
+const buildFlowDays = (query) => {
+  const astrolabe = buildAstrolabe(query);
+  const year = Number(query.get('flowYear'));
+  const monthIndex = Number(query.get('flowMonthIndex'));
+
+  if (!Number.isInteger(year) || !Number.isInteger(monthIndex) || monthIndex < 0 || monthIndex > 11) {
+    const err = new Error('flowYear and flowMonthIndex are required.');
+    err.statusCode = 400;
+    throw err;
+  }
+
+  const range = getFlowMonthRange(year, monthIndex);
+  const days = [];
+
+  for (let serial = range.startSerial; serial < range.endSerial; serial += 86400000) {
+    days.push(buildFlowDay({ ...datePartsFromSerial(serial), dayStem: astrolabe.bazi.dayMaster.stem }));
+  }
+
+  return {
+    year,
+    monthIndex,
+    monthName: FLOW_MONTH_NAMES[monthIndex],
+    range: {
+      startTerm: range.startTerm,
+      endTerm: range.endTerm,
+      startDate: range.startDate,
+      endDate: range.endDate,
+    },
+    days,
+  };
+};
+
+const buildBaziDetails = ({ astrolabe, normalizedBirth, gender }) => {
+  const { year, month, day } = parseDateParts(astrolabe.solarDate);
+  const [hour, minute] = normalizedBirth.trueSolarClockTime.split(':').map(Number);
+  const solar = Solar.fromYmdHms(year, month, day, hour, minute, 0);
+  const lunar = solar.getLunar();
+  const eightChar = lunar.getEightChar();
+  const dayStem = eightChar.getDayGan();
+  const genderValue = gender === '男' || gender === 'male' ? 1 : 0;
+  const yun = eightChar.getYun(genderValue);
+
+  return {
+    source: 'lunar-typescript',
+    solarDateTime: `${astrolabe.solarDate} ${normalizedBirth.trueSolarClockTime}`,
+    lunarText: lunar.toString(),
+    eightChar: eightChar.toString(),
+    dayMaster: {
+      stem: eightChar.getDayGan(),
+      element: eightChar.getDayWuXing()[0],
+    },
+    pillars: [
+      baziPillar(eightChar, 'Year', '年柱'),
+      baziPillar(eightChar, 'Month', '月柱'),
+      baziPillar(eightChar, 'Day', '日柱'),
+      baziPillar(eightChar, 'Time', '时柱'),
+    ],
+    palaces: {
+      taiYuan: eightChar.getTaiYuan(),
+      taiYuanNaYin: eightChar.getTaiYuanNaYin(),
+      taiXi: eightChar.getTaiXi(),
+      taiXiNaYin: eightChar.getTaiXiNaYin(),
+      mingGong: eightChar.getMingGong(),
+      mingGongNaYin: eightChar.getMingGongNaYin(),
+      shenGong: eightChar.getShenGong(),
+      shenGongNaYin: eightChar.getShenGongNaYin(),
+    },
+    luck: {
+      forward: yun.isForward(),
+      start: {
+        year: yun.getStartYear(),
+        month: yun.getStartMonth(),
+        day: yun.getStartDay(),
+        hour: yun.getStartHour(),
+        solarDate: yun.getStartSolar().toYmd(),
+      },
+      daYun: yun.getDaYun().slice(1).map((item) => compactDaYun(item, dayStem)),
+    },
+  };
+};
+
 const buildAstrolabe = (query) => {
   const calendar = query.get('calendar') || 'solar';
   const date = query.get('date') || '2000-8-16';
@@ -317,7 +582,7 @@ const buildAstrolabe = (query) => {
   const timeIndex = query.has('timeIndex')
     ? Number(query.get('timeIndex'))
     : timeIndexFromMinutes(parseBirthMinutes(birthTime, 2));
-  const birthPlace = query.get('birthPlace') || '';
+  const birthPlace = query.get('birthPlace') || '北京';
   const trueSolarTime = parseBool(query.get('trueSolarTime'));
   const birthLongitude = resolveBirthLongitude(birthPlace, query.get('birthLongitude'), trueSolarTime);
   const gender = query.get('gender') || '女';
@@ -395,6 +660,7 @@ const buildAstrolabe = (query) => {
       fiveElementsClass: astrolabe.fiveElementsClass,
       copyright: astrolabe.copyright,
     },
+    bazi: buildBaziDetails({ astrolabe, normalizedBirth, gender }),
     palaces: astrolabe.palaces.map(compactPalace),
     horoscope: {
       decadal: compactHoroscope(horoscope.decadal),
@@ -415,9 +681,30 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (url.pathname === '/api/cities') {
+    json(res, 200, {
+      cities: CITY_NAMES.map((name) => ({
+        name,
+        longitude: CITY_LONGITUDES[name],
+      })),
+    });
+    return;
+  }
+
   if (url.pathname === '/api/astrolabe') {
     try {
       json(res, 200, buildAstrolabe(url.searchParams));
+    } catch (error) {
+      json(res, error.statusCode || 500, {
+        error: error.message,
+      });
+    }
+    return;
+  }
+
+  if (url.pathname === '/api/flow-days') {
+    try {
+      json(res, 200, buildFlowDays(url.searchParams));
     } catch (error) {
       json(res, error.statusCode || 500, {
         error: error.message,
@@ -439,6 +726,7 @@ if (require.main === module) {
 
 module.exports = {
   buildAstrolabe,
+  buildFlowDays,
   normalizeBirthTime,
   server,
 };

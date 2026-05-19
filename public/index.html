@@ -374,6 +374,210 @@
         gap: 12px;
       }
 
+      .bazi-overview,
+      .bazi-grid {
+        display: grid;
+        gap: 12px;
+      }
+
+      .bazi-overview {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        margin-bottom: 12px;
+      }
+
+      .bazi-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .bazi-pillar {
+        padding: 16px;
+        border: 1px solid rgba(52, 38, 24, 0.16);
+        border-radius: 20px;
+        background: rgba(255, 253, 245, 0.72);
+      }
+
+      .bazi-pillar h3 {
+        margin: 0 0 10px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .bazi-ganzhi {
+        display: block;
+        margin-bottom: 10px;
+        color: var(--red);
+        font-size: 28px;
+        line-height: 1;
+      }
+
+      .life-luck {
+        display: grid;
+        gap: 14px;
+        margin-top: 14px;
+      }
+
+      .luck-period {
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 12px;
+        padding: 14px;
+        border: 1px solid rgba(52, 38, 24, 0.16);
+        border-radius: 20px;
+        background: rgba(255, 253, 245, 0.68);
+      }
+
+      .luck-period-head {
+        display: grid;
+        align-content: start;
+        gap: 8px;
+      }
+
+      .luck-period-head strong {
+        color: var(--red);
+        font-size: 30px;
+        line-height: 1;
+      }
+
+      .year-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 8px;
+        align-items: start;
+      }
+
+      .year-card {
+        min-height: 126px;
+        padding: 10px;
+        border: 1px solid rgba(52, 38, 24, 0.12);
+        border-radius: 14px;
+        background: rgba(255, 253, 245, 0.78);
+        cursor: pointer;
+      }
+
+      .year-card[open] {
+        position: relative;
+        z-index: 2;
+        grid-column: 1 / -1;
+        background: rgba(255, 249, 234, 0.94);
+        box-shadow: inset 0 0 0 1px rgba(181, 66, 47, 0.18);
+      }
+
+      .year-card strong {
+        display: block;
+        color: var(--blue);
+        font-size: 20px;
+        line-height: 1;
+      }
+
+      .year-card summary {
+        list-style: none;
+      }
+
+      .year-card summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .year-card small {
+        display: block;
+        margin: 7px 0;
+        color: var(--muted);
+      }
+
+      .month-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .month-card {
+        padding: 8px;
+        border-radius: 10px;
+        background: rgba(201, 133, 45, 0.1);
+      }
+
+      .month-card[open] {
+        position: relative;
+        z-index: 3;
+        grid-column: 1 / -1;
+        background: rgba(255, 249, 234, 0.95);
+        box-shadow: inset 0 0 0 1px rgba(201, 133, 45, 0.22);
+      }
+
+      .month-card b {
+        display: block;
+        color: var(--red);
+        font-size: 15px;
+        line-height: 1.1;
+      }
+
+      .flow-days {
+        margin-top: 10px;
+      }
+
+      .flow-detail {
+        display: grid;
+        grid-template-columns: minmax(260px, 0.75fr) minmax(420px, 1.25fr);
+        gap: 12px;
+        align-items: start;
+      }
+
+      .day-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+        max-height: 620px;
+        overflow: auto;
+        padding-right: 4px;
+      }
+
+      .day-card {
+        padding: 8px;
+        border: 1px solid rgba(52, 38, 24, 0.1);
+        border-radius: 10px;
+        background: rgba(255, 253, 245, 0.82);
+        cursor: pointer;
+        text-align: left;
+      }
+
+      .day-card.active {
+        border-color: rgba(181, 66, 47, 0.38);
+        background: rgba(181, 66, 47, 0.1);
+      }
+
+      .day-detail {
+        min-height: 420px;
+        padding: 12px;
+        border: 1px solid rgba(52, 38, 24, 0.14);
+        border-radius: 14px;
+        background: rgba(255, 253, 245, 0.82);
+      }
+
+      .day-detail h3 {
+        margin: 0 0 8px;
+        color: var(--red);
+        font-size: 24px;
+      }
+
+      .hour-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .hour-card {
+        padding: 9px;
+        border-radius: 10px;
+        background: rgba(29, 93, 120, 0.08);
+      }
+
+      .flow-loading {
+        padding: 10px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
       .raw {
         max-height: 420px;
         overflow: auto;
@@ -387,6 +591,8 @@
       @media (max-width: 900px) {
         .hero,
         .summary,
+        .bazi-overview,
+        .bazi-grid,
         .horoscope-grid {
           grid-template-columns: 1fr;
         }
@@ -552,6 +758,33 @@
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
+        .bazi-grid,
+        .luck-period {
+          grid-template-columns: 1fr;
+        }
+
+        .year-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .year-card[open] {
+          grid-column: 1 / -1;
+        }
+
+        .month-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .flow-detail,
+        .day-grid,
+        .hour-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .day-grid {
+          max-height: none;
+        }
+
         .raw {
           max-height: 300px;
           font-size: 11px;
@@ -581,42 +814,23 @@
             </label>
             <label>
               出生日期
-              <input name="date" type="date" value="2000-08-16">
+              <input name="date" type="date" value="1986-07-29">
             </label>
             <label>
               出生时间
-              <input name="birthTime" type="time" value="03:30">
+              <input name="birthTime" type="time" value="07:30">
             </label>
             <label>
               出生地
-              <input name="birthPlace" list="cityList" value="北京" placeholder="输入城市名">
-              <datalist id="cityList">
-                <option value="北京"></option>
-                <option value="上海"></option>
-                <option value="广州"></option>
-                <option value="深圳"></option>
-                <option value="成都"></option>
-                <option value="重庆"></option>
-                <option value="杭州"></option>
-                <option value="武汉"></option>
-                <option value="西安"></option>
-                <option value="南京"></option>
-                <option value="天津"></option>
-                <option value="苏州"></option>
-                <option value="郑州"></option>
-                <option value="长沙"></option>
-                <option value="沈阳"></option>
-                <option value="青岛"></option>
-                <option value="昆明"></option>
-                <option value="乌鲁木齐"></option>
-              </datalist>
+              <input name="birthPlace" list="cityList" value="徐州" placeholder="输入城市名">
+              <datalist id="cityList"></datalist>
             </label>
             <label class="checkbox-label">
-              <input name="trueSolarTime" type="checkbox" value="true">
+              <input name="trueSolarTime" type="checkbox" value="true" checked>
               <span>使用真太阳时</span>
             </label>
             <label class="checkbox-label">
-              <input name="daylightSaving" type="checkbox" value="true">
+              <input name="daylightSaving" type="checkbox" value="true" checked>
               <span>使用夏令时</span>
             </label>
             <label>
@@ -654,6 +868,11 @@
       </section>
 
       <section class="panel">
+        <h2>八字详盘</h2>
+        <div id="bazi"></div>
+      </section>
+
+      <section class="panel">
         <h2>API 原始 JSON</h2>
         <pre class="raw" id="raw"></pre>
       </section>
@@ -665,7 +884,10 @@
       const boardEl = document.querySelector('#board');
       const mobilePalacesEl = document.querySelector('#mobilePalaces');
       const horoscopeEl = document.querySelector('#horoscope');
+      const baziEl = document.querySelector('#bazi');
       const rawEl = document.querySelector('#raw');
+      const cityListEl = document.querySelector('#cityList');
+      let currentParams = new URLSearchParams(new FormData(form));
 
       const boardSlots = [
         3, 4, 5, 6,
@@ -709,6 +931,10 @@
           <strong>${value || '-'}</strong>
         </div>
       `;
+
+      const hiddenSummary = (item) => item.hiddenGan.length
+        ? `${item.hiddenGan.join('、')}（${item.hiddenShiShen.join('、')}）`
+        : '-';
 
       const render = (data) => {
         let centerRendered = false;
@@ -782,11 +1008,85 @@
           </div>
         `).join('');
 
+        baziEl.innerHTML = `
+          <div class="bazi-overview">
+            ${chip('四柱', data.bazi.eightChar)}
+            ${chip('日主', `${data.bazi.dayMaster.stem} · ${data.bazi.dayMaster.element}`)}
+            ${chip('胎元', `${data.bazi.palaces.taiYuan} · ${data.bazi.palaces.taiYuanNaYin}`)}
+            ${chip('命宫', `${data.bazi.palaces.mingGong} · ${data.bazi.palaces.mingGongNaYin}`)}
+          </div>
+          <div class="bazi-grid">
+            ${data.bazi.pillars.map((pillar) => `
+              <article class="bazi-pillar">
+                <h3>${pillar.label}</h3>
+                <strong class="bazi-ganzhi">${pillar.ganzhi}</strong>
+                <p class="meta">
+                  天干：${pillar.gan}（${pillar.ganWuXing}，${pillar.ganShiShen}）<br>
+                  地支：${pillar.zhi}（${pillar.zhiWuXing}）<br>
+                  藏干：${pillar.hiddenGan.join('、') || '-'}<br>
+                  支十神：${pillar.hiddenShiShen.join('、') || '-'}<br>
+                  地势：${pillar.diShi} ｜ 纳音：${pillar.naYin}<br>
+                  旬空：${pillar.xunKong}
+                </p>
+              </article>
+            `).join('')}
+          </div>
+          <div class="life-luck">
+            ${data.bazi.luck.daYun.map((period) => `
+              <article class="luck-period">
+                <div class="luck-period-head">
+                  <small>${period.startYear}-${period.endYear}</small>
+                  <strong>${period.ganZhi}</strong>
+                  <p class="meta">
+                    ${period.startAge}-${period.endAge}岁<br>
+                    天干：${period.gan}（${period.ganWuXing}，${period.ganShiShen}）<br>
+                    地支：${period.zhi}（${period.zhiWuXing}）<br>
+                    藏干：${hiddenSummary(period)}<br>
+                    纳音：${period.naYin}<br>
+                    旬空：${period.xunKong}
+                  </p>
+                </div>
+                <div class="year-grid">
+                  ${period.liuNian.map((year) => `
+                    <details class="year-card">
+                      <summary>
+                        <strong>${year.ganZhi}</strong>
+                        <small>${year.year}年 · ${year.age}岁</small>
+                      </summary>
+                      <p class="meta">
+                        ${year.gan}：${year.ganWuXing} · ${year.ganShiShen}<br>
+                        ${year.zhi}：${year.zhiWuXing}<br>
+                        藏干：${hiddenSummary(year)}<br>
+                        纳音：${year.naYin}<br>
+                        空亡：${year.xunKong}
+                      </p>
+                      <div class="month-grid">
+                        ${year.liuYue.map((month) => `
+                          <details class="month-card" data-flow-year="${year.year}" data-flow-month-index="${month.index}">
+                            <summary><b>${month.monthName} ${month.ganZhi}</b></summary>
+                            <p class="meta">
+                              ${month.gan}：${month.ganShiShen}<br>
+                              ${month.zhi}：${month.zhiWuXing}<br>
+                              空亡：${month.xunKong}
+                            </p>
+                            <div class="flow-days"></div>
+                          </details>
+                        `).join('')}
+                      </div>
+                    </details>
+                  `).join('')}
+                </div>
+              </article>
+            `).join('')}
+          </div>
+        `;
+
         rawEl.textContent = JSON.stringify(data, null, 2);
       };
 
       const load = async () => {
         const params = new URLSearchParams(new FormData(form));
+        currentParams = params;
         statusEl.textContent = '排盘中...';
 
         try {
@@ -813,11 +1113,116 @@
         }
       };
 
+      const renderFlowDays = (data) => `
+        <div class="flow-loading">${data.range.startTerm} ${data.range.startDate} 至 ${data.range.endTerm} ${data.range.endDate}</div>
+        <div class="flow-detail">
+          <div class="day-grid">
+            ${data.days.map((day, index) => `
+              <button class="day-card${index === 0 ? ' active' : ''}" type="button" data-day-index="${index}">
+                <b>${day.ganZhi}</b>
+                <small>${day.date} · 农历${day.lunarDate}</small>
+                <span class="meta">${day.ganShiShen || '-'} ｜ ${day.naYin}</span>
+              </button>
+            `).join('')}
+          </div>
+          <div class="day-detail">
+            ${renderDayDetail(data.days[0])}
+          </div>
+        </div>
+      `;
+
+      const renderDayDetail = (day) => `
+        <h3>${day.date} · ${day.ganZhi}</h3>
+        <p class="meta">
+          农历：${day.lunarDate}<br>
+          ${day.gan}：${day.ganWuXing} · ${day.ganShiShen}<br>
+          ${day.zhi}：${day.zhiWuXing}<br>
+          藏干：${hiddenSummary(day)}<br>
+          纳音：${day.naYin} ｜ 空亡：${day.xunKong}<br>
+          宜：${day.yi.slice(0, 6).join('、') || '-'}<br>
+          忌：${day.ji.slice(0, 6).join('、') || '-'}
+        </p>
+        <div class="hour-grid">
+          ${day.hours.map((hour) => `
+            <div class="hour-card">
+              <b>${hour.label} ${hour.ganZhi}</b>
+              <p class="meta">
+                ${hour.range}<br>
+                ${hour.gan}：${hour.ganShiShen}<br>
+                ${hour.zhi}：${hour.zhiWuXing}<br>
+                空亡：${hour.xunKong}<br>
+                ${hour.tianShen} · ${hour.tianShenType}
+              </p>
+            </div>
+          `).join('')}
+        </div>
+      `;
+
+      const loadCities = async () => {
+        try {
+          const response = await fetch('/api/cities');
+          const data = await response.json();
+          cityListEl.innerHTML = data.cities.map((city) => `<option value="${city.name}"></option>`).join('');
+        } catch (error) {
+          cityListEl.innerHTML = '';
+        }
+      };
+
       form.addEventListener('submit', (event) => {
         event.preventDefault();
         load();
       });
 
+      baziEl.addEventListener('toggle', async (event) => {
+        const target = event.target;
+
+        if (!target.matches('.month-card') || !target.open || target.dataset.loaded) {
+          return;
+        }
+
+        const container = target.querySelector('.flow-days');
+        const params = new URLSearchParams(currentParams);
+        params.set('flowYear', target.dataset.flowYear);
+        params.set('flowMonthIndex', target.dataset.flowMonthIndex);
+        container.innerHTML = '<div class="flow-loading">加载流日流时...</div>';
+
+        try {
+          const response = await fetch(`/api/flow-days?${params.toString()}`);
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.error || '请求失败');
+          }
+
+          target.dataset.loaded = 'true';
+          container.innerHTML = renderFlowDays(data);
+          container.flowDays = data.days;
+        } catch (error) {
+          container.innerHTML = `<div class="flow-loading">${error.message}</div>`;
+        }
+      }, true);
+
+      baziEl.addEventListener('click', (event) => {
+        const button = event.target.closest('.day-card');
+
+        if (!button) {
+          return;
+        }
+
+        const container = button.closest('.flow-days');
+        const detail = container.querySelector('.day-detail');
+        const day = container.flowDays?.[Number(button.dataset.dayIndex)];
+
+        if (!day) {
+          return;
+        }
+
+        container.querySelectorAll('.day-card').forEach((item) => item.classList.remove('active'));
+        button.classList.add('active');
+        detail.innerHTML = renderDayDetail(day);
+      });
+
+      loadCities();
       load();
     </script>
   </body>
