@@ -4,6 +4,7 @@ const path = require('path');
 const { URL } = require('url');
 const { astro } = require('iztro');
 const { LunarUtil, Solar } = require('lunar-typescript');
+const { buildKnowledgeProfile } = require('./knowledge');
 
 const PORT = Number(process.env.PORT || 3000);
 const HOST = process.env.HOST || '127.0.0.1';
@@ -575,6 +576,137 @@ const buildBaziDetails = ({ astrolabe, normalizedBirth, gender }) => {
   };
 };
 
+const READING_THEMES = {
+  命宫: ['自我驱动', '核心气质', '人生主线'],
+  身宫: ['行动方式', '后天选择', '落地姿态'],
+  财帛: ['资源经营', '现金流', '价值交换'],
+  官禄: ['事业路径', '角色定位', '长期成就'],
+  夫妻: ['亲密关系', '合作模式', '情感课题'],
+  迁移: ['外部机会', '跨城发展', '环境变量'],
+  福德: ['精神能量', '兴趣修复', '内在稳定'],
+};
+
+const STAR_TRAITS = {
+  紫微: '重视秩序与掌控，适合承担统筹和定方向的角色',
+  天机: '反应快、善变通，优势在策略、技术和信息整合',
+  太阳: '外放明朗，容易在公开场景、服务他人或承担责任时发光',
+  武曲: '务实重结果，对资源、效率和执行纪律更敏感',
+  天同: '重体验与人情，适合在舒适关系中持续发挥',
+  廉贞: '边界感强，带有审美、规则和改革意识',
+  天府: '稳健蓄势，擅长管理资源、维护系统和长期积累',
+  太阴: '细腻内敛，重感受、审美、安全感与长期陪伴',
+  贪狼: '欲望感和探索性强，适合跨界、表达、社交和创意场景',
+  巨门: '擅长辨析、表达与质疑，课题是减少内耗和口舌消耗',
+  天相: '重规则与协作，适合做协调者、审查者和制度维护者',
+  天梁: '保护欲与原则感强，适合顾问、教育、医疗、公益类角色',
+  七杀: '行动锋利，适合开拓、攻坚、转型和高压决策',
+  破军: '破旧立新，人生阶段常伴随重组、试错与升级',
+};
+
+const palaceByName = (palaces, name) => palaces.find((palace) => palace.name === name);
+
+const starNames = (stars) => stars.map((star) => star.name);
+
+const describeStars = (palace) => {
+  const majors = starNames(palace.majorStars);
+
+  if (!majors.length) {
+    const supportStars = starNames(palace.minorStars).slice(0, 3);
+    return supportStars.length
+      ? `本宫无主星，更多借由${supportStars.join('、')}等辅曜显现，遇事容易受环境与对宫牵动。`
+      : '本宫无主星，主题表现较依赖对宫、运限和实际环境触发。';
+  }
+
+  const traitText = majors.map((name) => STAR_TRAITS[name]).filter(Boolean).join('；');
+  return `${majors.join('、')}坐守，${traitText || '主星组合需要结合四化与运限继续细分'}。`;
+};
+
+const collectMutagens = (palace) => palace.majorStars
+  .concat(palace.minorStars, palace.adjectiveStars)
+  .filter((star) => star.mutagen)
+  .map((star) => `${star.name}${star.mutagen}`);
+
+const buildPalaceReading = (palace, label = palace.name) => {
+  const mutagens = collectMutagens(palace);
+  const themes = READING_THEMES[label] || READING_THEMES[palace.name] || ['人生领域', '阶段事件', '选择模式'];
+
+  return {
+    palace: label,
+    sourcePalace: palace.name,
+    branch: `${palace.stem}${palace.branch}`,
+    decadalRange: palace.decadal?.range || [],
+    themes,
+    majorStars: starNames(palace.majorStars),
+    supportStars: starNames(palace.minorStars).slice(0, 5),
+    mutagens,
+    summary: describeStars(palace),
+    promptContext: [
+      `${label}落${palace.name}${palace.stem}${palace.branch}`,
+      `主题：${themes.join('、')}`,
+      `主星：${starNames(palace.majorStars).join('、') || '空宫'}`,
+      `辅星：${starNames(palace.minorStars).slice(0, 5).join('、') || '无'}`,
+      `四化：${mutagens.join('、') || '无'}`,
+      `大限：${palace.decadal?.range?.join('-') || '-'}岁`,
+    ],
+  };
+};
+
+const buildReading = ({ summary, palaces, bazi, horoscope }) => {
+  const bodyPalace = palaces.find((palace) => palace.isBodyPalace);
+  const focusPalaces = [
+    ['命宫', palaceByName(palaces, '命宫')],
+    ['身宫', bodyPalace],
+    ['财帛', palaceByName(palaces, '财帛')],
+    ['官禄', palaceByName(palaces, '官禄')],
+    ['夫妻', palaceByName(palaces, '夫妻')],
+    ['迁移', palaceByName(palaces, '迁移')],
+    ['福德', palaceByName(palaces, '福德')],
+  ].filter(([, palace]) => palace);
+  const chapters = focusPalaces.map(([label, palace]) => buildPalaceReading(palace, label));
+  const knowledge = buildKnowledgeProfile({ chapters, bazi, summary, horoscope });
+  const currentMutagens = [
+    ['大限', horoscope.decadal],
+    ['流年', horoscope.yearly],
+    ['流月', horoscope.monthly],
+  ].map(([label, item]) => `${label}${item.heavenlyStem}${item.earthlyBranch}：${item.mutagen.join('、') || '无四化'}`);
+
+  return {
+    mode: 'knowledge-augmented-draft',
+    disclaimer: '这是基于排盘数据生成的结构化解读草稿，不等同于最终 AI 文案或现实决策建议。',
+    headline: `${summary.soul || '-'}命主、${summary.body || '-'}身主，${bazi.dayMaster.stem}${bazi.dayMaster.element}日主，命盘主线落在${summary.soulPalaceBranch}宫。`,
+    storyline: [
+      `命宫提示自我底色：${knowledge.chapters[1]?.summary || chapters[0]?.summary || '命宫信息不足。'}`,
+      `身宫提示后天落点：${knowledge.chapters[2]?.summary || chapters[1]?.summary || '身宫信息不足。'}`,
+      `当前运限可作为剧情时间轴：${currentMutagens.join('；')}。`,
+      `知识层已接入 ${knowledge.meta.activeDomains.join(' / ')}，当前启用 ${knowledge.meta.stageOneSources.length} 本阶段一书源。`,
+    ],
+    manual: knowledge.chapters.map((chapter, index) => ({
+      title: `第${index + 1}章：${chapter.palace}`,
+      subtitle: chapter.themes.join(' / '),
+      body: chapter.summary,
+      hooks: chapter.promptContext,
+      knowledgeHits: chapter.knowledgeHits || [],
+    })),
+    gameLevels: knowledge.chapters.slice(1, 6).map((chapter, index) => ({
+      level: index + 1,
+      name: `${chapter.palace}关卡`,
+      objective: `处理${chapter.themes[0]}与${chapter.themes[1]}的选择题`,
+      clue: chapter.mutagens.length
+        ? `关键线索在${chapter.mutagens.join('、')}`
+        : `关键线索在${chapter.majorStars.join('、') || '对宫与运限'}`,
+      reward: chapter.themes[2],
+    })),
+    references: knowledge.references,
+    knowledgeHits: knowledge.knowledgeHits,
+    aiPromptSeed: [
+      `请基于紫微斗数和八字资料生成克制、具体、非宿命论的人生手册。`,
+      `基础：${summary.solarDate} ${summary.time}，${summary.gender}，${summary.fiveElementsClass}，八字${bazi.eightChar}。`,
+      ...knowledge.chapters.flatMap((chapter) => chapter.promptContext),
+      ...knowledge.promptLines,
+    ],
+  };
+};
+
 const buildAstrolabe = (query) => {
   const calendar = query.get('calendar') || 'solar';
   const date = query.get('date') || '2000-8-16';
@@ -626,6 +758,32 @@ const buildAstrolabe = (query) => {
     : astro.bySolar(normalizedBirth.date, normalizedBirth.timeIndex, gender, true, language);
 
   const horoscope = astrolabe.horoscope(target);
+  const summary = {
+    gender: astrolabe.gender,
+    solarDate: astrolabe.solarDate,
+    lunarDate: astrolabe.lunarDate,
+    chineseDate: astrolabe.chineseDate,
+    time: astrolabe.time,
+    timeRange: astrolabe.timeRange,
+    zodiac: astrolabe.zodiac,
+    sign: astrolabe.sign,
+    soulPalaceBranch: astrolabe.earthlyBranchOfSoulPalace,
+    bodyPalaceBranch: astrolabe.earthlyBranchOfBodyPalace,
+    soul: astrolabe.soul,
+    body: astrolabe.body,
+    fiveElementsClass: astrolabe.fiveElementsClass,
+    copyright: astrolabe.copyright,
+  };
+  const bazi = buildBaziDetails({ astrolabe, normalizedBirth, gender });
+  const palaces = astrolabe.palaces.map(compactPalace);
+  const horoscopeData = {
+    decadal: compactHoroscope(horoscope.decadal),
+    yearly: compactHoroscope(horoscope.yearly),
+    monthly: compactHoroscope(horoscope.monthly),
+    daily: compactHoroscope(horoscope.daily),
+    hourly: compactHoroscope(horoscope.hourly),
+    agePalace: compactPalace(horoscope.agePalace()),
+  };
 
   return {
     input: {
@@ -644,32 +802,11 @@ const buildAstrolabe = (query) => {
       target,
       config: astro.getConfig(),
     },
-    summary: {
-      gender: astrolabe.gender,
-      solarDate: astrolabe.solarDate,
-      lunarDate: astrolabe.lunarDate,
-      chineseDate: astrolabe.chineseDate,
-      time: astrolabe.time,
-      timeRange: astrolabe.timeRange,
-      zodiac: astrolabe.zodiac,
-      sign: astrolabe.sign,
-      soulPalaceBranch: astrolabe.earthlyBranchOfSoulPalace,
-      bodyPalaceBranch: astrolabe.earthlyBranchOfBodyPalace,
-      soul: astrolabe.soul,
-      body: astrolabe.body,
-      fiveElementsClass: astrolabe.fiveElementsClass,
-      copyright: astrolabe.copyright,
-    },
-    bazi: buildBaziDetails({ astrolabe, normalizedBirth, gender }),
-    palaces: astrolabe.palaces.map(compactPalace),
-    horoscope: {
-      decadal: compactHoroscope(horoscope.decadal),
-      yearly: compactHoroscope(horoscope.yearly),
-      monthly: compactHoroscope(horoscope.monthly),
-      daily: compactHoroscope(horoscope.daily),
-      hourly: compactHoroscope(horoscope.hourly),
-      agePalace: compactPalace(horoscope.agePalace()),
-    },
+    summary,
+    bazi,
+    palaces,
+    horoscope: horoscopeData,
+    reading: buildReading({ summary, palaces, bazi, horoscope: horoscopeData }),
   };
 };
 

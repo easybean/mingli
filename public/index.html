@@ -374,6 +374,101 @@
         gap: 12px;
       }
 
+      .reading-head {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .reading-brief,
+      .reading-prompt,
+      .manual-card,
+      .level-card {
+        padding: 16px;
+        border: 1px solid rgba(52, 38, 24, 0.16);
+        border-radius: 20px;
+        background: rgba(255, 253, 245, 0.72);
+      }
+
+      .reading-brief strong {
+        display: block;
+        margin-bottom: 10px;
+        color: var(--red);
+        font-size: 22px;
+        line-height: 1.25;
+      }
+
+      .reading-list {
+        margin: 0;
+        padding-left: 20px;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .reading-prompt code {
+        display: block;
+        max-height: 188px;
+        overflow: auto;
+        color: var(--blue);
+        font: 12px/1.65 ui-monospace, SFMono-Regular, Menlo, monospace;
+        white-space: pre-wrap;
+      }
+
+      .manual-grid,
+      .level-grid,
+      .knowledge-grid,
+      .reference-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .manual-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .level-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        margin-top: 12px;
+      }
+
+      .knowledge-grid,
+      .reference-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 12px;
+      }
+
+      .manual-card h3,
+      .level-card h3,
+      .reference-card h3 {
+        margin: 0 0 7px;
+        color: var(--red);
+        font-size: 18px;
+      }
+
+      .manual-card small,
+      .level-card small,
+      .reference-card small {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--blue);
+        font-weight: 700;
+      }
+
+      .knowledge-chip,
+      .reference-card {
+        padding: 14px;
+        border: 1px solid rgba(52, 38, 24, 0.16);
+        border-radius: 18px;
+        background: rgba(255, 253, 245, 0.72);
+      }
+
+      .knowledge-chip strong {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--red);
+      }
+
       .bazi-overview,
       .bazi-grid {
         display: grid;
@@ -593,7 +688,12 @@
         .summary,
         .bazi-overview,
         .bazi-grid,
-        .horoscope-grid {
+        .horoscope-grid,
+        .reading-head,
+        .manual-grid,
+        .level-grid,
+        .knowledge-grid,
+        .reference-list {
           grid-template-columns: 1fr;
         }
 
@@ -758,6 +858,10 @@
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
+        .reading-brief strong {
+          font-size: 19px;
+        }
+
         .bazi-grid,
         .luck-period {
           grid-template-columns: 1fr;
@@ -868,6 +972,11 @@
       </section>
 
       <section class="panel">
+        <h2>解读草稿</h2>
+        <div id="reading"></div>
+      </section>
+
+      <section class="panel">
         <h2>八字详盘</h2>
         <div id="bazi"></div>
       </section>
@@ -884,6 +993,7 @@
       const boardEl = document.querySelector('#board');
       const mobilePalacesEl = document.querySelector('#mobilePalaces');
       const horoscopeEl = document.querySelector('#horoscope');
+      const readingEl = document.querySelector('#reading');
       const baziEl = document.querySelector('#bazi');
       const rawEl = document.querySelector('#raw');
       const cityListEl = document.querySelector('#cityList');
@@ -935,6 +1045,62 @@
       const hiddenSummary = (item) => item.hiddenGan.length
         ? `${item.hiddenGan.join('、')}（${item.hiddenShiShen.join('、')}）`
         : '-';
+
+      const renderReading = (reading) => `
+        <div class="reading-head">
+          <div class="reading-brief">
+            <strong>${reading.headline}</strong>
+            <ul class="reading-list">
+              ${reading.storyline.map((item) => `<li>${item}</li>`).join('')}
+            </ul>
+            <p class="meta">${reading.disclaimer}</p>
+          </div>
+          <div class="reading-prompt">
+            <small>AI Prompt Seed</small>
+            <code>${reading.aiPromptSeed.join('\n')}</code>
+          </div>
+        </div>
+        <div class="manual-grid">
+          ${reading.manual.map((chapter) => `
+            <article class="manual-card">
+              <h3>${chapter.title}</h3>
+              <small>${chapter.subtitle}</small>
+              <p class="meta">${chapter.body}</p>
+            </article>
+          `).join('')}
+        </div>
+        <div class="knowledge-grid">
+          ${reading.knowledgeHits.map((item) => `
+            <article class="knowledge-chip">
+              <strong>${item.topic}</strong>
+              <small>${item.source}</small>
+              <p class="meta">${item.summary}</p>
+            </article>
+          `).join('')}
+        </div>
+        <div class="reference-list">
+          ${reading.references.map((item) => `
+            <article class="reference-card">
+              <h3>${item.topic}</h3>
+              <small>${item.source}</small>
+              <p class="meta">${item.summary}</p>
+            </article>
+          `).join('')}
+        </div>
+        <div class="level-grid">
+          ${reading.gameLevels.map((level) => `
+            <article class="level-card">
+              <h3>${level.name}</h3>
+              <small>Level ${level.level}</small>
+              <p class="meta">
+                目标：${level.objective}<br>
+                线索：${level.clue}<br>
+                奖励：${level.reward}
+              </p>
+            </article>
+          `).join('')}
+        </div>
+      `;
 
       const render = (data) => {
         let centerRendered = false;
@@ -1007,6 +1173,8 @@
             <p class="meta">四化：${item.mutagen.join('、')}</p>
           </div>
         `).join('');
+
+        readingEl.innerHTML = renderReading(data.reading);
 
         baziEl.innerHTML = `
           <div class="bazi-overview">
