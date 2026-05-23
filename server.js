@@ -180,6 +180,11 @@ const ganZhiDetails = (ganZhi, dayStem) => {
 
 const parseBool = (value) => value === 'true' || value === '1' || value === 'yes' || value === 'on';
 
+const formatTargetDateTime = (date = new Date()) => (
+  `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} `
+  + `${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`
+);
+
 const parseDateParts = (date) => {
   const match = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(date);
 
@@ -719,7 +724,7 @@ const buildAstrolabe = (query) => {
   const birthLongitude = resolveBirthLongitude(birthPlace, query.get('birthLongitude'), trueSolarTime);
   const gender = query.get('gender') || '女';
   const language = query.get('language') || 'zh-CN';
-  const target = query.get('target') || '2023-8-19 3:12';
+  const target = query.get('target') || formatTargetDateTime();
 
   if (!Number.isInteger(timeIndex) || timeIndex < 0 || timeIndex > 12) {
     const err = new Error('timeIndex must be an integer from 0 to 12.');

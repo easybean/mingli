@@ -368,6 +368,147 @@
         margin: 0 0 14px;
       }
 
+      .status-shell {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .status-band,
+      .status-note,
+      .workspace-nav,
+      .workspace-section {
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: var(--panel);
+        box-shadow: 0 22px 70px rgba(56, 41, 21, 0.16);
+        backdrop-filter: blur(10px);
+      }
+
+      .status-band,
+      .status-note,
+      .workspace-section {
+        padding: 20px;
+      }
+
+      .status-band strong {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--red);
+        font-size: 20px;
+      }
+
+      .status-note .meta {
+        margin: 0;
+      }
+
+      .workspace-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+        padding: 12px;
+      }
+
+      .workspace-nav-shell {
+        position: relative;
+      }
+
+      .workspace-nav-hint {
+        display: none;
+        margin: 10px 4px 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.4;
+        text-align: right;
+      }
+
+      .workspace-button {
+        flex: 1 1 140px;
+        min-height: 48px;
+        border: 1px solid rgba(52, 38, 24, 0.14);
+        border-radius: 16px;
+        background: rgba(255, 253, 245, 0.76);
+        color: var(--muted);
+        font: inherit;
+        cursor: pointer;
+      }
+
+      .workspace-button.active {
+        color: #fff9ec;
+        background: linear-gradient(135deg, var(--blue), var(--green));
+        box-shadow: 0 12px 24px rgba(29, 93, 120, 0.18);
+      }
+
+      .workspace {
+        margin-top: 18px;
+      }
+
+      .workspace-section {
+        display: none;
+      }
+
+      .workspace-section.active {
+        display: block;
+      }
+
+      .overview-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+        gap: 14px;
+      }
+
+      .overview-stack,
+      .insight-list,
+      .summary-strip {
+        display: grid;
+        gap: 12px;
+      }
+
+      .summary-strip {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .overview-card,
+      .insight-card {
+        padding: 18px;
+        border: 1px solid rgba(52, 38, 24, 0.16);
+        border-radius: 20px;
+        background: rgba(255, 253, 245, 0.72);
+      }
+
+      .overview-card h3,
+      .insight-card h3 {
+        margin: 0 0 10px;
+        color: var(--red);
+        font-size: 18px;
+      }
+
+      .overview-card strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 28px;
+        line-height: 1.1;
+      }
+
+      .mini-list {
+        margin: 0;
+        padding-left: 20px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .chart-shell {
+        display: grid;
+        gap: 18px;
+      }
+
+      .timeline-shell {
+        display: grid;
+        gap: 18px;
+      }
+
       .horoscope-grid {
         display: grid;
         grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -685,6 +826,8 @@
 
       @media (max-width: 900px) {
         .hero,
+        .status-shell,
+        .overview-grid,
         .summary,
         .bazi-overview,
         .bazi-grid,
@@ -695,6 +838,20 @@
         .knowledge-grid,
         .reference-list {
           grid-template-columns: 1fr;
+        }
+
+        .summary-strip {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .status-band,
+        .status-note,
+        .workspace-section {
+          padding: 18px;
+        }
+
+        .workspace-nav {
+          gap: 8px;
         }
 
         .board {
@@ -735,6 +892,14 @@
         .meta {
           font-size: 12px;
         }
+
+        .overview-card strong {
+          font-size: 24px;
+        }
+
+        .reading-prompt code {
+          max-height: 150px;
+        }
       }
 
       @media (max-width: 560px) {
@@ -745,7 +910,11 @@
 
         .title-card,
         .control-card,
-        .panel {
+        .panel,
+        .status-band,
+        .status-note,
+        .workspace-nav,
+        .workspace-section {
           border-radius: 22px;
         }
 
@@ -760,6 +929,22 @@
         .subtitle {
           font-size: 15px;
           line-height: 1.7;
+        }
+
+        .status-shell {
+          gap: 10px;
+          margin-top: 14px;
+        }
+
+        .status-band,
+        .status-note,
+        .workspace-section,
+        .panel {
+          padding: 16px;
+        }
+
+        .status-band strong {
+          font-size: 18px;
         }
 
         form {
@@ -788,9 +973,7 @@
         }
 
         .board-shell {
-          margin-left: -10px;
-          margin-right: -10px;
-          padding: 0 10px 10px;
+          display: none;
         }
 
         .board {
@@ -852,14 +1035,67 @@
 
         .mobile-palace-list {
           display: grid;
+          margin-top: 0;
         }
 
         .horoscope-grid {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
+        .workspace-nav {
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          gap: 6px;
+          padding: 6px 28px 6px 6px;
+          margin-top: 14px;
+          scrollbar-width: none;
+          mask-image: linear-gradient(90deg, rgba(0, 0, 0, 1) 82%, rgba(0, 0, 0, 0));
+          -webkit-mask-image: linear-gradient(90deg, rgba(0, 0, 0, 1) 82%, rgba(0, 0, 0, 0));
+        }
+
+        .workspace-nav::-webkit-scrollbar {
+          display: none;
+        }
+
+        .workspace-button {
+          flex: 0 0 auto;
+          min-width: 72px;
+          min-height: 34px;
+          padding: 0 12px;
+          border-radius: 12px;
+          font-size: 13px;
+          white-space: nowrap;
+        }
+
+        .workspace-nav-hint {
+          display: block;
+        }
+
+        .summary-strip {
+          grid-template-columns: 1fr;
+        }
+
+        .overview-card,
+        .insight-card,
+        .manual-card,
+        .level-card,
+        .knowledge-chip,
+        .reference-card {
+          padding: 14px;
+          border-radius: 16px;
+        }
+
+        .overview-card strong {
+          font-size: 22px;
+        }
+
         .reading-brief strong {
           font-size: 19px;
+        }
+
+        .reading-prompt code {
+          max-height: 120px;
+          font-size: 11px;
         }
 
         .bazi-grid,
@@ -868,7 +1104,7 @@
         }
 
         .year-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-template-columns: 1fr;
         }
 
         .year-card[open] {
@@ -876,7 +1112,7 @@
         }
 
         .month-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-template-columns: 1fr;
         }
 
         .flow-detail,
@@ -887,6 +1123,10 @@
 
         .day-grid {
           max-height: none;
+        }
+
+        .day-detail {
+          min-height: 0;
         }
 
         .raw {
@@ -903,7 +1143,7 @@
           <p class="eyebrow">Zi Wei API Prototype</p>
           <h1>人生剧本<br>排盘底座</h1>
           <p class="subtitle">
-            这里先不做 AI 解读，只验证一件事：输入出生信息后，后端用确定性规则返回命盘 JSON，前端把十二宫、大限和流年信息展示出来。
+            先把命盘底座做成一套可工作的解读工作台。输入出生信息后，页面会把命盘、时间轴和知识解读分层展示，不再把所有信息挤在同一屏。
           </p>
         </div>
 
@@ -945,10 +1185,6 @@
               </select>
             </label>
             <label>
-              流年目标时间
-              <input name="target" value="2023-8-19 3:12" placeholder="YYYY-M-D HH:mm">
-            </label>
-            <label>
               算法
               <select name="algorithm">
                 <option value="default">默认：《紫微斗数全书》</option>
@@ -961,29 +1197,70 @@
         </div>
       </section>
 
-      <section class="board-shell" aria-label="紫微斗数十二宫横向滚动命盘">
-        <div class="board" id="board"></div>
-      </section>
-      <section class="mobile-palace-list" id="mobilePalaces" aria-label="十二宫手机列表"></section>
-
-      <section class="panel">
-        <h2>运限快照</h2>
-        <div class="horoscope-grid" id="horoscope"></div>
-      </section>
-
-      <section class="panel">
-        <h2>解读草稿</h2>
-        <div id="reading"></div>
+      <section class="status-shell">
+        <div class="status-band">
+          <strong>当前工作台</strong>
+          <div class="status" id="status"></div>
+        </div>
+        <div class="status-note">
+          <p class="meta">
+            页面按 `总览 / 命盘 / 时间轴 / 解读` 四个视图组织。默认先看全局，再往下钻取细节。
+          </p>
+        </div>
       </section>
 
-      <section class="panel">
-        <h2>八字详盘</h2>
-        <div id="bazi"></div>
+      <section class="workspace-nav-shell">
+        <section class="workspace-nav" aria-label="排盘工作台导航">
+          <button class="workspace-button active" type="button" data-view="overview">总览</button>
+          <button class="workspace-button" type="button" data-view="chart">命盘</button>
+          <button class="workspace-button" type="button" data-view="timeline">时间轴</button>
+          <button class="workspace-button" type="button" data-view="reading">解读</button>
+        </section>
+        <div class="workspace-nav-hint">左右滑动查看更多</div>
       </section>
 
-      <section class="panel">
-        <h2>API 原始 JSON</h2>
-        <pre class="raw" id="raw"></pre>
+      <section class="workspace">
+        <section class="workspace-section active" id="view-overview">
+          <div class="overview-grid">
+            <div class="overview-stack">
+              <div class="summary-strip" id="summary"></div>
+              <div class="overview-card" id="overviewLead"></div>
+            </div>
+            <div class="insight-list" id="overviewInsights"></div>
+          </div>
+        </section>
+
+        <section class="workspace-section" id="view-chart">
+          <div class="chart-shell">
+            <div class="panel">
+              <h2>十二宫命盘</h2>
+              <section class="board-shell" aria-label="紫微斗数十二宫横向滚动命盘">
+                <div class="board" id="board"></div>
+              </section>
+              <section class="mobile-palace-list" id="mobilePalaces" aria-label="十二宫手机列表"></section>
+            </div>
+            <div class="panel">
+              <h2>当前时点定位</h2>
+              <div class="horoscope-grid" id="horoscope"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="workspace-section" id="view-timeline">
+          <div class="timeline-shell">
+            <div class="panel">
+              <h2>八字详盘</h2>
+              <div id="bazi"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="workspace-section" id="view-reading">
+          <div class="panel">
+            <h2>知识增强解读</h2>
+            <div id="reading"></div>
+          </div>
+        </section>
       </section>
     </main>
 
@@ -995,8 +1272,12 @@
       const horoscopeEl = document.querySelector('#horoscope');
       const readingEl = document.querySelector('#reading');
       const baziEl = document.querySelector('#bazi');
-      const rawEl = document.querySelector('#raw');
       const cityListEl = document.querySelector('#cityList');
+      const summaryEl = document.querySelector('#summary');
+      const overviewLeadEl = document.querySelector('#overviewLead');
+      const overviewInsightsEl = document.querySelector('#overviewInsights');
+      const workspaceButtons = Array.from(document.querySelectorAll('.workspace-button'));
+      const workspaceSections = Array.from(document.querySelectorAll('.workspace-section'));
       let currentParams = new URLSearchParams(new FormData(form));
 
       const boardSlots = [
@@ -1041,6 +1322,55 @@
           <strong>${value || '-'}</strong>
         </div>
       `;
+
+      const activateView = (view) => {
+        workspaceButtons.forEach((button) => {
+          button.classList.toggle('active', button.dataset.view === view);
+        });
+        workspaceSections.forEach((section) => {
+          section.classList.toggle('active', section.id === `view-${view}`);
+        });
+      };
+
+      const renderOverview = (data) => {
+        const headlineManual = data.reading.manual[0];
+        const referenceNames = [...new Set(data.reading.references.map((item) => item.source))];
+
+        summaryEl.innerHTML = [
+          chip('命主 / 身主', `${data.summary.soul || '-'} / ${data.summary.body || '-'}`),
+          chip('五行局', data.summary.fiveElementsClass),
+          chip('当前时点', data.input.target),
+          chip('日主', `${data.bazi.dayMaster.stem} · ${data.bazi.dayMaster.element}`),
+        ].join('');
+
+        overviewLeadEl.innerHTML = `
+          <h3>当前主线</h3>
+          <strong>${data.reading.headline}</strong>
+          <p class="meta">${headlineManual?.body || ''}</p>
+        `;
+
+        overviewInsightsEl.innerHTML = `
+          <article class="insight-card">
+            <h3>此刻定位</h3>
+            <p class="meta">
+              大限：${data.horoscope.decadal.heavenlyStem}${data.horoscope.decadal.earthlyBranch}<br>
+              流年：${data.horoscope.yearly.heavenlyStem}${data.horoscope.yearly.earthlyBranch}<br>
+              流月：${data.horoscope.monthly.heavenlyStem}${data.horoscope.monthly.earthlyBranch}<br>
+              流日：${data.horoscope.daily.heavenlyStem}${data.horoscope.daily.earthlyBranch}
+            </p>
+          </article>
+          <article class="insight-card">
+            <h3>知识命中</h3>
+            <ul class="mini-list">
+              ${data.reading.knowledgeHits.slice(0, 4).map((item) => `<li>${item.topic}：${item.summary}</li>`).join('')}
+            </ul>
+          </article>
+          <article class="insight-card">
+            <h3>已接书源</h3>
+            <p class="meta">${referenceNames.join('、') || '暂无引用依据'}</p>
+          </article>
+        `;
+      };
 
       const hiddenSummary = (item) => item.hiddenGan.length
         ? `${item.hiddenGan.join('、')}（${item.hiddenShiShen.join('、')}）`
@@ -1104,6 +1434,8 @@
 
       const render = (data) => {
         let centerRendered = false;
+
+        renderOverview(data);
 
         boardEl.innerHTML = boardSlots.map((index) => {
           if (index === null) {
@@ -1249,7 +1581,6 @@
           </div>
         `;
 
-        rawEl.textContent = JSON.stringify(data, null, 2);
       };
 
       const load = async () => {
@@ -1275,7 +1606,7 @@
           const solarText = data.input.trueSolarTime
             ? `，真太阳时 ${data.input.normalizedBirth.trueSolarClockTime}`
             : '';
-          statusEl.textContent = `已生成：${data.summary.time}${dstText}${solarText}${estimateText}，命宫在${data.summary.soulPalaceBranch}，身宫在${data.summary.bodyPalaceBranch}`;
+          statusEl.textContent = `已生成：${data.summary.time}${dstText}${solarText}${estimateText}，当前定位时点 ${data.input.target}，命宫在${data.summary.soulPalaceBranch}，身宫在${data.summary.bodyPalaceBranch}`;
         } catch (error) {
           statusEl.textContent = error.message;
         }
@@ -1339,6 +1670,12 @@
       form.addEventListener('submit', (event) => {
         event.preventDefault();
         load();
+      });
+
+      workspaceButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          activateView(button.dataset.view);
+        });
       });
 
       baziEl.addEventListener('toggle', async (event) => {
