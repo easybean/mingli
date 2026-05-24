@@ -662,9 +662,11 @@ const buildReading = ({ summary, palaces, bazi, horoscope }) => {
     ['命宫', palaceByName(palaces, '命宫')],
     ['身宫', bodyPalace],
     ['财帛', palaceByName(palaces, '财帛')],
+    ['田宅', palaceByName(palaces, '田宅')],
     ['官禄', palaceByName(palaces, '官禄')],
     ['夫妻', palaceByName(palaces, '夫妻')],
     ['迁移', palaceByName(palaces, '迁移')],
+    ['疾厄', palaceByName(palaces, '疾厄')],
     ['福德', palaceByName(palaces, '福德')],
   ].filter(([, palace]) => palace);
   const chapters = focusPalaces.map(([label, palace]) => buildPalaceReading(palace, label));
@@ -683,7 +685,8 @@ const buildReading = ({ summary, palaces, bazi, horoscope }) => {
       `命宫提示自我底色：${knowledge.chapters[1]?.summary || chapters[0]?.summary || '命宫信息不足。'}`,
       `身宫提示后天落点：${knowledge.chapters[2]?.summary || chapters[1]?.summary || '身宫信息不足。'}`,
       `当前运限可作为剧情时间轴：${currentMutagens.join('；')}。`,
-      `知识层已接入 ${knowledge.meta.activeDomains.join(' / ')}，当前启用 ${knowledge.meta.stageOneSources.length} 本阶段一书源。`,
+      `知识层已接入 ${knowledge.meta.activeDomains.join(' / ')}，当前纳管 ${knowledge.meta.catalog.totalBooks} 本书，规则源 ${knowledge.meta.catalog.byUseFor.rules || 0} 本，引用源 ${knowledge.meta.catalog.byUseFor.reference || 0} 本。`,
+      `专题层已整理 ${knowledge.topics.length} 条主线，可按事业、财运、婚恋、健康与心性继续展开。`,
     ],
     manual: knowledge.chapters.map((chapter, index) => ({
       title: `第${index + 1}章：${chapter.palace}`,
@@ -691,6 +694,7 @@ const buildReading = ({ summary, palaces, bazi, horoscope }) => {
       body: chapter.summary,
       hooks: chapter.promptContext,
       knowledgeHits: chapter.knowledgeHits || [],
+      references: chapter.references || [],
     })),
     gameLevels: knowledge.chapters.slice(1, 6).map((chapter, index) => ({
       level: index + 1,
@@ -703,9 +707,15 @@ const buildReading = ({ summary, palaces, bazi, horoscope }) => {
     })),
     references: knowledge.references,
     knowledgeHits: knowledge.knowledgeHits,
+    topics: knowledge.topics,
+    retrieval: knowledge.retrieval,
     aiPromptSeed: [
       `请基于紫微斗数和八字资料生成克制、具体、非宿命论的人生手册。`,
       `基础：${summary.solarDate} ${summary.time}，${summary.gender}，${summary.fiveElementsClass}，八字${bazi.eightChar}。`,
+      `知识库目录：紫微 ${knowledge.meta.catalog.byDomain.ziwei || 0} 本，八字 ${knowledge.meta.catalog.byDomain.bazi || 0} 本；阶段一启用 ${knowledge.meta.stageOneSources.length} 本。`,
+      `专题覆盖：${knowledge.meta.catalog.topics.map((topic) => `${topic.title}${topic.bookCount}本`).join('，')}。`,
+      ...knowledge.topics.map((topic) => `${topic.title}：${topic.cues.join('；')}`),
+      ...knowledge.retrieval.map((item) => `检索片段 ${item.source}：${item.summary}`),
       ...knowledge.chapters.flatMap((chapter) => chapter.promptContext),
       ...knowledge.promptLines,
     ],
