@@ -5,7 +5,10 @@
   "description": "紫微斗数排盘 API 与可视化页面 Demo",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "check:server": "node --check server.js",
+    "validate:samples": "node scripts/validate-samples.js",
+    "verify": "npm run check:server && npm run validate:samples"
   },
   "dependencies": {
     "iztro": "^2.5.8",

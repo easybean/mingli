@@ -485,7 +485,6 @@
 
       .reading-head {
         display: grid;
-        grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
         gap: 12px;
         margin-bottom: 12px;
       }
@@ -522,6 +521,42 @@
         color: var(--blue);
         font: 12px/1.65 ui-monospace, SFMono-Regular, Menlo, monospace;
         white-space: pre-wrap;
+      }
+
+      .reading-section {
+        border: 1px solid rgba(52, 38, 24, 0.16);
+        border-radius: 20px;
+        background: rgba(255, 253, 245, 0.72);
+        overflow: hidden;
+      }
+
+      .reading-section summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 14px;
+        cursor: pointer;
+        list-style: none;
+        color: var(--red);
+        font-weight: 700;
+      }
+
+      .reading-section summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .reading-section summary::after {
+        content: "+";
+        color: var(--muted);
+      }
+
+      .reading-section[open] summary::after {
+        content: "−";
+      }
+
+      .reading-section-body {
+        padding: 0 14px 14px;
       }
 
       .manual-grid,
@@ -575,6 +610,61 @@
         background: rgba(255, 253, 245, 0.72);
       }
 
+      .manual-card {
+        display: grid;
+        gap: 10px;
+      }
+
+      .manual-header {
+        display: grid;
+        gap: 4px;
+      }
+
+      .manual-summary {
+        margin: 0;
+        color: var(--ink);
+        line-height: 1.72;
+      }
+
+      .manual-section {
+        border: 1px solid rgba(52, 38, 24, 0.12);
+        border-radius: 14px;
+        background: rgba(255, 251, 241, 0.76);
+        overflow: hidden;
+      }
+
+      .manual-section summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 10px 12px;
+        cursor: pointer;
+        list-style: none;
+        color: var(--blue);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .manual-section summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .manual-section summary::after {
+        content: "+";
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1;
+      }
+
+      .manual-section[open] summary::after {
+        content: "−";
+      }
+
+      .manual-detail {
+        padding: 10px 12px;
+      }
+
       .knowledge-chip strong,
       .topic-card strong {
         display: block;
@@ -582,11 +672,111 @@
         color: var(--red);
       }
 
+      .topic-card {
+        display: grid;
+        gap: 10px;
+      }
+
+      .topic-header {
+        display: grid;
+        gap: 4px;
+      }
+
+      .topic-takeaway {
+        margin: 0;
+        color: var(--ink);
+        font-size: 15px;
+        line-height: 1.75;
+      }
+
+      .topic-driver-list {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .topic-section {
+        border: 1px solid rgba(52, 38, 24, 0.12);
+        border-radius: 14px;
+        background: rgba(255, 251, 241, 0.76);
+        overflow: hidden;
+      }
+
+      .topic-section summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 10px 12px;
+        cursor: pointer;
+        list-style: none;
+        color: var(--blue);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .topic-section summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .topic-section summary::after {
+        content: "+";
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1;
+      }
+
+      .topic-section[open] summary::after {
+        content: "−";
+      }
+
+      .topic-detail {
+        padding: 10px 12px;
+      }
+
+      .topic-detail h4,
+      .reference-group h3 {
+        margin: 0 0 8px;
+        color: var(--blue);
+        font-size: 14px;
+      }
+
       .topic-card ul {
         margin: 8px 0 0;
         padding-left: 18px;
         color: var(--muted);
         line-height: 1.7;
+      }
+
+      .reference-group {
+        padding: 16px;
+        border: 1px solid rgba(52, 38, 24, 0.16);
+        border-radius: 20px;
+        background: rgba(255, 253, 245, 0.72);
+      }
+
+      .reference-group details {
+        border-top: 1px solid rgba(52, 38, 24, 0.1);
+        margin-top: 10px;
+        padding-top: 10px;
+      }
+
+      .reference-group details:first-of-type {
+        border-top: 0;
+        margin-top: 0;
+        padding-top: 0;
+      }
+
+      .reference-group summary {
+        cursor: pointer;
+        list-style: none;
+        color: var(--blue);
+        font-weight: 700;
+      }
+
+      .reference-group summary::-webkit-details-marker {
+        display: none;
       }
 
       .bazi-overview,
@@ -810,7 +1000,6 @@
         .bazi-overview,
         .bazi-grid,
         .horoscope-grid,
-        .reading-head,
         .manual-grid,
         .level-grid,
         .knowledge-grid,
@@ -877,6 +1066,13 @@
         .reading-prompt code {
           max-height: 150px;
         }
+
+        .manual-card,
+        .topic-card,
+        .reference-group,
+        .knowledge-chip {
+          padding: 13px;
+        }
       }
 
       @media (max-width: 560px) {
@@ -910,6 +1106,62 @@
         .workspace-section,
         .panel {
           padding: 16px;
+        }
+
+        .reading-brief,
+        .reading-prompt,
+        .manual-card,
+        .reference-group,
+        .topic-card,
+        .reading-section,
+        .knowledge-chip,
+        .level-card {
+          padding: 12px;
+          border-radius: 16px;
+        }
+
+        .reading-brief strong {
+          font-size: 18px;
+        }
+
+        .reading-list,
+        .topic-driver-list,
+        .mini-list {
+          line-height: 1.58;
+        }
+
+        .topic-takeaway,
+        .manual-summary,
+        .meta {
+          font-size: 12px;
+          line-height: 1.62;
+        }
+
+        .topic-section summary,
+        .manual-section summary,
+        .reference-group summary {
+          padding: 8px 10px;
+          font-size: 13px;
+        }
+
+        .topic-detail,
+        .manual-detail {
+          padding: 8px 10px;
+        }
+
+        .reading-prompt code {
+          max-height: 108px;
+          font-size: 11px;
+          line-height: 1.5;
+        }
+
+        .reading-section summary {
+          padding: 10px 12px;
+          font-size: 13px;
+        }
+
+        .reading-section-body {
+          padding: 0 12px 12px;
         }
 
         form {
@@ -1284,7 +1536,7 @@
         overviewLeadEl.innerHTML = `
           <h3>当前主线</h3>
           <strong>${data.reading.headline}</strong>
-          <p class="meta">${headlineManual?.body || ''}</p>
+          <p class="meta">${briefText(headlineManual?.body || '', 2, 120)}</p>
         `;
 
         overviewInsightsEl.innerHTML = `
@@ -1310,11 +1562,49 @@
         `;
       };
 
+      const buildReferenceGroups = (reading) => reading.topics.map((topic) => {
+        const topicRefs = [
+          ...(topic.references || []),
+          ...reading.references.filter((item) => (item.themes || []).includes(topic.id)),
+        ];
+        return {
+          title: topic.title,
+          items: topicRefs.filter((item, index, list) => list.findIndex((other) => `${other.source}:${other.topic}` === `${item.source}:${item.topic}`) === index).slice(0, 4),
+        };
+      }).filter((group) => group.items.length);
+
       const hiddenSummary = (item) => item.hiddenGan.length
         ? `${item.hiddenGan.join('、')}（${item.hiddenShiShen.join('、')}）`
         : '-';
 
-      const renderReading = (reading) => `
+      const briefText = (text, maxParts = 2, maxLength = 96) => {
+        const parts = String(text || '')
+          .split(/[。！？]/)
+          .flatMap((item) => item.split('；'))
+          .map((item) => item.trim())
+          .filter(Boolean);
+        const summary = parts.slice(0, maxParts).join('；');
+        if (!summary) {
+          return '';
+        }
+        return summary.length > maxLength ? `${summary.slice(0, maxLength)}…` : `${summary}。`;
+      };
+
+      const summarizeChapterReferences = (references = []) => {
+        if (!references.length) {
+          return '';
+        }
+        const preview = references.slice(0, 4).map((item) => `${item.source}·${item.topic}`);
+        if (references.length > 4) {
+          preview.push(`等${references.length}条`);
+        }
+        return preview.join('；');
+      };
+
+      const renderReading = (reading) => {
+        const referenceGroups = buildReferenceGroups(reading);
+
+        return `
         <div class="reading-head">
           <div class="reading-brief">
             <strong>${reading.headline}</strong>
@@ -1323,19 +1613,49 @@
             </ul>
             <p class="meta">${reading.disclaimer}</p>
           </div>
-          <div class="reading-prompt">
-            <small>AI Prompt Seed</small>
-            <code>${reading.aiPromptSeed.join('\n')}</code>
-          </div>
         </div>
+        <details class="reading-section">
+          <summary>AI Prompt Seed</summary>
+          <div class="reading-section-body">
+            <div class="reading-prompt">
+              <code>${reading.aiPromptSeed.join('\n')}</code>
+            </div>
+          </div>
+        </details>
         <div class="manual-grid">
           ${reading.manual.map((chapter) => `
             <article class="manual-card">
-              <h3>${chapter.title}</h3>
-              <small>${chapter.subtitle}</small>
-              <p class="meta">${chapter.body}</p>
-              ${chapter.references?.length ? `
-                <p class="meta">依据：${chapter.references.map((item) => `${item.source}·${item.topic}`).join('；')}</p>
+              <div class="manual-header">
+                <h3>${chapter.title}</h3>
+                <small>${chapter.subtitle}</small>
+              </div>
+              <p class="manual-summary">${briefText(chapter.body, chapter.title === '第1章：八字基础' ? 3 : 2, chapter.title === '第1章：八字基础' ? 132 : 96)}</p>
+              ${chapter.references?.length ? `<p class="meta">依据：${summarizeChapterReferences(chapter.references)}</p>` : ''}
+              <details class="manual-section">
+                <summary>完整章节</summary>
+                <div class="manual-detail">
+                  <p class="meta">${chapter.body}</p>
+                </div>
+              </details>
+              ${chapter.knowledgeHits?.length ? `
+                <details class="manual-section">
+                  <summary>命中要点</summary>
+                  <div class="manual-detail">
+                    <ul class="topic-driver-list">
+                      ${chapter.knowledgeHits.map((item) => `<li>${item.topic}：${item.summary}</li>`).join('')}
+                    </ul>
+                  </div>
+                </details>
+              ` : ''}
+              ${chapter.hooks?.length ? `
+                <details class="manual-section">
+                  <summary>生成线索</summary>
+                  <div class="manual-detail">
+                    <ul class="topic-driver-list">
+                      ${chapter.hooks.slice(0, 4).map((item) => `<li>${item}</li>`).join('')}
+                    </ul>
+                  </div>
+                </details>
               ` : ''}
             </article>
           `).join('')}
@@ -1343,43 +1663,98 @@
         <div class="topic-grid">
           ${reading.topics.map((topic) => `
             <article class="topic-card">
-              <strong>${topic.title}</strong>
-              <small>${topic.focus}</small>
-              <p class="meta">${topic.summary}</p>
-              <ul>
-                ${topic.cues.map((item) => `<li>${item}</li>`).join('')}
-              </ul>
-              ${topic.references?.length ? `<p class="meta">来源：${topic.references.map((item) => item.source).join('、')}</p>` : ''}
+              <div class="topic-header">
+                <strong>${topic.title}</strong>
+                <small>${topic.focus}</small>
+              </div>
+              <p class="topic-takeaway">${topic.takeaway || topic.summary}</p>
+              <details class="topic-section">
+                <summary>结构原因</summary>
+                <div class="topic-detail">
+                  <ul class="topic-driver-list">
+                    ${(topic.drivers || []).map((item) => `<li>${item}</li>`).join('')}
+                  </ul>
+                </div>
+              </details>
+              ${(topic.ziweiStructure || []).length ? `
+                <details class="topic-section">
+                  <summary>紫微结构</summary>
+                  <div class="topic-detail">
+                    <ul class="topic-driver-list">
+                      ${topic.ziweiStructure.map((item) => `<li>${item}</li>`).join('')}
+                    </ul>
+                  </div>
+                </details>
+              ` : ''}
+              ${(topic.baziStructure || []).length ? `
+                <details class="topic-section">
+                  <summary>八字结构</summary>
+                  <div class="topic-detail">
+                    <ul class="topic-driver-list">
+                      ${topic.baziStructure.map((item) => `<li>${item}</li>`).join('')}
+                    </ul>
+                  </div>
+                </details>
+              ` : ''}
+              <details class="topic-section">
+                <summary>辅助线索</summary>
+                <div class="topic-detail">
+                  <ul class="topic-driver-list">
+                    ${topic.cues.map((item) => `<li>${item}</li>`).join('')}
+                  </ul>
+                </div>
+              </details>
             </article>
           `).join('')}
         </div>
-        <div class="knowledge-grid">
-          ${reading.knowledgeHits.map((item) => `
-            <article class="knowledge-chip">
-              <strong>${item.topic}</strong>
-              <small>${item.source}</small>
-              <p class="meta">${item.summary}</p>
-            </article>
-          `).join('')}
-        </div>
-        <div class="reference-list">
-          ${reading.retrieval.map((item) => `
-            <article class="reference-card">
-              <h3>检索片段</h3>
-              <small>${item.source}</small>
-              <p class="meta">${item.summary}</p>
-            </article>
-          `).join('')}
-        </div>
-        <div class="reference-list">
-          ${reading.references.map((item) => `
-            <article class="reference-card">
-              <h3>${item.topic}</h3>
-              <small>${item.source}</small>
-              <p class="meta">${item.summary}</p>
-            </article>
-          `).join('')}
-        </div>
+        <details class="reading-section">
+          <summary>知识命中</summary>
+          <div class="reading-section-body">
+            <div class="knowledge-grid">
+              ${reading.knowledgeHits.map((item) => `
+                <article class="knowledge-chip">
+                  <strong>${item.topic}</strong>
+                  <small>${item.source}</small>
+                  <p class="meta">${item.summary}</p>
+                </article>
+              `).join('')}
+            </div>
+          </div>
+        </details>
+        <details class="reading-section">
+          <summary>检索片段</summary>
+          <div class="reading-section-body">
+            <div class="reference-list">
+              ${reading.retrieval.map((item) => `
+                <article class="reference-card">
+                  <h3>检索片段</h3>
+                  <small>${item.source}</small>
+                  <p class="meta">${item.summary}</p>
+                </article>
+              `).join('')}
+            </div>
+          </div>
+        </details>
+        <details class="reading-section">
+          <summary>专题依据</summary>
+          <div class="reading-section-body">
+            <div class="reference-list">
+              ${referenceGroups.map((group) => `
+                <article class="reference-group">
+                  <h3>${group.title}</h3>
+                  ${group.items.map((item) => `
+                    <details>
+                      <summary>${item.source} · ${item.topic}</summary>
+                      <div class="meta">
+                        ${item.summary}
+                      </div>
+                    </details>
+                  `).join('')}
+                </article>
+              `).join('')}
+            </div>
+          </div>
+        </details>
         <div class="level-grid">
           ${reading.gameLevels.map((level) => `
             <article class="level-card">
@@ -1394,6 +1769,7 @@
           `).join('')}
         </div>
       `;
+      };
 
       const render = (data) => {
         let centerRendered = false;

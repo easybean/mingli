@@ -330,6 +330,66 @@ const TOPIC_DEFINITIONS = [
   { id: 'mindset', title: '心性主线', palaceNames: ['命宫', '福德'], tenGods: ['比肩', '劫财', '偏印', '伤官'], focus: '把自我驱动、情绪惯性和思维模式放在一起理解。' },
 ];
 
+const TOPIC_TAKEAWAYS = {
+  career: '当前更适合把职责承接、外部平台和持续产出放在一条线上判断。',
+  wealth: '当前更要区分资源进出、资产留存和扩张节奏，不宜只盯单点进账。',
+  marriage: '关系判断更要回到边界、投入与兑现节奏，不宜只按单一年份下结论。',
+  health: '健康判断先看恢复节律、长期消耗与支持系统是否稳定。',
+  mindset: '心性判断更适合看长期驱动、边界感和情绪恢复方式。',
+};
+
+const TOPIC_CHAPTER_LENSES = {
+  career: {
+    官禄: '官禄宫先看职责承接、做事方式与职业位置',
+    迁移: '迁移宫再看外部平台、变化场域与机会接口',
+    身宫: '身宫会把后天发力点带进职业选择',
+  },
+  wealth: {
+    财帛: '财帛宫先看资源进出与现金流节奏',
+    田宅: '田宅宫再看资产留存、居住根基与稳态能力',
+  },
+  marriage: {
+    夫妻: '夫妻宫先看关系里的边界、相处节奏与长期承接',
+    身宫: '身宫落点会放大进入关系后的实际投入方式',
+  },
+  health: {
+    疾厄: '疾厄宫先看消耗来源、脆弱点与日常管理成本',
+    福德: '福德宫再看恢复力、心理缓冲与长期续航',
+  },
+  mindset: {
+    命宫: '命宫先看底层驱动力、自我要求与处事底色',
+    福德: '福德宫再看情绪恢复、欲望调节与内在缓冲',
+  },
+};
+
+const TOPIC_ZIWEI_STRUCTURE_LENSES = {
+  career: {
+    triad: '事业主题要把职责位、资源位和外部场域一起看，重点不是单个岗位，而是整条承接链是否闭合。',
+    body: '身宫落在这条线上时，职业选择会更直接转成日常行动方式。',
+    mutagen: '四化落在事业相关宫位时，更要同时看机会入口、执行压力和资源承接。',
+  },
+  wealth: {
+    triad: '财运主题要把进账、留存和支出路径一起看，重点不是有没有财，而是财怎么流转、怎么留下。',
+    body: '身宫牵到财运主题时，个人习惯和执行方式会直接影响资源留存。',
+    mutagen: '四化落在财运相关宫位时，要把钱从哪里来、在哪里耗、靠什么留住一起看。',
+  },
+  marriage: {
+    triad: '婚恋主题要把关系宫、福德和外部环境一起看，重点是长期节奏能不能稳住。',
+    body: '身宫落进婚恋主题时，亲密关系更容易和日常选择、行动方式直接绑定。',
+    mutagen: '四化落在婚恋相关宫位时，要一起看关系推进、边界变化和现实承接。',
+  },
+  health: {
+    triad: '健康主题不能只看身体症状，还要把恢复力、居住节律和长期消耗一起看。',
+    body: '身宫牵入健康主题时，作息和行动强度会更直接影响恢复效率。',
+    mutagen: '四化落在健康相关宫位时，要一起看触发点、消耗路径和恢复接口。',
+  },
+  mindset: {
+    triad: '心性主题要把命宫、福德与外部压力位一起看，重点是内在驱动和现实反馈如何互相放大。',
+    body: '身宫落在心性线上时，情绪模式更容易直接转成行为习惯。',
+    mutagen: '四化落在命福相关宫位时，要连同压力来源和情绪恢复路径一起看。',
+  },
+};
+
 const TOPIC_REFERENCE_RULES = [
   { id: 'career', source: '斗数玄微论', summary: '紫微体系看事业，不只看官禄宫本身，还要连同命宫、迁移与三方四正一起看承载力。', domain: 'ziwei' },
   { id: 'career', source: '子平真诠', summary: '八字体系看事业，先看原局结构是否允许承担职责，再看运限是否把机会真正推到台前。', domain: 'bazi' },
@@ -341,6 +401,14 @@ const TOPIC_REFERENCE_RULES = [
   { id: 'health', source: '穷通宝鉴', summary: '寒暖燥湿不调时，健康问题经常先表现为节律和恢复能力失衡。', domain: 'bazi' },
   { id: 'mindset', source: '斗数观音经验谈', summary: '心性判断更适合看长期模式，不适合拿单一吉凶标签概括一个人。', domain: 'ziwei' },
   { id: 'mindset', source: '滴天髓阐微', summary: '心性与命局气势强相关，顺势与逆势的感受差异，往往先体现在人的精神负担上。', domain: 'bazi' },
+];
+
+const BRANCH_SEQUENCE = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+const TRIAD_GROUPS = [
+  ['申', '子', '辰'],
+  ['寅', '午', '戌'],
+  ['亥', '卯', '未'],
+  ['巳', '酉', '丑'],
 ];
 
 const BAZI_TEN_GOD_REFERENCE_RULES = {
@@ -412,6 +480,17 @@ const BAZI_TEN_GOD_REFERENCE_RULES = {
   },
 };
 
+const BAZI_REFERENCE_PRIORITY = {
+  '子平真诠:月令为纲': 1,
+  '穷通宝鉴:调候先行': 2,
+  '滴天髓阐微:衰旺先辨': 3,
+  '三命通会:格局成败': 4,
+  '子平真诠:格局先后': 5,
+  '子平真诠:干支配合': 6,
+  '渊海子平:十神成象': 7,
+  '神峰通考:取用细辨': 8,
+};
+
 const TEN_GOD_TOPIC_NOTES = {
   正官: {
     career: '正官偏重时，事业更容易围绕规则、职责和长期秩序展开。',
@@ -472,34 +551,84 @@ const RETRIEVAL_SNIPPETS = [
 
 const buildBaziTopicFocus = ({ topTenGods, climateAdvice, useSpiritAdvice, patternAdvice }) => {
   const topNames = topTenGods.map((item) => item.name);
+  const hasOfficer = topNames.includes('正官');
+  const hasKiller = topNames.includes('七杀') || topNames.includes('偏官');
+  const hasWealth = topNames.includes('正财') || topNames.includes('偏财');
+  const hasOutput = topNames.includes('食神') || topNames.includes('伤官');
+  const hasSeal = topNames.includes('正印') || topNames.includes('偏印');
+  const hasRob = topNames.includes('比肩') || topNames.includes('劫财');
+
   const focus = {
+    career: [],
+    wealth: [],
     marriage: [],
     health: [],
   };
 
-  if (topNames.includes('正官')) {
-    focus.marriage.push('官星进入婚恋主题时，更看长期责任、兑现能力与关系秩序。');
+  if (hasOfficer || hasKiller || hasSeal || hasOutput) {
+    const parts = [];
+    if (hasOfficer || hasKiller) {
+      parts.push('职责秩序与压力承接');
+    }
+    if (hasSeal) {
+      parts.push('学习体系与后端支持');
+    }
+    if (hasOutput) {
+      parts.push('持续产出与表达落地');
+    }
+    focus.career.push(`事业主题更适合把${parts.join('、')}放在一条线上看，再判断机会是否值得承接。`);
   }
-  if (topNames.includes('七杀') || topNames.includes('偏官')) {
-    focus.marriage.push('杀星进入婚恋主题时，要特别看强度、边界和控制感是否失衡。');
+
+  if (hasWealth || hasOutput || hasRob) {
+    const parts = [];
+    if (hasWealth) {
+      parts.push('资源获取与现实回报');
+    }
+    if (hasOutput) {
+      parts.push('输出能力与变现接口');
+    }
+    if (hasRob) {
+      parts.push('合作分流与竞争消耗');
+    }
+    focus.wealth.push(`财运主题更要一起看${parts.join('、')}，不宜只拿单一进账判断整体财务感。`);
   }
-  if (topNames.includes('正财') || topNames.includes('偏财')) {
-    focus.marriage.push('财星进入婚恋主题时，现实投入、资源分配和节奏不均会成为关系里的关键变量。');
+
+  if (hasOfficer || hasKiller || hasWealth) {
+    const parts = [];
+    if (hasOfficer || hasKiller) {
+      parts.push('责任兑现与边界强度');
+    }
+    if (hasWealth) {
+      parts.push('现实投入与资源分配');
+    }
+    focus.marriage.push(`婚恋主题更要同时看${parts.join('、')}，关系质量常体现在长期节奏而不是短期起伏。`);
   }
-  if (useSpiritAdvice.themes.includes('health')) {
-    focus.health.push(`用神角度看，${useSpiritAdvice.summary}`);
+
+  if (climateAdvice.themes.includes('health') || useSpiritAdvice.themes.includes('health') || hasSeal) {
+    const parts = [];
+    if (climateAdvice.themes.includes('health')) {
+      parts.push('寒暖燥湿与作息节律');
+    }
+    if (useSpiritAdvice.themes.includes('health')) {
+      parts.push('结构承载与恢复优先级');
+    }
+    if (hasSeal) {
+      parts.push('滋养支持与精神负荷');
+    }
+    focus.health.push(`健康主题先看${parts.join('、')}是否稳定，再谈阶段性的消耗与波动。`);
   }
-  if (climateAdvice.themes.includes('health')) {
-    focus.health.push(`调候角度看，${climateAdvice.summary}`);
-  }
-  if (topNames.includes('正印') || topNames.includes('偏印')) {
-    focus.health.push('印星进入健康主题时，更要看恢复、滋养、作息与精神负荷能否形成稳定支持。');
-  }
+
   if (patternAdvice.themes.includes('marriage') && focus.marriage.length === 0) {
     focus.marriage.push(`结构角度看，${patternAdvice.summary}`);
   }
   if (patternAdvice.themes.includes('health') && focus.health.length === 0) {
     focus.health.push(`结构角度看，${patternAdvice.summary}`);
+  }
+  if (patternAdvice.themes.includes('career') && focus.career.length === 0) {
+    focus.career.push(`结构角度看，${patternAdvice.summary}`);
+  }
+  if (patternAdvice.themes.includes('wealth') && focus.wealth.length === 0) {
+    focus.wealth.push(`结构角度看，${patternAdvice.summary}`);
   }
 
   if (!focus.marriage.length) {
@@ -508,14 +637,41 @@ const buildBaziTopicFocus = ({ topTenGods, climateAdvice, useSpiritAdvice, patte
   if (!focus.health.length) {
     focus.health.push('健康更适合从恢复节律、精神耗损和长期消耗三条线并看。');
   }
+  if (!focus.career.length) {
+    focus.career.push('事业主题更适合把职责承接、输出方式与机会接口放在一条线上判断。');
+  }
+  if (!focus.wealth.length) {
+    focus.wealth.push('财运主题更要区分资源进出、资产留存与合作消耗，不宜只盯单点进账。');
+  }
 
   return focus;
 };
+
+const sortBaziReferences = (references) => references
+  .slice()
+  .sort((a, b) => {
+    const aKey = `${a.source}:${a.topic}`;
+    const bKey = `${b.source}:${b.topic}`;
+    const aRank = BAZI_REFERENCE_PRIORITY[aKey] || 99;
+    const bRank = BAZI_REFERENCE_PRIORITY[bKey] || 99;
+    if (aRank !== bRank) {
+      return aRank - bRank;
+    }
+    return aKey.localeCompare(bKey, 'zh-CN');
+  });
 
 const normalizeText = (text) => String(text || '')
   .replace(/<br\s*\/?>/gi, '；')
   .replace(/\s+/g, ' ')
   .trim();
+
+const stripEmbeddedCitation = (text) => normalizeText(text).replace(/书中对应：.*$/, '').trim();
+
+const splitSentences = (text) => stripEmbeddedCitation(text)
+  .split(/[。！？]/)
+  .flatMap((part) => part.split('；'))
+  .map((part) => part.trim())
+  .filter(Boolean);
 
 const uniqueBy = (items, getKey) => {
   const seen = new Set();
@@ -527,6 +683,84 @@ const uniqueBy = (items, getKey) => {
     seen.add(key);
     return true;
   });
+};
+
+const summarizeChapterForTopic = (chapter, topicId) => {
+  const lens = TOPIC_CHAPTER_LENSES[topicId]?.[chapter.sourcePalace] || `${chapter.palace}提供辅助判断`;
+  const core = splitSentences(chapter.summary).slice(0, 2).join('；');
+  return core ? `${lens}：${core}` : lens;
+};
+
+const buildTopicTakeaway = ({ topic, tenGodNotes, baziFocusNotes, relatedChapters }) => {
+  const prioritized = baziFocusNotes.concat(tenGodNotes);
+  if (prioritized.length) {
+    return prioritized[0];
+  }
+  if (relatedChapters.length) {
+    return summarizeChapterForTopic(relatedChapters[0], topic.id);
+  }
+  return TOPIC_TAKEAWAYS[topic.id] || topic.focus;
+};
+
+const getOppositeBranch = (branch) => {
+  const index = BRANCH_SEQUENCE.indexOf(branch);
+  if (index === -1) {
+    return '';
+  }
+  return BRANCH_SEQUENCE[(index + 6) % 12];
+};
+
+const getTriadBranches = (branch) => TRIAD_GROUPS.find((group) => group.includes(branch)) || [];
+
+const buildZiweiTopicFocus = (chapters) => {
+  const bodyChapter = chapters.find((chapter) => chapter.palace === '身宫');
+  const chapterByBranch = new Map(chapters.map((chapter) => [String(chapter.branch || '').slice(-1), chapter]));
+
+  return TOPIC_DEFINITIONS.reduce((acc, topic) => {
+    const related = chapters.filter((chapter) => topic.palaceNames.includes(chapter.sourcePalace));
+    const primary = related[0];
+    const focus = {
+      structure: [],
+      body: [],
+      mutagen: [],
+    };
+    const lens = TOPIC_ZIWEI_STRUCTURE_LENSES[topic.id] || {};
+
+    if (!primary) {
+      acc[topic.id] = focus;
+      return acc;
+    }
+
+    const primaryBranch = String(primary.branch || '').slice(-1);
+    const oppositeBranch = getOppositeBranch(primaryBranch);
+    const triadBranches = getTriadBranches(primaryBranch).filter((branch) => branch !== primaryBranch);
+    const linkedChapters = triadBranches
+      .concat(oppositeBranch ? [oppositeBranch] : [])
+      .map((branch) => chapterByBranch.get(branch))
+      .filter(Boolean);
+
+    if (linkedChapters.length) {
+      const linkedNames = linkedChapters.map((chapter) => chapter.palace).join('、');
+      focus.structure.push(`${primary.palace}位的三方四正会牵动${linkedNames}。${lens.triad || '这条主题需要联动相关宫位一起看。'}`);
+    }
+
+    if (bodyChapter && topic.palaceNames.includes(bodyChapter.sourcePalace)) {
+      focus.body.push(`身宫落在${bodyChapter.sourcePalace}。${lens.body || '这条主题会更直接落到日常选择和后天发力方式上。'}`);
+    }
+
+    const mutagenSources = [primary]
+      .concat(linkedChapters)
+      .filter((chapter) => chapter.mutagens?.length)
+      .slice(0, 3)
+      .map((chapter) => `${chapter.palace}${chapter.mutagens.join('、')}`);
+
+    if (mutagenSources.length) {
+      focus.mutagen.push(`四化线索当前落在${mutagenSources.join('、')}。${lens.mutagen || '阶段判断要把触发点和承接位置一起看。'}`);
+    }
+
+    acc[topic.id] = focus;
+    return acc;
+  }, {});
 };
 
 const countTenGods = (pillars) => {
@@ -1087,11 +1321,15 @@ const buildBaziKnowledge = (bazi) => {
         ...topTenGods.map((item) => `${item.name}出现${item.count}次`),
       ],
       knowledgeHits: hits,
-      references: uniqueBy(references, (item) => `${item.source}:${item.topic}`).slice(0, 10),
+      references: sortBaziReferences(
+        uniqueBy(references, (item) => `${item.source}:${item.topic}`)
+      ).slice(0, 6),
       topicFocus,
     },
     hits,
-    references: uniqueBy(references, (item) => `${item.source}:${item.topic}`),
+    references: sortBaziReferences(
+      uniqueBy(references, (item) => `${item.source}:${item.topic}`)
+    ),
     promptLines,
   };
 };
@@ -1101,33 +1339,58 @@ const buildTopicSections = ({ chapters, baziChapter, references, knowledgeHits }
   const tenGodHits = (baziChapter.knowledgeHits || [])
     .filter((item) => item.topic.endsWith('偏重'))
     .map((item) => item.topic.replace(/偏重$/, ''));
+  const ziweiTopicFocus = buildZiweiTopicFocus(chapters);
 
   return TOPIC_DEFINITIONS.map((topic) => {
-    const relatedChapters = chapterPool.filter((chapter) => topic.palaceNames.includes(chapter.sourcePalace));
+    const relatedChapters = uniqueBy(
+      chapterPool.filter((chapter) => topic.palaceNames.includes(chapter.sourcePalace)),
+      (chapter) => chapter.sourcePalace,
+    );
     const relatedHits = knowledgeHits.filter((item) => (item.themes || []).includes(topic.id));
-    const relatedRefs = uniqueBy(references
-      .concat(TOPIC_REFERENCE_RULES
-        .filter((item) => item.id === topic.id)
-        .map((item) => makeReference({
-          domain: item.domain,
-          source: item.source,
-          topic: topic.title,
-          summary: item.summary,
-          chapter: topic.title,
-          themes: [topic.id],
-        })))
-      .filter((item) => (item.themes || []).includes(topic.id) || item.chapter === topic.title)
-      , (item) => item.source).slice(0, 4);
+    const topicRuleReferences = TOPIC_REFERENCE_RULES
+      .filter((item) => item.id === topic.id)
+      .map((item) => makeReference({
+        domain: item.domain,
+        source: item.source,
+        topic: topic.title,
+        summary: item.summary,
+        chapter: topic.title,
+        themes: [topic.id],
+      }));
+    const chapterRefs = references.filter((item) => (item.themes || []).includes(topic.id));
+    const relatedRefs = uniqueBy(
+      chapterRefs.concat(topicRuleReferences).filter((item) => (item.themes || []).includes(topic.id) || item.chapter === topic.title),
+      (item) => `${item.source}:${item.topic}`,
+    ).slice(0, 4);
 
     const tenGodNotes = tenGodHits
       .map((name) => TEN_GOD_TOPIC_NOTES[name]?.[topic.id])
       .filter(Boolean)
       .slice(0, 2);
     const baziFocusNotes = (baziChapter.topicFocus?.[topic.id] || []).slice(0, 2);
-
-    const chapterSummary = relatedChapters.length
-      ? relatedChapters.map((chapter) => `${chapter.palace}：${chapter.summary}`).slice(0, 2).join(' ')
-      : `${topic.focus} 当前主要从八字结构和运限节奏侧面判断。`;
+    const ziweiFocus = ziweiTopicFocus[topic.id] || { structure: [], body: [], mutagen: [] };
+    const ziweiStructure = uniqueBy(
+      []
+        .concat(ziweiFocus.structure || [])
+        .concat(ziweiFocus.body || [])
+        .concat(ziweiFocus.mutagen || []),
+      (item) => item,
+    ).slice(0, 3);
+    const chapterReasons = relatedChapters
+      .map((chapter) => summarizeChapterForTopic(chapter, topic.id))
+      .slice(0, 2);
+    const takeaway = buildTopicTakeaway({
+      topic,
+      tenGodNotes,
+      baziFocusNotes,
+      relatedChapters,
+    });
+    const drivers = uniqueBy(chapterReasons, (item) => item)
+      .filter((item) => item !== takeaway)
+      .slice(0, 3);
+    const baziStructure = uniqueBy(baziFocusNotes.concat(tenGodNotes), (item) => item)
+      .filter((item) => item !== takeaway)
+      .slice(0, 3);
 
     const cues = [];
     const topicTenGods = topic.tenGods.filter((name) => tenGodHits.includes(name));
@@ -1137,18 +1400,16 @@ const buildTopicSections = ({ chapters, baziChapter, references, knowledgeHits }
     if (relatedHits.length) {
       cues.push(`知识命中：${relatedHits.slice(0, 2).map((item) => item.topic).join('、')}`);
     }
-    cues.push(...tenGodNotes);
-    cues.push(...baziFocusNotes);
 
     return {
       id: topic.id,
       title: topic.title,
       focus: topic.focus,
-      summary: tenGodNotes.length
-        ? `${chapterSummary} ${tenGodNotes.concat(baziFocusNotes).join(' ')}`
-        : baziFocusNotes.length
-          ? `${chapterSummary} ${baziFocusNotes.join(' ')}`
-        : chapterSummary,
+      takeaway,
+      summary: takeaway,
+      drivers: drivers.length ? drivers : [TOPIC_TAKEAWAYS[topic.id] || topic.focus],
+      ziweiStructure,
+      baziStructure,
       cues: cues.length ? cues : ['当前以原局结构与运限节奏做综合判断。'],
       references: relatedRefs,
     };
@@ -1191,7 +1452,7 @@ const buildKnowledgeProfile = ({ chapters, bazi }) => {
     references: allReferences,
     knowledgeHits,
   });
-  const references = allReferences.slice(0, 12);
+  const references = allReferences.slice(0, 10);
   const retrieval = buildRetrievalContext({
     knowledgeHits,
     topics,

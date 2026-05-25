@@ -1,0 +1,134 @@
+{
+  "version": 2,
+  "updatedAt": "2026-05-25",
+  "samples": [
+    {
+      "id": "female-1986-xuzhou",
+      "label": "女命 1986 徐州",
+      "query": {
+        "date": "1986-07-29",
+        "birthTime": "07:30",
+        "gender": "女",
+        "birthPlace": "徐州",
+        "trueSolarTime": "true",
+        "daylightSaving": "true",
+        "algorithm": "default"
+      },
+      "expect": {
+        "manualCountAtLeast": 10,
+        "referencesAtLeast": 10,
+        "knowledgeHitsAtLeast": 10,
+        "retrievalAtLeast": 5,
+        "requiredTopics": ["事业主线", "财运主线", "婚恋主线", "健康主线", "心性主线"],
+        "minZiweiStructureTopics": 5,
+        "minBaziStructureTopics": 3,
+        "requiredZiweiStructureTopics": ["事业主线", "财运主线", "婚恋主线", "健康主线", "心性主线"],
+        "manualTitles": ["第1章：八字基础", "第2章：命宫", "第4章：财帛", "第6章：官禄", "第7章：夫妻", "第9章：疾厄", "第10章：福德"],
+        "requiredHitTopics": ["未月令为纲", "甲属阳干", "调候先看中和", "用神倾向宜泄秀", "格局倾向在食伤"],
+        "requiredReferenceSources": ["子平真诠", "滴天髓阐微", "穷通宝鉴", "三命通会", "斗数玄微论", "重补斗数彀率"],
+        "requiredRetrievalSources": ["斗数玄微论", "重补斗数彀率", "穷通宝鉴"]
+      }
+    },
+    {
+      "id": "female-2000-demo",
+      "label": "女命 2000 示例",
+      "query": {
+        "date": "2000-08-16",
+        "timeIndex": "2",
+        "gender": "女",
+        "algorithm": "default"
+      },
+      "expect": {
+        "manualCountAtLeast": 10,
+        "referencesAtLeast": 8,
+        "knowledgeHitsAtLeast": 8,
+        "retrievalAtLeast": 4,
+        "requiredTopics": ["事业主线", "财运主线", "婚恋主线", "健康主线", "心性主线"],
+        "minZiweiStructureTopics": 5,
+        "minBaziStructureTopics": 3,
+        "requiredZiweiStructureTopics": ["事业主线", "财运主线", "婚恋主线", "健康主线", "心性主线"],
+        "manualTitles": ["第1章：八字基础", "第2章：命宫", "第6章：官禄", "第7章：夫妻"],
+        "requiredReferenceSources": ["子平真诠", "斗数玄微论"],
+        "requiredRetrievalSources": ["斗数玄微论", "穷通宝鉴"]
+      }
+    },
+    {
+      "id": "male-1992-default",
+      "label": "男命 1992 默认",
+      "query": {
+        "date": "1992-11-03",
+        "birthTime": "21:15",
+        "gender": "男",
+        "birthPlace": "北京",
+        "trueSolarTime": "true",
+        "daylightSaving": "false",
+        "algorithm": "default"
+      },
+      "expect": {
+        "manualCountAtLeast": 10,
+        "referencesAtLeast": 8,
+        "knowledgeHitsAtLeast": 8,
+        "retrievalAtLeast": 4,
+        "requiredTopics": ["事业主线", "财运主线", "婚恋主线", "健康主线", "心性主线"],
+        "minZiweiStructureTopics": 5,
+        "minBaziStructureTopics": 3,
+        "requiredZiweiStructureTopics": ["事业主线", "财运主线", "婚恋主线", "健康主线", "心性主线"],
+        "manualTitles": ["第1章：八字基础", "第2章：命宫", "第5章：田宅", "第9章：疾厄"],
+        "requiredReferenceSources": ["子平真诠", "穷通宝鉴", "斗数玄微论"],
+        "requiredRetrievalSources": ["穷通宝鉴"]
+      }
+    },
+    {
+      "id": "male-1978-shanghai",
+      "label": "男命 1978 上海",
+      "query": {
+        "date": "1978-02-11",
+        "birthTime": "18:40",
+        "gender": "男",
+        "birthPlace": "上海",
+        "trueSolarTime": "true",
+        "algorithm": "default"
+      },
+      "expect": {
+        "manualCountAtLeast": 10,
+        "referencesAtLeast": 10,
+        "knowledgeHitsAtLeast": 10,
+        "retrievalAtLeast": 5,
+        "requiredTopics": ["事业主线", "财运主线", "婚恋主线", "健康主线", "心性主线"],
+        "minZiweiStructureTopics": 5,
+        "minBaziStructureTopics": 4,
+        "requiredZiweiStructureTopics": ["事业主线", "财运主线", "婚恋主线", "健康主线", "心性主线"],
+        "requiredBaziStructureTopics": ["事业主线", "财运主线", "婚恋主线", "健康主线"],
+        "manualTitles": ["第1章：八字基础", "第2章：命宫", "第3章：身宫", "第6章：官禄", "第8章：迁移"],
+        "requiredReferenceSources": ["子平真诠", "穷通宝鉴", "滴天髓阐微", "斗数玄微论", "重补斗数彀率"],
+        "requiredRetrievalSources": ["斗数玄微论", "重补斗数彀率", "穷通宝鉴"]
+      }
+    },
+    {
+      "id": "female-1995-guangzhou",
+      "label": "女命 1995 广州",
+      "query": {
+        "date": "1995-10-03",
+        "birthTime": "11:20",
+        "gender": "女",
+        "birthPlace": "广州",
+        "trueSolarTime": "true",
+        "algorithm": "default"
+      },
+      "expect": {
+        "manualCountAtLeast": 10,
+        "referencesAtLeast": 10,
+        "knowledgeHitsAtLeast": 10,
+        "retrievalAtLeast": 5,
+        "requiredTopics": ["事业主线", "财运主线", "婚恋主线", "健康主线", "心性主线"],
+        "minZiweiStructureTopics": 5,
+        "minBaziStructureTopics": 3,
+        "requiredZiweiStructureTopics": ["事业主线", "财运主线", "婚恋主线", "健康主线", "心性主线"],
+        "requiredBaziStructureTopics": ["事业主线", "婚恋主线", "健康主线"],
+        "manualTitles": ["第1章：八字基础", "第2章：命宫", "第4章：财帛", "第7章：夫妻", "第10章：福德"],
+        "requiredReferenceSources": ["子平真诠", "穷通宝鉴", "滴天髓阐微", "斗数玄微论", "重补斗数彀率"],
+        "requiredRetrievalSources": ["斗数玄微论", "重补斗数彀率", "穷通宝鉴"]
+      }
+    }
+  ]
+}
