@@ -559,6 +559,18 @@
         padding: 0 14px 14px;
       }
 
+      .reading-group {
+        display: grid;
+        gap: 12px;
+        margin-top: 14px;
+      }
+
+      .reading-group h3 {
+        margin: 0;
+        color: var(--red);
+        font-size: 18px;
+      }
+
       .manual-grid,
       .level-grid,
       .knowledge-grid,
@@ -1164,6 +1176,10 @@
           padding: 0 12px 12px;
         }
 
+        .reading-group h3 {
+          font-size: 16px;
+        }
+
         form {
           grid-template-columns: 1fr;
         }
@@ -1601,7 +1617,12 @@
         return preview.join('；');
       };
 
+      const plainChapterTitle = (title) => String(title || '').replace(/^第\d+章：/, '');
+
       const renderReading = (reading) => {
+        const baziManual = reading.manual.find((chapter) => plainChapterTitle(chapter.title) === '八字基础');
+        const shenManual = reading.manual.find((chapter) => plainChapterTitle(chapter.title) === '身宫');
+        const ziweiManual = reading.manual.filter((chapter) => !['八字基础', '身宫'].includes(plainChapterTitle(chapter.title)));
         const referenceGroups = buildReferenceGroups(reading);
 
         return `
@@ -1622,14 +1643,57 @@
             </div>
           </div>
         </details>
-        <div class="manual-grid">
-          ${reading.manual.map((chapter) => `
+        ${baziManual ? `
+          <div class="reading-group">
+            <h3>八字解读</h3>
+            <div class="manual-grid">
+              <article class="manual-card">
+                <div class="manual-header">
+                  <h3>${plainChapterTitle(baziManual.title)}</h3>
+                  <small>${baziManual.subtitle}</small>
+                </div>
+                <p class="manual-summary">${briefText(baziManual.body, 3, 132)}</p>
+                ${baziManual.references?.length ? `<p class="meta">依据：${summarizeChapterReferences(baziManual.references)}</p>` : ''}
+                <details class="manual-section">
+                  <summary>完整章节</summary>
+                  <div class="manual-detail">
+                    <p class="meta">${baziManual.body}</p>
+                  </div>
+                </details>
+                ${baziManual.knowledgeHits?.length ? `
+                  <details class="manual-section">
+                    <summary>命中要点</summary>
+                    <div class="manual-detail">
+                      <ul class="topic-driver-list">
+                        ${baziManual.knowledgeHits.map((item) => `<li>${item.topic}：${item.summary}</li>`).join('')}
+                      </ul>
+                    </div>
+                  </details>
+                ` : ''}
+                ${baziManual.hooks?.length ? `
+                  <details class="manual-section">
+                    <summary>生成线索</summary>
+                    <div class="manual-detail">
+                      <ul class="topic-driver-list">
+                        ${baziManual.hooks.slice(0, 4).map((item) => `<li>${item}</li>`).join('')}
+                      </ul>
+                    </div>
+                  </details>
+                ` : ''}
+              </article>
+            </div>
+          </div>
+        ` : ''}
+        <div class="reading-group">
+          <h3>紫微十二宫</h3>
+          <div class="manual-grid">
+          ${ziweiManual.map((chapter) => `
             <article class="manual-card">
               <div class="manual-header">
-                <h3>${chapter.title}</h3>
+                <h3>${plainChapterTitle(chapter.title)}</h3>
                 <small>${chapter.subtitle}</small>
               </div>
-              <p class="manual-summary">${briefText(chapter.body, chapter.title === '第1章：八字基础' ? 3 : 2, chapter.title === '第1章：八字基础' ? 132 : 96)}</p>
+              <p class="manual-summary">${briefText(chapter.body, 2, 96)}</p>
               ${chapter.references?.length ? `<p class="meta">依据：${summarizeChapterReferences(chapter.references)}</p>` : ''}
               <details class="manual-section">
                 <summary>完整章节</summary>
@@ -1659,8 +1723,52 @@
               ` : ''}
             </article>
           `).join('')}
+          </div>
         </div>
-        <div class="topic-grid">
+        ${shenManual ? `
+          <div class="reading-group">
+            <h3>身宫说明</h3>
+            <div class="manual-grid">
+              <article class="manual-card">
+                <div class="manual-header">
+                  <h3>${plainChapterTitle(shenManual.title)}</h3>
+                  <small>${shenManual.subtitle}</small>
+                </div>
+                <p class="manual-summary">${briefText(shenManual.body, 2, 96)}</p>
+                ${shenManual.references?.length ? `<p class="meta">依据：${summarizeChapterReferences(shenManual.references)}</p>` : ''}
+                <details class="manual-section">
+                  <summary>完整章节</summary>
+                  <div class="manual-detail">
+                    <p class="meta">${shenManual.body}</p>
+                  </div>
+                </details>
+                ${shenManual.knowledgeHits?.length ? `
+                  <details class="manual-section">
+                    <summary>命中要点</summary>
+                    <div class="manual-detail">
+                      <ul class="topic-driver-list">
+                        ${shenManual.knowledgeHits.map((item) => `<li>${item.topic}：${item.summary}</li>`).join('')}
+                      </ul>
+                    </div>
+                  </details>
+                ` : ''}
+                ${shenManual.hooks?.length ? `
+                  <details class="manual-section">
+                    <summary>生成线索</summary>
+                    <div class="manual-detail">
+                      <ul class="topic-driver-list">
+                        ${shenManual.hooks.slice(0, 4).map((item) => `<li>${item}</li>`).join('')}
+                      </ul>
+                    </div>
+                  </details>
+                ` : ''}
+              </article>
+            </div>
+          </div>
+        ` : ''}
+        <div class="reading-group">
+          <h3>综合主线</h3>
+          <div class="topic-grid">
           ${reading.topics.map((topic) => `
             <article class="topic-card">
               <div class="topic-header">
@@ -1706,6 +1814,7 @@
               </details>
             </article>
           `).join('')}
+          </div>
         </div>
         <details class="reading-section">
           <summary>知识命中</summary>

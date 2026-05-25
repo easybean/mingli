@@ -583,12 +583,16 @@ const buildBaziDetails = ({ astrolabe, normalizedBirth, gender }) => {
 
 const READING_THEMES = {
   命宫: ['自我驱动', '核心气质', '人生主线'],
+  兄弟: ['同辈关系', '协作边界', '资源分流'],
+  子女: ['作品延续', '投入产出', '养成课题'],
+  父母: ['长辈关系', '庇护来源', '根基承接'],
   身宫: ['行动方式', '后天选择', '落地姿态'],
   财帛: ['资源经营', '现金流', '价值交换'],
   田宅: ['资产留存', '居住根基', '稳定结构'],
   官禄: ['事业路径', '角色定位', '长期成就'],
   夫妻: ['亲密关系', '合作模式', '情感课题'],
   迁移: ['外部机会', '跨城发展', '环境变量'],
+  仆役: ['团队协作', '伙伴质量', '人脉消耗'],
   疾厄: ['恢复节律', '消耗来源', '健康管理'],
   福德: ['精神能量', '兴趣修复', '内在稳定'],
 };
@@ -662,14 +666,18 @@ const buildReading = ({ summary, palaces, bazi, horoscope }) => {
   const bodyPalace = palaces.find((palace) => palace.isBodyPalace);
   const focusPalaces = [
     ['命宫', palaceByName(palaces, '命宫')],
-    ['身宫', bodyPalace],
-    ['财帛', palaceByName(palaces, '财帛')],
-    ['田宅', palaceByName(palaces, '田宅')],
-    ['官禄', palaceByName(palaces, '官禄')],
+    ['兄弟', palaceByName(palaces, '兄弟')],
     ['夫妻', palaceByName(palaces, '夫妻')],
-    ['迁移', palaceByName(palaces, '迁移')],
+    ['子女', palaceByName(palaces, '子女')],
+    ['财帛', palaceByName(palaces, '财帛')],
     ['疾厄', palaceByName(palaces, '疾厄')],
+    ['迁移', palaceByName(palaces, '迁移')],
+    ['仆役', palaceByName(palaces, '仆役')],
+    ['官禄', palaceByName(palaces, '官禄')],
+    ['田宅', palaceByName(palaces, '田宅')],
     ['福德', palaceByName(palaces, '福德')],
+    ['父母', palaceByName(palaces, '父母')],
+    ['身宫', bodyPalace],
   ].filter(([, palace]) => palace);
   const chapters = focusPalaces.map(([label, palace]) => buildPalaceReading(palace, label));
   const knowledge = buildKnowledgeProfile({ chapters, bazi, summary, horoscope });

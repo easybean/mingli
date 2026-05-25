@@ -15,7 +15,7 @@
         "algorithm": "default"
       },
       "expect": {
-        "manualCountAtLeast": 10,
+        "manualCountAtLeast": 14,
         "referencesAtLeast": 10,
         "knowledgeHitsAtLeast": 10,
         "retrievalAtLeast": 5,
@@ -23,7 +23,7 @@
         "minZiweiStructureTopics": 5,
         "minBaziStructureTopics": 3,
         "requiredZiweiStructureTopics": ["事业主线", "财运主线", "婚恋主线", "健康主线", "心性主线"],
-        "manualTitles": ["第1章：八字基础", "第2章：命宫", "第4章：财帛", "第6章：官禄", "第7章：夫妻", "第9章：疾厄", "第10章：福德"],
+        "manualSections": ["八字基础", "命宫", "兄弟", "夫妻", "子女", "财帛", "疾厄", "迁移", "仆役", "官禄", "田宅", "福德", "父母", "身宫"],
         "requiredHitTopics": ["未月令为纲", "甲属阳干", "调候先看中和", "用神倾向宜泄秀", "格局倾向在食伤"],
         "requiredReferenceSources": ["子平真诠", "滴天髓阐微", "穷通宝鉴", "三命通会", "斗数玄微论", "重补斗数彀率"],
         "requiredRetrievalSources": ["斗数玄微论", "重补斗数彀率", "穷通宝鉴"]
@@ -39,7 +39,7 @@
         "algorithm": "default"
       },
       "expect": {
-        "manualCountAtLeast": 10,
+        "manualCountAtLeast": 14,
         "referencesAtLeast": 8,
         "knowledgeHitsAtLeast": 8,
         "retrievalAtLeast": 4,
@@ -47,7 +47,7 @@
         "minZiweiStructureTopics": 5,
         "minBaziStructureTopics": 3,
         "requiredZiweiStructureTopics": ["事业主线", "财运主线", "婚恋主线", "健康主线", "心性主线"],
-        "manualTitles": ["第1章：八字基础", "第2章：命宫", "第6章：官禄", "第7章：夫妻"],
+        "manualSections": ["八字基础", "命宫", "兄弟", "夫妻", "子女", "财帛", "疾厄", "迁移", "仆役", "官禄", "田宅", "福德", "父母", "身宫"],
         "requiredReferenceSources": ["子平真诠", "斗数玄微论"],
         "requiredRetrievalSources": ["斗数玄微论", "穷通宝鉴"]
       }
@@ -65,7 +65,7 @@
         "algorithm": "default"
       },
       "expect": {
-        "manualCountAtLeast": 10,
+        "manualCountAtLeast": 14,
         "referencesAtLeast": 8,
         "knowledgeHitsAtLeast": 8,
         "retrievalAtLeast": 4,
@@ -73,7 +73,7 @@
         "minZiweiStructureTopics": 5,
         "minBaziStructureTopics": 3,
         "requiredZiweiStructureTopics": ["事业主线", "财运主线", "婚恋主线", "健康主线", "心性主线"],
-        "manualTitles": ["第1章：八字基础", "第2章：命宫", "第5章：田宅", "第9章：疾厄"],
+        "manualSections": ["八字基础", "命宫", "兄弟", "夫妻", "子女", "财帛", "疾厄", "迁移", "仆役", "官禄", "田宅", "福德", "父母", "身宫"],
         "requiredReferenceSources": ["子平真诠", "穷通宝鉴", "斗数玄微论"],
         "requiredRetrievalSources": ["穷通宝鉴"]
       }
@@ -90,7 +90,7 @@
         "algorithm": "default"
       },
       "expect": {
-        "manualCountAtLeast": 10,
+        "manualCountAtLeast": 14,
         "referencesAtLeast": 10,
         "knowledgeHitsAtLeast": 10,
         "retrievalAtLeast": 5,
@@ -99,7 +99,7 @@
         "minBaziStructureTopics": 4,
         "requiredZiweiStructureTopics": ["事业主线", "财运主线", "婚恋主线", "健康主线", "心性主线"],
         "requiredBaziStructureTopics": ["事业主线", "财运主线", "婚恋主线", "健康主线"],
-        "manualTitles": ["第1章：八字基础", "第2章：命宫", "第3章：身宫", "第6章：官禄", "第8章：迁移"],
+        "manualSections": ["八字基础", "命宫", "兄弟", "夫妻", "子女", "财帛", "疾厄", "迁移", "仆役", "官禄", "田宅", "福德", "父母", "身宫"],
         "requiredReferenceSources": ["子平真诠", "穷通宝鉴", "滴天髓阐微", "斗数玄微论", "重补斗数彀率"],
         "requiredRetrievalSources": ["斗数玄微论", "重补斗数彀率", "穷通宝鉴"]
       }
@@ -116,7 +116,7 @@
         "algorithm": "default"
       },
       "expect": {
-        "manualCountAtLeast": 10,
+        "manualCountAtLeast": 14,
         "referencesAtLeast": 10,
         "knowledgeHitsAtLeast": 10,
         "retrievalAtLeast": 5,
@@ -125,7 +125,7 @@
         "minBaziStructureTopics": 3,
         "requiredZiweiStructureTopics": ["事业主线", "财运主线", "婚恋主线", "健康主线", "心性主线"],
         "requiredBaziStructureTopics": ["事业主线", "婚恋主线", "健康主线"],
-        "manualTitles": ["第1章：八字基础", "第2章：命宫", "第4章：财帛", "第7章：夫妻", "第10章：福德"],
+        "manualSections": ["八字基础", "命宫", "兄弟", "夫妻", "子女", "财帛", "疾厄", "迁移", "仆役", "官禄", "田宅", "福德", "父母", "身宫"],
         "requiredReferenceSources": ["子平真诠", "穷通宝鉴", "滴天髓阐微", "斗数玄微论", "重补斗数彀率"],
         "requiredRetrievalSources": ["斗数玄微论", "重补斗数彀率", "穷通宝鉴"]
       }

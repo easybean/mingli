@@ -16,6 +16,7 @@ const buildParams = (query) => {
 };
 
 const includesAll = (haystack, needles) => needles.filter((item) => !haystack.includes(item));
+const plainManualTitle = (title) => String(title || '').replace(/^第\d+章：/, '');
 
 const validateSample = (sample) => {
   const result = buildAstrolabe(buildParams(sample.query));
@@ -92,6 +93,13 @@ const validateSample = (sample) => {
     const missing = includesAll(reading.manual.map((item) => item.title), expect.manualTitles);
     if (missing.length) {
       errors.push(`missing manual titles: ${missing.join(', ')}`);
+    }
+  }
+
+  if (expect.manualSections) {
+    const missing = includesAll(reading.manual.map((item) => plainManualTitle(item.title)), expect.manualSections);
+    if (missing.length) {
+      errors.push(`missing manual sections: ${missing.join(', ')}`);
     }
   }
 
