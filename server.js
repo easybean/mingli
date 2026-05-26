@@ -5,6 +5,7 @@ const { URL } = require('url');
 const { astro } = require('iztro');
 const { LunarUtil, Solar } = require('lunar-typescript');
 const { buildKnowledgeProfile } = require('./knowledge');
+const { buildLifeGame } = require('./life-game');
 const {
   evaluateZiweiPatterns,
   PATTERN_GROUP_STAGE1,
@@ -752,6 +753,16 @@ const buildReading = ({ summary, palaces, bazi, horoscope }) => {
       patterns: linkedPatterns,
     };
   });
+  const lifeGame = buildLifeGame({
+    reading: {
+      topics: topicsWithPatterns,
+      manual: manualWithPatterns,
+      knowledgeHits: knowledge.knowledgeHits,
+    },
+    bazi,
+    palaces,
+    patterns,
+  });
   const currentMutagens = [
     ['大限', horoscope.decadal],
     ['流年', horoscope.yearly],
@@ -795,6 +806,7 @@ const buildReading = ({ summary, palaces, bazi, horoscope }) => {
       },
     },
     topics: topicsWithPatterns,
+    lifeGame,
     retrieval: knowledge.retrieval,
     aiPromptSeed: [
       `请基于紫微斗数和八字资料生成克制、具体、非宿命论的人生手册。`,
@@ -802,6 +814,9 @@ const buildReading = ({ summary, palaces, bazi, horoscope }) => {
       `紫微格局：第一批 ${PATTERN_GROUP_STAGE1.length} 个高频格局、第二批 ${PATTERN_GROUP_STAGE2.length} 个扩展格局已接入；当前命中 ${patterns.map((item) => `${item.name}(${item.verdict})`).join('、') || '无明显入格'}。`,
       `知识库目录：紫微 ${knowledge.meta.catalog.byDomain.ziwei || 0} 本，八字 ${knowledge.meta.catalog.byDomain.bazi || 0} 本；阶段一启用 ${knowledge.meta.stageOneSources.length} 本。`,
       `专题覆盖：${knowledge.meta.catalog.topics.map((topic) => `${topic.title}${topic.bookCount}本`).join('，')}。`,
+      `人生游戏：${lifeGame.archetype.name}，${lifeGame.headline}`,
+      `核心试炼：${lifeGame.trials.map((item) => `${item.title}（${item.themeLabel}）`).join('、')}。`,
+      `机会事件：${lifeGame.opportunities.map((item) => `${item.title}（${item.themeLabel}）`).join('、')}。`,
       ...topicsWithPatterns.map((topic) => `${topic.title}：${topic.cues.join('；')}${topic.patterns?.length ? `；关联格局 ${topic.patterns.map((item) => item.name).join('、')}` : ''}`),
       ...knowledge.retrieval.map((item) => `检索片段 ${item.source}：${item.summary}`),
       ...manualWithPatterns.flatMap((chapter) => chapter.hooks),

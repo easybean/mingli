@@ -803,6 +803,124 @@
         line-height: 1.7;
       }
 
+      .game-hero {
+        display: grid;
+        gap: 14px;
+        padding: 18px;
+        border: 1px solid rgba(52, 38, 24, 0.16);
+        border-radius: 20px;
+        background: rgba(255, 253, 245, 0.72);
+      }
+
+      .game-hero strong {
+        color: var(--red);
+        font-size: 28px;
+        line-height: 1.15;
+      }
+
+      .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .stat-card {
+        padding: 12px;
+        border: 1px solid rgba(52, 38, 24, 0.14);
+        border-radius: 16px;
+        background: rgba(255, 251, 241, 0.78);
+      }
+
+      .stat-card small {
+        display: block;
+        color: var(--muted);
+      }
+
+      .stat-card b {
+        color: var(--blue);
+        font-size: 22px;
+      }
+
+      .game-grid,
+      .stage-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .game-card,
+      .stage-card {
+        display: grid;
+        gap: 10px;
+        padding: 14px;
+        border: 1px solid rgba(52, 38, 24, 0.16);
+        border-radius: 18px;
+        background: rgba(255, 253, 245, 0.72);
+      }
+
+      .game-card h3,
+      .stage-card h3 {
+        margin: 0;
+        color: var(--red);
+        font-size: 18px;
+      }
+
+      .game-card-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .choice-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .choice-card {
+        border: 1px solid rgba(52, 38, 24, 0.12);
+        border-radius: 14px;
+        background: rgba(255, 251, 241, 0.76);
+        overflow: hidden;
+      }
+
+      .choice-card summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 9px 11px;
+        cursor: pointer;
+        color: var(--blue);
+        font-size: 14px;
+        font-weight: 700;
+        list-style: none;
+      }
+
+      .choice-card summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .choice-card summary::after {
+        content: "+";
+        color: var(--muted);
+      }
+
+      .choice-card[open] summary::after {
+        content: "−";
+      }
+
+      .choice-body {
+        padding: 9px 11px;
+      }
+
+      .effect-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+      }
+
       .reference-group {
         padding: 16px;
         border: 1px solid rgba(52, 38, 24, 0.16);
@@ -1065,6 +1183,12 @@
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
+        .stat-grid,
+        .game-grid,
+        .stage-grid {
+          grid-template-columns: 1fr;
+        }
+
         .workspace-nav,
         .workspace-section {
           padding: 18px;
@@ -1319,7 +1443,7 @@
 
         .workspace-nav {
           display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
+          grid-template-columns: repeat(5, minmax(0, 1fr));
           gap: 6px;
           padding: 6px;
           margin-top: 14px;
@@ -1465,6 +1589,7 @@
         <button class="workspace-button" type="button" data-view="chart">命盘</button>
         <button class="workspace-button" type="button" data-view="timeline">时间轴</button>
         <button class="workspace-button" type="button" data-view="reading">解读</button>
+        <button class="workspace-button" type="button" data-view="game">人生游戏</button>
       </section>
 
       <section class="workspace">
@@ -1509,6 +1634,13 @@
             <div id="reading"></div>
           </div>
         </section>
+
+        <section class="workspace-section" id="view-game">
+          <div class="panel">
+            <h2>人生游戏</h2>
+            <div id="lifeGame"></div>
+          </div>
+        </section>
       </section>
     </main>
 
@@ -1519,6 +1651,7 @@
       const mobilePalacesEl = document.querySelector('#mobilePalaces');
       const horoscopeEl = document.querySelector('#horoscope');
       const readingEl = document.querySelector('#reading');
+      const lifeGameEl = document.querySelector('#lifeGame');
       const baziEl = document.querySelector('#bazi');
       const cityListEl = document.querySelector('#cityList');
       const summaryEl = document.querySelector('#summary');
@@ -1680,6 +1813,133 @@
         }
         return 'tag tag-rule-heuristic';
       };
+
+      const renderStatValue = (value) => Math.max(0, Math.min(100, Number(value) || 0));
+
+      const renderChoiceEffects = (effects = {}) => Object.entries(effects).map(([key, value]) => {
+        const labels = {
+          resilience: '恢复力',
+          agency: '主导力',
+          stability: '稳定性',
+          connection: '关系协作',
+          mobility: '变化适应',
+        };
+        const text = `${labels[key] || key} ${value > 0 ? '+' : ''}${value}`;
+        return `<span class="tag ${value >= 0 ? 'tag-good' : 'tag-bad'}">${text}</span>`;
+      }).join('');
+
+      const renderLifeGame = (lifeGame) => `
+        <div class="reading-head">
+          <div class="game-hero">
+            <small class="meta">人生角色</small>
+            <strong>${lifeGame.archetype.name}</strong>
+            <p class="topic-takeaway">${lifeGame.headline}</p>
+            <div class="stat-grid">
+              <article class="stat-card">
+                <small>恢复力</small>
+                <b>${renderStatValue(lifeGame.stats.resilience)}</b>
+              </article>
+              <article class="stat-card">
+                <small>主导力</small>
+                <b>${renderStatValue(lifeGame.stats.agency)}</b>
+              </article>
+              <article class="stat-card">
+                <small>稳定性</small>
+                <b>${renderStatValue(lifeGame.stats.stability)}</b>
+              </article>
+              <article class="stat-card">
+                <small>关系协作</small>
+                <b>${renderStatValue(lifeGame.stats.connection)}</b>
+              </article>
+              <article class="stat-card">
+                <small>变化适应</small>
+                <b>${renderStatValue(lifeGame.stats.mobility)}</b>
+              </article>
+            </div>
+            <p class="meta">${lifeGame.disclaimer}</p>
+          </div>
+        </div>
+        <div class="reading-group">
+          <h3>核心试炼</h3>
+          <div class="game-grid">
+            ${lifeGame.trials.map((card) => `
+              <article class="game-card">
+                <div class="game-card-head">
+                  <div>
+                    <h3>${card.title}</h3>
+                    <small>${card.themeLabel} · Trial ${card.rank}</small>
+                  </div>
+                  <span class="tag tag-bad">试炼</span>
+                </div>
+                <p class="topic-takeaway">${card.summary}</p>
+                <p class="meta">${card.dramaticText}</p>
+                <p class="meta">${card.triggerSummary}</p>
+                <div class="choice-list">
+                  ${card.choices.map((choice) => `
+                    <details class="choice-card">
+                      <summary>${choice.label}</summary>
+                      <div class="choice-body">
+                        <p class="meta">${choice.description}</p>
+                        <p class="meta">代价：${choice.cost}</p>
+                        <p class="meta">收益：${choice.reward}</p>
+                        <div class="effect-list">${renderChoiceEffects(choice.statEffects)}</div>
+                        <p class="meta">${choice.feedback}</p>
+                      </div>
+                    </details>
+                  `).join('')}
+                </div>
+              </article>
+            `).join('')}
+          </div>
+        </div>
+        <div class="reading-group">
+          <h3>机会事件</h3>
+          <div class="game-grid">
+            ${lifeGame.opportunities.map((card) => `
+              <article class="game-card">
+                <div class="game-card-head">
+                  <div>
+                    <h3>${card.title}</h3>
+                    <small>${card.themeLabel} · Opportunity ${card.rank}</small>
+                  </div>
+                  <span class="tag tag-good">机会</span>
+                </div>
+                <p class="topic-takeaway">${card.summary}</p>
+                <p class="meta">${card.dramaticText}</p>
+                <p class="meta">${card.triggerSummary}</p>
+                <div class="choice-list">
+                  ${card.choices.map((choice) => `
+                    <details class="choice-card">
+                      <summary>${choice.label}</summary>
+                      <div class="choice-body">
+                        <p class="meta">${choice.description}</p>
+                        <p class="meta">代价：${choice.cost}</p>
+                        <p class="meta">收益：${choice.reward}</p>
+                        <div class="effect-list">${renderChoiceEffects(choice.statEffects)}</div>
+                        <p class="meta">${choice.feedback}</p>
+                      </div>
+                    </details>
+                  `).join('')}
+                </div>
+              </article>
+            `).join('')}
+          </div>
+        </div>
+        <div class="reading-group">
+          <h3>阶段关卡</h3>
+          <div class="stage-grid">
+            ${lifeGame.stages.map((stage) => `
+              <article class="stage-card">
+                <h3>${stage.title}</h3>
+                <small>Level ${stage.level} · ${stage.ageRange} · ${stage.ganZhi}</small>
+                <p class="meta">${stage.triggerSummary}</p>
+                <p class="meta">可能课题：${stage.possibleThemes.join('、') || '继续观察命盘主线'}</p>
+                <p class="meta">推荐策略：${stage.strategy}</p>
+              </article>
+            `).join('')}
+          </div>
+        </div>
+      `;
 
       const renderReading = (reading) => {
         const baziManual = reading.manual.find((chapter) => plainChapterTitle(chapter.title) === '八字基础');
@@ -2108,6 +2368,7 @@
         `).join('');
 
         readingEl.innerHTML = renderReading(data.reading);
+        lifeGameEl.innerHTML = renderLifeGame(data.reading.lifeGame);
 
         baziEl.innerHTML = `
           <div class="bazi-overview">

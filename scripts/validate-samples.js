@@ -42,6 +42,9 @@ const validateSample = (sample) => {
   if (!reading.patternPlan || !reading.patternPlan.stage1 || !reading.patternPlan.stage2) {
     errors.push('reading.patternPlan is missing');
   }
+  if (!reading.lifeGame) {
+    errors.push('reading.lifeGame is missing');
+  }
   if (Array.isArray(reading.patterns) && reading.patterns.some((item) => (
     !item.name
     || !item.verdict
@@ -131,6 +134,47 @@ const validateSample = (sample) => {
     errors.push(`invalid manual pattern structure: ${invalidManual.map((item) => item.title).join(', ')}`);
   }
 
+  const lifeGame = reading.lifeGame;
+  if (lifeGame) {
+    if (!lifeGame.archetype?.name || !lifeGame.headline || !lifeGame.stats) {
+      errors.push('invalid lifeGame hero structure');
+    }
+    if (!Array.isArray(lifeGame.trials) || lifeGame.trials.length < 3) {
+      errors.push(`lifeGame trials ${(lifeGame.trials || []).length} < 3`);
+    }
+    if (!Array.isArray(lifeGame.opportunities) || lifeGame.opportunities.length < 2) {
+      errors.push(`lifeGame opportunities ${(lifeGame.opportunities || []).length} < 2`);
+    }
+    if (!Array.isArray(lifeGame.stages) || lifeGame.stages.length < 3) {
+      errors.push(`lifeGame stages ${(lifeGame.stages || []).length} < 3`);
+    }
+    if (!Array.isArray(lifeGame.cards) || lifeGame.cards.length !== ((lifeGame.trials || []).length + (lifeGame.opportunities || []).length)) {
+      errors.push('lifeGame cards count mismatch');
+    }
+
+    const invalidCards = (lifeGame.cards || []).filter((card) => (
+      !card.title
+      || !card.theme
+      || !card.triggerSummary
+      || !Array.isArray(card.choices)
+      || card.choices.length !== 3
+      || card.choices.some((choice) => !choice.cost || !choice.reward || !choice.feedback || !choice.statEffects)
+    ));
+    if (invalidCards.length) {
+      errors.push(`invalid lifeGame cards: ${invalidCards.map((item) => item.title).join(', ')}`);
+    }
+
+    const invalidStages = (lifeGame.stages || []).filter((stage) => (
+      !stage.ageRange
+      || !stage.ganZhi
+      || !stage.title
+      || !stage.strategy
+    ));
+    if (invalidStages.length) {
+      errors.push(`invalid lifeGame stages: ${invalidStages.map((item) => item.title).join(', ')}`);
+    }
+  }
+
   if (expect.manualTitles) {
     const missing = includesAll(reading.manual.map((item) => item.title), expect.manualTitles);
     if (missing.length) {
@@ -181,6 +225,8 @@ const validateSample = (sample) => {
       knowledgeHits: reading.knowledgeHits.length,
       retrieval: (reading.retrieval || []).length,
       patterns: (reading.patterns || []).map((item) => item.name),
+      lifeGameTrials: reading.lifeGame?.trials?.map((item) => item.title) || [],
+      lifeGameOpportunities: reading.lifeGame?.opportunities?.map((item) => item.title) || [],
       topics: reading.topics.map((item) => item.title),
     },
   };
