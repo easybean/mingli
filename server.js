@@ -5,6 +5,12 @@ const { URL } = require('url');
 const { astro } = require('iztro');
 const { LunarUtil, Solar } = require('lunar-typescript');
 const { buildKnowledgeProfile } = require('./knowledge');
+const {
+  evaluateZiweiPatterns,
+  PATTERN_GROUP_STAGE1,
+  PATTERN_GROUP_STAGE2,
+  STAGE2_BACKLOG,
+} = require('./ziwei-patterns');
 
 const PORT = Number(process.env.PORT || 3000);
 const HOST = process.env.HOST || '127.0.0.1';
@@ -614,6 +620,42 @@ const STAR_TRAITS = {
   破军: '破旧立新，人生阶段常伴随重组、试错与升级',
 };
 
+const TOPIC_PATTERN_LENSES = {
+  事业主线: ['紫府朝垣格', '府相朝垣格', '机月同梁格', '杀破狼格', '日照雷门', '科名会禄', '三奇嘉会', '文桂文华', '巨机化酉', '廉贞贪杀'],
+  财运主线: ['财荫夹印格', '禄马交驰格', '紫府朝垣格', '科名会禄', '三奇嘉会', '火贪铃贪', '马落空亡格'],
+  婚恋主线: ['月朗天门', '月生沧海', '日月并明格', '日月照壁', '月同遇煞', '日月反背'],
+  健康主线: ['命里逢空格', '马落空亡格', '羊陀夹命格', '火铃夹命格', '月同遇煞', '刑忌夹印', '巨逢四煞'],
+  心性主线: ['命无正曜格', '机月同梁格', '杀破狼格', '石中隐玉', '巨机化酉', '廉贞贪杀', '擎羊入庙'],
+};
+
+const CHAPTER_PATTERN_LENSES = {
+  命宫: ['紫府朝垣格', '府相朝垣格', '机月同梁格', '杀破狼格', '命无正曜格', '羊陀夹命格', '火铃夹命格', '命里逢空格'],
+  兄弟: ['左右扶命格', '天乙拱命', '羊陀夹命格'],
+  夫妻: ['日月并明格', '日月照壁', '月朗天门', '月同遇煞', '日月反背'],
+  子女: ['明珠出海', '文桂文华', '文星暗拱'],
+  财帛: ['财荫夹印格', '禄马交驰格', '科名会禄', '三奇嘉会', '火贪铃贪'],
+  疾厄: ['命里逢空格', '马落空亡格', '巨逢四煞', '刑忌夹印', '月同遇煞'],
+  迁移: ['禄马交驰格', '马落空亡格', '日照雷门', '火贪铃贪'],
+  仆役: ['左右扶命格', '天乙拱命', '羊陀夹命格', '擎羊入庙'],
+  官禄: ['紫府朝垣格', '府相朝垣格', '机月同梁格', '日照雷门', '科名会禄', '三奇嘉会', '文桂文华', '巨机化酉'],
+  田宅: ['财荫夹印格', '月朗天门', '月生沧海'],
+  福德: ['月朗天门', '月生沧海', '日月并明格', '石中隐玉'],
+  父母: ['天乙拱命', '刑忌夹印', '财荫夹印格'],
+  身宫: ['杀破狼格', '机月同梁格', '擎羊入庙', '廉贞贪杀'],
+};
+
+const summarizePattern = (pattern) => `${pattern.name}（${pattern.verdict}，${pattern.ruleLevelLabel}）`;
+
+const pickLinkedPatterns = (patterns, names, limit = 3) => {
+  if (!Array.isArray(patterns) || !patterns.length) {
+    return [];
+  }
+  return names
+    .map((name) => patterns.find((pattern) => pattern.name === name))
+    .filter(Boolean)
+    .slice(0, limit);
+};
+
 const palaceByName = (palaces, name) => palaces.find((palace) => palace.name === name);
 
 const starNames = (stars) => stars.map((star) => star.name);
@@ -681,6 +723,35 @@ const buildReading = ({ summary, palaces, bazi, horoscope }) => {
   ].filter(([, palace]) => palace);
   const chapters = focusPalaces.map(([label, palace]) => buildPalaceReading(palace, label));
   const knowledge = buildKnowledgeProfile({ chapters, bazi, summary, horoscope });
+  const patterns = evaluateZiweiPatterns(palaces);
+  const manualWithPatterns = knowledge.chapters.map((chapter, index) => {
+    const linkedPatterns = pickLinkedPatterns(patterns, CHAPTER_PATTERN_LENSES[chapter.palace] || [], 3);
+    const patternLine = linkedPatterns.length
+      ? `关联格局可参考${linkedPatterns.map(summarizePattern).join('、')}。`
+      : '';
+
+    return {
+      title: `第${index + 1}章：${chapter.palace}`,
+      subtitle: chapter.themes.join(' / '),
+      body: patternLine ? `${chapter.summary}${patternLine}` : chapter.summary,
+      hooks: chapter.promptContext,
+      knowledgeHits: chapter.knowledgeHits || [],
+      references: chapter.references || [],
+      patterns: linkedPatterns,
+    };
+  });
+  const topicsWithPatterns = knowledge.topics.map((topic) => {
+    const linkedPatterns = pickLinkedPatterns(patterns, TOPIC_PATTERN_LENSES[topic.title] || [], 4);
+    const takeaway = linkedPatterns.length
+      ? `${topic.takeaway || topic.summary} 格局层可再参考${linkedPatterns.map((item) => item.name).join('、')}。`
+      : (topic.takeaway || topic.summary);
+
+    return {
+      ...topic,
+      takeaway,
+      patterns: linkedPatterns,
+    };
+  });
   const currentMutagens = [
     ['大限', horoscope.decadal],
     ['流年', horoscope.yearly],
@@ -696,16 +767,10 @@ const buildReading = ({ summary, palaces, bazi, horoscope }) => {
       `身宫提示后天落点：${knowledge.chapters[2]?.summary || chapters[1]?.summary || '身宫信息不足。'}`,
       `当前运限可作为剧情时间轴：${currentMutagens.join('；')}。`,
       `知识层已接入 ${knowledge.meta.activeDomains.join(' / ')}，当前纳管 ${knowledge.meta.catalog.totalBooks} 本书，规则源 ${knowledge.meta.catalog.byUseFor.rules || 0} 本，引用源 ${knowledge.meta.catalog.byUseFor.reference || 0} 本。`,
-      `专题层已整理 ${knowledge.topics.length} 条主线，可按事业、财运、婚恋、健康与心性继续展开。`,
+      `紫微格局第一批已接入 ${PATTERN_GROUP_STAGE1.length} 个高频格局，当前命中 ${patterns.length} 个；第二批已落 ${PATTERN_GROUP_STAGE2.length} 个扩展格局，后续待补 ${STAGE2_BACKLOG.length} 个。`,
+      `专题层已整理 ${knowledge.topics.length} 条主线，并已把命中格局回接到章节与专题层。`,
     ],
-    manual: knowledge.chapters.map((chapter, index) => ({
-      title: `第${index + 1}章：${chapter.palace}`,
-      subtitle: chapter.themes.join(' / '),
-      body: chapter.summary,
-      hooks: chapter.promptContext,
-      knowledgeHits: chapter.knowledgeHits || [],
-      references: chapter.references || [],
-    })),
+    manual: manualWithPatterns,
     gameLevels: knowledge.chapters.slice(1, 6).map((chapter, index) => ({
       level: index + 1,
       name: `${chapter.palace}关卡`,
@@ -717,16 +782,29 @@ const buildReading = ({ summary, palaces, bazi, horoscope }) => {
     })),
     references: knowledge.references,
     knowledgeHits: knowledge.knowledgeHits,
-    topics: knowledge.topics,
+    patterns,
+    patternPlan: {
+      stage1: {
+        target: '10-20 个高频格局',
+        implemented: PATTERN_GROUP_STAGE1.length,
+      },
+      stage2: {
+        target: '30-50 个扩展格局',
+        implemented: PATTERN_GROUP_STAGE2.length,
+        backlog: STAGE2_BACKLOG,
+      },
+    },
+    topics: topicsWithPatterns,
     retrieval: knowledge.retrieval,
     aiPromptSeed: [
       `请基于紫微斗数和八字资料生成克制、具体、非宿命论的人生手册。`,
       `基础：${summary.solarDate} ${summary.time}，${summary.gender}，${summary.fiveElementsClass}，八字${bazi.eightChar}。`,
+      `紫微格局：第一批 ${PATTERN_GROUP_STAGE1.length} 个高频格局、第二批 ${PATTERN_GROUP_STAGE2.length} 个扩展格局已接入；当前命中 ${patterns.map((item) => `${item.name}(${item.verdict})`).join('、') || '无明显入格'}。`,
       `知识库目录：紫微 ${knowledge.meta.catalog.byDomain.ziwei || 0} 本，八字 ${knowledge.meta.catalog.byDomain.bazi || 0} 本；阶段一启用 ${knowledge.meta.stageOneSources.length} 本。`,
       `专题覆盖：${knowledge.meta.catalog.topics.map((topic) => `${topic.title}${topic.bookCount}本`).join('，')}。`,
-      ...knowledge.topics.map((topic) => `${topic.title}：${topic.cues.join('；')}`),
+      ...topicsWithPatterns.map((topic) => `${topic.title}：${topic.cues.join('；')}${topic.patterns?.length ? `；关联格局 ${topic.patterns.map((item) => item.name).join('、')}` : ''}`),
       ...knowledge.retrieval.map((item) => `检索片段 ${item.source}：${item.summary}`),
-      ...knowledge.chapters.flatMap((chapter) => chapter.promptContext),
+      ...manualWithPatterns.flatMap((chapter) => chapter.hooks),
       ...knowledge.promptLines,
     ],
   };

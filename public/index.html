@@ -615,7 +615,8 @@
 
       .knowledge-chip,
       .reference-card,
-      .topic-card {
+      .topic-card,
+      .empty-card {
         padding: 14px;
         border: 1px solid rgba(52, 38, 24, 0.16);
         border-radius: 18px;
@@ -692,6 +693,47 @@
       .topic-header {
         display: grid;
         gap: 4px;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: fit-content;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .tag-good {
+        background: rgba(72, 136, 61, 0.12);
+        color: #4d7d2d;
+      }
+
+      .tag-bad {
+        background: rgba(161, 62, 56, 0.12);
+        color: #9f3f37;
+      }
+
+      .tag-warn {
+        background: rgba(176, 126, 52, 0.14);
+        color: #9d6b18;
+      }
+
+      .tag-rule-strict {
+        background: rgba(49, 92, 138, 0.14);
+        color: #29557d;
+      }
+
+      .tag-rule-broad {
+        background: rgba(104, 74, 132, 0.14);
+        color: #6a4b8a;
+      }
+
+      .tag-rule-heuristic {
+        background: rgba(124, 103, 68, 0.14);
+        color: #7a6744;
       }
 
       .topic-takeaway {
@@ -1619,6 +1661,26 @@
 
       const plainChapterTitle = (title) => String(title || '').replace(/^第\d+章：/, '');
 
+      const patternBadgeClass = (verdict) => {
+        if (verdict === '吉') {
+          return 'tag tag-good';
+        }
+        if (verdict === '凶') {
+          return 'tag tag-bad';
+        }
+        return 'tag tag-warn';
+      };
+
+      const ruleLevelBadgeClass = (ruleLevel) => {
+        if (ruleLevel === 'strict') {
+          return 'tag tag-rule-strict';
+        }
+        if (ruleLevel === 'broad') {
+          return 'tag tag-rule-broad';
+        }
+        return 'tag tag-rule-heuristic';
+      };
+
       const renderReading = (reading) => {
         const baziManual = reading.manual.find((chapter) => plainChapterTitle(chapter.title) === '八字基础');
         const shenManual = reading.manual.find((chapter) => plainChapterTitle(chapter.title) === '身宫');
@@ -1670,6 +1732,16 @@
                     </div>
                   </details>
                 ` : ''}
+                ${baziManual.patterns?.length ? `
+                  <details class="manual-section">
+                    <summary>关联格局</summary>
+                    <div class="manual-detail">
+                      <ul class="topic-driver-list">
+                        ${baziManual.patterns.map((item) => `<li>${item.name}：${item.summary}</li>`).join('')}
+                      </ul>
+                    </div>
+                  </details>
+                ` : ''}
                 ${baziManual.hooks?.length ? `
                   <details class="manual-section">
                     <summary>生成线索</summary>
@@ -1707,6 +1779,16 @@
                   <div class="manual-detail">
                     <ul class="topic-driver-list">
                       ${chapter.knowledgeHits.map((item) => `<li>${item.topic}：${item.summary}</li>`).join('')}
+                    </ul>
+                  </div>
+                </details>
+              ` : ''}
+              ${chapter.patterns?.length ? `
+                <details class="manual-section">
+                  <summary>关联格局</summary>
+                  <div class="manual-detail">
+                    <ul class="topic-driver-list">
+                      ${chapter.patterns.map((item) => `<li>${item.name}：${item.summary}</li>`).join('')}
                     </ul>
                   </div>
                 </details>
@@ -1752,6 +1834,16 @@
                     </div>
                   </details>
                 ` : ''}
+                ${shenManual.patterns?.length ? `
+                  <details class="manual-section">
+                    <summary>关联格局</summary>
+                    <div class="manual-detail">
+                      <ul class="topic-driver-list">
+                        ${shenManual.patterns.map((item) => `<li>${item.name}：${item.summary}</li>`).join('')}
+                      </ul>
+                    </div>
+                  </details>
+                ` : ''}
                 ${shenManual.hooks?.length ? `
                   <details class="manual-section">
                     <summary>生成线索</summary>
@@ -1766,6 +1858,57 @@
             </div>
           </div>
         ` : ''}
+        <div class="reading-group">
+          <h3>紫微格局</h3>
+          <p class="meta">第一批已实现 ${reading.patternPlan?.stage1?.implemented || 0} 个高频格局；第二批已实现 ${reading.patternPlan?.stage2?.implemented || 0} 个，待补 ${reading.patternPlan?.stage2?.backlog?.length || 0} 个。</p>
+          ${reading.patterns?.length ? `
+            <div class="topic-grid">
+              ${reading.patterns.map((pattern) => `
+                <article class="topic-card">
+                  <div class="topic-header">
+                    <strong>${pattern.name}</strong>
+                    <span class="${patternBadgeClass(pattern.verdict)}">${pattern.verdict}</span>
+                  </div>
+                  <p class="meta">规则级别：<span class="${ruleLevelBadgeClass(pattern.ruleLevel)}">${pattern.ruleLevelLabel}</span></p>
+                  <p class="topic-takeaway">${pattern.summary}</p>
+                  ${pattern.sources?.length ? `<p class="meta">来源：${pattern.sources.join('、')}</p>` : ''}
+                  ${pattern.detail ? `
+                    <details class="topic-section">
+                      <summary>格局说明</summary>
+                      <div class="topic-detail">
+                        <p class="meta">${pattern.detail}</p>
+                      </div>
+                    </details>
+                  ` : ''}
+                  ${pattern.conditions?.length ? `
+                    <details class="topic-section">
+                      <summary>入格条件</summary>
+                      <div class="topic-detail">
+                        <ul class="topic-driver-list">
+                          ${pattern.conditions.map((item) => `<li>${item}</li>`).join('')}
+                        </ul>
+                      </div>
+                    </details>
+                  ` : ''}
+                  ${pattern.caveats?.length ? `
+                    <details class="topic-section">
+                      <summary>破格与限制</summary>
+                      <div class="topic-detail">
+                        <ul class="topic-driver-list">
+                          ${pattern.caveats.map((item) => `<li>${item}</li>`).join('')}
+                        </ul>
+                      </div>
+                    </details>
+                  ` : ''}
+                </article>
+              `).join('')}
+            </div>
+          ` : `
+            <div class="empty-card">
+              <p class="meta">当前样例没有命中第一批高频格局，后续可继续补更细的入格条件和第二批扩展格局。</p>
+            </div>
+          `}
+        </div>
         <div class="reading-group">
           <h3>综合主线</h3>
           <div class="topic-grid">
@@ -1800,6 +1943,16 @@
                   <div class="topic-detail">
                     <ul class="topic-driver-list">
                       ${topic.baziStructure.map((item) => `<li>${item}</li>`).join('')}
+                    </ul>
+                  </div>
+                </details>
+              ` : ''}
+              ${(topic.patterns || []).length ? `
+                <details class="topic-section">
+                  <summary>关联格局</summary>
+                  <div class="topic-detail">
+                    <ul class="topic-driver-list">
+                      ${topic.patterns.map((item) => `<li>${item.name}：${item.summary}</li>`).join('')}
                     </ul>
                   </div>
                 </details>

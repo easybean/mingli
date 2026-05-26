@@ -36,6 +36,42 @@ const validateSample = (sample) => {
   if ((reading.retrieval || []).length < (expect.retrievalAtLeast || 0)) {
     errors.push(`retrieval count ${(reading.retrieval || []).length} < ${expect.retrievalAtLeast}`);
   }
+  if (!Array.isArray(reading.patterns)) {
+    errors.push('reading.patterns is missing');
+  }
+  if (!reading.patternPlan || !reading.patternPlan.stage1 || !reading.patternPlan.stage2) {
+    errors.push('reading.patternPlan is missing');
+  }
+  if (Array.isArray(reading.patterns) && reading.patterns.some((item) => (
+    !item.name
+    || !item.verdict
+    || !item.summary
+    || !Array.isArray(item.conditions)
+    || !Array.isArray(item.caveats)
+    || !Array.isArray(item.sources)
+    || !item.ruleLevel
+    || !item.ruleLevelLabel
+  ))) {
+    errors.push('invalid pattern structure');
+  }
+  if (expect.patternsAtLeast && (reading.patterns || []).length < expect.patternsAtLeast) {
+    errors.push(`patterns count ${(reading.patterns || []).length} < ${expect.patternsAtLeast}`);
+  }
+  if (expect.requiredPatterns) {
+    const missing = includesAll((reading.patterns || []).map((item) => item.name), expect.requiredPatterns);
+    if (missing.length) {
+      errors.push(`missing patterns: ${missing.join(', ')}`);
+    }
+  }
+  if (expect.requiredStage2Patterns) {
+    const missing = includesAll(
+      (reading.patterns || []).filter((item) => item.category === 'stage2').map((item) => item.name),
+      expect.requiredStage2Patterns,
+    );
+    if (missing.length) {
+      errors.push(`missing stage2 patterns: ${missing.join(', ')}`);
+    }
+  }
 
   if (expect.requiredTopics) {
     const missing = includesAll(reading.topics.map((item) => item.title), expect.requiredTopics);
@@ -84,9 +120,15 @@ const validateSample = (sample) => {
     || !item.drivers.length
     || !Array.isArray(item.ziweiStructure)
     || !Array.isArray(item.baziStructure)
+    || !Array.isArray(item.patterns)
   ));
   if (invalidTopics.length) {
     errors.push(`invalid topic structure: ${invalidTopics.map((item) => item.title).join(', ')}`);
+  }
+
+  const invalidManual = reading.manual.filter((item) => !Array.isArray(item.patterns));
+  if (invalidManual.length) {
+    errors.push(`invalid manual pattern structure: ${invalidManual.map((item) => item.title).join(', ')}`);
   }
 
   if (expect.manualTitles) {
@@ -138,6 +180,7 @@ const validateSample = (sample) => {
       references: reading.references.length,
       knowledgeHits: reading.knowledgeHits.length,
       retrieval: (reading.retrieval || []).length,
+      patterns: (reading.patterns || []).map((item) => item.name),
       topics: reading.topics.map((item) => item.title),
     },
   };
