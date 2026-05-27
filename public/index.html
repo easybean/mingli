@@ -939,6 +939,7 @@
       }
 
       .game-runbar,
+      .game-route-banner,
       .game-stage-strip,
       .game-scene,
       .game-journal {
@@ -953,6 +954,13 @@
         grid-template-columns: 1fr auto;
         gap: 12px;
         align-items: center;
+      }
+
+      .game-route-banner {
+        display: grid;
+        gap: 8px;
+        border-color: rgba(29, 93, 120, 0.18);
+        background: rgba(29, 93, 120, 0.06);
       }
 
       .game-runbar-actions {
@@ -2177,20 +2185,280 @@
 
       const cloneGameStats = (stats) => JSON.parse(JSON.stringify(stats || {}));
       const cardById = (lifeGame, cardId) => (lifeGame.cards || []).find((card) => card.id === cardId);
+      const gameCardById = (lifeGame, state, cardId) => currentGameDeck(lifeGame, state).find((card) => card.id === cardId);
 
-      const nextPlayableCardId = (lifeGame, resolvedIds, fallbackId) => {
-        const remaining = (lifeGame.cards || []).filter((card) => !resolvedIds.includes(card.id));
+      const STYLE_THEME_PREFERENCES = {
+        bold: ['career', 'migration', 'wealth', 'mindset'],
+        steady: ['wealth', 'family', 'career', 'relationship'],
+        repair: ['health', 'relationship', 'mindset', 'family'],
+      };
+
+      const STYLE_GUIDANCE = {
+        bold: {
+          label: '激进路线',
+          stage: '你前面的选择偏向主动抢节奏，后续更适合优先处理需要开路、承压或抢窗口的事件。',
+          card: '你前面的路径更偏主动推进，当前事件会更强调抢位、速度和承担代价。',
+        },
+        steady: {
+          label: '稳健路线',
+          stage: '你前面的选择偏向先稳盘面，后续更适合优先处理留存、秩序和长期承接相关的事件。',
+          card: '你前面的路径更偏稳住结构，当前事件会更强调节奏、留存和稳定承接。',
+        },
+        repair: {
+          label: '修复路线',
+          stage: '你前面的选择偏向先修边界和损耗，后续更适合优先处理关系、恢复和风险收口相关的事件。',
+          card: '你前面的路径更偏修复系统，当前事件会更强调边界、恢复和减少重复损耗。',
+        },
+      };
+
+      const STYLE_SUMMARY_BY_THEME = {
+        bold: {
+          career: '这条线会把事业问题推向更直接的抢位、承压和窗口判断。',
+          wealth: '这条线会把财务问题推向更高波动的投入、回报和止损判断。',
+          relationship: '这条线会把关系问题推向更直接的表态、冲突和切割判断。',
+          health: '这条线会把健康问题推向先扛后修的节奏，代价感会更明显。',
+          mindset: '这条线会把心性问题推向更快的决断和更强的代价暴露。',
+          family: '这条线会把家庭课题推向更快拍板和更重责任承接。',
+          migration: '这条线会把迁移动线推向更快换轨和更高不确定性。',
+        },
+        steady: {
+          career: '这条线会把事业问题推向秩序、承接和长期位置的经营。',
+          wealth: '这条线会把财务问题推向留存、配置和长期底盘的搭建。',
+          relationship: '这条线会把关系问题推向约定、稳定和长期可持续。',
+          health: '这条线会把健康问题推向作息、恢复和长期管理。',
+          mindset: '这条线会把心性问题推向节奏、边界和稳定自处。',
+          family: '这条线会把家庭课题推向责任分配和稳住根基。',
+          migration: '这条线会把迁移动线推向有准备的过渡，而不是猛然切换。',
+        },
+        repair: {
+          career: '这条线会把事业问题推向先止损、先修结构，再决定要不要继续推进。',
+          wealth: '这条线会把财务问题推向堵漏洞、减损耗和清理旧账。',
+          relationship: '这条线会把关系问题推向边界修复、误解澄清和消耗收口。',
+          health: '这条线会把健康问题推向恢复、调节和减少重复消耗。',
+          mindset: '这条线会把心性问题推向自我修复、降噪和重建判断。',
+          family: '这条线会把家庭课题推向先收口旧压力，再谈新的承接。',
+          migration: '这条线会把迁移动线推向先处理后顾之忧，再决定是否换轨。',
+        },
+      };
+
+      const STYLE_STAGE_VARIANTS = {
+        bold: {
+          prefix: '强攻',
+          strategy: '这一阶段更适合先抢位置、先定窗口，但要同步看承压边界。',
+        },
+        steady: {
+          prefix: '稳盘',
+          strategy: '这一阶段更适合先稳住底盘、先做留存，再决定是否继续扩张。',
+        },
+        repair: {
+          prefix: '修复',
+          strategy: '这一阶段更适合先修结构、收口消耗、处理旧问题，再谈推进。',
+        },
+      };
+
+      const ROUTE_VARIANT_LIBRARY = {
+        bold: [
+          {
+            id: 'route-bold-window',
+            theme: 'career',
+            themeLabel: '事业',
+            type: 'trial',
+            title: '窗口抢攻',
+            summary: '你已经把路线锁到更激进的一侧，后面的关卡会开始测试你能不能在高压窗口里抢到位置。',
+            dramaticText: '门已经打开一条缝，但风也会跟着灌进来。你要决定是立刻冲进去，还是先给自己留下退路。',
+            triggerSummary: '这是激进路线专属事件，会替换掉部分通用关卡。',
+            choices: [
+              { label: '直接抢位', style: 'bold', description: '先拿位置，再补结构。', cost: '压力和暴露会同步变大。', reward: '更容易提前占到窗口。', statEffects: { agency: 7, mobility: 4, stability: -3 }, feedback: '你继续把路线压向强攻，后面的局会更快也更硬。' },
+              { label: '带着边界推进', style: 'steady', description: '抢机会，但先定底线。', cost: '推进速度略慢。', reward: '更容易守住成果。', statEffects: { agency: 4, stability: 3 }, feedback: '你没有完全踩死油门，后面还能保留一些腾挪空间。' },
+              { label: '先确认代价', style: 'repair', description: '先看最坏情况再决定。', cost: '可能会错过最快的窗口。', reward: '减少过度透支。', statEffects: { resilience: 5, stability: 2 }, feedback: '你把强攻路线拉回了可承受区间。' },
+            ],
+          },
+          {
+            id: 'route-bold-breakthrough',
+            theme: 'migration',
+            themeLabel: '迁移',
+            type: 'opportunity',
+            title: '外部突围',
+            summary: '这条路线会把资源更多推向外部平台、跨界入口和快速换轨的机会。',
+            dramaticText: '旧场域的天花板开始出现，外部世界会用更高的不确定性来换更大的空间。',
+            triggerSummary: '这是激进路线专属机会，会替换掉部分通用机会卡。',
+            choices: [
+              { label: '直接换场', style: 'bold', description: '用环境切换换增长空间。', cost: '熟悉感和旧支持会下降。', reward: '更快进入新局。', statEffects: { mobility: 8, agency: 4, connection: -2 }, feedback: '你把局势推到更开阔的地方，但也更考验自我承接。' },
+              { label: '搭桥过渡', style: 'steady', description: '先保留旧锚点，再接新入口。', cost: '短期会两头拉扯。', reward: '降低换轨震荡。', statEffects: { mobility: 4, stability: 3 }, feedback: '你给自己留了桥，后面的换轨不会那么陡。' },
+              { label: '修补后勤', style: 'repair', description: '先把后顾之忧清掉。', cost: '启动时间会推迟。', reward: '减少换场后的失衡。', statEffects: { resilience: 5, connection: 2 }, feedback: '你先把底层支持补好，后面的突围会更稳。' },
+            ],
+          },
+        ],
+        steady: [
+          {
+            id: 'route-steady-foundation',
+            theme: 'wealth',
+            themeLabel: '财运',
+            type: 'trial',
+            title: '底盘加固',
+            summary: '你把路线锁到了稳盘一侧，后面的关卡会更强调留存、配置和抗风险能力。',
+            dramaticText: '外面也许还有热闹窗口，但你先在地基上多压了几块石头。',
+            triggerSummary: '这是稳健路线专属事件，会替换掉部分通用关卡。',
+            choices: [
+              { label: '继续补底盘', style: 'steady', description: '优先做储备和配置。', cost: '短期增长感不强。', reward: '后续承压更稳。', statEffects: { stability: 7, resilience: 3 }, feedback: '你继续把路线压向底盘经营，后面的关卡会更耐打。' },
+              { label: '小幅提速', style: 'bold', description: '在稳定前提下加一点速度。', cost: '部分风险重新回来。', reward: '能更早看到成果。', statEffects: { agency: 3, stability: 2 }, feedback: '你没有完全守住，也开始给自己留一点进攻空间。' },
+              { label: '先补漏洞', style: 'repair', description: '先清理暗漏和旧账。', cost: '推进节奏会更慢。', reward: '减少后续反复返工。', statEffects: { resilience: 5, stability: 2 }, feedback: '你把稳盘路线做得更扎实，后面返工会少很多。' },
+            ],
+          },
+          {
+            id: 'route-steady-compound',
+            theme: 'family',
+            themeLabel: '家庭',
+            type: 'opportunity',
+            title: '慢变量复利',
+            summary: '这条路线会让你更容易从长期信用、家庭根基和慢变量里拿到回报。',
+            dramaticText: '不是所有机会都要立刻开花，有些回报会在你不炫目的日常里慢慢长出来。',
+            triggerSummary: '这是稳健路线专属机会，会替换掉部分通用机会卡。',
+            choices: [
+              { label: '继续复利', style: 'steady', description: '让已有结构持续累积。', cost: '阶段性爆发感较弱。', reward: '后续回报更稳定。', statEffects: { stability: 6, connection: 3 }, feedback: '你把稳盘路线推向复利，后面的机会会更像积累兑现。' },
+              { label: '小步外扩', style: 'bold', description: '在稳定结构上试一点新空间。', cost: '要分出额外精力。', reward: '可能打开第二增长点。', statEffects: { agency: 3, mobility: 2 }, feedback: '你开始在稳盘里加一点扩张，后面路线会更混合。' },
+              { label: '修补旧关系', style: 'repair', description: '把拖累长期复利的旧问题先处理掉。', cost: '需要面对延迟已久的麻烦。', reward: '长期摩擦减少。', statEffects: { connection: 4, resilience: 3 }, feedback: '你先清障，后面的慢变量会更顺。' },
+            ],
+          },
+        ],
+        repair: [
+          {
+            id: 'route-repair-cleanup',
+            theme: 'relationship',
+            themeLabel: '关系',
+            type: 'trial',
+            title: '旧账清理',
+            summary: '你把路线锁到了修复一侧，后面的关卡会更强调边界、旧账和未收口的消耗。',
+            dramaticText: '你没有继续往前冲，而是转身去看那些一直拖着你的绳结。',
+            triggerSummary: '这是修复路线专属事件，会替换掉部分通用关卡。',
+            choices: [
+              { label: '彻底摊开', style: 'repair', description: '把旧问题一次讲透。', cost: '短期情绪压力会变大。', reward: '后面消耗会明显下降。', statEffects: { resilience: 7, connection: 3, stability: 1 }, feedback: '你继续走修复路线，后面的局会更干净，但过程更不好受。' },
+              { label: '边走边修', style: 'steady', description: '不让问题继续拖，但控制处理节奏。', cost: '修复周期会更长。', reward: '生活面不至于被打断。', statEffects: { stability: 4, resilience: 3 }, feedback: '你把修复放进日常节奏里，后面的承压会平一些。' },
+              { label: '先切断消耗', style: 'bold', description: '先从最耗人的部分撤出。', cost: '关系上会显得更硬。', reward: '精力回流更快。', statEffects: { agency: 3, resilience: 4 }, feedback: '你在修复路线里用了一次强切，后面会更强调边界。' },
+            ],
+          },
+          {
+            id: 'route-repair-recovery',
+            theme: 'health',
+            themeLabel: '健康',
+            type: 'opportunity',
+            title: '节律复位',
+            summary: '这条路线会让你更容易拿到恢复窗口，但前提是你真的愿意停下来修系统。',
+            dramaticText: '有些机会不是往外跑得更快，而是终于把自己从持续损耗里拉出来。',
+            triggerSummary: '这是修复路线专属机会，会替换掉部分通用机会卡。',
+            choices: [
+              { label: '优先复位', style: 'repair', description: '先把作息、恢复和支持系统调回来。', cost: '短期推进速度会下降。', reward: '后续续航明显提升。', statEffects: { resilience: 8, stability: 2 }, feedback: '你把修复路线走到了核心，后面的关卡会少很多反复。' },
+              { label: '边推进边调节', style: 'steady', description: '不完全停下，但给恢复留固定位置。', cost: '见效会慢一点。', reward: '不至于再一次性透支。', statEffects: { resilience: 4, stability: 3 }, feedback: '你开始给自己留恢复槽，后面的波动会缓一些。' },
+              { label: '恢复后再提速', style: 'bold', description: '先借恢复窗口蓄力。', cost: '短期会有停顿感。', reward: '后面能更有力地重新推进。', statEffects: { agency: 3, resilience: 3, mobility: 2 }, feedback: '你让修复变成蓄力，后面路线有机会重新提速。' },
+            ],
+          },
+        ],
+      };
+
+      const ROUTE_REPLACEMENT_THEMES = {
+        bold: ['health', 'family', 'relationship'],
+        steady: ['migration', 'mindset', 'relationship'],
+        repair: ['career', 'migration', 'wealth'],
+      };
+
+      const STYLE_CARD_VARIANTS = {
+        bold: {
+          trialTitle: '强攻事件',
+          opportunityTitle: '窗口事件',
+          summaryPrefix: '这条路线会把当前局面推向更直接的抢位与承压判断。',
+          dramaticPrefix: '你已经连续做了更主动的选择，后面的问题会更快来到台前。',
+          choiceLead: '这一步更像在拿速度换空间。',
+        },
+        steady: {
+          trialTitle: '稳盘事件',
+          opportunityTitle: '沉淀事件',
+          summaryPrefix: '这条路线会把当前局面推向秩序、留存与长期承接判断。',
+          dramaticPrefix: '你已经连续做了更稳的选择，后面的事件会更强调底盘和持续性。',
+          choiceLead: '这一步更像在拿耐心换稳定度。',
+        },
+        repair: {
+          trialTitle: '修复事件',
+          opportunityTitle: '回补事件',
+          summaryPrefix: '这条路线会把当前局面推向收口损耗、修边界和降低复发判断。',
+          dramaticPrefix: '你已经连续做了更偏修复的选择，后面的事件会更强调止损和回补。',
+          choiceLead: '这一步更像在拿当下速度换后续可持续。',
+        },
+      };
+
+      const dominantStyle = (state) => {
+        const styles = Object.entries(state.styleCounts || {});
+        const sorted = styles.sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]));
+        return sorted[0]?.[1] > 0 ? sorted[0][0] : 'steady';
+      };
+
+      const currentGameDeck = (lifeGame, state) => state.branchDeck || lifeGame.cards || [];
+
+      const buildRouteVariantCard = (variant, cardNo) => ({
+        ...variant,
+        rank: cardNo,
+        score: 999 - cardNo,
+        strongHitCount: 4,
+        matchedSignals: [variant.themeLabel, variant.title],
+        cardNo,
+      });
+
+      const buildBranchDeck = (lifeGame, route, resolvedIds = []) => {
+        const baseCards = (lifeGame.cards || []).map((card) => ({ ...card }));
+        const variants = (ROUTE_VARIANT_LIBRARY[route] || []).map((variant, index) => buildRouteVariantCard(variant, 800 + index));
+        const replaceThemes = ROUTE_REPLACEMENT_THEMES[route] || [];
+        const nextCards = [...baseCards];
+        let variantIndex = 0;
+
+        nextCards.forEach((card, index) => {
+          if (variantIndex >= variants.length) {
+            return;
+          }
+          if (resolvedIds.includes(card.id)) {
+            return;
+          }
+          if (!replaceThemes.includes(card.theme)) {
+            return;
+          }
+          nextCards[index] = {
+            ...variants[variantIndex],
+            cardNo: card.cardNo,
+          };
+          variantIndex += 1;
+        });
+
+        return nextCards;
+      };
+
+      const nextPlayableCardId = (lifeGame, resolvedIds, fallbackId, preferredStyle = 'steady') => {
+        const deck = currentGameDeck(lifeGame, { branchDeck: lifeGame.branchDeck });
+        const remaining = deck.filter((card) => !resolvedIds.includes(card.id));
         if (!remaining.length) {
-          return fallbackId || (lifeGame.cards?.[0]?.id || '');
+          return fallbackId || (deck?.[0]?.id || '');
         }
         if (fallbackId && remaining.some((card) => card.id === fallbackId)) {
           return fallbackId;
         }
-        return remaining[0].id;
+        const preference = STYLE_THEME_PREFERENCES[preferredStyle] || STYLE_THEME_PREFERENCES.steady;
+        const scored = remaining.map((card, index) => {
+          const themeIndex = preference.indexOf(card.theme);
+          let score = themeIndex === -1 ? 0 : (preference.length - themeIndex) * 10;
+          if (preferredStyle === 'bold' && card.type === 'trial') {
+            score += 3;
+          }
+          if (preferredStyle === 'steady' && ['wealth', 'career', 'family'].includes(card.theme)) {
+            score += 2;
+          }
+          if (preferredStyle === 'repair' && ['health', 'relationship', 'mindset'].includes(card.theme)) {
+            score += 2;
+          }
+          score += Math.max(0, 20 - index);
+          return { card, score };
+        }).sort((left, right) => right.score - left.score || left.card.cardNo - right.card.cardNo);
+        return scored[0].card.id;
       };
 
       const currentStageIndex = (lifeGame, state) => {
-        const total = Math.max(1, (lifeGame.cards || []).length);
+        const total = Math.max(1, currentGameDeck(lifeGame, state).length);
         const progress = state.resolvedCardIds.length / total;
         return Math.min((lifeGame.stages || []).length - 1, Math.floor(progress * (lifeGame.stages || []).length));
       };
@@ -2199,8 +2467,60 @@
         stats: cloneGameStats(lifeGame.stats),
         resolvedCardIds: [],
         decisions: [],
+        branchRoute: 'steady',
+        branchDeck: null,
+        styleCounts: {
+          bold: 0,
+          steady: 0,
+          repair: 0,
+        },
         activeCardId: lifeGame.cards?.[0]?.id || '',
       });
+
+      const adaptStageByState = (stage, state) => {
+        const style = dominantStyle(state);
+        const route = STYLE_GUIDANCE[style] || STYLE_GUIDANCE.steady;
+        const variant = STYLE_STAGE_VARIANTS[style] || STYLE_STAGE_VARIANTS.steady;
+        return {
+          ...stage,
+          routeId: style,
+          routeLabel: route.label,
+          routeSummary: route.stage,
+          dynamicTitle: `${variant.prefix} · ${stage?.title || '人生阶段'}`,
+          dynamicStrategy: `${stage?.strategy || ''}${stage?.strategy ? ' ' : ''}${variant.strategy}`,
+        };
+      };
+
+      const adaptCardByState = (card, state) => {
+        const style = dominantStyle(state);
+        const route = STYLE_GUIDANCE[style] || STYLE_GUIDANCE.steady;
+        const variant = STYLE_CARD_VARIANTS[style] || STYLE_CARD_VARIANTS.steady;
+        const modifiers = [];
+        if ((state.decisions || []).length > 0) {
+          modifiers.push(route.card);
+        }
+        if (style === 'bold' && card.type === 'trial') {
+          modifiers.push('这一步更适合先判断承压边界，再决定要不要抢窗口。');
+        }
+        if (style === 'steady' && ['wealth', 'career'].includes(card.theme)) {
+          modifiers.push('这一步更适合先看留存和秩序，再决定是否继续扩大投入。');
+        }
+        if (style === 'repair' && ['relationship', 'health', 'mindset'].includes(card.theme)) {
+          modifiers.push('这一步更适合先收口消耗，再考虑额外扩张。');
+        }
+
+        return {
+          ...card,
+          routeId: style,
+          dynamicTitle: `${variant[card.type === 'trial' ? 'trialTitle' : 'opportunityTitle']} · ${card.title}`,
+          dynamicSummary: `${STYLE_SUMMARY_BY_THEME[style]?.[card.theme] || ''} ${variant.summaryPrefix}`.trim(),
+          dynamicDramaticText: `${variant.dramaticPrefix} ${card.dramaticText}`.trim(),
+          dynamicChoiceLead: variant.choiceLead,
+          dynamicHint: modifiers.join(' '),
+          routeLabel: route.label,
+          dynamicChoiceFeedbackPrefix: route.label,
+        };
+      };
 
       const renderStatGrid = (stats) => `
         <div class="stat-grid">
@@ -2214,10 +2534,12 @@
       `;
 
       const renderLifeGame = (lifeGame, state) => {
-        const activeCard = cardById(lifeGame, state.activeCardId) || lifeGame.cards?.[0];
+        const deck = currentGameDeck(lifeGame, state);
+        const activeCard = deck.find((card) => card.id === state.activeCardId) || deck[0];
         const stageIndex = currentStageIndex(lifeGame, state);
-        const activeStage = lifeGame.stages?.[stageIndex];
-        const isFinished = state.resolvedCardIds.length >= (lifeGame.cards || []).length;
+        const activeStage = adaptStageByState(lifeGame.stages?.[stageIndex], state);
+        const isFinished = state.resolvedCardIds.length >= deck.length;
+        const dynamicCard = activeCard ? adaptCardByState(activeCard, state) : null;
         return `
           <div class="reading-head">
             <div class="game-hero">
@@ -2233,7 +2555,8 @@
             <div class="game-runbar">
               <div>
                 <strong>${isFinished ? '这一轮已收束' : `当前关卡：${activeStage?.title || '人生主线'}`}</strong>
-                <p class="meta">已完成 ${state.resolvedCardIds.length} / ${(lifeGame.cards || []).length} 个事件。${activeStage ? `当前阶段：${activeStage.ageRange} · ${activeStage.ganZhi}。` : ''}</p>
+                <p class="meta">已完成 ${state.resolvedCardIds.length} / ${deck.length} 个事件。${activeStage ? `当前阶段：${activeStage.ageRange} · ${activeStage.ganZhi}。` : ''}</p>
+                <p class="meta">本轮已展开 ${lifeGame.scale?.stages || (lifeGame.stages || []).length} 个阶段，当前人生地图会延伸到 ${lifeGame.stages?.at(-1)?.ageRange || '-'}。</p>
               </div>
               <div class="game-runbar-actions">
                 <button class="ghost-button" type="button" data-game-action="reset">重新开局</button>
@@ -2257,36 +2580,44 @@
             <div class="game-play-grid">
               <div class="game-scene-main">
                 <article class="game-scene-side-card">
-                  <strong>${activeStage?.title || '人生主线'}</strong>
+                  <strong>${activeStage?.dynamicTitle || activeStage?.title || '人生主线'}</strong>
                   <p class="meta">${activeStage?.triggerSummary || '当前没有阶段信息。'}</p>
-                  <p class="meta">推荐策略：${activeStage?.strategy || '继续观察当前主线。'}</p>
+                  <p class="meta">推荐策略：${activeStage?.dynamicStrategy || activeStage?.strategy || '继续观察当前主线。'}</p>
+                  <p class="meta">当前路线：${activeStage?.routeLabel || '稳健路线'}。${activeStage?.routeSummary || ''}</p>
+                </article>
+                <article class="game-route-banner">
+                  <strong>分支已经开始变化</strong>
+                  <p class="meta">你当前走的是 <b>${activeStage?.routeLabel || '稳健路线'}</b>。这会改变后续事件优先级，也会替换掉部分后续关卡。</p>
+                  ${dynamicCard?.dynamicSummary ? `<p class="meta">${dynamicCard.dynamicSummary}</p>` : ''}
                 </article>
                 <article class="game-scene">
-                  ${activeCard ? `
+                  ${dynamicCard ? `
                     <div class="game-scene-head">
                       <div>
-                        <h3>${activeCard.title}</h3>
-                        <small>${activeCard.themeLabel} · ${activeCard.type === 'trial' ? '试炼' : '机会'}</small>
+                        <h3>${dynamicCard.dynamicTitle || dynamicCard.title}</h3>
+                        <small>${dynamicCard.themeLabel} · ${dynamicCard.type === 'trial' ? '试炼' : '机会'}</small>
                       </div>
-                      <span class="tag ${activeCard.type === 'trial' ? 'tag-bad' : 'tag-good'}">${activeCard.type === 'trial' ? '试炼' : '机会'}</span>
+                      <span class="tag ${dynamicCard.type === 'trial' ? 'tag-bad' : 'tag-good'}">${dynamicCard.type === 'trial' ? '试炼' : '机会'}</span>
                     </div>
-                    <p class="topic-takeaway">${activeCard.summary}</p>
-                    <p class="meta">${activeCard.dramaticText}</p>
-                    <p class="meta">${activeCard.triggerSummary}</p>
-                    ${state.resolvedCardIds.includes(activeCard.id) ? `
+                    <p class="topic-takeaway">${dynamicCard.dynamicSummary || dynamicCard.summary}</p>
+                    <p class="meta">${dynamicCard.dynamicDramaticText || dynamicCard.dramaticText}</p>
+                    <p class="meta">${dynamicCard.triggerSummary}</p>
+                    ${dynamicCard.dynamicHint ? `<p class="meta">${dynamicCard.dynamicHint}</p>` : ''}
+                    ${state.resolvedCardIds.includes(dynamicCard.id) ? `
                       <div class="empty-card">
                         <p class="meta">这一题已经结算完成。重新开局可以重走一轮。</p>
                       </div>
                     ` : `
                       <div class="choice-list">
-                        ${activeCard.choices.map((choice, choiceIndex) => `
+                        ${dynamicCard.choices.map((choice, choiceIndex) => `
                           <button
                             class="choice-action ${choice.style}"
                             type="button"
-                            data-game-choice="${activeCard.id}:${choiceIndex}"
+                            data-game-choice="${dynamicCard.id}:${choiceIndex}"
                           >
                             <strong>${choice.label}</strong>
                             <small>${choice.description}</small>
+                            <span class="meta">${dynamicCard.dynamicChoiceLead}</span>
                             <span class="meta">代价：${choice.cost}</span>
                             <span class="meta">收益：${choice.reward}</span>
                             <div class="effect-list">${renderChoiceEffects(choice.statEffects)}</div>
@@ -2352,7 +2683,7 @@
         if (currentLifeGameState.resolvedCardIds.includes(cardId)) {
           return;
         }
-        const card = cardById(currentLifeGame, cardId);
+        const card = gameCardById(currentLifeGame, currentLifeGameState, cardId);
         const choice = card?.choices?.[choiceIndex];
         if (!card || !choice) {
           return;
@@ -2363,14 +2694,30 @@
         });
 
         currentLifeGameState.resolvedCardIds.push(cardId);
+        currentLifeGameState.styleCounts[choice.style] = (currentLifeGameState.styleCounts[choice.style] || 0) + 1;
         currentLifeGameState.decisions.push({
           cardId,
           cardTitle: card.title,
           choiceLabel: choice.label,
-          feedback: choice.feedback,
+          feedback: `${STYLE_GUIDANCE[choice.style]?.label || '当前路线'}：${choice.feedback}`,
+          style: choice.style,
           statEffects: choice.statEffects || {},
         });
-        currentLifeGameState.activeCardId = nextPlayableCardId(currentLifeGame, currentLifeGameState.resolvedCardIds, '');
+        currentLifeGameState.branchRoute = dominantStyle(currentLifeGameState);
+        currentLifeGameState.branchDeck = buildBranchDeck(
+          currentLifeGame,
+          currentLifeGameState.branchRoute,
+          currentLifeGameState.resolvedCardIds,
+        );
+        currentLifeGameState.activeCardId = nextPlayableCardId(
+          {
+            ...currentLifeGame,
+            branchDeck: currentLifeGameState.branchDeck,
+          },
+          currentLifeGameState.resolvedCardIds,
+          '',
+          dominantStyle(currentLifeGameState),
+        );
         rerenderLifeGame();
       };
 

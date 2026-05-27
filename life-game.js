@@ -493,6 +493,45 @@ const selectScored = (scored, { type, min, max, target = max, perThemeLimit, min
   return selected.slice(0, max);
 };
 
+const refineOpportunitySelection = (selected, scored) => {
+  const selectedIds = new Set(selected.map((item) => item.template.id));
+  const candidateById = new Map(scored
+    .filter((item) => item.template.type === 'opportunity')
+    .map((item) => [item.template.id, item]));
+
+  const replacementRules = [
+    { id: 'opportunity-migration', minScore: 32, replaceIds: ['opportunity-noble-help', 'opportunity-platform-upgrade'] },
+    { id: 'opportunity-relationship-growth', minScore: 34, replaceIds: ['opportunity-noble-help', 'opportunity-platform-upgrade'] },
+    { id: 'opportunity-skill-output', minScore: 34, replaceIds: ['opportunity-noble-help', 'opportunity-platform-upgrade'] },
+  ];
+
+  replacementRules.forEach((rule) => {
+    if (selectedIds.has(rule.id)) {
+      return;
+    }
+    const candidate = candidateById.get(rule.id);
+    if (!candidate || candidate.score < rule.minScore || candidate.strongHitCount < 3) {
+      return;
+    }
+
+    const replaceIndex = selected.findIndex((item) => (
+      rule.replaceIds.includes(item.template.id)
+      && item.score <= candidate.score + 8
+    ));
+
+    if (replaceIndex === -1) {
+      return;
+    }
+
+    selectedIds.delete(selected[replaceIndex].template.id);
+    selected[replaceIndex] = candidate;
+    selectedIds.add(candidate.template.id);
+  });
+
+  return selected
+    .sort((a, b) => b.score - a.score || a.template.id.localeCompare(b.template.id));
+};
+
 const applyChoiceDefaults = (choice) => ({
   label: choice.label,
   style: choice.style,
@@ -672,7 +711,19 @@ const stageThemeFromPeriod = (period, index) => {
   };
 };
 
-const buildStages = (bazi, cards) => (bazi.luck?.daYun || []).slice(0, 5).map((period, index) => {
+const pickGamePeriods = (bazi) => {
+  const periods = (bazi.luck?.daYun || []).filter((period) => period && Number.isFinite(period.startAge));
+  const picked = [];
+  for (const period of periods) {
+    picked.push(period);
+    if ((period.endAge || 0) >= 87 || picked.length >= 8) {
+      break;
+    }
+  }
+  return picked.length ? picked : periods.slice(0, 8);
+};
+
+const buildStages = (periods, cards) => periods.map((period, index) => {
   const stageTheme = stageThemeFromPeriod(period, index);
   const periodSignals = new Set([period.ganShiShen, ...(period.hiddenShiShen || []), period.ganWuXing, period.zhiWuXing].filter(Boolean));
   const relatedCards = uniqueBy(cards
@@ -709,30 +760,56 @@ const buildStages = (bazi, cards) => (bazi.luck?.daYun || []).slice(0, 5).map((p
   };
 });
 
+const computeGameScale = ({ periods, patterns, signalIndex }) => {
+  const periodCount = periods.length || 5;
+  const patternRichness = patterns.length || 0;
+  const natalSignalRichness = Array.from(signalIndex.natalGodCounts.values()).reduce((total, count) => total + Math.max(0, count - 1), 0);
+  const positivePatternCount = patterns.filter((pattern) => pattern.verdict === '吉').length;
+  const riskPatternCount = patterns.filter((pattern) => ['凶', '待辨'].includes(pattern.verdict)).length;
+  const trialBonus = Math.min(4, Math.floor(patternRichness / 2)) + Math.min(2, Math.floor((riskPatternCount + natalSignalRichness) / 4));
+  const opportunityBonus = Math.min(1, Math.floor(positivePatternCount / 3));
+
+  const desiredTrials = Math.max(8, Math.min(14, periodCount + 1 + trialBonus));
+  const desiredOpportunities = Math.max(3, Math.min(4, 3 + opportunityBonus));
+
+  return {
+    trialMin: Math.max(5, Math.min(desiredTrials, periodCount + 2)),
+    trialTarget: desiredTrials,
+    trialMax: desiredTrials,
+    opportunityMin: 3,
+    opportunityTarget: desiredOpportunities,
+    opportunityMax: desiredOpportunities,
+    trialThemeLimit: 3,
+    opportunityThemeLimit: 1,
+  };
+};
+
 const buildLifeGame = ({ reading, bazi, palaces, patterns }) => {
   const signalIndex = buildSignalIndex({ reading, bazi, patterns, palaces });
   const context = { reading, bazi, palaces, patterns, signalIndex };
+  const periods = pickGamePeriods(bazi);
+  const scale = computeGameScale({ periods, patterns, signalIndex });
   const scored = templateFile.templates.map((template) => scoreTemplate(template, context));
   const trials = selectScored(scored, {
     type: 'trial',
-    min: 3,
-    max: 7,
-    target: 7,
-    perThemeLimit: 2,
+    min: scale.trialMin,
+    max: scale.trialMax,
+    target: scale.trialTarget,
+    perThemeLimit: scale.trialThemeLimit,
     minScore: 16,
   }).map(buildNode);
-  const opportunities = selectScored(scored, {
+  const opportunities = refineOpportunitySelection(selectScored(scored, {
     type: 'opportunity',
-    min: 3,
-    max: 5,
-    target: 4,
-    perThemeLimit: 1,
+    min: scale.opportunityMin,
+    max: scale.opportunityMax,
+    target: scale.opportunityTarget,
+    perThemeLimit: scale.opportunityThemeLimit,
     minScore: 18,
-  }).map(buildNode);
+  }), scored).map(buildNode);
   const cards = trials.concat(opportunities).map((card, index) => ({ ...card, cardNo: index + 1 }));
   const stats = buildStats({ signalIndex, patterns });
   const archetype = chooseArchetype({ patterns, stats, signalIndex });
-  const stages = buildStages(bazi, cards);
+  const stages = buildStages(periods, cards);
 
   return {
     headline: archetype.headline,
@@ -745,6 +822,10 @@ const buildLifeGame = ({ reading, bazi, palaces, patterns }) => {
     opportunities,
     stages,
     cards,
+    scale: {
+      stages: stages.length,
+      cards: cards.length,
+    },
     disclaimer: '人生游戏是基于命盘结构生成的倾向与选择模拟，不是具体事件预言，也不替代现实中的医疗、法律、投资或关系决策。',
   };
 };
