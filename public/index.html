@@ -6,15 +6,15 @@
     <title>紫微斗数排盘 API Demo</title>
     <style>
       :root {
-        --ink: #1f1a15;
-        --muted: #766a5d;
-        --paper: #fff8ea;
-        --panel: rgba(255, 251, 239, 0.86);
-        --line: rgba(61, 44, 26, 0.16);
-        --gold: #c9852d;
-        --red: #b5422f;
-        --blue: #1d5d78;
-        --green: #596f35;
+        --ink: #171717;
+        --muted: #69625a;
+        --paper: #f7f2e8;
+        --panel: rgba(255, 253, 247, 0.9);
+        --line: rgba(74, 62, 47, 0.16);
+        --gold: #b98536;
+        --red: #b9412e;
+        --blue: #243b6b;
+        --green: #2f6f5e;
       }
 
       * {
@@ -25,11 +25,11 @@
         margin: 0;
         min-height: 100vh;
         color: var(--ink);
-        font-family: "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
         background:
-          radial-gradient(circle at 18% 14%, rgba(201, 133, 45, 0.22), transparent 28rem),
-          radial-gradient(circle at 88% 8%, rgba(29, 93, 120, 0.2), transparent 24rem),
-          linear-gradient(135deg, #f4dfb5 0%, #fff8ea 42%, #ead4a5 100%);
+          linear-gradient(115deg, rgba(185, 65, 46, 0.08), transparent 28rem),
+          linear-gradient(245deg, rgba(36, 59, 107, 0.12), transparent 30rem),
+          linear-gradient(135deg, #efe5d2 0%, #f7f2e8 44%, #e7edf0 100%);
       }
 
       body::before {
@@ -62,15 +62,18 @@
       .control-card,
       .panel {
         border: 1px solid var(--line);
-        border-radius: 28px;
+        border-radius: 12px;
         background: var(--panel);
-        box-shadow: 0 22px 70px rgba(56, 41, 21, 0.16);
+        box-shadow: 0 22px 70px rgba(56, 41, 21, 0.12);
         backdrop-filter: blur(10px);
       }
 
       .title-card {
         padding: 34px;
         overflow: hidden;
+        min-height: 420px;
+        display: grid;
+        align-content: space-between;
       }
 
       .eyebrow {
@@ -83,9 +86,10 @@
 
       h1 {
         margin: 0;
+        font-family: "Songti SC", "STSong", "Noto Serif CJK SC", serif;
         font-size: clamp(42px, 7vw, 86px);
-        line-height: 0.94;
-        letter-spacing: -0.06em;
+        line-height: 1;
+        letter-spacing: 0;
       }
 
       .subtitle {
@@ -94,6 +98,26 @@
         color: var(--muted);
         font-size: 18px;
         line-height: 1.8;
+      }
+
+      .version-pill {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        padding: 6px 10px;
+        border: 1px solid rgba(185, 65, 46, 0.18);
+        border-radius: 999px;
+        color: var(--red);
+        background: rgba(185, 65, 46, 0.08);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .hero-note {
+        margin: 18px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.7;
       }
 
       .control-card {
@@ -125,7 +149,7 @@
       button {
         width: 100%;
         border: 1px solid rgba(52, 38, 24, 0.18);
-        border-radius: 16px;
+        border-radius: 8px;
         padding: 12px 13px;
         color: var(--ink);
         background: rgba(255, 253, 245, 0.86);
@@ -156,6 +180,21 @@
         font-size: 13px;
       }
 
+      .result-fade {
+        animation: resultFade 360ms ease both;
+      }
+
+      @keyframes resultFade {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
       .summary {
         display: grid;
         grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -166,7 +205,7 @@
       .chip {
         padding: 16px;
         border: 1px solid var(--line);
-        border-radius: 20px;
+        border-radius: 8px;
         background: rgba(255, 253, 245, 0.68);
       }
 
@@ -396,7 +435,7 @@
         flex: 1 1 140px;
         min-height: 48px;
         border: 1px solid rgba(52, 38, 24, 0.14);
-        border-radius: 16px;
+        border-radius: 8px;
         background: rgba(255, 253, 245, 0.76);
         color: var(--muted);
         font: inherit;
@@ -442,7 +481,7 @@
       .insight-card {
         padding: 18px;
         border: 1px solid rgba(52, 38, 24, 0.16);
-        border-radius: 20px;
+        border-radius: 8px;
         background: rgba(255, 253, 245, 0.72);
       }
 
@@ -460,6 +499,48 @@
         line-height: 1.1;
       }
 
+      .overview-hero-card {
+        display: grid;
+        gap: 14px;
+        min-height: 100%;
+      }
+
+      .overview-hero-card strong {
+        color: var(--red);
+      }
+
+      .stat-meter-list {
+        display: grid;
+        gap: 9px;
+      }
+
+      .stat-meter {
+        display: grid;
+        gap: 5px;
+      }
+
+      .stat-meter-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .stat-meter-bar {
+        height: 7px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgba(36, 59, 107, 0.1);
+      }
+
+      .stat-meter-fill {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--green), var(--blue));
+      }
+
       .mini-list {
         margin: 0;
         padding-left: 20px;
@@ -475,6 +556,45 @@
       .timeline-shell {
         display: grid;
         gap: 18px;
+      }
+
+      .timeline-board {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .timeline-node {
+        display: grid;
+        gap: 10px;
+        padding: 16px;
+        border: 1px solid rgba(52, 38, 24, 0.16);
+        border-radius: 8px;
+        background: rgba(255, 253, 245, 0.72);
+        transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+      }
+
+      .timeline-node:hover {
+        transform: translateY(-2px);
+        border-color: rgba(185, 65, 46, 0.26);
+        background: rgba(255, 253, 245, 0.92);
+      }
+
+      .timeline-node small {
+        color: var(--muted);
+        font-weight: 700;
+      }
+
+      .timeline-node strong {
+        color: var(--red);
+        font-size: 26px;
+        line-height: 1;
+      }
+
+      .timeline-chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
       }
 
       .horoscope-grid {
@@ -1323,7 +1443,8 @@
 
         .stat-grid,
         .game-grid,
-        .stage-grid {
+        .stage-grid,
+        .timeline-board {
           grid-template-columns: 1fr;
         }
 
@@ -1681,10 +1802,16 @@
     <main>
       <section class="hero">
         <div class="title-card">
-          <p class="eyebrow">Zi Wei API Prototype</p>
-          <h1>人生剧本<br>排盘底座</h1>
-          <p class="subtitle">
-            先把命盘底座做成一套可工作的解读工作台。输入出生信息后，页面会把命盘、时间轴和知识解读分层展示，不再把所有信息挤在同一屏。
+          <div>
+            <span class="version-pill">Mingli 0.0.2</span>
+            <p class="eyebrow">Zi Wei · BaZi · Life Game</p>
+            <h1>东方命理<br>人生手册</h1>
+            <p class="subtitle">
+              用紫微斗数、八字与运限整理你的结构、阶段与选择模式。先看能理解的人生主线，再展开宫位、十神、格局和古籍依据。
+            </p>
+          </div>
+          <p class="hero-note">
+            这是非宿命论的结构化解读原型：它提供倾向、阶段和行动提示，不替代现实决策。
           </p>
         </div>
 
@@ -1732,7 +1859,7 @@
                 <option value="zhongzhou">中州派</option>
               </select>
             </label>
-            <button type="submit">生成排盘</button>
+            <button type="submit">生成我的命盘</button>
             <div class="status" id="status"></div>
           </form>
         </div>
@@ -1776,6 +1903,10 @@
         <section class="workspace-section" id="view-timeline">
           <div class="timeline-shell">
             <div class="panel">
+              <h2>当前时间轴</h2>
+              <div id="timelineOverview"></div>
+            </div>
+            <div class="panel">
               <h2>八字详盘</h2>
               <div id="bazi"></div>
             </div>
@@ -1811,6 +1942,7 @@
       const summaryEl = document.querySelector('#summary');
       const overviewLeadEl = document.querySelector('#overviewLead');
       const overviewInsightsEl = document.querySelector('#overviewInsights');
+      const timelineOverviewEl = document.querySelector('#timelineOverview');
       const workspaceButtons = Array.from(document.querySelectorAll('.workspace-button'));
       const workspaceSections = Array.from(document.querySelectorAll('.workspace-section'));
       let currentParams = new URLSearchParams(new FormData(form));
@@ -1860,6 +1992,58 @@
         </div>
       `;
 
+      const statLabels = {
+        agency: '主导力',
+        stability: '稳定度',
+        mobility: '流动性',
+        resilience: '恢复力',
+        connection: '连接力',
+      };
+
+      const renderMiniStats = (stats = {}) => `
+        <div class="stat-meter-list">
+          ${Object.entries(stats).slice(0, 5).map(([key, value]) => {
+            const score = Math.max(0, Math.min(100, Number(value) || 0));
+            return `
+              <div class="stat-meter">
+                <div class="stat-meter-head">
+                  <span>${statLabels[key] || key}</span>
+                  <b>${score}</b>
+                </div>
+                <div class="stat-meter-bar"><span class="stat-meter-fill" style="width:${score}%"></span></div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+
+      const mutagenText = (item) => (item?.mutagen || []).length ? item.mutagen.join('、') : '无四化';
+
+      const renderTimelineOverview = (data) => {
+        const nodes = [
+          ['大限', data.horoscope.decadal, '当前十年阶段，适合看长期关卡和承接方式。'],
+          ['流年', data.horoscope.yearly, '年度主题，适合看今年被点亮的机会与压力。'],
+          ['流月', data.horoscope.monthly, '月度节奏，适合看近期推进顺序。'],
+          ['今日', data.horoscope.daily, '今日提示，适合做轻量复访入口。'],
+        ];
+
+        timelineOverviewEl.innerHTML = `
+          <div class="timeline-board">
+            ${nodes.map(([label, item, hint]) => `
+              <article class="timeline-node">
+                <small>${label}</small>
+                <strong>${item.heavenlyStem}${item.earthlyBranch}</strong>
+                <p class="meta">${hint}</p>
+                <div class="timeline-chip-row">
+                  ${(item.palaceNames || []).slice(0, 3).map((name) => `<span class="tag tag-rule-broad">${name}</span>`).join('')}
+                  <span class="tag tag-warn">${mutagenText(item)}</span>
+                </div>
+              </article>
+            `).join('')}
+          </div>
+        `;
+      };
+
       const activateView = (view) => {
         workspaceButtons.forEach((button) => {
           button.classList.toggle('active', button.dataset.view === view);
@@ -1872,39 +2056,45 @@
       const renderOverview = (data) => {
         const headlineManual = data.reading.manual[0];
         const referenceNames = [...new Set(data.reading.references.map((item) => item.source))];
+        const lifeGame = data.reading.lifeGame;
 
         summaryEl.innerHTML = [
+          chip('生命原型', lifeGame?.archetype?.name || '-'),
           chip('命主 / 身主', `${data.summary.soul || '-'} / ${data.summary.body || '-'}`),
-          chip('五行局', data.summary.fiveElementsClass),
-          chip('当前时点', data.input.target),
           chip('日主', `${data.bazi.dayMaster.stem} · ${data.bazi.dayMaster.element}`),
+          chip('当前时点', data.input.target),
         ].join('');
 
         overviewLeadEl.innerHTML = `
-          <h3>当前主线</h3>
-          <strong>${data.reading.headline}</strong>
-          <p class="meta">${briefText(headlineManual?.body || '', 2, 120)}</p>
+          <div class="overview-hero-card">
+            <div>
+              <h3>人生主线</h3>
+              <strong>${lifeGame?.headline || data.reading.headline}</strong>
+              <p class="meta">${briefText(headlineManual?.body || '', 2, 132)}</p>
+            </div>
+            ${renderMiniStats(lifeGame?.stats || {})}
+          </div>
         `;
 
         overviewInsightsEl.innerHTML = `
           <article class="insight-card">
-            <h3>此刻定位</h3>
+            <h3>当前阶段</h3>
             <p class="meta">
-              大限：${data.horoscope.decadal.heavenlyStem}${data.horoscope.decadal.earthlyBranch}<br>
-              流年：${data.horoscope.yearly.heavenlyStem}${data.horoscope.yearly.earthlyBranch}<br>
-              流月：${data.horoscope.monthly.heavenlyStem}${data.horoscope.monthly.earthlyBranch}<br>
-              流日：${data.horoscope.daily.heavenlyStem}${data.horoscope.daily.earthlyBranch}
+              大限：${data.horoscope.decadal.heavenlyStem}${data.horoscope.decadal.earthlyBranch} · ${mutagenText(data.horoscope.decadal)}<br>
+              流年：${data.horoscope.yearly.heavenlyStem}${data.horoscope.yearly.earthlyBranch} · ${mutagenText(data.horoscope.yearly)}<br>
+              流月：${data.horoscope.monthly.heavenlyStem}${data.horoscope.monthly.earthlyBranch} · ${mutagenText(data.horoscope.monthly)}<br>
+              今日：${data.horoscope.daily.heavenlyStem}${data.horoscope.daily.earthlyBranch} · ${mutagenText(data.horoscope.daily)}
             </p>
           </article>
           <article class="insight-card">
-            <h3>知识命中</h3>
+            <h3>关键主题</h3>
             <ul class="mini-list">
-              ${data.reading.knowledgeHits.slice(0, 4).map((item) => `<li>${item.topic}：${item.summary}</li>`).join('')}
+              ${data.reading.topics.slice(0, 5).map((item) => `<li>${item.title}：${briefText(item.takeaway || item.summary, 1, 58)}</li>`).join('')}
             </ul>
           </article>
           <article class="insight-card">
-            <h3>已接书源</h3>
-            <p class="meta">${referenceNames.join('、') || '暂无引用依据'}</p>
+            <h3>依据层</h3>
+            <p class="meta">${referenceNames.slice(0, 8).join('、') || '暂无引用依据'}</p>
           </article>
         `;
       };
@@ -2555,6 +2745,7 @@
         let centerRendered = false;
 
         renderOverview(data);
+        renderTimelineOverview(data);
 
         boardEl.innerHTML = boardSlots.map((index) => {
           if (index === null) {
@@ -2719,6 +2910,8 @@
           }
 
           render(data);
+          document.querySelector('.workspace')?.classList.remove('result-fade');
+          requestAnimationFrame(() => document.querySelector('.workspace')?.classList.add('result-fade'));
           const dstText = data.input.daylightSaving
             ? `，${data.input.daylightSavingMode === 'auto' ? '自动识别夏令时' : '手动指定夏令时'}，已折算为标准时间 ${data.input.normalizedBirth.standardTime}`
             : `，${data.input.daylightSavingMode === 'auto' ? '自动判定非夏令时' : '手动指定标准时'}`;
