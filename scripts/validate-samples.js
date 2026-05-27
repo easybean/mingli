@@ -17,6 +17,7 @@ const buildParams = (query) => {
 
 const includesAll = (haystack, needles) => needles.filter((item) => !haystack.includes(item));
 const plainManualTitle = (title) => String(title || '').replace(/^第\d+章：/, '');
+const overlapCount = (left, right) => left.filter((item) => right.includes(item)).length;
 
 const validateSample = (sample) => {
   const result = buildAstrolabe(buildParams(sample.query));
@@ -225,8 +226,10 @@ const validateSample = (sample) => {
       knowledgeHits: reading.knowledgeHits.length,
       retrieval: (reading.retrieval || []).length,
       patterns: (reading.patterns || []).map((item) => item.name),
+      archetype: reading.lifeGame?.archetype?.name || '',
       lifeGameTrials: reading.lifeGame?.trials?.map((item) => item.title) || [],
       lifeGameOpportunities: reading.lifeGame?.opportunities?.map((item) => item.title) || [],
+      lifeGameOpportunityIds: reading.lifeGame?.opportunities?.map((item) => item.id) || [],
       topics: reading.topics.map((item) => item.title),
     },
   };
@@ -234,6 +237,34 @@ const validateSample = (sample) => {
 
 const results = sampleFile.samples.map(validateSample);
 const failed = results.filter((item) => !item.ok);
+
+const globalErrors = [];
+const passedLifeGames = results.filter((item) => item.ok);
+const archetypes = Array.from(new Set(passedLifeGames.map((item) => item.snapshot.archetype).filter(Boolean)));
+if (passedLifeGames.length && archetypes.length < 3) {
+  globalErrors.push(`lifeGame archetypes too concentrated: ${archetypes.join(', ')}`);
+}
+
+const distinctOpportunityIds = new Set(
+  passedLifeGames.flatMap((item) => item.snapshot.lifeGameOpportunityIds || []),
+);
+if (passedLifeGames.length && distinctOpportunityIds.size < 7) {
+  globalErrors.push(`lifeGame opportunities too concentrated: only ${distinctOpportunityIds.size} distinct ids`);
+}
+
+for (let index = 0; index < passedLifeGames.length; index += 1) {
+  for (let next = index + 1; next < passedLifeGames.length; next += 1) {
+    const current = passedLifeGames[index];
+    const other = passedLifeGames[next];
+    const currentIds = current.snapshot.lifeGameOpportunityIds || [];
+    const otherIds = other.snapshot.lifeGameOpportunityIds || [];
+    const overlap = overlapCount(currentIds, otherIds);
+    const ratio = overlap / Math.max(1, Math.min(currentIds.length, otherIds.length));
+    if (ratio > 0.8) {
+      globalErrors.push(`lifeGame opportunities overlap too high: ${current.id} vs ${other.id} = ${overlap}/${Math.min(currentIds.length, otherIds.length)}`);
+    }
+  }
+}
 
 results.forEach((item) => {
   const prefix = item.ok ? 'PASS' : 'FAIL';
@@ -245,6 +276,12 @@ results.forEach((item) => {
 
 if (failed.length) {
   console.error(`\n${failed.length} sample(s) failed.`);
+  process.exit(1);
+}
+
+if (globalErrors.length) {
+  globalErrors.forEach((error) => console.error(`GLOBAL - ${error}`));
+  console.error(`\n${globalErrors.length} global regression check(s) failed.`);
   process.exit(1);
 }
 
