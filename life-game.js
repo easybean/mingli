@@ -1,5 +1,47 @@
 const templateFile = require('./data/life-game-templates.json');
 
+const STEM_ELEMENTS = {
+  甲: '木',
+  乙: '木',
+  丙: '火',
+  丁: '火',
+  戊: '土',
+  己: '土',
+  庚: '金',
+  辛: '金',
+  壬: '水',
+  癸: '水',
+};
+
+const STEM_YANG = {
+  甲: true,
+  乙: false,
+  丙: true,
+  丁: false,
+  戊: true,
+  己: false,
+  庚: true,
+  辛: false,
+  壬: true,
+  癸: false,
+};
+
+const GENERATES = {
+  木: '火',
+  火: '土',
+  土: '金',
+  金: '水',
+  水: '木',
+};
+
+const CONTROLS = {
+  木: '土',
+  火: '金',
+  土: '水',
+  金: '木',
+  水: '火',
+};
+
 const THEME_LABELS = {
   career: '事业',
   wealth: '财运',
@@ -102,6 +144,25 @@ const ARCHETYPES = [
   },
 ];
 
+const SCOPE_META = {
+  lifetime: {
+    label: '一生',
+    summary: '看长期课题、整个人生地图和会反复出现的试炼。',
+  },
+  decade: {
+    label: '最近十年',
+    summary: '看当前大运这十年的主战场，更适合判断近十年的主线和阶段打法。',
+  },
+  year: {
+    label: '最近一年',
+    summary: '看当前流年的主任务，适合判断今年该先处理什么。',
+  },
+  month: {
+    label: '最近一月',
+    summary: '看当前流月的小关卡，适合判断这个月先推进、观望还是修复。',
+  },
+};
+
 const clamp = (value, min = 0, max = 100) => Math.max(min, Math.min(max, value));
 
 const unique = (items) => Array.from(new Set(items.filter(Boolean)));
@@ -116,6 +177,32 @@ const uniqueBy = (items, iteratee) => {
     seen.add(key);
     return true;
   });
+};
+
+const tenGod = (dayStem, targetStem) => {
+  const dayElement = STEM_ELEMENTS[dayStem];
+  const targetElement = STEM_ELEMENTS[targetStem];
+  const samePolarity = STEM_YANG[dayStem] === STEM_YANG[targetStem];
+
+  if (!dayElement || !targetElement) {
+    return '';
+  }
+  if (dayElement === targetElement) {
+    return samePolarity ? '比肩' : '劫财';
+  }
+  if (GENERATES[dayElement] === targetElement) {
+    return samePolarity ? '食神' : '伤官';
+  }
+  if (GENERATES[targetElement] === dayElement) {
+    return samePolarity ? '偏印' : '正印';
+  }
+  if (CONTROLS[dayElement] === targetElement) {
+    return samePolarity ? '偏财' : '正财';
+  }
+  if (CONTROLS[targetElement] === dayElement) {
+    return samePolarity ? '七杀' : '正官';
+  }
+  return '';
 };
 
 const plainManualTitle = (title) => String(title || '').replace(/^第\d+章：/, '');
@@ -143,6 +230,7 @@ const addToSetMap = (map, key, values) => {
 };
 
 const mapToObject = (map) => Object.fromEntries(Array.from(map.entries()).map(([key, value]) => [key, value]));
+const itemIncludesSignal = (matchedSignals, target) => matchedSignals.some((signal) => signal.trigger === target || signal.trigger.includes(target));
 
 const hasPattern = (patterns, names) => patterns.some((pattern) => names.includes(pattern.name));
 
@@ -414,6 +502,17 @@ const scoreTemplate = (template, context) => {
   score += exactPatterns * 3;
   score += opportunitySignals * 3;
   score += riskSignals * 3;
+  if ((context.scopeProfile?.preferredThemes || []).includes(template.theme)) {
+    score += 10;
+  }
+  const scopeSignalHits = (context.scopeProfile?.extraSignals || []).filter((signal) => itemIncludesSignal(matchedSignals, signal)).length;
+  score += Math.min(12, scopeSignalHits * 4);
+  if (context.scopeProfile?.id === 'year' && !(context.scopeProfile?.preferredThemes || []).includes(template.theme)) {
+    score -= 4;
+  }
+  if (context.scopeProfile?.id === 'decade' && template.type === 'opportunity' && !(context.scopeProfile?.preferredThemes || []).includes(template.theme)) {
+    score -= 2;
+  }
 
   if (template.type === 'opportunity' && strongSignals.length < 2) {
     score -= 8;
@@ -661,10 +760,36 @@ const chooseArchetype = ({ patterns, stats, signalIndex }) => {
   };
 };
 
+const ageBandForPeriod = (period) => {
+  const endAge = Number(period?.endAge || 0);
+  if (endAge <= 13) {
+    return 'child';
+  }
+  if (endAge <= 22) {
+    return 'youth';
+  }
+  return 'adult';
+};
+
 const stageThemeFromPeriod = (period, index) => {
   const gods = [period.ganShiShen, ...(period.hiddenShiShen || [])].filter(Boolean);
+  const ageBand = ageBandForPeriod(period);
 
   if (gods.some((god) => /正官|七杀/.test(god))) {
+    if (ageBand === 'child') {
+      return {
+        title: '规则适应关',
+        strategy: '先学会和规则、要求、长辈期待相处，不急着把压力解释成成败。',
+        themes: ['mindset', 'family'],
+      };
+    }
+    if (ageBand === 'youth') {
+      return {
+        title: '学业与规范关',
+        strategy: '重点是适应标准、压力和节奏，学会把外部要求转成自己的执行力。',
+        themes: ['career', 'mindset'],
+      };
+    }
     return {
       title: '事业压力测试',
       strategy: '用规则、责任和边界承接阶段挑战',
@@ -672,6 +797,20 @@ const stageThemeFromPeriod = (period, index) => {
     };
   }
   if (gods.some((god) => /正财|偏财/.test(god))) {
+    if (ageBand === 'child') {
+      return {
+        title: '家庭资源关',
+        strategy: '更多是在家庭资源、照顾方式和安全感里学习现实感，而不是自己直接扛财务。',
+        themes: ['family', 'wealth'],
+      };
+    }
+    if (ageBand === 'youth') {
+      return {
+        title: '资源意识关',
+        strategy: '开始建立对时间、金钱、选择成本的概念，重点是资源意识而不是收益最大化。',
+        themes: ['wealth', 'family'],
+      };
+    }
     return {
       title: '资源整合关',
       strategy: '先看现金流和留存，再谈扩张',
@@ -679,6 +818,20 @@ const stageThemeFromPeriod = (period, index) => {
     };
   }
   if (gods.some((god) => /食神|伤官/.test(god))) {
+    if (ageBand === 'child') {
+      return {
+        title: '表达成形关',
+        strategy: '重点是表达欲、兴趣和自我展示方式开始成形，不急着要求结果。',
+        themes: ['mindset', 'career'],
+      };
+    }
+    if (ageBand === 'youth') {
+      return {
+        title: '表达试探关',
+        strategy: '适合探索表达、作品、兴趣和被看见的方式，重点是试错和找到手感。',
+        themes: ['career', 'mindset'],
+      };
+    }
     return {
       title: '表达变现关',
       strategy: '把想法、技能和作品推到现实场景里',
@@ -686,6 +839,20 @@ const stageThemeFromPeriod = (period, index) => {
     };
   }
   if (gods.some((god) => /正印|偏印/.test(god))) {
+    if (ageBand === 'child') {
+      return {
+        title: '学习依附关',
+        strategy: '重点在学习环境、支持系统和安全感来源，先看能不能被稳稳托住。',
+        themes: ['health', 'mindset'],
+      };
+    }
+    if (ageBand === 'youth') {
+      return {
+        title: '学习体系关',
+        strategy: '适合建立方法、补基础、找老师和形成自己的学习节律。',
+        themes: ['health', 'mindset'],
+      };
+    }
     return {
       title: '恢复学习关',
       strategy: '适合补系统、修状态、重建支持网络',
@@ -693,6 +860,20 @@ const stageThemeFromPeriod = (period, index) => {
     };
   }
   if (gods.some((god) => /比肩|劫财/.test(god))) {
+    if (ageBand === 'child') {
+      return {
+        title: '同伴边界关',
+        strategy: '重点是学习跟同伴相处、分享、争执和自我位置，不必过早用竞争语言解释一切。',
+        themes: ['relationship', 'mindset'],
+      };
+    }
+    if (ageBand === 'youth') {
+      return {
+        title: '同伴定位关',
+        strategy: '更像在同学、朋友、社群里确认自己的位置与边界，重点不是输赢，而是角色感。',
+        themes: ['relationship', 'wealth'],
+      };
+    }
     return {
       title: '同盟边界关',
       strategy: '处理竞争、合作、分账与自我位置',
@@ -702,11 +883,31 @@ const stageThemeFromPeriod = (period, index) => {
 
   return {
     ...[
-      { title: '探索开局关', strategy: '先扩大经验，再确认方向', themes: ['career', 'migration'] },
-      { title: '承压升级关', strategy: '把压力转成可执行的秩序', themes: ['career', 'mindset'] },
-      { title: '沉淀根基关', strategy: '把阶段成果变成稳定底盘', themes: ['wealth', 'family'] },
-      { title: '重整地图关', strategy: '重新校准关系、资源和自我叙事', themes: ['relationship', 'mindset'] },
-      { title: '传承收束关', strategy: '减少无效消耗，留下真正重要的结构', themes: ['family', 'health'] },
+      ageBand === 'child'
+        ? { title: '成长开局关', strategy: '先积累体验、建立安全感和基本节律，不急着过早定义自己。', themes: ['mindset', 'family'] }
+        : ageBand === 'youth'
+          ? { title: '探索试路关', strategy: '先扩大经验，再慢慢确认自己的方向和边界。', themes: ['career', 'migration'] }
+          : { title: '探索开局关', strategy: '先扩大经验，再确认方向', themes: ['career', 'migration'] },
+      ageBand === 'child'
+        ? { title: '环境适配关', strategy: '先适应环境和要求，重点是找到自己的节奏感。', themes: ['mindset', 'family'] }
+        : ageBand === 'youth'
+          ? { title: '承压成形关', strategy: '把外部要求转成自己的执行感，重点是形成基本能力框架。', themes: ['career', 'mindset'] }
+          : { title: '承压升级关', strategy: '把压力转成可执行的秩序', themes: ['career', 'mindset'] },
+      ageBand === 'child'
+        ? { title: '根基培育关', strategy: '先在家庭、学习和日常节律里培养底盘。', themes: ['family', 'health'] }
+        : ageBand === 'youth'
+          ? { title: '底盘搭建关', strategy: '把早期能力、关系和资源慢慢搭成基本盘。', themes: ['wealth', 'family'] }
+          : { title: '沉淀根基关', strategy: '把阶段成果变成稳定底盘', themes: ['wealth', 'family'] },
+      ageBand === 'child'
+        ? { title: '关系学习关', strategy: '先学会相处、分寸和表达，再慢慢形成自己的关系方式。', themes: ['relationship', 'mindset'] }
+        : ageBand === 'youth'
+          ? { title: '自我校准关', strategy: '重新校准关系、资源和自我叙事，慢慢把自己站稳。', themes: ['relationship', 'mindset'] }
+          : { title: '重整地图关', strategy: '重新校准关系、资源和自我叙事', themes: ['relationship', 'mindset'] },
+      ageBand === 'child'
+        ? { title: '节律收束关', strategy: '减少无效消耗，把成长节律和安全感留住。', themes: ['health', 'family'] }
+        : ageBand === 'youth'
+          ? { title: '选择定型关', strategy: '开始让重要选择沉淀成更长期的方向感。', themes: ['family', 'health'] }
+          : { title: '传承收束关', strategy: '减少无效消耗，留下真正重要的结构', themes: ['family', 'health'] },
     ][index % 5],
   };
 };
@@ -721,6 +922,182 @@ const pickGamePeriods = (bazi) => {
     }
   }
   return picked.length ? picked : periods.slice(0, 8);
+};
+
+const horoscopeGanZhi = (item) => `${item?.heavenlyStem || ''}${item?.earthlyBranch || ''}`;
+
+const themesFromPalaceNames = (palaceNames = []) => {
+  const themes = new Set();
+  palaceNames.forEach((palace) => {
+    Object.entries(THEME_RELATED_PALACES).forEach(([theme, palaces]) => {
+      if (palaces.includes(palace)) {
+        themes.add(theme);
+      }
+    });
+  });
+  return Array.from(themes);
+};
+
+const findCurrentDaYunPeriod = (bazi, horoscope) => {
+  const currentAge = Number(horoscope?.currentAge);
+  const periods = bazi.luck?.daYun || [];
+  if (Number.isFinite(currentAge)) {
+    const byAge = periods.find((period) => currentAge >= Number(period.startAge) && currentAge <= Number(period.endAge));
+    if (byAge) {
+      return byAge;
+    }
+  }
+
+  const targetGanZhi = horoscopeGanZhi(horoscope?.decadal);
+  return periods.find((period) => period.ganZhi === targetGanZhi)
+    || periods[0]
+    || null;
+};
+
+const buildDecadePeriods = (period, stageTheme) => {
+  if (!period) {
+    return [];
+  }
+  const span = Math.max(1, Number(period.endAge) - Number(period.startAge) + 1);
+  const third = Math.max(2, Math.floor(span / 3));
+  const startAge = Number(period.startAge);
+  const endAge = Number(period.endAge);
+  const startYear = Number(period.startYear);
+  const endYear = Number(period.endYear);
+  const buckets = [
+    ['开局期', startAge, Math.min(endAge, startAge + third - 1)],
+    ['承压期', Math.min(endAge, startAge + third), Math.min(endAge, startAge + (third * 2) - 1)],
+    ['收束期', Math.min(endAge, startAge + (third * 2)), endAge],
+  ].filter(([, left, right]) => left <= right);
+
+  return buckets.map(([phase, leftAge, rightAge], index) => ({
+    startAge: leftAge,
+    endAge: rightAge,
+    startYear: Math.min(endYear, startYear + (leftAge - startAge)),
+    endYear: Math.min(endYear, startYear + (rightAge - startAge)),
+    ganZhi: period.ganZhi,
+    ganShiShen: period.ganShiShen,
+    hiddenShiShen: period.hiddenShiShen || [],
+    stageLabel: '大运',
+    stagePhase: phase,
+    stageTitleOverride: `${phase}${stageTheme ? ` · ${stageTheme.title}` : ''}`,
+  }));
+};
+
+const buildYearPeriods = (yearly, dayStem) => {
+  const yearGod = tenGod(dayStem, yearly?.heavenlyStem);
+  const ganZhi = horoscopeGanZhi(yearly);
+  const mutagen = yearly?.mutagen || [];
+  const phases = [
+    ['起势期', 1, 4],
+    ['推进期', 5, 8],
+    ['收束期', 9, 12],
+  ];
+
+  return phases.map(([phase, leftMonth, rightMonth]) => ({
+    startAge: 23,
+    endAge: 23,
+    startYear: new Date().getFullYear(),
+    endYear: new Date().getFullYear(),
+    ganZhi,
+    ganShiShen: yearGod,
+    hiddenShiShen: mutagen,
+    stageLabel: '流年',
+    stagePhase: phase,
+    stageTitleOverride: `${phase} · 年度小关卡`,
+    monthRange: `${leftMonth}-${rightMonth}月`,
+  }));
+};
+
+const buildMonthPeriods = (monthly, dayStem) => {
+  const monthGod = tenGod(dayStem, monthly?.heavenlyStem);
+  const ganZhi = horoscopeGanZhi(monthly);
+  const mutagen = monthly?.mutagen || [];
+  const phases = [
+    ['上旬', '第1周'],
+    ['中段', '第2-3周'],
+    ['收束', '第4周'],
+  ];
+
+  return phases.map(([phase, range]) => ({
+    startAge: 23,
+    endAge: 23,
+    startYear: new Date().getFullYear(),
+    endYear: new Date().getFullYear(),
+    ganZhi,
+    ganShiShen: monthGod,
+    hiddenShiShen: mutagen,
+    stageLabel: '流月',
+    stagePhase: phase,
+    stageTitleOverride: `${phase} · 月度小关卡`,
+    monthRange: range,
+  }));
+};
+
+const buildScopeProfile = ({ scope, bazi, horoscope }) => {
+  if (scope === 'decade') {
+    const period = findCurrentDaYunPeriod(bazi, horoscope);
+    const stageTheme = period ? stageThemeFromPeriod(period, 0) : { themes: ['career', 'wealth'], title: '当前十年关卡' };
+    const palaceThemes = themesFromPalaceNames(horoscope?.decadal?.palaceNames || []);
+    return {
+      id: 'decade',
+      ...SCOPE_META.decade,
+      focusLabel: period ? `当前年龄 ${horoscope?.currentAge ?? '-'} 岁 · ${period.startAge}-${period.endAge}岁 · ${period.ganZhi}大运` : '当前大运',
+      periods: buildDecadePeriods(period, stageTheme),
+      preferredThemes: unique([...(stageTheme.themes || []), ...palaceThemes]).slice(0, 4),
+      extraSignals: unique([
+        period?.ganShiShen,
+        ...(period?.hiddenShiShen || []),
+        ...(horoscope?.decadal?.mutagen || []),
+        ...(horoscope?.decadal?.palaceNames || []),
+      ]),
+    };
+  }
+
+  if (scope === 'year') {
+    const yearGod = tenGod(bazi?.dayMaster?.stem, horoscope?.yearly?.heavenlyStem);
+    const stageTheme = stageThemeFromPeriod({ ganShiShen: yearGod, hiddenShiShen: horoscope?.yearly?.mutagen || [], endAge: 28 }, 0);
+    const palaceThemes = themesFromPalaceNames(horoscope?.yearly?.palaceNames || []);
+    return {
+      id: 'year',
+      ...SCOPE_META.year,
+      focusLabel: horoscope?.yearly ? `当前年龄 ${horoscope?.currentAge ?? '-'} 岁 · ${horoscope.yearly.heavenlyStem}${horoscope.yearly.earthlyBranch}流年` : '当前流年',
+      periods: buildYearPeriods(horoscope?.yearly, bazi?.dayMaster?.stem),
+      preferredThemes: unique([...(stageTheme.themes || []), ...palaceThemes]).slice(0, 4),
+      extraSignals: unique([
+        yearGod,
+        ...(horoscope?.yearly?.mutagen || []),
+        ...(horoscope?.yearly?.palaceNames || []),
+      ]),
+    };
+  }
+
+  if (scope === 'month') {
+    const monthGod = tenGod(bazi?.dayMaster?.stem, horoscope?.monthly?.heavenlyStem);
+    const stageTheme = stageThemeFromPeriod({ ganShiShen: monthGod, hiddenShiShen: horoscope?.monthly?.mutagen || [], endAge: 28 }, 0);
+    const palaceThemes = themesFromPalaceNames(horoscope?.monthly?.palaceNames || []);
+    return {
+      id: 'month',
+      ...SCOPE_META.month,
+      focusLabel: horoscope?.monthly ? `当前年龄 ${horoscope?.currentAge ?? '-'} 岁 · ${horoscope.monthly.heavenlyStem}${horoscope.monthly.earthlyBranch}流月` : '当前流月',
+      periods: buildMonthPeriods(horoscope?.monthly, bazi?.dayMaster?.stem),
+      preferredThemes: unique([...(stageTheme.themes || []), ...palaceThemes]).slice(0, 3),
+      extraSignals: unique([
+        monthGod,
+        ...(horoscope?.monthly?.mutagen || []),
+        ...(horoscope?.monthly?.palaceNames || []),
+      ]),
+    };
+  }
+
+  return {
+    id: 'lifetime',
+    ...SCOPE_META.lifetime,
+    focusLabel: '整个人生时间轴',
+    periods: pickGamePeriods(bazi),
+    preferredThemes: [],
+    extraSignals: [],
+  };
 };
 
 const buildStages = (periods, cards) => periods.map((period, index) => {
@@ -750,11 +1127,11 @@ const buildStages = (periods, cards) => periods.map((period, index) => {
   return {
     id: `stage-${index + 1}`,
     level: index + 1,
-    title: stageTheme.title,
-    ageRange: `${period.startAge}-${period.endAge}岁`,
+    title: period.stageTitleOverride || stageTheme.title,
+    ageRange: period.monthRange || `${period.startAge}-${period.endAge}岁`,
     yearRange: `${period.startYear}-${period.endYear}`,
     ganZhi: period.ganZhi,
-    triggerSummary: `${period.ganZhi}大运，天干十神${period.ganShiShen || '-'}，当前阶段更偏向${stageTheme.themes.map((theme) => THEME_LABELS[theme]).join(' / ')}课题。`,
+    triggerSummary: `${period.ganZhi}${period.stageLabel || '大运'}，天干十神${period.ganShiShen || '-'}，当前阶段更偏向${stageTheme.themes.map((theme) => THEME_LABELS[theme]).join(' / ')}课题。`,
     possibleThemes: relatedCards.map((card) => card.title),
     strategy: stageTheme.strategy,
   };
@@ -784,11 +1161,55 @@ const computeGameScale = ({ periods, patterns, signalIndex }) => {
   };
 };
 
-const buildLifeGame = ({ reading, bazi, palaces, patterns }) => {
+const scopeScaleOverrides = (scope, scale) => {
+  if (scope === 'decade') {
+    return {
+      ...scale,
+      trialMin: 4,
+      trialTarget: 5,
+      trialMax: 6,
+      opportunityMin: 2,
+      opportunityTarget: 3,
+      opportunityMax: 3,
+      trialThemeLimit: 2,
+      opportunityThemeLimit: 1,
+    };
+  }
+  if (scope === 'year') {
+    return {
+      ...scale,
+      trialMin: 3,
+      trialTarget: 4,
+      trialMax: 4,
+      opportunityMin: 2,
+      opportunityTarget: 2,
+      opportunityMax: 2,
+      trialThemeLimit: 2,
+      opportunityThemeLimit: 1,
+    };
+  }
+  if (scope === 'month') {
+    return {
+      ...scale,
+      trialMin: 2,
+      trialTarget: 3,
+      trialMax: 3,
+      opportunityMin: 1,
+      opportunityTarget: 2,
+      opportunityMax: 2,
+      trialThemeLimit: 1,
+      opportunityThemeLimit: 1,
+    };
+  }
+  return scale;
+};
+
+const buildLifeGameScope = ({ scope = 'lifetime', reading, bazi, palaces, patterns, horoscope }) => {
   const signalIndex = buildSignalIndex({ reading, bazi, patterns, palaces });
-  const context = { reading, bazi, palaces, patterns, signalIndex };
-  const periods = pickGamePeriods(bazi);
-  const scale = computeGameScale({ periods, patterns, signalIndex });
+  const scopeProfile = buildScopeProfile({ scope, bazi, horoscope });
+  const context = { reading, bazi, palaces, patterns, signalIndex, scopeProfile };
+  const periods = scopeProfile.periods;
+  const scale = scopeScaleOverrides(scope, computeGameScale({ periods, patterns, signalIndex }));
   const scored = templateFile.templates.map((template) => scoreTemplate(template, context));
   const trials = selectScored(scored, {
     type: 'trial',
@@ -812,6 +1233,10 @@ const buildLifeGame = ({ reading, bazi, palaces, patterns }) => {
   const stages = buildStages(periods, cards);
 
   return {
+    scope,
+    scopeLabel: scopeProfile.label,
+    scopeSummary: scopeProfile.summary,
+    focusLabel: scopeProfile.focusLabel,
     headline: archetype.headline,
     archetype: {
       id: archetype.id,
@@ -827,6 +1252,52 @@ const buildLifeGame = ({ reading, bazi, palaces, patterns }) => {
       cards: cards.length,
     },
     disclaimer: '人生游戏是基于命盘结构生成的倾向与选择模拟，不是具体事件预言，也不替代现实中的医疗、法律、投资或关系决策。',
+  };
+};
+
+const buildLifeGame = ({ reading, bazi, palaces, patterns, horoscope }) => {
+  const lifetime = buildLifeGameScope({
+    scope: 'lifetime',
+    reading,
+    bazi,
+    palaces,
+    patterns,
+    horoscope,
+  });
+  const decade = buildLifeGameScope({
+    scope: 'decade',
+    reading,
+    bazi,
+    palaces,
+    patterns,
+    horoscope,
+  });
+  const year = buildLifeGameScope({
+    scope: 'year',
+    reading,
+    bazi,
+    palaces,
+    patterns,
+    horoscope,
+  });
+  const month = buildLifeGameScope({
+    scope: 'month',
+    reading,
+    bazi,
+    palaces,
+    patterns,
+    horoscope,
+  });
+
+  return {
+    ...lifetime,
+    currentScope: 'lifetime',
+    scopes: {
+      lifetime,
+      decade,
+      year,
+      month,
+    },
   };
 };
 

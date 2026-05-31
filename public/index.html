@@ -938,6 +938,36 @@
         line-height: 1.15;
       }
 
+      .game-hero .topic-takeaway,
+      .game-scene .topic-takeaway {
+        line-height: 1.5;
+      }
+
+      .game-hero .meta,
+      .game-runbar .meta,
+      .game-stage-pill .meta,
+      .game-scene-side-card .meta,
+      .game-route-banner .meta,
+      .game-scene .meta,
+      .game-journal .meta,
+      .choice-action .meta,
+      .choice-action small {
+        line-height: 1.42;
+      }
+
+      .game-hero p,
+      .game-runbar p,
+      .game-stage-pill p,
+      .game-scene-side-card p,
+      .game-route-banner p,
+      .game-scene p,
+      .game-journal p,
+      .choice-action span,
+      .choice-action small {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+
       .game-runbar,
       .game-route-banner,
       .game-stage-strip,
@@ -1025,6 +1055,17 @@
       .game-scene-side-card small,
       .game-stage-pill small {
         color: var(--muted);
+      }
+
+      .game-stage-pill p,
+      .stage-card p {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+
+      .game-stage-pill .meta,
+      .stage-card .meta {
+        line-height: 1.35;
       }
 
       .game-scene {
@@ -1141,6 +1182,37 @@
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 8px;
+      }
+
+      .scope-switch {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .scope-button {
+        grid-column: auto;
+        width: auto;
+        min-height: 0;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(52, 38, 24, 0.12);
+        background: rgba(255, 251, 241, 0.76);
+        color: var(--ink);
+        text-align: left;
+      }
+
+      .scope-button.active {
+        border-color: rgba(40, 104, 143, 0.34);
+        background: rgba(231, 243, 249, 0.9);
+      }
+
+      .scope-button small {
+        display: block;
+        margin-top: 4px;
+        line-height: 1.35;
+        color: var(--muted);
       }
 
       .choice-card {
@@ -1740,6 +1812,10 @@
           grid-template-columns: 1fr;
         }
 
+        .scope-switch {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
         .summary-strip {
           grid-template-columns: 1fr;
         }
@@ -1954,7 +2030,9 @@
       const workspaceButtons = Array.from(document.querySelectorAll('.workspace-button'));
       const workspaceSections = Array.from(document.querySelectorAll('.workspace-section'));
       let currentParams = new URLSearchParams(new FormData(form));
-      let currentLifeGame = null;
+      let currentData = null;
+      let currentLifeGameBundle = null;
+      let currentLifeGameScope = 'lifetime';
       let currentLifeGameState = null;
 
       const boardSlots = [
@@ -2184,6 +2262,7 @@
       }).join('');
 
       const cloneGameStats = (stats) => JSON.parse(JSON.stringify(stats || {}));
+      const selectedLifeGame = () => currentLifeGameBundle?.scopes?.[currentLifeGameScope] || currentLifeGameBundle;
       const cardById = (lifeGame, cardId) => (lifeGame.cards || []).find((card) => card.id === cardId);
       const gameCardById = (lifeGame, state, cardId) => currentGameDeck(lifeGame, state).find((card) => card.id === cardId);
 
@@ -2540,12 +2619,26 @@
         const activeStage = adaptStageByState(lifeGame.stages?.[stageIndex], state);
         const isFinished = state.resolvedCardIds.length >= deck.length;
         const dynamicCard = activeCard ? adaptCardByState(activeCard, state) : null;
+        const scopes = currentLifeGameBundle?.scopes || { [currentLifeGameScope]: lifeGame };
         return `
           <div class="reading-head">
             <div class="game-hero">
               <small class="meta">人生角色</small>
               <strong>${lifeGame.archetype.name}</strong>
               <p class="topic-takeaway">${lifeGame.headline}</p>
+              <p class="meta">出生：${currentData?.summary?.solarDate || '-'} ${currentData?.summary?.time || ''} ｜ 定位：${currentData?.horoscope?.target || '-'} ｜ 当前年龄：${currentData?.horoscope?.currentAge ?? '-' } 岁</p>
+              <div class="scope-switch">
+                ${Object.entries(scopes).map(([scopeId, item]) => `
+                  <button
+                    class="scope-button ${scopeId === currentLifeGameScope ? 'active' : ''}"
+                    type="button"
+                    data-game-scope="${scopeId}"
+                  >
+                    <strong>${item.scopeLabel || scopeId}</strong>
+                    <small>${item.focusLabel || item.scopeSummary || ''}</small>
+                  </button>
+                `).join('')}
+              </div>
               ${renderStatGrid(state.stats)}
               <p class="meta">${lifeGame.disclaimer}</p>
             </div>
@@ -2556,6 +2649,7 @@
               <div>
                 <strong>${isFinished ? '这一轮已收束' : `当前关卡：${activeStage?.title || '人生主线'}`}</strong>
                 <p class="meta">已完成 ${state.resolvedCardIds.length} / ${deck.length} 个事件。${activeStage ? `当前阶段：${activeStage.ageRange} · ${activeStage.ganZhi}。` : ''}</p>
+                <p class="meta">${lifeGame.scopeLabel || '一生'}模式：${lifeGame.focusLabel || lifeGame.scopeSummary || ''}</p>
                 <p class="meta">本轮已展开 ${lifeGame.scale?.stages || (lifeGame.stages || []).length} 个阶段，当前人生地图会延伸到 ${lifeGame.stages?.at(-1)?.ageRange || '-'}。</p>
               </div>
               <div class="game-runbar-actions">
@@ -2648,7 +2742,7 @@
                   `).join('')}
                 </div>
               ` : `
-                <p class="meta">这一轮还没开始。先从左侧选一张卡，再决定你的处理方式。</p>
+                <p class="meta">这一轮还没开始。先处理当前关卡，再决定你要走激进、稳健还是修复路线。</p>
               `}
             </div>
           </div>
@@ -2670,20 +2764,22 @@
       };
 
       const rerenderLifeGame = () => {
-        if (!currentLifeGame || !currentLifeGameState) {
+        const lifeGame = selectedLifeGame();
+        if (!lifeGame || !currentLifeGameState) {
           return;
         }
-        lifeGameEl.innerHTML = renderLifeGame(currentLifeGame, currentLifeGameState);
+        lifeGameEl.innerHTML = renderLifeGame(lifeGame, currentLifeGameState);
       };
 
       const applyGameChoice = (cardId, choiceIndex) => {
-        if (!currentLifeGame || !currentLifeGameState) {
+        const lifeGame = selectedLifeGame();
+        if (!lifeGame || !currentLifeGameState) {
           return;
         }
         if (currentLifeGameState.resolvedCardIds.includes(cardId)) {
           return;
         }
-        const card = gameCardById(currentLifeGame, currentLifeGameState, cardId);
+        const card = gameCardById(lifeGame, currentLifeGameState, cardId);
         const choice = card?.choices?.[choiceIndex];
         if (!card || !choice) {
           return;
@@ -2705,13 +2801,13 @@
         });
         currentLifeGameState.branchRoute = dominantStyle(currentLifeGameState);
         currentLifeGameState.branchDeck = buildBranchDeck(
-          currentLifeGame,
+          lifeGame,
           currentLifeGameState.branchRoute,
           currentLifeGameState.resolvedCardIds,
         );
         currentLifeGameState.activeCardId = nextPlayableCardId(
           {
-            ...currentLifeGame,
+            ...lifeGame,
             branchDeck: currentLifeGameState.branchDeck,
           },
           currentLifeGameState.resolvedCardIds,
@@ -2722,9 +2818,17 @@
       };
 
       lifeGameEl.addEventListener('click', (event) => {
+        const scopeButton = event.target.closest('[data-game-scope]');
+        if (scopeButton && currentLifeGameBundle) {
+          currentLifeGameScope = scopeButton.dataset.gameScope;
+          currentLifeGameState = createLifeGameState(selectedLifeGame());
+          rerenderLifeGame();
+          return;
+        }
+
         const resetButton = event.target.closest('[data-game-action="reset"]');
-        if (resetButton && currentLifeGame) {
-          currentLifeGameState = createLifeGameState(currentLifeGame);
+        if (resetButton && selectedLifeGame()) {
+          currentLifeGameState = createLifeGameState(selectedLifeGame());
           rerenderLifeGame();
           return;
         }
@@ -3090,6 +3194,7 @@
 
       const render = (data) => {
         let centerRendered = false;
+        currentData = data;
 
         renderOverview(data);
         renderTimelineOverview(data);
@@ -3164,8 +3269,9 @@
         `).join('');
 
         readingEl.innerHTML = renderReading(data.reading);
-        currentLifeGame = data.reading.lifeGame;
-        currentLifeGameState = createLifeGameState(currentLifeGame);
+        currentLifeGameBundle = data.reading.lifeGame;
+        currentLifeGameScope = data.reading.lifeGame?.currentScope || 'lifetime';
+        currentLifeGameState = createLifeGameState(selectedLifeGame());
         rerenderLifeGame();
 
         baziEl.innerHTML = `

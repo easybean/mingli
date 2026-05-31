@@ -137,6 +137,12 @@ const validateSample = (sample) => {
 
   const lifeGame = reading.lifeGame;
   if (lifeGame) {
+    const scopes = lifeGame.scopes || {};
+    const requiredScopes = ['lifetime', 'decade', 'year', 'month'];
+    const missingScopes = includesAll(Object.keys(scopes), requiredScopes);
+    if (missingScopes.length) {
+      errors.push(`missing lifeGame scopes: ${missingScopes.join(', ')}`);
+    }
     if (!lifeGame.archetype?.name || !lifeGame.headline || !lifeGame.stats) {
       errors.push('invalid lifeGame hero structure');
     }
@@ -174,6 +180,22 @@ const validateSample = (sample) => {
     if (invalidStages.length) {
       errors.push(`invalid lifeGame stages: ${invalidStages.map((item) => item.title).join(', ')}`);
     }
+
+    requiredScopes.forEach((scopeId) => {
+      const scope = scopes[scopeId];
+      if (!scope) {
+        return;
+      }
+      if (!scope.scopeLabel || !scope.scopeSummary) {
+        errors.push(`invalid lifeGame scope meta: ${scopeId}`);
+      }
+      if (!Array.isArray(scope.cards) || !scope.cards.length) {
+        errors.push(`lifeGame scope has no cards: ${scopeId}`);
+      }
+      if (!Array.isArray(scope.stages) || !scope.stages.length) {
+        errors.push(`lifeGame scope has no stages: ${scopeId}`);
+      }
+    });
   }
 
   if (expect.manualTitles) {

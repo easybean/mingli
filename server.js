@@ -241,6 +241,20 @@ const dayOfYear = (date) => {
   return Math.floor((dateSerial(date) - Date.UTC(year, 0, 0)) / 86400000);
 };
 
+const ageAtTarget = (birthDate, targetDateTime) => {
+  const birth = parseDateParts(birthDate);
+  const [targetDate] = String(targetDateTime || '').split(' ');
+  const target = parseDateParts(targetDate);
+  let age = target.year - birth.year;
+  if (
+    target.month < birth.month
+    || (target.month === birth.month && target.day < birth.day)
+  ) {
+    age -= 1;
+  }
+  return Math.max(0, age);
+};
+
 const equationOfTimeMinutes = (date) => {
   const angle = (2 * Math.PI * (dayOfYear(date) - 81)) / 364;
   return (9.87 * Math.sin(2 * angle)) - (7.53 * Math.cos(angle)) - (1.5 * Math.sin(angle));
@@ -762,6 +776,7 @@ const buildReading = ({ summary, palaces, bazi, horoscope }) => {
     bazi,
     palaces,
     patterns,
+    horoscope,
   });
   const currentMutagens = [
     ['大限', horoscope.decadal],
@@ -894,7 +909,10 @@ const buildAstrolabe = (query) => {
   };
   const bazi = buildBaziDetails({ astrolabe, normalizedBirth, gender });
   const palaces = astrolabe.palaces.map(compactPalace);
+  const currentAge = ageAtTarget(astrolabe.solarDate, target);
   const horoscopeData = {
+    target,
+    currentAge,
     decadal: compactHoroscope(horoscope.decadal),
     yearly: compactHoroscope(horoscope.yearly),
     monthly: compactHoroscope(horoscope.monthly),
