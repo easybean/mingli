@@ -1,46 +1,5 @@
 const templateFile = require('./data/life-game-templates.json');
-
-const STEM_ELEMENTS = {
-  甲: '木',
-  乙: '木',
-  丙: '火',
-  丁: '火',
-  戊: '土',
-  己: '土',
-  庚: '金',
-  辛: '金',
-  壬: '水',
-  癸: '水',
-};
-
-const STEM_YANG = {
-  甲: true,
-  乙: false,
-  丙: true,
-  丁: false,
-  戊: true,
-  己: false,
-  庚: true,
-  辛: false,
-  壬: true,
-  癸: false,
-};
-
-const GENERATES = {
-  木: '火',
-  火: '土',
-  土: '金',
-  金: '水',
-  水: '木',
-};
-
-const CONTROLS = {
-  木: '土',
-  火: '金',
-  土: '水',
-  金: '木',
-  水: '火',
-};
+const { tenGod } = require('./bazi-utils');
 
 const THEME_LABELS = {
   career: '事业',
@@ -161,7 +120,126 @@ const SCOPE_META = {
     label: '最近一月',
     summary: '看当前流月的小关卡，适合判断这个月先推进、观望还是修复。',
   },
+  day: {
+    label: '今日关卡',
+    summary: '看当前流日的主线、阻力和行动建议，适合做每天复访入口。',
+  },
 };
+
+const SHORT_HORIZON_TEMPLATES = [
+  {
+    id: 'year-career-window',
+    type: 'opportunity',
+    theme: 'career',
+    title: '年度窗口推进',
+    tone: 'focused',
+    scopes: ['year'],
+    triggers: ['事业主线', '官禄', '流年', '正官', '七杀', '科名会禄'],
+    summary: '这一年更像把重要窗口推到眼前，重点不是改命，而是把握可执行的机会。',
+    dramaticText: '门没有永远敞开。真正的问题是，你这一年是否愿意把重要动作往前排。',
+    choices: [
+      { label: '先推关键节点', style: 'bold', description: '把今年最关键的一步优先完成。', cost: '短期压力上升。', reward: '更容易形成年度突破。', statEffects: { agency: 6, stability: -2 }, feedback: '你把年度窗口顶到了前面，重点是别让执行散掉。' },
+      { label: '按节奏推进', style: 'steady', description: '保留主线推进，但不把全部筹码压在一件事上。', cost: '年度声量增长较慢。', reward: '更容易把成果稳稳落袋。', statEffects: { stability: 5, agency: 3 }, feedback: '你让这一年维持可持续节奏，适合需要长期承接的结构。' },
+      { label: '先修旧问题', style: 'repair', description: '优先处理拖延已久的卡点和结构性漏洞。', cost: '新动作会放慢。', reward: '减少后续复发。', statEffects: { resilience: 5, stability: 2 }, feedback: '你把年度任务先对准旧漏洞，这会让后半段轻很多。' },
+    ],
+  },
+  {
+    id: 'year-relationship-rebalance',
+    type: 'trial',
+    theme: 'relationship',
+    title: '年度关系重排',
+    tone: 'focused',
+    scopes: ['year'],
+    triggers: ['婚恋主线', '夫妻', '父母', '流年', '劫财', '巨门'],
+    summary: '这一年更容易遇到关系秩序重排，重点在边界、投入和协作方式。',
+    dramaticText: '关系不是突然变难，而是旧模式已经走到需要重写的时候。',
+    choices: [
+      { label: '直接谈清楚', style: 'bold', description: '把关键期待和边界一次说透。', cost: '短期摩擦会升温。', reward: '模糊关系会迅速变清晰。', statEffects: { connection: 4, agency: 4, resilience: -1 }, feedback: '你选择正面拆解关系结构，适合长期不想再拖。' },
+      { label: '慢慢调位置', style: 'steady', description: '不硬碰，但逐步修正互动规则。', cost: '见效没有那么快。', reward: '更容易减少反复。', statEffects: { stability: 4, connection: 3 }, feedback: '你让关系慢慢回到更稳的位置，这条路更耐用。' },
+      { label: '先减少消耗', style: 'repair', description: '先停掉最伤的互动模式。', cost: '可能会显得冷下来。', reward: '先把损耗降住。', statEffects: { resilience: 6, connection: 1 }, feedback: '你先处理关系漏损，这比继续硬撑更有效。' },
+    ],
+  },
+  {
+    id: 'month-urgent-priority',
+    type: 'trial',
+    theme: 'career',
+    title: '月度优先级取舍',
+    tone: 'tight',
+    scopes: ['month'],
+    triggers: ['流月', '官禄', '迁移', '食神', '伤官'],
+    summary: '这个月最容易出问题的不是机会少，而是优先级乱。',
+    dramaticText: '这一个月的难点不是做不做，而是先做哪一件，晚做哪一件。',
+    choices: [
+      { label: '先抢最关键的', style: 'bold', description: '优先处理影响最大的事项。', cost: '其他事情会被压后。', reward: '主线推进更明显。', statEffects: { agency: 5, stability: -2 }, feedback: '你把这个月的火力集中到最重要的节点。' },
+      { label: '排出稳定节奏', style: 'steady', description: '按轻重缓急把月度动作铺开。', cost: '爆发感没那么强。', reward: '整体完成度更高。', statEffects: { stability: 5, agency: 2 }, feedback: '你把这个月做成了有秩序的推进局。' },
+      { label: '砍掉干扰项', style: 'repair', description: '先清掉最耗神的杂事。', cost: '有些机会会顺延。', reward: '注意力回到主线。', statEffects: { resilience: 5, stability: 2 }, feedback: '你先腾出注意力，这会让月度主线更干净。' },
+    ],
+  },
+  {
+    id: 'month-recovery-window',
+    type: 'opportunity',
+    theme: 'health',
+    title: '月度回补窗口',
+    tone: 'tight',
+    scopes: ['month'],
+    triggers: ['流月', '健康主线', '福德', '正印', '偏印'],
+    summary: '这个月更像一个可用的恢复窗口，重点是能不能真正回补，而不是继续透支。',
+    dramaticText: '不是每个月都适合冲刺。有些月份的高价值动作，是把自己的节律救回来。',
+    choices: [
+      { label: '主动回补', style: 'bold', description: '直接抽时间做恢复动作。', cost: '当月推进速度会降一点。', reward: '后续耐力更足。', statEffects: { resilience: 7, agency: 1 }, feedback: '你把恢复本身当成当月主任务，这个判断通常不亏。' },
+      { label: '边走边修', style: 'steady', description: '在不打乱主线的前提下修正节律。', cost: '恢复速度一般。', reward: '更容易长期坚持。', statEffects: { stability: 4, resilience: 4 }, feedback: '你选择小步修复，适合主线不能完全停下的月份。' },
+      { label: '先止损', style: 'repair', description: '先暂停最消耗的安排。', cost: '短期看起来像退一步。', reward: '快速降低复发概率。', statEffects: { resilience: 6, connection: 1 }, feedback: '你先止住漏损，这会让接下来的月份轻很多。' },
+    ],
+  },
+  {
+    id: 'day-priority-push',
+    type: 'trial',
+    theme: 'career',
+    title: '先做最重要的',
+    tone: 'tight',
+    scopes: ['day'],
+    triggers: ['流日', '官禄', '迁移', '正官', '七杀'],
+    summary: '今天更适合先把最重要的一件事推进，不要让杂事吃掉最清醒的时段。',
+    dramaticText: '今天最怕的不是没事做，而是最关键的一步被杂音拖散。',
+    choices: [
+      { label: '先做主任务', style: 'bold', description: '先把最重要的一件做掉。', cost: '其他小事会往后放。', reward: '推进感最强。', statEffects: { agency: 5, stability: -1 }, feedback: '你把今天最该动的一步顶到了最前面。' },
+      { label: '按顺序推进', style: 'steady', description: '按节奏一件件过。', cost: '爆发感一般。', reward: '整体更稳。', statEffects: { stability: 4, agency: 2 }, feedback: '你把今天做成了有秩序的一天。' },
+      { label: '先清障碍', style: 'repair', description: '先把最卡的点拆掉。', cost: '主任务启动更慢。', reward: '后半段更顺。', statEffects: { resilience: 4, stability: 2 }, feedback: '你先把卡点拆掉，今天后半段会更顺。' },
+    ],
+  },
+  {
+    id: 'day-conversation-window',
+    type: 'opportunity',
+    theme: 'relationship',
+    title: '有话今天讲清楚',
+    tone: 'tight',
+    scopes: ['day'],
+    triggers: ['流日', '婚恋主线', '夫妻', '父母', '天同', '太阴'],
+    summary: '今天适合做一次关键沟通，重点不是讲赢，而是把话讲清楚。',
+    dramaticText: '有些话拖到明天就会变形。今天更适合把误解挡在形成之前。',
+    choices: [
+      { label: '直接说清楚', style: 'bold', description: '把关键点一次讲明。', cost: '短时情绪会上来。', reward: '问题更快变清楚。', statEffects: { connection: 5, agency: 2, resilience: -1 }, feedback: '你没有再绕着问题走，这会换来更快的清晰感。' },
+      { label: '慢一点讲', style: 'steady', description: '先讲事实，再讲感受。', cost: '见效没那么快。', reward: '更少误解。', statEffects: { stability: 3, connection: 4 }, feedback: '你让今天的沟通留在可承接的范围里。' },
+      { label: '先别急着回', style: 'repair', description: '先降温，再决定怎么说。', cost: '今天不一定立刻解决。', reward: '避免把小事说大。', statEffects: { resilience: 5, connection: 1 }, feedback: '你先保护了沟通质量，这通常比急着回应更划算。' },
+    ],
+  },
+  {
+    id: 'day-recovery-check',
+    type: 'opportunity',
+    theme: 'health',
+    title: '今天先把状态拉回来',
+    tone: 'tight',
+    scopes: ['day'],
+    triggers: ['流日', '健康主线', '福德', '正印', '偏印'],
+    summary: '今天适合做一个小回补，把状态拉回到可持续的位置。',
+    dramaticText: '不是所有恢复都要等长假。有些日子赢在先把自己拉回正轨。',
+    choices: [
+      { label: '现在就回补', style: 'bold', description: '立刻安排一个恢复动作。', cost: '手头推进会暂停一下。', reward: '后半程更稳。', statEffects: { resilience: 6, agency: 1 }, feedback: '你把恢复本身当成今天的正事。' },
+      { label: '边走边调', style: 'steady', description: '不打断主线，慢慢调回来。', cost: '恢复速度普通。', reward: '更容易坚持。', statEffects: { stability: 3, resilience: 4 }, feedback: '你用可持续的方式把今天拉回正轨。' },
+      { label: '先停最耗神的', style: 'repair', description: '先停掉最伤神的一件事。', cost: '短期像退一步。', reward: '损耗会明显下降。', statEffects: { resilience: 5, stability: 2 }, feedback: '你先止住了今天最明显的漏损。' },
+    ],
+  },
+];
 
 const clamp = (value, min = 0, max = 100) => Math.max(min, Math.min(max, value));
 
@@ -177,32 +255,6 @@ const uniqueBy = (items, iteratee) => {
     seen.add(key);
     return true;
   });
-};
-
-const tenGod = (dayStem, targetStem) => {
-  const dayElement = STEM_ELEMENTS[dayStem];
-  const targetElement = STEM_ELEMENTS[targetStem];
-  const samePolarity = STEM_YANG[dayStem] === STEM_YANG[targetStem];
-
-  if (!dayElement || !targetElement) {
-    return '';
-  }
-  if (dayElement === targetElement) {
-    return samePolarity ? '比肩' : '劫财';
-  }
-  if (GENERATES[dayElement] === targetElement) {
-    return samePolarity ? '食神' : '伤官';
-  }
-  if (GENERATES[targetElement] === dayElement) {
-    return samePolarity ? '偏印' : '正印';
-  }
-  if (CONTROLS[dayElement] === targetElement) {
-    return samePolarity ? '偏财' : '正财';
-  }
-  if (CONTROLS[targetElement] === dayElement) {
-    return samePolarity ? '七杀' : '正官';
-  }
-  return '';
 };
 
 const plainManualTitle = (title) => String(title || '').replace(/^第\d+章：/, '');
@@ -231,6 +283,7 @@ const addToSetMap = (map, key, values) => {
 
 const mapToObject = (map) => Object.fromEntries(Array.from(map.entries()).map(([key, value]) => [key, value]));
 const itemIncludesSignal = (matchedSignals, target) => matchedSignals.some((signal) => signal.trigger === target || signal.trigger.includes(target));
+const templateAppliesToScope = (template, scope) => !template.scopes || template.scopes.includes(scope);
 
 const hasPattern = (patterns, names) => patterns.some((pattern) => names.includes(pattern.name));
 
@@ -505,6 +558,9 @@ const scoreTemplate = (template, context) => {
   if ((context.scopeProfile?.preferredThemes || []).includes(template.theme)) {
     score += 10;
   }
+  if ((template.scopes || []).includes(context.scopeProfile?.id)) {
+    score += 8;
+  }
   const scopeSignalHits = (context.scopeProfile?.extraSignals || []).filter((signal) => itemIncludesSignal(matchedSignals, signal)).length;
   score += Math.min(12, scopeSignalHits * 4);
   if (context.scopeProfile?.id === 'year' && !(context.scopeProfile?.preferredThemes || []).includes(template.theme)) {
@@ -522,6 +578,29 @@ const scoreTemplate = (template, context) => {
   }
   if (strongSignals.length >= 3) {
     score += 4;
+  }
+
+  const currentAge = Number(context.scopeProfile?.currentAge);
+  if (Number.isFinite(currentAge) && currentAge <= 18) {
+    if (['family', 'relationship', 'health', 'mindset'].includes(template.theme)) {
+      score += 8;
+    }
+    if (template.id === 'opportunity-relationship-growth' || template.id === 'opportunity-noble-help' || template.id === 'opportunity-migration') {
+      score += 8;
+    }
+    if (template.type === 'opportunity' && ['career', 'wealth'].includes(template.theme)) {
+      score -= 10;
+    }
+    if (template.id === 'opportunity-platform-upgrade' || template.id === 'opportunity-asset-foundation' || template.id === 'opportunity-skill-output') {
+      score -= 16;
+    }
+  } else if (Number.isFinite(currentAge) && currentAge <= 22) {
+    if (['mindset', 'relationship', 'career'].includes(template.theme)) {
+      score += 4;
+    }
+    if (template.type === 'opportunity' && template.id === 'opportunity-asset-foundation') {
+      score -= 6;
+    }
   }
 
   return {
@@ -662,6 +741,18 @@ const buildNode = (item, index) => {
     summary: template.summary,
     dramaticText: template.dramaticText,
     choices: template.choices.map(applyChoiceDefaults),
+  };
+};
+
+const buildTodayBrief = ({ cards, scopeProfile }) => {
+  const main = cards[0];
+  const risk = cards.find((card) => card.type === 'trial') || cards[0];
+  const chance = cards.find((card) => card.type === 'opportunity') || cards[1] || cards[0];
+  return {
+    mainline: main ? main.title : '先把今天的主线看清楚',
+    friction: risk ? risk.summary : '今天最大的阻力通常来自分心和节奏被打乱。',
+    advice: chance ? `今天更适合：${chance.title}` : '今天更适合先做一件最重要的事。',
+    focusLabel: scopeProfile.focusLabel,
   };
 };
 
@@ -1034,6 +1125,31 @@ const buildMonthPeriods = (monthly, dayStem) => {
   }));
 };
 
+const buildDayPeriods = (daily, dayStem) => {
+  const dayGod = tenGod(dayStem, daily?.heavenlyStem);
+  const ganZhi = horoscopeGanZhi(daily);
+  const mutagen = daily?.mutagen || [];
+  const phases = [
+    ['开场', '上午'],
+    ['推进', '下午'],
+    ['收束', '晚间'],
+  ];
+
+  return phases.map(([phase, range]) => ({
+    startAge: 23,
+    endAge: 23,
+    startYear: new Date().getFullYear(),
+    endYear: new Date().getFullYear(),
+    ganZhi,
+    ganShiShen: dayGod,
+    hiddenShiShen: mutagen,
+    stageLabel: '流日',
+    stagePhase: phase,
+    stageTitleOverride: `${phase} · 今日关卡`,
+    monthRange: range,
+  }));
+};
+
 const buildScopeProfile = ({ scope, bazi, horoscope }) => {
   if (scope === 'decade') {
     const period = findCurrentDaYunPeriod(bazi, horoscope);
@@ -1042,6 +1158,7 @@ const buildScopeProfile = ({ scope, bazi, horoscope }) => {
     return {
       id: 'decade',
       ...SCOPE_META.decade,
+      currentAge: Number(horoscope?.currentAge),
       focusLabel: period ? `当前年龄 ${horoscope?.currentAge ?? '-'} 岁 · ${period.startAge}-${period.endAge}岁 · ${period.ganZhi}大运` : '当前大运',
       periods: buildDecadePeriods(period, stageTheme),
       preferredThemes: unique([...(stageTheme.themes || []), ...palaceThemes]).slice(0, 4),
@@ -1056,11 +1173,16 @@ const buildScopeProfile = ({ scope, bazi, horoscope }) => {
 
   if (scope === 'year') {
     const yearGod = tenGod(bazi?.dayMaster?.stem, horoscope?.yearly?.heavenlyStem);
-    const stageTheme = stageThemeFromPeriod({ ganShiShen: yearGod, hiddenShiShen: horoscope?.yearly?.mutagen || [], endAge: 28 }, 0);
+    const stageTheme = stageThemeFromPeriod({
+      ganShiShen: yearGod,
+      hiddenShiShen: horoscope?.yearly?.mutagen || [],
+      endAge: Number(horoscope?.currentAge || 28),
+    }, 0);
     const palaceThemes = themesFromPalaceNames(horoscope?.yearly?.palaceNames || []);
     return {
       id: 'year',
       ...SCOPE_META.year,
+      currentAge: Number(horoscope?.currentAge),
       focusLabel: horoscope?.yearly ? `当前年龄 ${horoscope?.currentAge ?? '-'} 岁 · ${horoscope.yearly.heavenlyStem}${horoscope.yearly.earthlyBranch}流年` : '当前流年',
       periods: buildYearPeriods(horoscope?.yearly, bazi?.dayMaster?.stem),
       preferredThemes: unique([...(stageTheme.themes || []), ...palaceThemes]).slice(0, 4),
@@ -1074,11 +1196,16 @@ const buildScopeProfile = ({ scope, bazi, horoscope }) => {
 
   if (scope === 'month') {
     const monthGod = tenGod(bazi?.dayMaster?.stem, horoscope?.monthly?.heavenlyStem);
-    const stageTheme = stageThemeFromPeriod({ ganShiShen: monthGod, hiddenShiShen: horoscope?.monthly?.mutagen || [], endAge: 28 }, 0);
+    const stageTheme = stageThemeFromPeriod({
+      ganShiShen: monthGod,
+      hiddenShiShen: horoscope?.monthly?.mutagen || [],
+      endAge: Number(horoscope?.currentAge || 28),
+    }, 0);
     const palaceThemes = themesFromPalaceNames(horoscope?.monthly?.palaceNames || []);
     return {
       id: 'month',
       ...SCOPE_META.month,
+      currentAge: Number(horoscope?.currentAge),
       focusLabel: horoscope?.monthly ? `当前年龄 ${horoscope?.currentAge ?? '-'} 岁 · ${horoscope.monthly.heavenlyStem}${horoscope.monthly.earthlyBranch}流月` : '当前流月',
       periods: buildMonthPeriods(horoscope?.monthly, bazi?.dayMaster?.stem),
       preferredThemes: unique([...(stageTheme.themes || []), ...palaceThemes]).slice(0, 3),
@@ -1090,9 +1217,33 @@ const buildScopeProfile = ({ scope, bazi, horoscope }) => {
     };
   }
 
+  if (scope === 'day') {
+    const dayGod = tenGod(bazi?.dayMaster?.stem, horoscope?.daily?.heavenlyStem);
+    const stageTheme = stageThemeFromPeriod({
+      ganShiShen: dayGod,
+      hiddenShiShen: horoscope?.daily?.mutagen || [],
+      endAge: Number(horoscope?.currentAge || 28),
+    }, 0);
+    const palaceThemes = themesFromPalaceNames(horoscope?.daily?.palaceNames || []);
+    return {
+      id: 'day',
+      ...SCOPE_META.day,
+      currentAge: Number(horoscope?.currentAge),
+      focusLabel: horoscope?.daily ? `当前年龄 ${horoscope?.currentAge ?? '-'} 岁 · ${horoscope.daily.heavenlyStem}${horoscope.daily.earthlyBranch}流日` : '今日流日',
+      periods: buildDayPeriods(horoscope?.daily, bazi?.dayMaster?.stem),
+      preferredThemes: unique([...(stageTheme.themes || []), ...palaceThemes]).slice(0, 3),
+      extraSignals: unique([
+        dayGod,
+        ...(horoscope?.daily?.mutagen || []),
+        ...(horoscope?.daily?.palaceNames || []),
+      ]),
+    };
+  }
+
   return {
     id: 'lifetime',
     ...SCOPE_META.lifetime,
+    currentAge: Number(horoscope?.currentAge),
     focusLabel: '整个人生时间轴',
     periods: pickGamePeriods(bazi),
     preferredThemes: [],
@@ -1201,6 +1352,19 @@ const scopeScaleOverrides = (scope, scale) => {
       opportunityThemeLimit: 1,
     };
   }
+  if (scope === 'day') {
+    return {
+      ...scale,
+      trialMin: 1,
+      trialTarget: 1,
+      trialMax: 1,
+      opportunityMin: 1,
+      opportunityTarget: 2,
+      opportunityMax: 2,
+      trialThemeLimit: 1,
+      opportunityThemeLimit: 1,
+    };
+  }
   return scale;
 };
 
@@ -1210,7 +1374,12 @@ const buildLifeGameScope = ({ scope = 'lifetime', reading, bazi, palaces, patter
   const context = { reading, bazi, palaces, patterns, signalIndex, scopeProfile };
   const periods = scopeProfile.periods;
   const scale = scopeScaleOverrides(scope, computeGameScale({ periods, patterns, signalIndex }));
-  const scored = templateFile.templates.map((template) => scoreTemplate(template, context));
+  const templates = scope === 'day'
+    ? SHORT_HORIZON_TEMPLATES.filter((template) => templateAppliesToScope(template, scope))
+    : templateFile.templates
+      .concat(scope === 'year' || scope === 'month' ? SHORT_HORIZON_TEMPLATES : [])
+      .filter((template) => templateAppliesToScope(template, scope));
+  const scored = templates.map((template) => scoreTemplate(template, context));
   const trials = selectScored(scored, {
     type: 'trial',
     min: scale.trialMin,
@@ -1231,6 +1400,7 @@ const buildLifeGameScope = ({ scope = 'lifetime', reading, bazi, palaces, patter
   const stats = buildStats({ signalIndex, patterns });
   const archetype = chooseArchetype({ patterns, stats, signalIndex });
   const stages = buildStages(periods, cards);
+  const todayBrief = scope === 'day' ? buildTodayBrief({ cards, scopeProfile }) : null;
 
   return {
     scope,
@@ -1247,6 +1417,7 @@ const buildLifeGameScope = ({ scope = 'lifetime', reading, bazi, palaces, patter
     opportunities,
     stages,
     cards,
+    todayBrief,
     scale: {
       stages: stages.length,
       cards: cards.length,
@@ -1288,6 +1459,14 @@ const buildLifeGame = ({ reading, bazi, palaces, patterns, horoscope }) => {
     patterns,
     horoscope,
   });
+  const day = buildLifeGameScope({
+    scope: 'day',
+    reading,
+    bazi,
+    palaces,
+    patterns,
+    horoscope,
+  });
 
   return {
     ...lifetime,
@@ -1297,6 +1476,7 @@ const buildLifeGame = ({ reading, bazi, palaces, patterns, horoscope }) => {
       decade,
       year,
       month,
+      day,
     },
   };
 };

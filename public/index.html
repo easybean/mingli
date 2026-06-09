@@ -1186,7 +1186,7 @@
 
       .scope-switch {
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(5, minmax(0, 1fr));
         gap: 8px;
         margin-top: 10px;
       }
@@ -1213,6 +1213,41 @@
         margin-top: 4px;
         line-height: 1.35;
         color: var(--muted);
+      }
+
+      .inline-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        margin-top: 8px;
+        padding: 8px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(40, 104, 143, 0.2);
+        background: rgba(231, 243, 249, 0.82);
+        color: var(--blue);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .today-brief {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .today-brief-card {
+        padding: 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(52, 38, 24, 0.1);
+        background: rgba(255, 251, 241, 0.72);
+      }
+
+      .today-brief-card small {
+        display: block;
+        color: var(--muted);
+        margin-bottom: 4px;
       }
 
       .choice-card {
@@ -1816,6 +1851,10 @@
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
+        .today-brief {
+          grid-template-columns: 1fr;
+        }
+
         .summary-strip {
           grid-template-columns: 1fr;
         }
@@ -2143,6 +2182,7 @@
         const headlineManual = data.reading.manual[0];
         const referenceNames = [...new Set(data.reading.references.map((item) => item.source))];
         const lifeGame = data.reading.lifeGame;
+        const todayBrief = lifeGame?.scopes?.day?.todayBrief;
 
         summaryEl.innerHTML = [
           chip('生命原型', lifeGame?.archetype?.name || '-'),
@@ -2177,6 +2217,17 @@
             <ul class="mini-list">
               ${data.reading.topics.slice(0, 5).map((item) => `<li>${item.title}：${briefText(item.takeaway || item.summary, 1, 58)}</li>`).join('')}
             </ul>
+          </article>
+          <article class="insight-card">
+            <h3>今日摘要</h3>
+            ${todayBrief ? `
+              <p class="meta"><strong>主线：</strong>${todayBrief.mainline}</p>
+              <p class="meta"><strong>阻力：</strong>${briefText(todayBrief.friction, 2, 76)}</p>
+              <p class="meta"><strong>建议：</strong>${todayBrief.advice}</p>
+              <button class="inline-action" type="button" data-open-today-game="true">开始今日关卡</button>
+            ` : `
+              <p class="meta">今日关卡还没有生成，请先排盘。</p>
+            `}
           </article>
           <article class="insight-card">
             <h3>依据层</h3>
@@ -2639,6 +2690,22 @@
                   </button>
                 `).join('')}
               </div>
+              ${lifeGame.scope === 'day' && lifeGame.todayBrief ? `
+                <div class="today-brief">
+                  <div class="today-brief-card">
+                    <small>今日主线</small>
+                    <strong>${lifeGame.todayBrief.mainline}</strong>
+                  </div>
+                  <div class="today-brief-card">
+                    <small>今日阻力</small>
+                    <strong>${lifeGame.todayBrief.friction}</strong>
+                  </div>
+                  <div class="today-brief-card">
+                    <small>今日建议</small>
+                    <strong>${lifeGame.todayBrief.advice}</strong>
+                  </div>
+                </div>
+              ` : ''}
               ${renderStatGrid(state.stats)}
               <p class="meta">${lifeGame.disclaimer}</p>
             </div>
@@ -2746,20 +2813,22 @@
               `}
             </div>
           </div>
-          <div class="reading-group">
-            <h3>阶段关卡</h3>
-            <div class="stage-grid">
-              ${lifeGame.stages.map((stage) => `
-                <article class="stage-card">
-                  <h3>${stage.title}</h3>
-                  <small>Level ${stage.level} · ${stage.ageRange} · ${stage.ganZhi}</small>
-                  <p class="meta">${stage.triggerSummary}</p>
-                  <p class="meta">可能课题：${stage.possibleThemes.join('、') || '继续观察命盘主线'}</p>
-                  <p class="meta">推荐策略：${stage.strategy}</p>
-                </article>
-              `).join('')}
+          ${lifeGame.scope === 'day' ? '' : `
+            <div class="reading-group">
+              <h3>阶段关卡</h3>
+              <div class="stage-grid">
+                ${lifeGame.stages.map((stage) => `
+                  <article class="stage-card">
+                    <h3>${stage.title}</h3>
+                    <small>Level ${stage.level} · ${stage.ageRange} · ${stage.ganZhi}</small>
+                    <p class="meta">${stage.triggerSummary}</p>
+                    <p class="meta">可能课题：${stage.possibleThemes.join('、') || '继续观察命盘主线'}</p>
+                    <p class="meta">推荐策略：${stage.strategy}</p>
+                  </article>
+                `).join('')}
+              </div>
             </div>
-          </div>
+          `}
         `;
       };
 
@@ -2769,6 +2838,16 @@
           return;
         }
         lifeGameEl.innerHTML = renderLifeGame(lifeGame, currentLifeGameState);
+      };
+
+      const openTodayGame = () => {
+        if (!currentLifeGameBundle?.scopes?.day) {
+          return;
+        }
+        currentLifeGameScope = 'day';
+        currentLifeGameState = createLifeGameState(selectedLifeGame());
+        activateView('game');
+        rerenderLifeGame();
       };
 
       const applyGameChoice = (cardId, choiceIndex) => {
@@ -2837,6 +2916,13 @@
         if (choiceButton) {
           const [cardId, choiceIndexText] = choiceButton.dataset.gameChoice.split(':');
           applyGameChoice(cardId, Number(choiceIndexText));
+        }
+      });
+
+      overviewInsightsEl.addEventListener('click', (event) => {
+        const todayButton = event.target.closest('[data-open-today-game="true"]');
+        if (todayButton) {
+          openTodayGame();
         }
       });
 

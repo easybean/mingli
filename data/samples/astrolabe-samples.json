@@ -144,6 +144,29 @@
         "requiredReferenceSources": ["子平真诠", "穷通宝鉴", "滴天髓阐微", "斗数玄微论", "重补斗数彀率"],
         "requiredRetrievalSources": ["斗数玄微论", "重补斗数彀率", "穷通宝鉴"]
       }
+    },
+    {
+      "id": "male-2012-hangzhou",
+      "label": "男命 2012 杭州",
+      "query": {
+        "date": "2012-06-15",
+        "birthTime": "10:30",
+        "gender": "男",
+        "birthPlace": "杭州",
+        "trueSolarTime": "true",
+        "algorithm": "default"
+      },
+      "expect": {
+        "manualCountAtLeast": 14,
+        "referencesAtLeast": 8,
+        "knowledgeHitsAtLeast": 8,
+        "retrievalAtLeast": 4,
+        "patternsAtLeast": 2,
+        "requiredTopics": ["事业主线", "财运主线", "婚恋主线", "健康主线", "心性主线"],
+        "minZiweiStructureTopics": 5,
+        "minBaziStructureTopics": 3,
+        "manualSections": ["八字基础", "命宫", "兄弟", "夫妻", "子女", "财帛", "疾厄", "迁移", "仆役", "官禄", "田宅", "福德", "父母", "身宫"]
+      }
     }
   ]
 }

@@ -18,6 +18,11 @@ const buildParams = (query) => {
 const includesAll = (haystack, needles) => needles.filter((item) => !haystack.includes(item));
 const plainManualTitle = (title) => String(title || '').replace(/^第\d+章：/, '');
 const overlapCount = (left, right) => left.filter((item) => right.includes(item)).length;
+const parseAgeRange = (text) => {
+  const match = /(\d+)-(\d+)岁/.exec(String(text || ''));
+  return match ? { start: Number(match[1]), end: Number(match[2]) } : null;
+};
+const ADULT_STAGE_KEYWORDS = ['事业压力测试', '资源整合关', '表达变现关', '恢复学习关', '同盟边界关'];
 
 const validateSample = (sample) => {
   const result = buildAstrolabe(buildParams(sample.query));
@@ -138,7 +143,7 @@ const validateSample = (sample) => {
   const lifeGame = reading.lifeGame;
   if (lifeGame) {
     const scopes = lifeGame.scopes || {};
-    const requiredScopes = ['lifetime', 'decade', 'year', 'month'];
+    const requiredScopes = ['lifetime', 'decade', 'year', 'month', 'day'];
     const missingScopes = includesAll(Object.keys(scopes), requiredScopes);
     if (missingScopes.length) {
       errors.push(`missing lifeGame scopes: ${missingScopes.join(', ')}`);
@@ -196,6 +201,45 @@ const validateSample = (sample) => {
         errors.push(`lifeGame scope has no stages: ${scopeId}`);
       }
     });
+
+    const currentAge = result.horoscope?.currentAge;
+    const decade = scopes.decade;
+    if (decade && Number.isFinite(currentAge)) {
+      const focusRange = parseAgeRange(decade.focusLabel);
+      if (!focusRange || currentAge < focusRange.start || currentAge > focusRange.end) {
+        errors.push(`decade focusLabel does not cover current age ${currentAge}`);
+      }
+      const hasCurrentStage = (decade.stages || []).some((stage) => {
+        const range = parseAgeRange(stage.ageRange);
+        return range && currentAge >= range.start && currentAge <= range.end;
+      });
+      if (!hasCurrentStage) {
+        errors.push(`decade stages do not cover current age ${currentAge}`);
+      }
+    }
+
+    const year = scopes.year;
+    if (year && !/流年/.test(year.focusLabel || '')) {
+      errors.push('year scope focusLabel should mention 流年');
+    }
+    const month = scopes.month;
+    if (month && !/流月/.test(month.focusLabel || '')) {
+      errors.push('month scope focusLabel should mention 流月');
+    }
+    const day = scopes.day;
+    if (day && !/流日/.test(day.focusLabel || '')) {
+      errors.push('day scope focusLabel should mention 流日');
+    }
+
+    if (Number.isFinite(currentAge) && currentAge <= 22) {
+      ['decade', 'year', 'month', 'day'].forEach((scopeId) => {
+        const scope = scopes[scopeId];
+        const badStage = (scope?.stages || []).find((stage) => ADULT_STAGE_KEYWORDS.some((keyword) => String(stage.title || '').includes(keyword)));
+        if (badStage) {
+          errors.push(`${scopeId} scope uses adult stage title for age ${currentAge}: ${badStage.title}`);
+        }
+      });
+    }
   }
 
   if (expect.manualTitles) {
@@ -252,6 +296,9 @@ const validateSample = (sample) => {
       lifeGameTrials: reading.lifeGame?.trials?.map((item) => item.title) || [],
       lifeGameOpportunities: reading.lifeGame?.opportunities?.map((item) => item.title) || [],
       lifeGameOpportunityIds: reading.lifeGame?.opportunities?.map((item) => item.id) || [],
+      lifeGameScopeFocus: Object.fromEntries(
+        Object.entries(reading.lifeGame?.scopes || {}).map(([key, scope]) => [key, scope.focusLabel || ''])
+      ),
       topics: reading.topics.map((item) => item.title),
     },
   };
