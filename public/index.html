@@ -448,6 +448,10 @@
         box-shadow: 0 12px 24px rgba(29, 93, 120, 0.18);
       }
 
+      .workspace-button::after {
+        content: none;
+      }
+
       .workspace {
         margin-top: 18px;
       }
@@ -505,8 +509,100 @@
         min-height: 100%;
       }
 
+      .overview-hero-shell {
+        display: grid;
+        grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.95fr);
+        gap: 14px;
+        align-items: start;
+      }
+
+      .overview-kicker {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
       .overview-hero-card strong {
         color: var(--red);
+      }
+
+      .overview-path {
+        display: grid;
+        gap: 10px;
+      }
+
+      .cta-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .cta-button {
+        grid-column: auto;
+        width: auto;
+        min-height: 0;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(52, 38, 24, 0.12);
+        background: rgba(255, 251, 241, 0.78);
+        color: var(--ink);
+        text-align: left;
+      }
+
+      .cta-button.primary {
+        background: linear-gradient(135deg, var(--blue), var(--green));
+        color: #fff9ec;
+        border-color: transparent;
+      }
+
+      .cta-button small {
+        display: block;
+        margin-top: 4px;
+        line-height: 1.35;
+        color: inherit;
+        opacity: 0.88;
+      }
+
+      .overview-path-card,
+      .overview-next-card {
+        padding: 14px;
+        border: 1px solid rgba(52, 38, 24, 0.14);
+        border-radius: 16px;
+        background: rgba(255, 251, 241, 0.78);
+      }
+
+      .overview-next-card {
+        display: grid;
+        gap: 10px;
+      }
+
+      .overview-next-card strong,
+      .overview-path-card strong {
+        margin-bottom: 0;
+        font-size: 18px;
+        line-height: 1.2;
+      }
+
+      .overview-next-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .overview-next-list article {
+        padding-top: 8px;
+        border-top: 1px solid rgba(52, 38, 24, 0.1);
+      }
+
+      .overview-next-list article:first-child {
+        padding-top: 0;
+        border-top: 0;
+      }
+
+      .overview-next-list small {
+        display: block;
+        margin-bottom: 3px;
+        color: var(--muted);
       }
 
       .stat-meter-list {
@@ -932,6 +1028,31 @@
         background: rgba(255, 253, 245, 0.72);
       }
 
+      .game-hero-top {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+        gap: 14px;
+        align-items: start;
+      }
+
+      .game-focus-grid {
+        display: grid;
+        gap: 10px;
+      }
+
+      .game-focus-card {
+        padding: 12px 14px;
+        border: 1px solid rgba(52, 38, 24, 0.14);
+        border-radius: 16px;
+        background: rgba(255, 251, 241, 0.78);
+      }
+
+      .game-focus-card small {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--muted);
+      }
+
       .game-hero strong {
         color: var(--red);
         font-size: 28px;
@@ -986,11 +1107,34 @@
         align-items: center;
       }
 
+      .game-runbar strong {
+        line-height: 1.2;
+      }
+
       .game-route-banner {
         display: grid;
         gap: 8px;
         border-color: rgba(29, 93, 120, 0.18);
         background: rgba(29, 93, 120, 0.06);
+      }
+
+      .game-progress-strip {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .game-progress-card {
+        padding: 12px 14px;
+        border: 1px solid rgba(52, 38, 24, 0.12);
+        border-radius: 16px;
+        background: rgba(255, 251, 241, 0.78);
+      }
+
+      .game-progress-card small {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--muted);
       }
 
       .game-runbar-actions {
@@ -1065,12 +1209,21 @@
 
       .game-stage-pill .meta,
       .stage-card .meta {
-        line-height: 1.35;
+        line-height: 1.28;
       }
 
       .game-scene {
         display: grid;
         gap: 12px;
+      }
+
+      .compact-list {
+        display: grid;
+        gap: 6px;
+      }
+
+      .compact-list p {
+        margin: 0;
       }
 
       .game-scene-head {
@@ -1157,7 +1310,7 @@
       .game-card,
       .stage-card {
         display: grid;
-        gap: 10px;
+        gap: 8px;
         padding: 14px;
         border: 1px solid rgba(52, 38, 24, 0.16);
         border-radius: 18px;
@@ -1563,6 +1716,12 @@
           grid-template-columns: 1fr;
         }
 
+        .overview-hero-shell,
+        .game-hero-top,
+        .game-progress-strip {
+          grid-template-columns: 1fr;
+        }
+
         .workspace-nav,
         .workspace-section {
           padding: 18px;
@@ -1627,6 +1786,320 @@
         }
       }
 
+      @media (max-width: 720px) {
+        body::before {
+          opacity: 0.08;
+        }
+
+        main {
+          width: min(100% - 14px, 1180px);
+          padding: 12px 0 88px;
+        }
+
+        .hero {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+
+        .title-card,
+        .control-card,
+        .panel,
+        .workspace-nav,
+        .workspace-section {
+          border-radius: 20px;
+          box-shadow: 0 14px 36px rgba(56, 41, 21, 0.1);
+          backdrop-filter: blur(8px);
+        }
+
+        .control-card {
+          order: 1;
+          padding: 16px;
+        }
+
+        .title-card {
+          order: 2;
+          min-height: 0;
+          padding: 18px;
+          gap: 10px;
+          align-content: start;
+        }
+
+        .eyebrow {
+          margin-bottom: 8px;
+          font-size: 12px;
+        }
+
+        h1 {
+          font-size: clamp(36px, 14vw, 56px);
+          line-height: 0.96;
+        }
+
+        .subtitle {
+          margin-top: 12px;
+          font-size: 15px;
+          line-height: 1.62;
+        }
+
+        .hero-note {
+          margin-top: 8px;
+          font-size: 12px;
+          line-height: 1.5;
+        }
+
+        form {
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+
+        .checkbox-label {
+          padding-top: 0;
+        }
+
+        input,
+        select,
+        button {
+          min-height: 48px;
+          font-size: 16px;
+        }
+
+        .workspace {
+          margin-top: 12px;
+        }
+
+        .workspace-nav {
+          position: sticky;
+          top: 8px;
+          z-index: 24;
+          display: grid;
+          grid-template-columns: repeat(5, minmax(0, 1fr));
+          gap: 6px;
+          margin-top: 12px;
+          padding: 8px;
+          border-radius: 18px;
+          background: rgba(255, 252, 245, 0.94);
+        }
+
+        .workspace-button {
+          min-width: 0;
+          min-height: 42px;
+          padding: 6px 2px;
+          border-radius: 12px;
+          font-size: 11px;
+          line-height: 1.15;
+          font-weight: 700;
+          letter-spacing: 0;
+        }
+
+        .workspace-button[data-mobile-label] {
+          font-size: 0;
+        }
+
+        .workspace-button[data-mobile-label]::after {
+          content: attr(data-mobile-label);
+          display: block;
+          font-size: 11px;
+          line-height: 1.15;
+        }
+
+        .workspace-section,
+        .panel {
+          padding: 14px;
+          border-radius: 18px;
+        }
+
+        .panel {
+          margin-top: 14px;
+        }
+
+        .panel h2 {
+          margin-bottom: 12px;
+          font-size: 18px;
+        }
+
+        .overview-stack {
+          gap: 10px;
+        }
+
+        #overviewLead {
+          order: -1;
+        }
+
+        .summary-strip {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+        }
+
+        .chip {
+          padding: 12px;
+          border-radius: 14px;
+        }
+
+        .chip strong {
+          font-size: 16px;
+        }
+
+        .overview-card,
+        .insight-card,
+        .manual-card,
+        .level-card,
+        .knowledge-chip,
+        .reference-card,
+        .topic-card {
+          padding: 14px;
+          border-radius: 18px;
+        }
+
+        .overview-hero-card,
+        .overview-path,
+        .overview-next-card,
+        .overview-next-list,
+        .insight-list {
+          gap: 10px;
+        }
+
+        .overview-hero-shell {
+          gap: 10px;
+        }
+
+        .overview-card h3,
+        .insight-card h3,
+        .reading-group h3 {
+          font-size: 16px;
+        }
+
+        .overview-card strong {
+          margin-bottom: 6px;
+          font-size: 24px;
+        }
+
+        .cta-row {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+        }
+
+        .cta-button {
+          padding: 12px;
+          border-radius: 14px;
+        }
+
+        .cta-button.primary {
+          grid-column: 1 / -1;
+        }
+
+        .mobile-palace {
+          grid-template-columns: 1fr;
+          gap: 10px;
+          padding: 12px;
+          border-radius: 16px;
+        }
+
+        .mobile-palace-title {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 10px;
+        }
+
+        .mobile-palace-title strong {
+          font-size: 17px;
+        }
+
+        .game-hero {
+          padding: 14px;
+          border-radius: 18px;
+          gap: 12px;
+        }
+
+        .game-hero strong {
+          font-size: 24px;
+        }
+
+        .timeline-node,
+        .game-focus-card,
+        .game-progress-card,
+        .today-brief-card,
+        .game-stage-pill,
+        .game-scene-side-card,
+        .game-route-banner,
+        .game-scene,
+        .game-journal,
+        .stage-card,
+        .journal-item {
+          border-radius: 16px;
+        }
+
+        .game-focus-grid,
+        .game-progress-strip,
+        .today-brief {
+          gap: 8px;
+        }
+
+        .scope-switch {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+          margin-top: 2px;
+        }
+
+        .scope-button {
+          padding: 10px;
+          border-radius: 14px;
+        }
+
+        .game-runbar {
+          grid-template-columns: 1fr;
+          align-items: start;
+          gap: 10px;
+        }
+
+        .game-runbar-actions {
+          width: 100%;
+        }
+
+        .ghost-button {
+          width: 100%;
+          min-height: 42px;
+        }
+
+        .game-stage-strip {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+        }
+
+        .choice-list {
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+
+        .choice-action {
+          padding: 12px;
+          gap: 7px;
+          border-radius: 14px;
+        }
+
+        .luck-period {
+          grid-template-columns: 1fr;
+          gap: 10px;
+          border-radius: 16px;
+        }
+
+        .luck-period-head strong,
+        .bazi-ganzhi {
+          font-size: 24px;
+        }
+
+        .flow-detail {
+          gap: 10px;
+        }
+
+        .year-card,
+        .day-detail,
+        .day-card,
+        .hour-card,
+        .month-card {
+          border-radius: 12px;
+        }
+      }
+
       @media (max-width: 560px) {
         main {
           width: min(100% - 20px, 1180px);
@@ -1657,7 +2130,7 @@
         .workspace-nav,
         .workspace-section,
         .panel {
-          padding: 16px;
+          padding: 14px;
         }
 
         .game-runbar,
@@ -1824,19 +2297,22 @@
         }
 
         .workspace-nav {
-          display: grid;
-          grid-template-columns: repeat(5, minmax(0, 1fr));
-          gap: 6px;
-          padding: 6px;
-          margin-top: 14px;
+          top: 6px;
+          gap: 5px;
+          padding: 7px;
+          margin-top: 10px;
         }
 
         .workspace-button {
           min-width: 0;
-          min-height: 34px;
-          padding: 0 8px;
+          min-height: 40px;
+          padding: 4px 1px;
           border-radius: 12px;
-          font-size: 13px;
+          font-size: 10.5px;
+        }
+
+        .workspace-button[data-mobile-label]::after {
+          font-size: 10.5px;
         }
 
         .game-stage-strip {
@@ -1847,6 +2323,10 @@
           grid-template-columns: 1fr;
         }
 
+        .game-progress-strip {
+          gap: 8px;
+        }
+
         .scope-switch {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
@@ -1855,7 +2335,10 @@
           grid-template-columns: 1fr;
         }
 
-        .summary-strip {
+        .summary-strip,
+        .cta-row,
+        .horoscope-grid,
+        .game-stage-strip {
           grid-template-columns: 1fr;
         }
 
@@ -1872,6 +2355,24 @@
 
         .overview-card strong {
           font-size: 22px;
+        }
+
+        .game-hero strong {
+          font-size: 22px;
+        }
+
+        .subtitle {
+          font-size: 14px;
+        }
+
+        .mobile-palace {
+          padding: 11px;
+        }
+
+        .mobile-palace-title {
+          align-items: start;
+          flex-direction: column;
+          gap: 4px;
         }
 
         .reading-brief strong {
@@ -1989,11 +2490,11 @@
       </section>
 
       <section class="workspace-nav" aria-label="排盘工作台导航">
-        <button class="workspace-button active" type="button" data-view="overview">总览</button>
-        <button class="workspace-button" type="button" data-view="chart">命盘</button>
-        <button class="workspace-button" type="button" data-view="timeline">时间轴</button>
-        <button class="workspace-button" type="button" data-view="reading">解读</button>
-        <button class="workspace-button" type="button" data-view="game">人生游戏</button>
+        <button class="workspace-button active" type="button" data-view="overview" data-mobile-label="总览">总览</button>
+        <button class="workspace-button" type="button" data-view="chart" data-mobile-label="命盘">命盘</button>
+        <button class="workspace-button" type="button" data-view="timeline" data-mobile-label="运限">时间轴</button>
+        <button class="workspace-button" type="button" data-view="reading" data-mobile-label="解读">解读</button>
+        <button class="workspace-button" type="button" data-view="game" data-mobile-label="游戏">人生游戏</button>
       </section>
 
       <section class="workspace">
@@ -2183,6 +2684,9 @@
         const referenceNames = [...new Set(data.reading.references.map((item) => item.source))];
         const lifeGame = data.reading.lifeGame;
         const todayBrief = lifeGame?.scopes?.day?.todayBrief;
+        const monthScope = lifeGame?.scopes?.month;
+        const decadeScope = lifeGame?.scopes?.decade;
+        const topTopics = data.reading.topics.slice(0, 3);
 
         summaryEl.innerHTML = [
           chip('生命原型', lifeGame?.archetype?.name || '-'),
@@ -2193,10 +2697,46 @@
 
         overviewLeadEl.innerHTML = `
           <div class="overview-hero-card">
-            <div>
-              <h3>人生主线</h3>
-              <strong>${lifeGame?.headline || data.reading.headline}</strong>
-              <p class="meta">${briefText(headlineManual?.body || '', 2, 132)}</p>
+            <div class="overview-hero-shell">
+              <div>
+                <p class="overview-kicker">建议路径：今天 -> 近期 -> 长线</p>
+                <h3>先从最容易开始的一步进入</h3>
+                <strong>${lifeGame?.headline || data.reading.headline}</strong>
+                <p class="meta">${briefText(headlineManual?.body || '', 2, 132)}</p>
+                <div class="overview-path">
+                  <div class="cta-row">
+                    <button class="cta-button primary" type="button" data-open-game-scope="day">
+                      开始今日关卡
+                      <small>${todayBrief?.mainline || '先处理今天最值得推进的一件事。'}</small>
+                    </button>
+                    <button class="cta-button" type="button" data-open-game-scope="month">
+                      看最近一月
+                      <small>${monthScope?.focusLabel || monthScope?.scopeSummary || '查看眼前一个月的推进节奏。'}</small>
+                    </button>
+                    <button class="cta-button" type="button" data-open-view="reading">
+                      看人生主线
+                      <small>${decadeScope?.focusLabel || '进入完整解读，看长期结构和主线。'}</small>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="overview-next-card">
+                <strong>现在最值得看什么</strong>
+                <div class="overview-next-list">
+                  <article>
+                    <small>第一步</small>
+                    <p class="meta">${todayBrief ? `今天先处理“${todayBrief.mainline}”这条线。` : '先进入今日关卡，拿到今天的主线提示。'}</p>
+                  </article>
+                  <article>
+                    <small>第二步</small>
+                    <p class="meta">${monthScope?.scopeSummary || '再看最近一个月，判断眼前节奏是收口、推进还是调整。'} </p>
+                  </article>
+                  <article>
+                    <small>第三步</small>
+                    <p class="meta">${topTopics.map((item) => item.title).join('、') || '事业、财运、关系'} 是你当前盘里最值得回头细看的主线。</p>
+                  </article>
+                </div>
+              </div>
             </div>
             ${renderMiniStats(lifeGame?.stats || {})}
           </div>
@@ -2215,7 +2755,7 @@
           <article class="insight-card">
             <h3>关键主题</h3>
             <ul class="mini-list">
-              ${data.reading.topics.slice(0, 5).map((item) => `<li>${item.title}：${briefText(item.takeaway || item.summary, 1, 58)}</li>`).join('')}
+              ${data.reading.topics.slice(0, 4).map((item) => `<li>${item.title}：${briefText(item.takeaway || item.summary, 1, 58)}</li>`).join('')}
             </ul>
           </article>
           <article class="insight-card">
@@ -2224,7 +2764,7 @@
               <p class="meta"><strong>主线：</strong>${todayBrief.mainline}</p>
               <p class="meta"><strong>阻力：</strong>${briefText(todayBrief.friction, 2, 76)}</p>
               <p class="meta"><strong>建议：</strong>${todayBrief.advice}</p>
-              <button class="inline-action" type="button" data-open-today-game="true">开始今日关卡</button>
+              <p class="meta"><strong>下一步：</strong>先做今日关卡，再切到最近一月看这条线会不会延续。</p>
             ` : `
               <p class="meta">今日关卡还没有生成，请先排盘。</p>
             `}
@@ -2671,13 +3211,34 @@
         const isFinished = state.resolvedCardIds.length >= deck.length;
         const dynamicCard = activeCard ? adaptCardByState(activeCard, state) : null;
         const scopes = currentLifeGameBundle?.scopes || { [currentLifeGameScope]: lifeGame };
+        const routeInfo = STYLE_GUIDANCE[dominantStyle(state)] || STYLE_GUIDANCE.steady;
+        const remainingCards = deck.filter((card) => !state.resolvedCardIds.includes(card.id));
+        const nextCard = remainingCards.find((card) => card.id !== activeCard?.id) || null;
         return `
           <div class="reading-head">
             <div class="game-hero">
-              <small class="meta">人生角色</small>
-              <strong>${lifeGame.archetype.name}</strong>
-              <p class="topic-takeaway">${lifeGame.headline}</p>
-              <p class="meta">出生：${currentData?.summary?.solarDate || '-'} ${currentData?.summary?.time || ''} ｜ 定位：${currentData?.horoscope?.target || '-'} ｜ 当前年龄：${currentData?.horoscope?.currentAge ?? '-' } 岁</p>
+              <div class="game-hero-top">
+                <div>
+                  <small class="meta">人生角色</small>
+                  <strong>${lifeGame.archetype.name}</strong>
+                  <p class="topic-takeaway">${lifeGame.headline}</p>
+                  <p class="meta">出生：${currentData?.summary?.solarDate || '-'} ${currentData?.summary?.time || ''} ｜ 定位：${currentData?.horoscope?.target || '-'} ｜ 当前年龄：${currentData?.horoscope?.currentAge ?? '-' } 岁</p>
+                </div>
+                <div class="game-focus-grid">
+                  <article class="game-focus-card">
+                    <small>当前要做什么</small>
+                    <p class="meta">${isFinished ? '这一轮已经走完，可以重新开局换路线。' : `${dynamicCard?.dynamicTitle || dynamicCard?.title || '当前事件'} 是你现在要先处理的题。`}</p>
+                  </article>
+                  <article class="game-focus-card">
+                    <small>当前路线</small>
+                    <p class="meta">${routeInfo.label}。${routeInfo.stage}</p>
+                  </article>
+                  <article class="game-focus-card">
+                    <small>做完这一题后</small>
+                    <p class="meta">${nextCard ? `下一题会转向“${nextCard.title}”。` : '这一题结算后，本轮就会收束。'}</p>
+                  </article>
+                </div>
+              </div>
               <div class="scope-switch">
                 ${Object.entries(scopes).map(([scopeId, item]) => `
                   <button
@@ -2715,13 +3276,27 @@
             <div class="game-runbar">
               <div>
                 <strong>${isFinished ? '这一轮已收束' : `当前关卡：${activeStage?.title || '人生主线'}`}</strong>
-                <p class="meta">已完成 ${state.resolvedCardIds.length} / ${deck.length} 个事件。${activeStage ? `当前阶段：${activeStage.ageRange} · ${activeStage.ganZhi}。` : ''}</p>
+                <p class="meta">已完成 ${state.resolvedCardIds.length} / ${deck.length} 个事件，剩余 ${Math.max(0, deck.length - state.resolvedCardIds.length)} 个。${activeStage ? `当前阶段：${activeStage.ageRange} · ${activeStage.ganZhi}。` : ''}</p>
                 <p class="meta">${lifeGame.scopeLabel || '一生'}模式：${lifeGame.focusLabel || lifeGame.scopeSummary || ''}</p>
                 <p class="meta">本轮已展开 ${lifeGame.scale?.stages || (lifeGame.stages || []).length} 个阶段，当前人生地图会延伸到 ${lifeGame.stages?.at(-1)?.ageRange || '-'}。</p>
               </div>
               <div class="game-runbar-actions">
                 <button class="ghost-button" type="button" data-game-action="reset">重新开局</button>
               </div>
+            </div>
+            <div class="game-progress-strip">
+              <article class="game-progress-card">
+                <small>当前题目</small>
+                <p class="meta">${dynamicCard?.title || '当前没有可推进事件'}</p>
+              </article>
+              <article class="game-progress-card">
+                <small>这题之后</small>
+                <p class="meta">${nextCard ? nextCard.title : '本轮结束，进入总结。'}</p>
+              </article>
+              <article class="game-progress-card">
+                <small>路线影响</small>
+                <p class="meta">${routeInfo.card}</p>
+              </article>
             </div>
           </div>
           <div class="reading-group">
@@ -2756,14 +3331,16 @@
                     <div class="game-scene-head">
                       <div>
                         <h3>${dynamicCard.dynamicTitle || dynamicCard.title}</h3>
-                        <small>${dynamicCard.themeLabel} · ${dynamicCard.type === 'trial' ? '试炼' : '机会'}</small>
+                        <small>${dynamicCard.themeLabel}</small>
                       </div>
                       <span class="tag ${dynamicCard.type === 'trial' ? 'tag-bad' : 'tag-good'}">${dynamicCard.type === 'trial' ? '试炼' : '机会'}</span>
                     </div>
                     <p class="topic-takeaway">${dynamicCard.dynamicSummary || dynamicCard.summary}</p>
-                    <p class="meta">${dynamicCard.dynamicDramaticText || dynamicCard.dramaticText}</p>
-                    <p class="meta">${dynamicCard.triggerSummary}</p>
-                    ${dynamicCard.dynamicHint ? `<p class="meta">${dynamicCard.dynamicHint}</p>` : ''}
+                    <div class="compact-list">
+                      <p class="meta">${dynamicCard.dynamicDramaticText || dynamicCard.dramaticText}</p>
+                      <p class="meta">${dynamicCard.triggerSummary}</p>
+                      ${dynamicCard.dynamicHint ? `<p class="meta">当前提醒：${dynamicCard.dynamicHint}</p>` : ''}
+                    </div>
                     ${state.resolvedCardIds.includes(dynamicCard.id) ? `
                       <div class="empty-card">
                         <p class="meta">这一题已经结算完成。重新开局可以重走一轮。</p>
@@ -2772,17 +3349,17 @@
                       <div class="choice-list">
                         ${dynamicCard.choices.map((choice, choiceIndex) => `
                           <button
-                            class="choice-action ${choice.style}"
-                            type="button"
-                            data-game-choice="${dynamicCard.id}:${choiceIndex}"
-                          >
-                            <strong>${choice.label}</strong>
-                            <small>${choice.description}</small>
-                            <span class="meta">${dynamicCard.dynamicChoiceLead}</span>
-                            <span class="meta">代价：${choice.cost}</span>
-                            <span class="meta">收益：${choice.reward}</span>
-                            <div class="effect-list">${renderChoiceEffects(choice.statEffects)}</div>
-                          </button>
+                              class="choice-action ${choice.style}"
+                              type="button"
+                              data-game-choice="${dynamicCard.id}:${choiceIndex}"
+                            >
+                              <strong>${choice.label}</strong>
+                              <small>${choice.description}</small>
+                              <span class="meta">${dynamicCard.dynamicChoiceLead}</span>
+                              <span class="meta">代价：${choice.cost}</span>
+                              <span class="meta">收益：${choice.reward}</span>
+                              <div class="effect-list">${renderChoiceEffects(choice.statEffects)}</div>
+                            </button>
                         `).join('')}
                       </div>
                     `}
@@ -2809,7 +3386,7 @@
                   `).join('')}
                 </div>
               ` : `
-                <p class="meta">这一轮还没开始。先处理当前关卡，再决定你要走激进、稳健还是修复路线。</p>
+                <p class="meta">这一轮还没开始。先处理当前题，再看你会把整局带向激进、稳健还是修复路线。</p>
               `}
             </div>
           </div>
@@ -2840,14 +3417,18 @@
         lifeGameEl.innerHTML = renderLifeGame(lifeGame, currentLifeGameState);
       };
 
-      const openTodayGame = () => {
-        if (!currentLifeGameBundle?.scopes?.day) {
+      const openGameScope = (scopeId) => {
+        if (!currentLifeGameBundle?.scopes?.[scopeId]) {
           return;
         }
-        currentLifeGameScope = 'day';
+        currentLifeGameScope = scopeId;
         currentLifeGameState = createLifeGameState(selectedLifeGame());
         activateView('game');
         rerenderLifeGame();
+      };
+
+      const openTodayGame = () => {
+        openGameScope('day');
       };
 
       const applyGameChoice = (cardId, choiceIndex) => {
@@ -2919,12 +3500,27 @@
         }
       });
 
-      overviewInsightsEl.addEventListener('click', (event) => {
+      const handleOverviewAction = (event) => {
+        const gameButton = event.target.closest('[data-open-game-scope]');
+        if (gameButton) {
+          openGameScope(gameButton.dataset.openGameScope);
+          return;
+        }
+
+        const viewButton = event.target.closest('[data-open-view]');
+        if (viewButton) {
+          activateView(viewButton.dataset.openView);
+          return;
+        }
+
         const todayButton = event.target.closest('[data-open-today-game="true"]');
         if (todayButton) {
           openTodayGame();
         }
-      });
+      };
+
+      overviewLeadEl.addEventListener('click', handleOverviewAction);
+      overviewInsightsEl.addEventListener('click', handleOverviewAction);
 
       const renderReading = (reading) => {
         const baziManual = reading.manual.find((chapter) => plainChapterTitle(chapter.title) === '八字基础');
