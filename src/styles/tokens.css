@@ -1,0 +1,22 @@
+:root {
+  --page-bg: #f8f3e8;
+  --surface: #fffdf7;
+  --surface-soft: #f3ebdc;
+  --primary: #245c63;
+  --primary-deep: #173f45;
+  --primary-soft: #ddecee;
+  --gold: #b98532;
+  --green: #5f7f4b;
+  --red-soft: #b96a58;
+  --ink: #2c2620;
+  --muted: #7a7065;
+  --line: rgba(44, 38, 32, 0.12);
+  --shadow-soft: 0 16px 40px rgba(44, 38, 32, 0.08);
+  --radius-xl: 22px;
+  --radius-lg: 18px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --space-page: 16px;
+  --nav-height: 64px;
+  --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+}

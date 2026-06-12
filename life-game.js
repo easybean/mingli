@@ -1,12 +1,13 @@
 const templateFile = require('./data/life-game-templates.json');
+const guanqiaFile = require('./data/guanqia.json');
 const { tenGod } = require('./bazi-utils');
 
 const THEME_LABELS = {
   career: '事业',
-  wealth: '财运',
+  wealth: '财富',
   relationship: '关系',
   health: '健康',
-  mindset: '心性',
+  mindset: '心态',
   family: '家庭',
   migration: '迁移',
 };
@@ -72,6 +73,38 @@ const RISK_SIGNALS = new Set([
   '马落空亡格',
 ]);
 
+const GENERIC_OPPORTUNITY_IDS = new Set([
+  'opportunity-platform-upgrade',
+  'opportunity-asset-foundation',
+  'opportunity-noble-help',
+  'opportunity-skill-output',
+]);
+
+const GENERIC_TRIAL_IDS = new Set([
+  'career-role-pressure',
+  'mindset-desire',
+  'mindset-control',
+  'career-breakthrough',
+  'relationship-independence',
+]);
+
+const BROAD_SIGNALS = new Set([
+  '事业主线',
+  '财运主线',
+  '婚恋主线',
+  '健康主线',
+  '心性主线',
+  '官禄',
+  '财帛',
+  '田宅',
+  '夫妻',
+  '福德',
+  '命宫',
+  '身宫',
+  '迁移',
+  '父母',
+]);
+
 const ARCHETYPES = [
   {
     id: 'breaker',
@@ -125,6 +158,74 @@ const SCOPE_META = {
     summary: '看当前流日的主线、阻力和行动建议，适合做每天复访入口。',
   },
 };
+
+const normalizeChoice = (choice = {}) => ({
+  label: choice.label,
+  style: choice.style,
+  description: choice.description,
+  cost: choice.cost,
+  reward: choice.reward,
+  statEffects: choice.statEffects || {},
+  stateEffects: choice.stateEffects || {},
+  feedback: choice.feedback,
+});
+
+const mergeUnique = (...lists) => Array.from(new Set(lists.flat().filter(Boolean)));
+
+const inferredThemeTriggers = (theme) => {
+  const primaryTopic = THEME_PRIMARY_TOPIC[theme];
+  const relatedPalaces = THEME_RELATED_PALACES[theme] || [];
+  return mergeUnique(
+    '流日',
+    primaryTopic,
+    ...(THEME_TOPIC_TITLES[theme] || []),
+    ...relatedPalaces.slice(0, 2),
+  );
+};
+
+const inferredScopes = (template = {}, source = 'base') => {
+  if (Array.isArray(template.scopes) && template.scopes.length) {
+    return template.scopes;
+  }
+  return source === 'guanqia' ? ['day'] : template.scopes;
+};
+
+const normalizeTemplate = (template = {}, source = 'base') => ({
+  id: template.id,
+  type: template.type,
+  theme: template.theme,
+  title: template.title,
+  tone: template.tone || 'tight',
+  triggers: mergeUnique(
+    Array.isArray(template.triggers) ? template.triggers : [],
+    inferredThemeTriggers(template.theme),
+  ),
+  summary: template.summary || '',
+  dramaticText: template.dramaticText || template.summary || '',
+  situation: template.situation || '',
+  conflict: template.conflict || '',
+  scopes: inferredScopes(template, source),
+  choices: Array.isArray(template.choices) ? template.choices.map(normalizeChoice) : [],
+});
+
+const normalizeTemplateList = (raw, source = 'base') => {
+  const items = Array.isArray(raw) ? raw : (raw.templates || raw.items || []);
+  return items.map((item) => normalizeTemplate(item, source)).filter((item) => item.id && item.type && item.theme);
+};
+
+const markTemplateSource = (items, templateSource) => items.map((item) => ({ ...item, templateSource }));
+
+const mergeTemplatesById = (...lists) => {
+  const map = new Map();
+  lists.flat().forEach((item) => {
+    map.set(item.id, item);
+  });
+  return Array.from(map.values());
+};
+
+const BASE_TEMPLATES = markTemplateSource(normalizeTemplateList(templateFile, 'base'), 'base');
+const GUANQIA_TEMPLATES = markTemplateSource(normalizeTemplateList(guanqiaFile, 'guanqia'), 'guanqia');
+const MERGED_TEMPLATES = mergeTemplatesById(BASE_TEMPLATES, GUANQIA_TEMPLATES);
 
 const SHORT_HORIZON_TEMPLATES = [
   {
@@ -531,6 +632,16 @@ const matchTrigger = (trigger, template, signalIndex) => {
   return null;
 };
 
+const isRelevantStarSignal = (signal, template) => (
+  signal.type === 'star'
+  && (signal.matchedPalaces || []).some((palace) => relatedPalacesForTheme(template.theme).includes(palace))
+);
+
+const isSpecificSignal = (signal, template) => (
+  ['pattern', 'bazi', 'mutagen', 'knowledge'].includes(signal.type)
+  || isRelevantStarSignal(signal, template)
+);
+
 const scoreTemplate = (template, context) => {
   const matchedSignals = (template.triggers || [])
     .map((trigger) => matchTrigger(trigger, template, context.signalIndex))
@@ -549,17 +660,31 @@ const scoreTemplate = (template, context) => {
     template.type === 'trial'
     && Array.from(RISK_SIGNALS).some((risk) => signal.trigger.includes(risk))
   )).length;
+  const specificSignals = matchedSignals.filter((signal) => isSpecificSignal(signal, template));
+  const broadSignals = matchedSignals.filter((signal) => BROAD_SIGNALS.has(signal.trigger) || signal.type === 'topic');
+  const palaceSpecificSignals = matchedSignals.filter((signal) => (
+    isRelevantStarSignal(signal, template)
+    || (signal.type === 'manual' && relatedPalacesForTheme(template.theme).includes(signal.trigger))
+  ));
 
   let score = matchedSignals.reduce((total, signal) => total + signal.score, 0);
   score += themeAlignedSignals * 2;
   score += exactPatterns * 3;
   score += opportunitySignals * 3;
   score += riskSignals * 3;
+  score += Math.min(12, specificSignals.length * 3);
+  score += Math.min(6, palaceSpecificSignals.length * 2);
   if ((context.scopeProfile?.preferredThemes || []).includes(template.theme)) {
     score += 10;
   }
   if ((template.scopes || []).includes(context.scopeProfile?.id)) {
     score += 8;
+  }
+  if (context.scopeProfile?.id === 'day' && template.templateSource === 'guanqia') {
+    score += 18;
+  }
+  if (context.scopeProfile?.id === 'day' && template.templateSource !== 'guanqia') {
+    score -= 12;
   }
   const scopeSignalHits = (context.scopeProfile?.extraSignals || []).filter((signal) => itemIncludesSignal(matchedSignals, signal)).length;
   score += Math.min(12, scopeSignalHits * 4);
@@ -578,6 +703,21 @@ const scoreTemplate = (template, context) => {
   }
   if (strongSignals.length >= 3) {
     score += 4;
+  }
+  if (context.scopeProfile?.id === 'day' && template.templateSource === 'guanqia' && strongSignals.length >= 1) {
+    score += 6;
+  }
+  if (broadSignals.length >= 2 && specificSignals.length < 2) {
+    score -= broadSignals.length * 3;
+  }
+  if (template.type === 'opportunity' && exactPatterns === 0 && specificSignals.length < 2) {
+    score -= 6;
+  }
+  if (template.type === 'opportunity' && GENERIC_OPPORTUNITY_IDS.has(template.id) && specificSignals.length < 3) {
+    score -= 10;
+  }
+  if (template.type === 'trial' && GENERIC_TRIAL_IDS.has(template.id) && specificSignals.length < 3) {
+    score -= 8;
   }
 
   const currentAge = Number(context.scopeProfile?.currentAge);
@@ -710,15 +850,7 @@ const refineOpportunitySelection = (selected, scored) => {
     .sort((a, b) => b.score - a.score || a.template.id.localeCompare(b.template.id));
 };
 
-const applyChoiceDefaults = (choice) => ({
-  label: choice.label,
-  style: choice.style,
-  description: choice.description,
-  cost: choice.cost,
-  reward: choice.reward,
-  statEffects: choice.statEffects || {},
-  feedback: choice.feedback,
-});
+const applyChoiceDefaults = (choice) => normalizeChoice(choice);
 
 const buildNode = (item, index) => {
   const template = item.template;
@@ -754,6 +886,64 @@ const buildTodayBrief = ({ cards, scopeProfile }) => {
     advice: chance ? `今天更适合：${chance.title}` : '今天更适合先做一件最重要的事。',
     focusLabel: scopeProfile.focusLabel,
   };
+};
+
+const attachStageMetaToCard = (card, stage, stageOrder) => ({
+  ...card,
+  stageId: stage?.id || null,
+  stageTitle: stage?.title || '',
+  stageRange: stage?.ageRange || '',
+  stageStrategy: stage?.strategy || '',
+  stageOrder,
+});
+
+const buildMonthlyQuestline = (cards, stages) => {
+  if (!cards.length || !stages.length) {
+    return cards;
+  }
+
+  const stageSlots = stages.flatMap((stage, index) => {
+    const repeat = index === 1 && cards.length >= 4 ? 2 : 1;
+    return Array.from({ length: repeat }, () => ({ stage, stageOrder: index + 1 }));
+  }).slice(0, Math.min(cards.length, 4));
+
+  const selectedIds = new Set();
+  const selected = [];
+
+  stageSlots.forEach(({ stage, stageOrder }) => {
+    const candidate = cards
+      .filter((card) => !selectedIds.has(card.id))
+      .map((card) => {
+        let score = 0;
+        if ((stage.possibleThemes || []).includes(card.title)) {
+          score += 8;
+        }
+        if (card.theme && String(stage.triggerSummary || '').includes(THEME_LABELS[card.theme] || '')) {
+          score += 4;
+        }
+        score += Math.max(0, 6 - (card.cardNo || card.rank || 1));
+        return { card, score };
+      })
+      .sort((a, b) => b.score - a.score || a.card.cardNo - b.card.cardNo)[0];
+
+    if (!candidate) {
+      return;
+    }
+
+    selectedIds.add(candidate.card.id);
+    selected.push(attachStageMetaToCard(candidate.card, stage, stageOrder));
+  });
+
+  cards.forEach((card) => {
+    if (selected.length >= Math.min(cards.length, 4) || selectedIds.has(card.id)) {
+      return;
+    }
+    const fallbackStage = stages[Math.min(stages.length - 1, selected.length)] || stages[stages.length - 1];
+    selectedIds.add(card.id);
+    selected.push(attachStageMetaToCard(card, fallbackStage, Math.min(stages.length, selected.length + 1)));
+  });
+
+  return selected.slice(0, Math.min(cards.length, 4));
 };
 
 const scoreFromPatterns = (patterns, names, multiplier = 1) => patterns
@@ -1375,8 +1565,10 @@ const buildLifeGameScope = ({ scope = 'lifetime', reading, bazi, palaces, patter
   const periods = scopeProfile.periods;
   const scale = scopeScaleOverrides(scope, computeGameScale({ periods, patterns, signalIndex }));
   const templates = scope === 'day'
-    ? SHORT_HORIZON_TEMPLATES.filter((template) => templateAppliesToScope(template, scope))
-    : templateFile.templates
+    ? GUANQIA_TEMPLATES
+      .concat(SHORT_HORIZON_TEMPLATES)
+      .filter((template) => templateAppliesToScope(template, scope))
+    : MERGED_TEMPLATES
       .concat(scope === 'year' || scope === 'month' ? SHORT_HORIZON_TEMPLATES : [])
       .filter((template) => templateAppliesToScope(template, scope));
   const scored = templates.map((template) => scoreTemplate(template, context));
@@ -1396,10 +1588,13 @@ const buildLifeGameScope = ({ scope = 'lifetime', reading, bazi, palaces, patter
     perThemeLimit: scale.opportunityThemeLimit,
     minScore: 18,
   }), scored).map(buildNode);
-  const cards = trials.concat(opportunities).map((card, index) => ({ ...card, cardNo: index + 1 }));
+  const rawCards = trials.concat(opportunities).map((card, index) => ({ ...card, cardNo: index + 1 }));
   const stats = buildStats({ signalIndex, patterns });
   const archetype = chooseArchetype({ patterns, stats, signalIndex });
-  const stages = buildStages(periods, cards);
+  const stages = buildStages(periods, rawCards);
+  const cards = scope === 'month'
+    ? buildMonthlyQuestline(rawCards, stages)
+    : rawCards;
   const todayBrief = scope === 'day' ? buildTodayBrief({ cards, scopeProfile }) : null;
 
   return {

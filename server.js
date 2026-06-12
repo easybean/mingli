@@ -17,6 +17,7 @@ const {
 const PORT = Number(process.env.PORT || 3000);
 const HOST = process.env.HOST || '127.0.0.1';
 const PUBLIC_DIR = path.join(__dirname, 'public');
+const SRC_DIR = path.join(__dirname, 'src');
 const MINUTES_PER_DAY = 24 * 60;
 const CHINA_STANDARD_LONGITUDE = 120;
 const CITY_LONGITUDES = require('./data/city-longitudes.json');
@@ -885,6 +886,12 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (url.pathname === '/favicon.ico') {
+    res.writeHead(204);
+    res.end();
+    return;
+  }
+
   if (url.pathname === '/api/cities') {
     json(res, 200, {
       cities: CITY_NAMES.map((name) => ({
@@ -914,6 +921,12 @@ const server = http.createServer((req, res) => {
         error: error.message,
       });
     }
+    return;
+  }
+
+  if (url.pathname.startsWith('/src/')) {
+    const safeSrcPath = path.normalize(url.pathname.replace(/^\/src\//, '')).replace(/^(\.\.[/\\])+/, '');
+    sendFile(res, path.join(SRC_DIR, safeSrcPath));
     return;
   }
 
