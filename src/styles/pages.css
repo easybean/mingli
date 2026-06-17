@@ -715,6 +715,15 @@
   content: "";
 }
 
+.theme-swatch--star {
+  background: radial-gradient(130% 120% at 80% 0%, rgba(122, 86, 172, 0.55), transparent 55%), linear-gradient(160deg, #1A1428, #0A0810);
+}
+
+.theme-swatch--star::after {
+  background: #F0DCA0;
+  box-shadow: 0 0 6px rgba(240, 220, 160, 0.85);
+}
+
 .theme-swatch--dark {
   background: radial-gradient(130% 100% at 30% 0%, #2C2620, #181410);
 }

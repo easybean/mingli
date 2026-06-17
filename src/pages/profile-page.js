@@ -1,4 +1,5 @@
 const THEME_OPTIONS = [
+  { id: 'star', name: '星象', desc: '深空星图 · 北斗指紫微 · 八卦缓旋 · 玻璃卡片' },
   { id: 'dark', name: '深暖墨金', desc: '近黑墨底 · 金色点缀 · 暗色奢华' },
   { id: 'ink', name: '水墨禅意', desc: '宣纸浅底 · 若有若无的青 · 大量留白' },
 ];

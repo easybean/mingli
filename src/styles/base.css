@@ -39,6 +39,73 @@ body::before {
   z-index: 1;
 }
 
+/* —— 宇宙背景层（星象主题） —— */
+@keyframes star-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes star-spin-rev {
+  to { transform: rotate(-360deg); }
+}
+
+#cosmos {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  display: none;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+:root[data-theme="star"] #cosmos {
+  display: block;
+}
+
+.cosmos-starfield {
+  position: absolute;
+  inset: 0;
+  opacity: 0.7;
+}
+
+.cosmos-bagua {
+  position: absolute;
+  top: 50%;
+  transform-origin: center;
+}
+
+.cosmos-bagua--outer {
+  right: -190px;
+  width: 560px;
+  height: 560px;
+  margin-top: -280px;
+  opacity: 0.30;
+  animation: star-spin 160s linear infinite;
+}
+
+.cosmos-bagua--inner {
+  right: -110px;
+  width: 380px;
+  height: 380px;
+  margin-top: -190px;
+  opacity: 0.20;
+  animation: star-spin-rev 220s linear infinite;
+}
+
+.cosmos-dipper {
+  position: absolute;
+  top: 64px;
+  left: 14px;
+  width: 320px;
+  height: 190px;
+  opacity: 0.9;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cosmos-bagua {
+    animation: none;
+  }
+}
+
 button,
 input,
 select {

@@ -1,6 +1,6 @@
 import { LIFE_STATE_LABELS } from '../life-state.js';
 import { effectList, firstOf, lifeStateDeltaList, outcomeTags, shareSummaryText, topDeltaPills } from './helpers.js';
-import { focusFallbackHint, pickTodayCard } from './today-focus.js';
+import { focusAvailabilityHint, focusFallbackHint, pickTodayCard } from './today-focus.js';
 
 const WEEKDAY_LABELS = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 
@@ -70,7 +70,7 @@ export const createTodayViewModel = (state) => {
     question: '你打算怎么走？',
     triggerSummary: card?.triggerSummary || dayScope.focusLabel || '',
     focusOptions: todaySelection.options,
-    focusHint: focusFallbackHint(todaySelection),
+    focusHint: focusFallbackHint(todaySelection) || focusAvailabilityHint(todaySelection),
     choices: card?.choices || [],
     selectedIndex,
     feedback: feedback ? {

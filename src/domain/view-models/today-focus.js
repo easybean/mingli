@@ -18,6 +18,8 @@ const normalizeTheme = (theme) => (theme === 'health' ? 'health' : theme);
 
 export const pickTodayCard = (dayScope, preferredTheme) => {
   const cards = dayScope?.cards || [];
+  // 今天命盘真正浮出来的主题集合：只有这些 tab 才有对应的题，可点。
+  const availableThemes = new Set(cards.map((card) => card.theme).filter(Boolean));
   const normalized = normalizeTheme(preferredTheme);
   const exact = normalized ? cards.find((card) => card.theme === normalized) : null;
   const card = exact || cards[0] || dayScope?.trials?.[0] || dayScope?.opportunities?.[0] || null;
@@ -32,9 +34,18 @@ export const pickTodayCard = (dayScope, preferredTheme) => {
     options: TODAY_FOCUS_OPTIONS.map((item) => ({
       ...item,
       hint: THEME_HINT[item.id],
+      available: availableThemes.has(item.id),
       selected: activeTheme === item.id,
     })),
   };
+};
+
+export const focusAvailabilityHint = ({ options = [] }) => {
+  const hasUnavailable = options.some((item) => item.available === false);
+  if (hasUnavailable) {
+    return '点亮的主题今天有对应的题，变灰的是命盘当天没有浮现的方向。';
+  }
+  return '今天这几个主题都有对应的题，选你最想先看的那块。';
 };
 
 export const focusFallbackHint = ({ preferredTheme, matchedTheme, card }) => {

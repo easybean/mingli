@@ -102,9 +102,7 @@ export const renderTodayPage = (state) => {
 
       <section class="daily-focus-strip">
         ${renderFocusPicker(model.focusOptions)}
-        ${model.focusHint
-          ? `<p class="focus-hint">${escapeHtml(model.focusHint)}</p>`
-          : '<p class="focus-hint">若今天命盘没有这个主题，会自动切到当天更强的信号。</p>'}
+        ${model.focusHint ? `<p class="focus-hint">${escapeHtml(model.focusHint)}</p>` : ''}
       </section>
 
       <section class="stack daily-choice-section">

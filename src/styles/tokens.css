@@ -157,3 +157,77 @@
   --shadow-gold-glow: 0 0 0 1px rgba(110, 143, 136, 0.18), 0 12px 30px -18px rgba(42, 48, 46, 0.28);
   --shadow-cta: 0 10px 26px -14px rgba(42, 48, 46, 0.45);
 }
+
+/* ================= 星象（深空 · 默认） =================
+   深空近黑紫底 + 程序星图/北斗/八卦氛围层 + 玻璃态卡片。
+   表面用半透明，让 #cosmos 星空从卡片后透出（配合 backdrop-filter）。 */
+:root[data-theme="star"] {
+  /* 表面 */
+  --page-bg: #0B0913;
+  --surface: rgba(34, 26, 51, 0.72);
+  --surface-soft: rgba(28, 22, 44, 0.62);
+  --overlay: rgba(255, 248, 232, 0.06);
+  --paper-noise: none;
+
+  /* 金色（更亮，星点感） */
+  --gold: #D6B25E;
+  --gold-bright: #F0DCA0;
+  --gold-deep: #CFA449;
+  --gold-soft: rgba(214, 178, 94, 0.16);
+  --gold-line: rgba(214, 178, 94, 0.40);
+  --gold-line-strong: rgba(240, 220, 160, 0.70);
+  --gold-gradient: linear-gradient(180deg, #EBCE7E, #CFA449);
+
+  /* 朱砂红（仅点今日/当前） */
+  --accent-red: #C8452F;
+  --accent-red-soft: rgba(200, 69, 47, 0.16);
+  --accent-red-line: rgba(200, 69, 47, 0.34);
+  --accent-red-text: #E0917F;
+
+  /* 文字（宣纸白 + 紫调次级） */
+  --ink: #F4ECD7;
+  --ink-soft: #F0E6D0;
+  --ink-muted: #C3BAD0;
+  --muted: #8E84A0;
+  --muted-deep: #A99FBA;
+
+  /* 状态色 */
+  --positive: #6E9A82;
+  --positive-text: #86B79A;
+  --positive-line: rgba(110, 154, 130, 0.36);
+  --positive-soft: rgba(110, 154, 130, 0.16);
+  --warning: #D6B25E;
+  --warning-text: #E6CE8A;
+  --neutral-line: rgba(142, 132, 160, 0.34);
+  --neutral-soft: rgba(142, 132, 160, 0.16);
+  --neutral-text: #A99FBA;
+
+  /* 线条 */
+  --line: rgba(244, 236, 215, 0.10);
+  --line-soft: rgba(244, 236, 215, 0.07);
+  --dash-line: rgba(244, 236, 215, 0.16);
+
+  /* 主题派生色 */
+  --bg-glow-top: rgba(122, 86, 172, 0.18);
+  --bg-glow-bottom: rgba(196, 150, 72, 0.10);
+  --select-bg: rgba(214, 178, 94, 0.30);
+  --card-main-border: rgba(214, 178, 94, 0.32);
+  --card-top-wash: rgba(240, 220, 160, 0.06);
+  --inset-wash: rgba(122, 86, 172, 0.07);
+  --button-primary-ink: #1A1207;
+  --button-secondary-bg: rgba(214, 178, 94, 0.10);
+  --focus-ring: rgba(214, 178, 94, 0.16);
+  --accent-line-soft: rgba(214, 178, 94, 0.20);
+  --cost-text: #E0917F;
+  --progress-end: #F0DCA0;
+  --track-bg: rgba(244, 236, 215, 0.08);
+  --backdrop: rgba(8, 6, 14, 0.70);
+  --nav-bg: linear-gradient(180deg, rgba(18, 13, 30, 0.80), rgba(11, 9, 19, 0.74));
+  --shadow-dot: 0 0 10px rgba(200, 69, 47, 0.9);
+  --shadow-nav-active: 0 0 8px rgba(214, 178, 94, 0.8);
+
+  /* 阴影（深空：金色辉光更强） */
+  --shadow-soft: 0 36px 80px -40px rgba(0, 0, 0, 0.9);
+  --shadow-gold-glow: 0 0 0 1px rgba(214, 178, 94, 0.25), 0 0 50px -16px rgba(214, 178, 94, 0.45);
+  --shadow-cta: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 10px 26px -10px rgba(214, 178, 94, 0.7);
+}

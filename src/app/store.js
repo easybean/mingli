@@ -20,7 +20,8 @@ const defaultBirthInput = () => ({
 
 const savedInput = loadBirthInput();
 
-export const THEMES = ['dark', 'ink'];
+export const THEMES = ['star', 'dark', 'ink'];
+const DEFAULT_THEME = 'star';
 const savedTheme = loadTheme();
 
 export const state = {
@@ -55,7 +56,7 @@ export const state = {
     error: '',
     generatedAt: '',
     todayHelpOpen: false,
-    theme: THEMES.includes(savedTheme) ? savedTheme : 'dark',
+    theme: THEMES.includes(savedTheme) ? savedTheme : DEFAULT_THEME,
   },
 };
 
