@@ -29,7 +29,8 @@ export const state = {
   birthInput: {
     ...defaultBirthInput(),
     ...(savedInput || {}),
-    target: savedInput?.target || targetDateTimeValue(),
+    // "当前时间"永远取本次进入页面的此刻，其余出生信息仍从缓存恢复。
+    target: targetDateTimeValue(),
   },
   astrolabeData: null,
   gameSession: {
