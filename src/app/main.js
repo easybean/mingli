@@ -7,6 +7,7 @@ const appRoot = document.querySelector('#app');
 const navRoot = document.querySelector('#bottom-nav');
 
 const render = () => {
+  document.documentElement.setAttribute('data-theme', state.ui.theme);
   appRoot.innerHTML = renderActivePage();
   renderBottomNav({
     root: navRoot,

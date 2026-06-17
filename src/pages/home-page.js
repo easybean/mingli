@@ -1,7 +1,17 @@
 import { renderBirthForm } from '../components/birth-form.js';
-import { renderFocusPicker } from '../components/focus-picker.js';
-import { escapeHtml, tags } from '../components/html.js';
+import { escapeHtml } from '../components/html.js';
 import { createHomeViewModel } from '../domain/view-models/home-view-model.js';
+
+const renderIdentityStrip = (identity) => {
+  const meta = [identity.age, identity.currentTheme ? `当前主题 ${identity.currentTheme}` : '']
+    .filter(Boolean).join(' · ');
+  return `
+    <div class="identity-strip">
+      ${identity.archetype ? `<span class="archetype-pill">${escapeHtml(identity.archetype)}</span>` : ''}
+      ${meta ? `<span class="identity-meta">${escapeHtml(meta)}</span>` : ''}
+    </div>
+  `;
+};
 
 export const renderHomePage = (state) => {
   const model = createHomeViewModel(state);
@@ -21,42 +31,26 @@ export const renderHomePage = (state) => {
 
   return `
     <section class="page home-ready">
-      <article class="card card-main today-card">
-        <div class="stack">
-          <p class="page-kicker">今日入口</p>
-          <h2>${escapeHtml(model.todayEntry.title)}</h2>
-          <p>${escapeHtml(model.todayEntry.scenario)}</p>
-          <div class="stack">
-            <p class="page-subtitle">今天你最想先看哪一块？</p>
-            ${renderFocusPicker(model.todayFocusOptions)}
-          </div>
-          <div class="row">${tags(model.todayEntry.tags)}</div>
-        </div>
-        <button class="button button-primary" type="button" data-page="today">开始今日选择</button>
+      ${renderIdentityStrip(model.identity)}
+
+      <article class="card-main today-card">
+        <span class="today-card-kicker">${escapeHtml(model.todayEntry.kicker)}</span>
+        <h2>${escapeHtml(model.todayEntry.title)}</h2>
+        <p class="today-card-scenario">${escapeHtml(model.todayEntry.scenario)}</p>
+        <button class="button button-primary" type="button" data-page="today">开始今日选择 →</button>
       </article>
 
-      <section class="stack">
-        <div class="daily-section-title">
-          <p class="page-kicker">继续往下看</p>
-          <h2>按时间往前走</h2>
-        </div>
-        <div class="quick-entry-grid">
-          ${model.quickEntries.map((entry, index) => `
-            <button class="quick-entry ${index === 0 ? 'is-featured' : ''}" type="button" data-page="game" data-scope="${escapeHtml(entry.id)}">
-              <p class="page-kicker">${escapeHtml(index === 0 ? '近期推进' : '长期路线')}</p>
-              <strong>${escapeHtml(entry.title)}</strong>
-              <span>${escapeHtml(entry.subtitle)}</span>
-            </button>
-          `).join('')}
-        </div>
+      <section class="quick-entry-grid">
+        ${model.quickEntries.map((entry) => `
+          <button class="quick-entry" type="button" data-page="game" data-scope="${escapeHtml(entry.id)}">
+            <span class="quick-entry-label">${escapeHtml(entry.label)}</span>
+            <span class="quick-entry-title">${escapeHtml(entry.title)}</span>
+            <span class="quick-entry-sub">${entry.sub}</span>
+          </button>
+        `).join('')}
       </section>
 
-      <section class="card card-plain stack">
-        <p class="page-kicker">身份摘要</p>
-        <div class="identity-strip">${tags(model.identityTags)}</div>
-      </section>
-
-      <button class="button button-ghost" type="button" data-page="reading">想看为什么？进入深度解读</button>
+      <button class="deep-reading-link" type="button" data-page="reading">想看为什么是这些题？进入深度解读 →</button>
     </section>
   `;
 };

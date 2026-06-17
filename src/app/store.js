@@ -1,4 +1,4 @@
-import { loadBirthInput, saveBirthInput } from '../adapters/web-storage.js';
+import { loadBirthInput, saveBirthInput, loadTheme, saveTheme } from '../adapters/web-storage.js';
 import { targetDateTimeValue, todayInputValue } from '../adapters/web-time.js';
 import {
   applyLifeStateDelta,
@@ -19,6 +19,9 @@ const defaultBirthInput = () => ({
 });
 
 const savedInput = loadBirthInput();
+
+export const THEMES = ['dark', 'ink'];
+const savedTheme = loadTheme();
 
 export const state = {
   activePage: 'home',
@@ -52,6 +55,7 @@ export const state = {
     error: '',
     generatedAt: '',
     todayHelpOpen: false,
+    theme: THEMES.includes(savedTheme) ? savedTheme : 'dark',
   },
 };
 
@@ -124,6 +128,13 @@ export const setTodayFocusTheme = (theme) => {
   notify();
 };
 
+export const setTheme = (theme) => {
+  if (!THEMES.includes(theme) || state.ui.theme === theme) return;
+  state.ui.theme = theme;
+  saveTheme(theme);
+  notify();
+};
+
 export const setTodayHelpOpen = (open) => {
   state.ui.todayHelpOpen = Boolean(open);
   notify();
@@ -148,9 +159,10 @@ export const selectTodayChoice = ({ card, choice, index }) => {
   state.gameSession.lifeState = after;
   state.gameSession.todayChoiceIndex = index;
   state.gameSession.todayFeedback = {
-    title: `你选择了${routeLabel(style)}`,
     body: choice.feedback || '这个选择会影响今天的推进方式。',
     effects: choice.statEffects || {},
+    style,
+    choiceLabel: choice.label,
   };
   state.gameSession.todayLifeChange = summarizeLifeStateChange({ before, after, delta, card, choice });
   state.gameSession.routeScores = {
@@ -177,10 +189,10 @@ export const selectGameChoice = ({ card, choice, index }) => {
   state.gameSession.gameCurrentCardId = card.id;
   state.gameSession.gameChoiceIndex = index;
   state.gameSession.gameFeedback = {
-    title: `路线转向：${routeLabel(style)}`,
     body: choice.feedback || '这个选择会影响后续关卡的语气。',
     effects: choice.statEffects || {},
     style,
+    choiceLabel: choice.label,
   };
   state.gameSession.gameLifeChange = summarizeLifeStateChange({ before, after, delta, card, choice });
   state.gameSession.routeScores = {
@@ -208,8 +220,3 @@ export const nextGameChallenge = (total) => {
   notify();
 };
 
-const routeLabel = (style) => ({
-  bold: '主动路线',
-  steady: '稳健路线',
-  repair: '修复路线',
-}[style] || '稳健路线');

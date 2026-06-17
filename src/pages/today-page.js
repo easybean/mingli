@@ -13,15 +13,11 @@ const renderChoice = (choice, index, selectedIndex) => {
       data-choice-index="${index}"
       ${locked ? 'disabled' : ''}
     >
-      <span class="choice-route">
-        <span>${escapeHtml(choice.presentation.actionLabel)}</span>
-        <small>${escapeHtml(choice.presentation.actionHint)}</small>
-      </span>
       <strong class="choice-title">${escapeHtml(choice.label)}</strong>
-      <span class="choice-text">${escapeHtml(choice.description)}</span>
+      ${choice.description ? `<span class="choice-text">${escapeHtml(choice.description)}</span>` : ''}
       <span class="choice-meta">
-        <span>代价：${escapeHtml(choice.cost)}</span>
-        <span>收益：${escapeHtml(choice.reward)}</span>
+        <span class="cost"><em>代价</em><span>${escapeHtml(choice.cost || '—')}</span></span>
+        <span class="reward"><em>收益</em><span>${escapeHtml(choice.reward || '—')}</span></span>
       </span>
     </button>
   `;
@@ -35,9 +31,13 @@ const renderChoiceSection = (model) => {
   const selected = model.choices[model.selectedIndex];
   return `
     ${selected ? renderChoice(selected, model.selectedIndex, model.selectedIndex) : ''}
-    <div class="choice-collapse-note">其余走法已收起，今天先按这一手往下走。</div>
+    <p class="choice-collapse-note">这一题已经定了，其余走法先收起来。</p>
   `;
 };
+
+const renderDeltaPills = (pills) => pills.map((pill) => `
+  <span class="delta-pill delta-pill--${pill.tone}">${escapeHtml(pill.label)}</span>
+`).join('');
 
 export const renderTodayPage = (state) => {
   const model = createTodayViewModel(state);
@@ -58,14 +58,13 @@ export const renderTodayPage = (state) => {
   return `
     <section class="page today-page">
       <header class="daily-header">
-        <div>
-          <p class="page-kicker">${escapeHtml(model.dayLabel)}</p>
-          <div class="title-with-help">
-            <h1 class="page-title">${escapeHtml(model.title)}</h1>
-            <button class="help-icon-button" type="button" data-today-help-open aria-label="查看今日关卡说明">?</button>
+        <div class="daily-header-row">
+          <div>
+            <p class="daily-header-meta">${escapeHtml(model.dayLabel)} · 当前主题 <span class="daily-theme-accent">${escapeHtml(model.themeLabel)}</span></p>
+            <h1 class="daily-header-title">${escapeHtml(model.card?.title || '今天先做这一题')}</h1>
           </div>
+          <button class="help-icon-button" type="button" data-today-help-open aria-label="查看今日关卡说明">?</button>
         </div>
-        <span class="daily-pill">${escapeHtml(model.themeLabel)}</span>
       </header>
 
       ${model.helpOpen ? `
@@ -91,59 +90,57 @@ export const renderTodayPage = (state) => {
         </div>
       ` : ''}
 
-      <article class="card card-main daily-oracle">
-        <p class="page-kicker">${escapeHtml(model.hook)}</p>
-        <h2>${escapeHtml(model.card?.title || '今天的选择')}</h2>
-        <p>${escapeHtml(model.scenario)}</p>
-        <div class="daily-note">
-          <span>今日提醒</span>
-          <p>${escapeHtml(model.sceneNote)}</p>
-        </div>
-        <div class="stack">
-          <p class="page-subtitle">今天你想先看哪一块？</p>
-          ${renderFocusPicker(model.focusOptions)}
-          ${model.focusHint ? `<p class="challenge-meta">${escapeHtml(model.focusHint)}</p>` : ''}
-        </div>
+      <article class="scenario-card">
+        <p class="scenario-text">${escapeHtml(model.scenario)}</p>
+        ${model.conflictLine ? `
+          <div class="scenario-conflict">
+            <span class="scenario-conflict-label">冲突</span>
+            <span class="scenario-conflict-body">${escapeHtml(model.conflictLine)}</span>
+          </div>
+        ` : ''}
       </article>
 
+      <section class="daily-focus-strip">
+        ${renderFocusPicker(model.focusOptions)}
+        ${model.focusHint
+          ? `<p class="focus-hint">${escapeHtml(model.focusHint)}</p>`
+          : '<p class="focus-hint">若今天命盘没有这个主题，会自动切到当天更强的信号。</p>'}
+      </section>
+
       <section class="stack daily-choice-section">
-        <div class="daily-section-title">
-          <p class="page-kicker">${escapeHtml(model.progressLabel)}</p>
-          <h2>${escapeHtml(model.question)}</h2>
-        </div>
+        <h2 class="daily-question">${escapeHtml(model.question)}</h2>
         ${renderChoiceSection(model)}
       </section>
 
       ${model.feedback ? `
         <section class="feedback-card daily-result">
-          <h3>${escapeHtml(model.feedback.title)}</h3>
-          <strong>${escapeHtml(model.feedback.routeLabel)}</strong>
-          <div class="row">
-            ${model.feedback.resultTags.map((item) => `<span class="tag tag-result">${escapeHtml(item)}</span>`).join('')}
-          </div>
-          <p>${escapeHtml(model.feedback.body)}</p>
-          <div class="row">
-            ${model.feedback.effects.map((item) => `<span class="tag tag-primary">${escapeHtml(item)}</span>`).join('')}
-          </div>
-          ${model.feedback.lifeChange ? `
-            <details class="life-change life-change-detail">
-              <summary>${escapeHtml(model.feedback.lifeChange.title)}</summary>
-              <p>${escapeHtml(model.feedback.lifeChange.body)}</p>
-              <div class="row">
-                ${model.feedback.lifeChange.deltas.map((item) => `<span class="tag">${escapeHtml(item)}</span>`).join('')}
-              </div>
-            </details>
+          <p class="feedback-eyebrow">这一手定下了</p>
+          <h3>${escapeHtml(model.feedback.headline)}</h3>
+          <p class="feedback-body">${escapeHtml(model.feedback.body)}</p>
+          ${model.feedback.deltaPills.length ? `
+            <div class="feedback-deltas">${renderDeltaPills(model.feedback.deltaPills)}</div>
           ` : ''}
-          <details class="share-summary share-summary-detail">
-            <summary>分享文案</summary>
-            <p>${escapeHtml(model.feedback.shareSummary)}</p>
-          </details>
-          <small>${escapeHtml(model.feedback.tomorrowHint)}</small>
+          ${model.feedback.resultTags.length ? `
+            <div class="feedback-tags">
+              ${model.feedback.resultTags.map((item) => `<span class="tag tag-result">${escapeHtml(item)}</span>`).join('')}
+            </div>
+          ` : ''}
         </section>
+        ${model.feedback.lifeChange ? `
+          <details class="feedback-detail">
+            <summary>这一手为后面铺了什么</summary>
+            <p>${escapeHtml(model.feedback.lifeChange.body)}</p>
+          </details>
+        ` : ''}
+        <details class="feedback-detail">
+          <summary>分享文案</summary>
+          <p>${escapeHtml(model.feedback.shareSummary)}</p>
+        </details>
+        <small class="feedback-tomorrow">${escapeHtml(model.feedback.tomorrowHint)}</small>
         <section class="next-actions">
           ${model.nextActions.map((action, index) => `
-            <button class="button ${index === 0 ? 'button-primary' : 'button-secondary'}" type="button" data-page="${escapeHtml(action.page)}" data-scope="${escapeHtml(action.scope)}">
-              ${escapeHtml(action.label)}
+            <button class="button ${index === 0 ? 'button-secondary' : 'button-primary'}" type="button" data-page="${escapeHtml(action.page)}" data-scope="${escapeHtml(action.scope)}">
+              ${escapeHtml(action.label)}${index === 1 ? ' →' : ''}
             </button>
           `).join('')}
         </section>

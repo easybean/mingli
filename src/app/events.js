@@ -6,6 +6,7 @@ import {
   setError,
   setGameScope,
   setLoading,
+  setTheme,
   setTodayHelpOpen,
   setTodayFocusTheme,
   state,
@@ -50,6 +51,12 @@ export const bindEvents = (root) => {
   });
 
   root.addEventListener('click', (event) => {
+    const themeButton = event.target.closest('[data-theme-set]');
+    if (themeButton) {
+      setTheme(themeButton.dataset.themeSet);
+      return;
+    }
+
     const todayHelpOpenButton = event.target.closest('[data-today-help-open]');
     if (todayHelpOpenButton) {
       setTodayHelpOpen(true);

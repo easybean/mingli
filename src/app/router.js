@@ -4,6 +4,7 @@ import { renderTodayPage } from '../pages/today-page.js';
 import { renderGamePage } from '../pages/game-page.js';
 import { renderReadingPage } from '../pages/reading-page.js';
 import { renderSimplePage } from '../pages/simple-page.js';
+import { renderProfilePage } from '../pages/profile-page.js';
 
 export const renderActivePage = () => {
   if (!state.astrolabeData && state.activePage !== 'home') {
@@ -23,10 +24,7 @@ export const renderActivePage = () => {
         body: '命盘页会在后续阶段重构为手机端列表和盘面工具。当前先把主路径跑通。',
       });
     case 'profile':
-      return renderSimplePage({
-        title: '我的',
-        body: '这里后续承载出生信息、当前路线、设置和说明，避免首页堆太多内容。',
-      });
+      return renderProfilePage(state);
     case 'home':
     default:
       return renderHomePage(state);

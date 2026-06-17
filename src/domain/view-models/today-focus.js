@@ -21,14 +21,18 @@ export const pickTodayCard = (dayScope, preferredTheme) => {
   const normalized = normalizeTheme(preferredTheme);
   const exact = normalized ? cards.find((card) => card.theme === normalized) : null;
   const card = exact || cards[0] || dayScope?.trials?.[0] || dayScope?.opportunities?.[0] || null;
+  // 高亮的 tab 始终跟随"当前显示的这道题"的主题：
+  // 用户点选并命中 → 用户的主题；未点选或 fallback → 实际显示卡片的主题。
+  const activeTheme = (exact ? normalized : card?.theme) || normalized || null;
   return {
     card,
     preferredTheme: normalized || null,
     matchedTheme: Boolean(exact),
+    activeTheme,
     options: TODAY_FOCUS_OPTIONS.map((item) => ({
       ...item,
       hint: THEME_HINT[item.id],
-      selected: normalized === item.id,
+      selected: activeTheme === item.id,
     })),
   };
 };

@@ -16,6 +16,17 @@ export const LIFE_STATE_LABELS = {
   wellbeing: '身心',
 };
 
+// 上升=对你不利的维度。只有压力是"升=坏"，其余 5 维都是"升=好"。
+export const LIFE_STATE_RISE_IS_NEGATIVE = new Set(['pressure']);
+
+export const lifeStateDeltaTone = (key, value) => {
+  const numeric = Number(value);
+  if (!numeric) return 'neutral';
+  const riseIsNegative = LIFE_STATE_RISE_IS_NEGATIVE.has(key);
+  const beneficial = riseIsNegative ? numeric < 0 : numeric > 0;
+  return beneficial ? 'positive' : 'negative';
+};
+
 const BASE_STATE = {
   pressure: 50,
   opportunity: 50,

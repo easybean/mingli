@@ -6,35 +6,59 @@ html {
   background: var(--page-bg);
   color: var(--ink);
   font-family: var(--font-sans);
+  font-size: 15px;
   -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
+  position: relative;
   min-height: 100vh;
   margin: 0;
   overflow-x: hidden;
   background:
-    radial-gradient(circle at 24% -10%, rgba(185, 133, 50, 0.13), transparent 30%),
-    linear-gradient(180deg, #fbf6ec 0%, var(--page-bg) 42%, #f1e8d9 100%);
+    radial-gradient(120% 70% at 50% -10%, var(--bg-glow-top), transparent 55%),
+    var(--paper-noise),
+    var(--page-bg);
+  color: var(--ink);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(80% 50% at 50% 100%, var(--bg-glow-bottom), transparent 70%);
+  z-index: 0;
+}
+
+#app,
+#bottom-nav {
+  position: relative;
+  z-index: 1;
 }
 
 button,
 input,
 select {
   font: inherit;
+  color: inherit;
 }
 
 button {
   cursor: pointer;
+  font-family: var(--font-sans);
 }
 
 button:disabled {
   cursor: not-allowed;
-  opacity: 0.62;
+  opacity: 0.55;
 }
 
 a {
-  color: inherit;
+  color: var(--gold);
+  text-decoration: none;
 }
 
 p,
@@ -43,4 +67,14 @@ h2,
 h3 {
   margin: 0;
   overflow-wrap: anywhere;
+}
+
+::selection {
+  background: var(--select-bg);
+  color: var(--ink);
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }

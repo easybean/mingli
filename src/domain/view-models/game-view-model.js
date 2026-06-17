@@ -1,11 +1,24 @@
-import { effectList, firstOf, outcomeTags, routeHint, routeName, shareSummaryText } from './helpers.js';
-import { choicePresentation } from './choice-presentation.js';
+import { effectList, firstOf, outcomeTags, shareSummaryText, topDeltaPills } from './helpers.js';
 import { orderCardsForLifeState } from '../game-branching.js';
 import {
   LIFE_STATE_LABELS,
   stateAlerts,
   summarizeFinalRoute,
 } from '../life-state.js';
+
+const tendencyDescription = (style) => ({
+  bold: '更想往前抢，能担风险换机会',
+  steady: '更想稳着推进，攒下可持续的盘面',
+  repair: '更想先收口，把卡点和损耗处理掉',
+}[style] || '还没明显倾向，多走两手再看');
+
+const SCOPE_TAB_LIST = [
+  { id: 'day', label: '今日' },
+  { id: 'month', label: '最近一月' },
+  { id: 'year', label: '最近一年' },
+  { id: 'decade', label: '最近十年' },
+  { id: 'lifetime', label: '一生主线' },
+];
 
 const scopeLabel = (scope) => ({
   day: '今日关卡',
@@ -82,14 +95,33 @@ export const createGameViewModel = (state) => {
     scope,
   }) : [];
 
+  const archetypeName = lifeGame?.archetype?.name;
+  const tendencyChoiceLabel = feedback?.choiceLabel || selectedChoice?.label || '';
+  const progressTotal = Math.max(totalCards, 1);
+  const progressDone = Number.isFinite(progressIndex)
+    ? Math.max(progressIndex - 1, 0)
+    : 0;
+  const progressPercent = Math.min(100, Math.round((progressDone / progressTotal) * 100));
+  const nextStepIndex = Math.min(progressIndex + 1, totalCards);
+  const lifeStateEntries = Object.entries(state.gameSession.lifeState || {})
+    .map(([key, value]) => ({ key, label: LIFE_STATE_LABELS[key] || key, value }));
+  const glanceLine = lifeStateEntries.slice(0, 3)
+    .map((item) => `${item.label} ${item.value}`)
+    .join(' · ');
+  const feedbackDeltaPills = lifeChange ? topDeltaPills(lifeChange.delta) : [];
+
   return {
     ready: Boolean(activeScope && currentCard),
-    routeName: lifeGame?.archetype?.name ? `${lifeGame.archetype.name}路线` : '人生主线',
+    routeName: archetypeName || '人生主线',
+    archetypeName: archetypeName || '',
     scope,
     scopeTitle: scopeLabel(scope),
+    scopeTabs: SCOPE_TAB_LIST.map((item) => ({ ...item, active: item.id === scope })),
     headline: activeScope?.headline || lifeGame?.headline || '先完成当前关卡，再继续下一步。',
-    tendency: routeName(routeStyle),
-    progressLabel: `${Math.max(progressIndex, 1)} / ${Math.max(totalCards, 1)} 关`,
+    tendency: tendencyDescription(routeStyle),
+    progressLabel: `${Math.max(progressIndex, 1)} / ${progressTotal} 关`,
+    progressPercent,
+    nextStepLabel: `进入第 ${nextStepIndex} 关`,
     currentIndex: Math.max(progressIndex - 1, 0),
     totalCards,
     currentCard,
@@ -101,34 +133,25 @@ export const createGameViewModel = (state) => {
       currentCard?.stageRange ? `${currentCard.stageRange}` : '',
       currentCard?.triggerSummary || activeScope?.focusLabel || '',
     ].filter(Boolean).join(' · '),
-    choices: (currentCard?.choices || []).map((choice) => ({
-      ...choice,
-      presentation: choicePresentation(choice, { theme: currentCard?.theme }),
-    })),
+    choices: currentCard?.choices || [],
     selectedIndex,
-    lifeState: Object.entries(state.gameSession.lifeState || {})
-      .map(([key, value]) => ({
-        key,
-        label: LIFE_STATE_LABELS[key] || key,
-        value,
-      })),
+    lifeState: lifeStateEntries,
+    glanceLine,
     stateAlerts: stateAlerts(state.gameSession.lifeState).slice(0, 2),
     feedback: feedback ? {
-      title: feedback.title,
+      headline: `你选了：${tendencyChoiceLabel || '这一手'}`,
       resultTags: feedbackTags,
       shareSummary: shareSummaryText({
         scope,
         theme: currentCard?.theme,
         title: currentCard?.title,
-        routeLabel: routeName(selectedChoice?.style || feedback.style || 'steady'),
+        choiceLabel: tendencyChoiceLabel,
         tags: feedbackTags,
         lifeChange,
       }),
-      body: [
-        feedback.body,
-        routeHint(selectedChoice?.style || feedback.style),
-      ].filter(Boolean).join(' '),
+      body: feedback.body,
       effects: effectList(feedback.effects),
+      deltaPills: feedbackDeltaPills,
       lifeChange: lifeChange ? {
         title: lifeChange.title,
         body: lifeChange.body,

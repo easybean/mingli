@@ -1,22 +1,159 @@
 :root {
-  --page-bg: #f8f3e8;
-  --surface: #fffdf7;
-  --surface-soft: #f3ebdc;
-  --primary: #245c63;
-  --primary-deep: #173f45;
-  --primary-soft: #ddecee;
-  --gold: #b98532;
-  --green: #5f7f4b;
-  --red-soft: #b96a58;
-  --ink: #2c2620;
-  --muted: #7a7065;
-  --line: rgba(44, 38, 32, 0.12);
-  --shadow-soft: 0 16px 40px rgba(44, 38, 32, 0.08);
-  --radius-xl: 22px;
+  /* —— 表面（深暖墨基调） —— */
+  --page-bg: #181410;
+  --surface: #221D16;
+  --surface-soft: #2C2620;
+  --overlay: rgba(255, 248, 232, 0.06);
+  --paper-noise: repeating-linear-gradient(135deg, rgba(255, 248, 232, 0.018) 0 2px, transparent 2px 7px);
+
+  /* —— 金色（点缀 / 仪式感） —— */
+  --gold: #D0A95A;
+  --gold-bright: #E2C879;
+  --gold-deep: #97762C;
+  --gold-soft: rgba(208, 169, 90, 0.18);
+  --gold-line: rgba(208, 169, 90, 0.40);
+  --gold-line-strong: rgba(208, 169, 90, 0.60);
+  --gold-gradient: linear-gradient(180deg, #D8B262 0%, #C49B47 100%);
+
+  /* —— 朱砂红（极少强调） —— */
+  --accent-red: #B83D2D;
+  --accent-red-soft: rgba(184, 61, 45, 0.14);
+  --accent-red-line: rgba(184, 61, 45, 0.30);
+  --accent-red-text: #D98A78;
+
+  /* —— 文字（宣纸白系，避免纯白） —— */
+  --ink: #F4ECD7;
+  --ink-soft: #D8CDB4;
+  --ink-muted: #BEB29A;
+  --muted: #847A67;
+  --muted-deep: #9A9079;
+
+  /* —— 状态色 —— */
+  --positive: #7E9C6A;
+  --positive-text: #92B27D;
+  --positive-line: rgba(126, 156, 106, 0.32);
+  --positive-soft: rgba(126, 156, 106, 0.14);
+  --warning: #CE9A58;
+  --warning-text: #CFB78F;
+  --neutral-line: rgba(132, 122, 103, 0.30);
+  --neutral-soft: rgba(132, 122, 103, 0.16);
+  --neutral-text: #A89E86;
+
+  /* —— 线条 —— */
+  --line: rgba(244, 236, 215, 0.10);
+  --line-soft: rgba(244, 236, 215, 0.07);
+  --dash-line: rgba(244, 236, 215, 0.16);
+
+  /* —— 主题派生色（按主题切换） —— */
+  --bg-glow-top: rgba(208, 169, 90, 0.05);
+  --bg-glow-bottom: rgba(184, 61, 45, 0.04);
+  --select-bg: rgba(208, 169, 90, 0.30);
+  --card-main-border: rgba(208, 169, 90, 0.22);
+  --card-top-wash: rgba(255, 248, 232, 0.05);
+  --inset-wash: rgba(255, 248, 232, 0.02);
+  --button-primary-ink: #1B140E;
+  --button-secondary-bg: rgba(208, 169, 90, 0.10);
+  --focus-ring: rgba(208, 169, 90, 0.10);
+  --accent-line-soft: rgba(208, 169, 90, 0.18);
+  --cost-text: #C0705F;
+  --progress-end: #D8B262;
+  --track-bg: rgba(244, 236, 215, 0.08);
+  --backdrop: rgba(10, 8, 6, 0.62);
+  --nav-bg: linear-gradient(180deg, rgba(255, 248, 232, 0.06), rgba(255, 248, 232, 0.02)), var(--page-bg);
+  --shadow-dot: 0 0 8px rgba(184, 61, 45, 0.7);
+  --shadow-nav-active: 0 0 8px rgba(208, 169, 90, 0.5);
+
+  /* —— 圆角 —— */
+  --radius-xl: 20px;
   --radius-lg: 18px;
   --radius-md: 14px;
   --radius-sm: 10px;
+
+  /* —— 间距 —— */
   --space-page: 16px;
-  --nav-height: 64px;
-  --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --nav-height: 60px;
+
+  /* —— 字体栈 —— */
+  --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", serif;
+  --font-sans: "Noto Sans SC", -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-digit: "Inter", "SF Pro Display", system-ui, sans-serif;
+
+  /* —— 阴影（暗色版克制） —— */
+  --shadow-soft: 0 16px 40px -20px rgba(0, 0, 0, 0.55);
+  --shadow-gold-glow: 0 0 0 1px rgba(208, 169, 90, 0.15), 0 10px 30px -16px rgba(208, 169, 90, 0.40);
+  --shadow-cta: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 8px 20px -10px rgba(208, 169, 90, 0.50);
+}
+
+/* ================= 水墨禅意（浅色 · 可选） =================
+   宣纸基底 · 深墨为字 · 若有若无的青 · 赭石极少。
+   只覆盖随主题变化的变量，结构 / 尺寸沿用默认。 */
+:root[data-theme="ink"] {
+  /* 表面 */
+  --page-bg: #F0ECE4;
+  --surface: #FBF9F4;
+  --surface-soft: #EAE6DD;
+  --overlay: rgba(42, 48, 46, 0.05);
+  --paper-noise: repeating-linear-gradient(135deg, rgba(42, 48, 46, 0.012) 0 2px, transparent 2px 7px);
+
+  /* 青色（替代金色的点缀角色） */
+  --gold: #6E8F88;
+  --gold-bright: #4F6F69;
+  --gold-deep: #4F6F69;
+  --gold-soft: rgba(110, 143, 136, 0.16);
+  --gold-line: rgba(110, 143, 136, 0.40);
+  --gold-line-strong: rgba(110, 143, 136, 0.55);
+  --gold-gradient: #2A2E2C; /* 主按钮：深墨实心 */
+
+  /* 赭石（替代朱砂红的极少强调角色） */
+  --accent-red: #A6705C;
+  --accent-red-soft: rgba(166, 112, 92, 0.14);
+  --accent-red-line: rgba(166, 112, 92, 0.32);
+  --accent-red-text: #A6705C;
+
+  /* 文字（深墨系） */
+  --ink: #2A2E2C;
+  --ink-soft: #565E5A;
+  --ink-muted: #565E5A;
+  --muted: #8C918A;
+  --muted-deep: #6E726E;
+
+  /* 状态色 */
+  --positive: #4F6F69;
+  --positive-text: #4F6F69;
+  --positive-line: rgba(110, 143, 136, 0.40);
+  --positive-soft: rgba(110, 143, 136, 0.14);
+  --warning: #6E8F88;
+  --warning-text: #4F6F69;
+  --neutral-line: rgba(42, 46, 44, 0.14);
+  --neutral-soft: rgba(42, 46, 44, 0.05);
+  --neutral-text: #8C918A;
+
+  /* 线条 */
+  --line: rgba(42, 46, 44, 0.10);
+  --line-soft: rgba(42, 46, 44, 0.07);
+  --dash-line: rgba(42, 46, 44, 0.16);
+
+  /* 主题派生色 */
+  --bg-glow-top: rgba(42, 48, 46, 0.05);
+  --bg-glow-bottom: rgba(110, 143, 136, 0.06);
+  --select-bg: rgba(110, 143, 136, 0.22);
+  --card-main-border: rgba(42, 46, 44, 0.07);
+  --card-top-wash: rgba(255, 255, 255, 0.6);
+  --inset-wash: rgba(42, 46, 44, 0.02);
+  --button-primary-ink: #F4F1EA;
+  --button-secondary-bg: rgba(110, 143, 136, 0.10);
+  --focus-ring: rgba(110, 143, 136, 0.14);
+  --accent-line-soft: rgba(110, 143, 136, 0.20);
+  --cost-text: #A6705C;
+  --progress-end: #6E8F88;
+  --track-bg: rgba(42, 46, 44, 0.10);
+  --backdrop: rgba(42, 46, 44, 0.45);
+  --nav-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.35)), var(--page-bg);
+  --shadow-dot: 0 0 7px rgba(110, 143, 136, 0.7);
+  --shadow-nav-active: 0 0 7px rgba(110, 143, 136, 0.6);
+
+  /* 阴影（浅色版用柔和投影代替金光） */
+  --shadow-soft: 0 18px 44px -30px rgba(42, 48, 46, 0.35);
+  --shadow-gold-glow: 0 0 0 1px rgba(110, 143, 136, 0.18), 0 12px 30px -18px rgba(42, 48, 46, 0.28);
+  --shadow-cta: 0 10px 26px -14px rgba(42, 48, 46, 0.45);
 }

@@ -1,4 +1,17 @@
+import { LIFE_STATE_LABELS, lifeStateDeltaTone } from '../life-state.js';
+
 export const compactText = (value, fallback = '') => String(value || fallback || '').trim();
+
+export const topDeltaPills = (delta = {}, count = 3) => Object.entries(delta)
+  .filter(([, value]) => Number(value) !== 0)
+  .sort((a, b) => Math.abs(Number(b[1])) - Math.abs(Number(a[1])))
+  .slice(0, count)
+  .map(([key, value]) => {
+    const numeric = Number(value);
+    const sign = numeric > 0 ? '+' : '−';
+    const label = `${LIFE_STATE_LABELS[key] || key} ${sign}${Math.abs(numeric)}`;
+    return { key, label, tone: lifeStateDeltaTone(key, numeric) };
+  });
 
 export const firstOf = (...values) => values.find((value) => compactText(value));
 
@@ -9,18 +22,6 @@ export const statLabel = (key) => ({
   connection: '关系协作',
   mobility: '变化适应',
 }[key] || key);
-
-export const routeName = (style) => ({
-  bold: '主动路线',
-  steady: '稳健路线',
-  repair: '修复路线',
-}[style] || '稳健路线');
-
-export const routeHint = (style) => ({
-  bold: '今天适合主动推进，但要给自己留恢复空间。',
-  steady: '今天适合稳住节奏，把事情做成可持续的状态。',
-  repair: '今天适合先处理卡点，让后续推进少一点损耗。',
-}[style] || '今天适合稳住节奏。');
 
 export const effectList = (effects = {}) => Object.entries(effects)
   .filter(([, value]) => Number(value) !== 0)
@@ -88,8 +89,9 @@ const stateDrivenTag = (delta = {}) => {
 };
 
 export const outcomeTags = ({ theme, style, delta = {}, scope = 'lifetime' }) => {
-  const themeLabel = THEME_RESULT_LABELS[theme]?.[style] || routeName(style).replace('路线', '');
-  const tags = [themeLabel];
+  const tags = [];
+  const themeLabel = THEME_RESULT_LABELS[theme]?.[style];
+  if (themeLabel) tags.push(themeLabel);
   const stateTag = stateDrivenTag(delta);
   if (stateTag && !tags.includes(stateTag)) {
     tags.push(stateTag);
@@ -131,7 +133,7 @@ export const shareSummaryText = ({
   theme,
   title,
   tags = [],
-  routeLabel = '',
+  choiceLabel = '',
   lifeChange,
   finalSummary,
 }) => {
@@ -141,8 +143,11 @@ export const shareSummaryText = ({
   const nextHint = lifeChange?.positive?.[0]?.label || lifeChange?.cost?.[0]?.label || '';
 
   if (finalSummary) {
-    return `${lead}我走出的标签是「${tagLine || '当前主线'}」。${finalSummary.body}`;
+    return `${lead}我走出来的标签：${tagLine || '当前主线'}。${finalSummary.body}`;
   }
 
-  return `${lead}我抽到的是「${themeLabel}·${title || '当前关卡'}」，这一手我选了「${routeLabel || '当前走法'}」，结果更偏向「${tagLine || '当前主线'}」${nextHint ? `，接下来先顾好${nextHint}` : ''}。`;
+  const action = choiceLabel ? `我选了「${choiceLabel}」` : '我做了一个选择';
+  const tagPart = tagLine ? `，结果偏向「${tagLine}」` : '';
+  const tailPart = nextHint ? `，接下来先顾好${nextHint}` : '';
+  return `${lead}面对「${themeLabel}·${title || '当前关卡'}」，${action}${tagPart}${tailPart}。`;
 };
