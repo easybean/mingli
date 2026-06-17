@@ -26,16 +26,28 @@ const starfield = (n, w, h, seed) => {
   return `<svg width="100%" height="100%" viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid slice">${els}</svg>`;
 };
 
-// 北斗七星，柄端虚线遥指紫微星
+// 北斗七星：按实际图样连成一条不闭合的折线
+// 摇光→开阳→玉衡→天权→天玑→天璇→天枢，勺口（天枢↔天权）不连。
+// 天璇→天枢 连线延长（虚线）遥指北极星 / 紫微。
 const dipper = () => {
-  const pts = [[18, 120], [60, 104], [104, 100], [150, 86], [150, 46], [206, 40], [244, 16]];
-  const polyline = `<polyline points="${pts.map((p) => p.join(',')).join(' ')}" fill="none" stroke="#D6B25E" stroke-width="1.2" stroke-opacity="0.55" stroke-linejoin="round" stroke-linecap="round"/>`;
-  const guide = '<line x1="244" y1="16" x2="300" y2="-10" stroke="#B498DC" stroke-width="1" stroke-opacity="0.4" stroke-dasharray="3 5"/>';
-  const ziwei = '<circle cx="300" cy="-10" r="4.5" fill="#B498DC" opacity="0.9" style="filter:drop-shadow(0 0 7px rgba(180,152,220,0.9))"/>'
-    + '<circle cx="300" cy="-10" r="9" fill="none" stroke="#B498DC" stroke-width="0.8" stroke-opacity="0.4"/>';
-  const stars = pts.map((p) => `<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="#F0DCA0" style="filter:drop-shadow(0 0 5px rgba(240,220,160,0.95))"/>`
+  const yaoguang = [17, 54]; // 摇光（斗柄末端）
+  const kaiyang = [96, 83]; // 开阳
+  const yuheng = [129, 129]; // 玉衡
+  const tianquan = [176, 168]; // 天权（斗柄接斗口）
+  const tianji = [163, 231]; // 天玑（斗口内）
+  const tianxuan = [255, 258]; // 天璇（斗口外 · 指极星）
+  const tianshu = [293, 194]; // 天枢（斗口外 · 指极星）
+  const polaris = [354, 92]; // 北极星 / 紫微（天璇-天枢延长线上）
+  // 连线顺序即折线，勺口开口不闭合
+  const chain = [yaoguang, kaiyang, yuheng, tianquan, tianji, tianxuan, tianshu];
+
+  const line = `<polyline points="${chain.map((p) => p.join(',')).join(' ')}" fill="none" stroke="#D6B25E" stroke-width="1.2" stroke-opacity="0.55" stroke-linejoin="round" stroke-linecap="round"/>`;
+  const guide = `<line x1="${tianshu[0]}" y1="${tianshu[1]}" x2="${polaris[0]}" y2="${polaris[1]}" stroke="#B498DC" stroke-width="1" stroke-opacity="0.4" stroke-dasharray="3 5"/>`;
+  const ziwei = `<circle cx="${polaris[0]}" cy="${polaris[1]}" r="4.5" fill="#B498DC" opacity="0.9" style="filter:drop-shadow(0 0 7px rgba(180,152,220,0.9))"/>`
+    + `<circle cx="${polaris[0]}" cy="${polaris[1]}" r="9" fill="none" stroke="#B498DC" stroke-width="0.8" stroke-opacity="0.4"/>`;
+  const stars = chain.map((p) => `<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="#F0DCA0" style="filter:drop-shadow(0 0 5px rgba(240,220,160,0.95))"/>`
     + `<circle cx="${p[0]}" cy="${p[1]}" r="7" fill="none" stroke="#D6B25E" stroke-width="0.6" stroke-opacity="0.35"/>`).join('');
-  return `<svg width="100%" height="100%" viewBox="0 -30 320 170" style="overflow:visible">${polyline}${guide}${ziwei}${stars}</svg>`;
+  return `<svg width="100%" height="100%" viewBox="0 30 380 250" style="overflow:visible">${line}${guide}${ziwei}${stars}</svg>`;
 };
 
 // 八卦环 + 太极心
