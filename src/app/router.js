@@ -3,8 +3,8 @@ import { renderHomePage } from '../pages/home-page.js';
 import { renderTodayPage } from '../pages/today-page.js';
 import { renderGamePage } from '../pages/game-page.js';
 import { renderReadingPage } from '../pages/reading-page.js';
-import { renderSimplePage } from '../pages/simple-page.js';
 import { renderProfilePage } from '../pages/profile-page.js';
+import { renderChartPage } from '../pages/chart-page.js';
 
 export const renderActivePage = () => {
   if (!state.astrolabeData && state.activePage !== 'home') {
@@ -19,10 +19,7 @@ export const renderActivePage = () => {
     case 'reading':
       return renderReadingPage(state);
     case 'chart':
-      return renderSimplePage({
-        title: '命盘',
-        body: '命盘页会在后续阶段重构为手机端列表和盘面工具。当前先把主路径跑通。',
-      });
+      return renderChartPage(state);
     case 'profile':
       return renderProfilePage(state);
     case 'home':

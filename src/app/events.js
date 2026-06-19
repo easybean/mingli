@@ -7,6 +7,7 @@ import {
   setGameScope,
   setLoading,
   setTheme,
+  setChartThemeFilter,
   setTodayHelpOpen,
   setTodayFocusTheme,
   state,
@@ -54,6 +55,12 @@ export const bindEvents = (root) => {
     const themeButton = event.target.closest('[data-theme-set]');
     if (themeButton) {
       setTheme(themeButton.dataset.themeSet);
+      return;
+    }
+
+    const chartFilterButton = event.target.closest('[data-chart-filter]');
+    if (chartFilterButton) {
+      setChartThemeFilter(chartFilterButton.dataset.chartFilter);
       return;
     }
 

@@ -788,3 +788,356 @@
   transform: translate(-50%, -65%) rotate(-45deg);
   content: "";
 }
+
+/* ============================ 命盘页 ============================ */
+
+.chart-page {
+  gap: 16px;
+}
+
+.chart-basics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 16px;
+}
+
+.chart-basic-item {
+  display: grid;
+  gap: 2px;
+}
+
+.chart-basic-label {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.chart-basic-value {
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.chart-highlights {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.chart-highlight {
+  display: grid;
+  gap: 3px;
+  padding: 12px;
+  border: 1px solid var(--gold-line);
+  border-radius: var(--radius-md);
+  background: var(--gold-soft);
+  text-align: center;
+}
+
+.chart-highlight-label {
+  color: var(--gold-bright);
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.chart-highlight-palace {
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.chart-highlight-sub {
+  color: var(--muted);
+  font-family: var(--font-digit);
+  font-size: 11px;
+}
+
+.chart-section-label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+}
+
+.chart-pattern-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chart-pattern-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+
+.chart-pattern-tag i {
+  font-style: normal;
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+.chart-pattern-tag--positive {
+  border-color: var(--positive-line);
+  background: var(--positive-soft);
+  color: var(--positive-text);
+}
+
+.chart-pattern-tag--negative {
+  border-color: var(--accent-red-line);
+  background: var(--accent-red-soft);
+  color: var(--accent-red-text);
+}
+
+.chart-pattern-tag--neutral {
+  border-color: var(--neutral-line);
+  background: var(--neutral-soft);
+  color: var(--neutral-text);
+}
+
+.chart-filter {
+  display: flex;
+  gap: 7px;
+  margin: 0 -4px;
+  padding: 0 4px 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.chart-filter .scope-tab i {
+  margin-left: 5px;
+  font-style: normal;
+  font-family: var(--font-digit);
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.chart-palace-list {
+  display: grid;
+  gap: 10px;
+}
+
+.chart-palace {
+  display: grid;
+  gap: 9px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+.chart-palace.is-key {
+  border-color: var(--gold-line);
+}
+
+.chart-palace-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.chart-palace-title {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+}
+
+.chart-palace-name {
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.chart-palace-ganzhi {
+  color: var(--muted);
+  font-family: var(--font-digit);
+  font-size: 13px;
+}
+
+.chart-palace-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.chart-theme-tag {
+  padding: 2px 9px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted-deep);
+  font-size: 11px;
+}
+
+.chart-flag {
+  padding: 2px 9px;
+  border: 1px solid var(--gold-line);
+  border-radius: 999px;
+  background: var(--gold-soft);
+  color: var(--gold-bright);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.chart-stars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chart-star--major {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: var(--surface-soft);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.chart-star--major i {
+  font-style: normal;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.chart-mutagen {
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 0 4px;
+  border-radius: 5px;
+}
+
+.chart-mutagen--禄 { color: var(--positive-text); }
+.chart-mutagen--权 { color: var(--gold-bright); }
+.chart-mutagen--科 { color: var(--warning-text); }
+.chart-mutagen--忌 { color: var(--accent-red-text); }
+
+.chart-empty-star {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.chart-minor,
+.chart-adjective {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.chart-adjective {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.chart-palace-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  padding-top: 9px;
+  border-top: 1px solid var(--line-soft);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.chart-foot-mutagen {
+  color: var(--ink-muted);
+}
+
+/* ============================ 深度解读：两层分块 ============================ */
+
+.reading-block {
+  display: grid;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.reading-block-title {
+  margin: 0;
+  color: var(--gold-bright);
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.reading-block + .reading-block {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.reading-block-sub {
+  margin-top: -4px;
+}
+
+.reading-empty {
+  padding: 14px 16px;
+  border: 1px dashed var(--dash-line);
+  border-radius: var(--radius-md);
+  line-height: 1.7;
+}
+
+.chart-choice-scope > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.choice-scope-count {
+  flex-shrink: 0;
+  color: var(--muted);
+  font-family: var(--font-digit);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.choice-scope-tendency {
+  line-height: 1.7;
+}
+
+.choice-recap {
+  display: grid;
+  gap: 8px;
+  margin: 2px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.choice-recap li {
+  display: grid;
+  gap: 3px;
+  padding: 10px 12px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-sm);
+  background: var(--inset-wash);
+}
+
+.choice-recap-q {
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.choice-recap-a {
+  color: var(--ink-muted);
+  font-size: 12.5px;
+  line-height: 1.5;
+}

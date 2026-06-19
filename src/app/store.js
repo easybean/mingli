@@ -58,6 +58,7 @@ export const state = {
     generatedAt: '',
     todayHelpOpen: false,
     theme: THEMES.includes(savedTheme) ? savedTheme : DEFAULT_THEME,
+    chartThemeFilter: 'all',
   },
 };
 
@@ -117,7 +118,13 @@ export const setAstrolabeData = (data) => {
   state.gameSession.choices = [];
   state.gameSession.routeScores = { bold: 0, steady: 0, repair: 0 };
   state.ui.todayHelpOpen = false;
+  state.ui.chartThemeFilter = 'all';
   saveBirthInput(state.birthInput);
+  notify();
+};
+
+export const setChartThemeFilter = (filter = 'all') => {
+  state.ui.chartThemeFilter = filter || 'all';
   notify();
 };
 
