@@ -50,20 +50,22 @@ export const createGameViewModel = (state) => {
   const completedChoices = state.gameSession.choices.filter((item) => item.scope === scope);
   const completedIds = completedChoices.map((item) => item.cardId);
   const selectedIndex = state.gameSession.gameChoiceIndex;
+  const awaitingAdvance = Number.isInteger(selectedIndex);
   const lockedCard = cards.find((item) => item.id === state.gameSession.gameCurrentCardId);
   const isMonthScope = scope === 'month';
+  // 所有尺度（含月度）都按"已答卡"排除后续作，不再用会被切 tab 重置的线性 currentIndex，
+  // 避免完成后从头重做、以及重复记录导致解读出现两遍。
   const pendingCards = isMonthScope
-    ? cards.slice(Math.min(state.gameSession.currentIndex || 0, Math.max(cards.length - 1, 0)))
+    ? cards.filter((item) => !completedIds.includes(item.id))
     : orderCardsForLifeState({
       cards,
       lifeState: state.gameSession.lifeState,
       routeStyle,
       completedIds,
     });
-  const monthIndex = Math.min(state.gameSession.currentIndex || 0, Math.max(totalCards - 1, 0));
-  const currentCard = Number.isInteger(selectedIndex) && lockedCard
+  const currentCard = (awaitingAdvance && lockedCard)
     ? lockedCard
-    : (isMonthScope ? cards[monthIndex] : pendingCards[0]);
+    : (pendingCards[0] || cards[cards.length - 1] || null);
   const selectedChoice = Number.isInteger(selectedIndex) ? currentCard?.choices?.[selectedIndex] : null;
   const feedback = state.gameSession.gameFeedback;
   const lifeChange = state.gameSession.gameLifeChange;
@@ -71,13 +73,12 @@ export const createGameViewModel = (state) => {
     .filter((item) => item.scope !== 'day')
     .slice(-4)
     .reverse();
-  const completedCount = isMonthScope ? monthIndex : completedChoices.length;
-  const awaitingAdvance = Number.isInteger(selectedIndex);
-  const resolvedCompletedCount = isMonthScope && awaitingAdvance
-    ? Math.min(totalCards, monthIndex + 1)
-    : completedCount;
+  const answeredCount = completedChoices.length;
+  const finished = totalCards > 0 && answeredCount >= totalCards;
+  // 完成且不在"刚答完"态（即重新进入已完成的尺度）：显示完成态，不再给可答选项。
+  const completed = finished && !awaitingAdvance;
   const progressIndex = totalCards
-    ? Math.min(awaitingAdvance ? resolvedCompletedCount : (completedCount + 1), totalCards)
+    ? (finished ? totalCards : (awaitingAdvance ? answeredCount : Math.min(answeredCount + 1, totalCards)))
     : 0;
   const feedbackTags = outcomeTags({
     theme: currentCard?.theme,
@@ -85,7 +86,7 @@ export const createGameViewModel = (state) => {
     delta: lifeChange?.delta || {},
     scope,
   });
-  const finalBaseSummary = awaitingAdvance && resolvedCompletedCount >= totalCards
+  const finalBaseSummary = finished
     ? summarizeFinalRoute(state.gameSession.lifeState)
     : null;
   const finalTags = finalBaseSummary ? outcomeTags({
@@ -157,7 +158,8 @@ export const createGameViewModel = (state) => {
         body: lifeChange.body,
       } : null,
     } : null,
-    canGoNext: awaitingAdvance && resolvedCompletedCount < totalCards,
+    canGoNext: awaitingAdvance && !finished,
+    completed,
     finalSummary: finalBaseSummary
       ? {
         ...finalBaseSummary,

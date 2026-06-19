@@ -160,6 +160,22 @@ export const setGameScope = (scope = 'lifetime') => {
   notify();
 };
 
+// 记录一次选择：同一 scope 下同一张卡只保留最新一条（重答即替换），
+// 倾向计分(routeScores)也随之撤旧记新，避免重复入库导致解读出现两遍。
+const recordChoice = (entry) => {
+  const existing = state.gameSession.choices.find(
+    (item) => item.scope === entry.scope && item.cardId === entry.cardId,
+  );
+  if (existing) {
+    if (state.gameSession.routeScores[existing.style] > 0) {
+      state.gameSession.routeScores[existing.style] -= 1;
+    }
+    state.gameSession.choices = state.gameSession.choices.filter((item) => item !== existing);
+  }
+  state.gameSession.routeScores[entry.style] = (state.gameSession.routeScores[entry.style] || 0) + 1;
+  state.gameSession.choices.push(entry);
+};
+
 export const selectTodayChoice = ({ card, choice, index }) => {
   const style = choice.style || 'steady';
   const before = { ...state.gameSession.lifeState };
@@ -174,11 +190,7 @@ export const selectTodayChoice = ({ card, choice, index }) => {
     choiceLabel: choice.label,
   };
   state.gameSession.todayLifeChange = summarizeLifeStateChange({ before, after, delta, card, choice });
-  state.gameSession.routeScores = {
-    ...state.gameSession.routeScores,
-    [style]: (state.gameSession.routeScores[style] || 0) + 1,
-  };
-  state.gameSession.choices.push({
+  recordChoice({
     scope: 'day',
     cardId: card.id,
     cardTitle: card.title,
@@ -204,11 +216,7 @@ export const selectGameChoice = ({ card, choice, index }) => {
     choiceLabel: choice.label,
   };
   state.gameSession.gameLifeChange = summarizeLifeStateChange({ before, after, delta, card, choice });
-  state.gameSession.routeScores = {
-    ...state.gameSession.routeScores,
-    [style]: (state.gameSession.routeScores[style] || 0) + 1,
-  };
-  state.gameSession.choices.push({
+  recordChoice({
     scope: state.gameSession.activeScope,
     cardId: card.id,
     cardTitle: card.title,

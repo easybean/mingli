@@ -54,6 +54,29 @@ const renderDeltaPills = (pills) => pills.map((pill) => `
   <span class="delta-pill delta-pill--${pill.tone}">${escapeHtml(pill.label)}</span>
 `).join('');
 
+const renderCompletion = (model) => `
+  <section class="feedback-card">
+    <p class="feedback-eyebrow">这一段走完了</p>
+    <h3>这一段已经走完</h3>
+    <p class="feedback-body">你已经走完${escapeHtml(model.scopeTitle)}的主要关卡。可以回到今日，也可以切到别的时间范围继续。</p>
+    ${model.finalSummary ? `
+      <div class="final-summary">
+        <strong>${escapeHtml(model.finalSummary.title)}</strong>
+        ${model.finalSummary.resultTags.length ? `
+          <div class="row">
+            ${model.finalSummary.resultTags.map((item) => `<span class="tag tag-result">${escapeHtml(item)}</span>`).join('')}
+          </div>
+        ` : ''}
+        <p>${escapeHtml(model.finalSummary.body)}</p>
+      </div>
+    ` : ''}
+  </section>
+  <section class="next-actions">
+    <button class="button button-secondary" type="button" data-page="today">回到今日</button>
+    <button class="button button-primary" type="button" data-page="reading">看深度解读 →</button>
+  </section>
+`;
+
 export const renderGamePage = (state) => {
   const model = createGameViewModel(state);
   if (!model.ready) {
@@ -106,60 +129,41 @@ export const renderGamePage = (state) => {
         ${model.stateAlerts.length ? `<p class="life-state-alert">${escapeHtml(model.stateAlerts[0])}</p>` : ''}
       </details>
 
-      <section class="stack daily-choice-section">
-        <h2 class="daily-question">你打算怎么走？</h2>
-        ${renderChoiceSection(model)}
-      </section>
-
-      ${model.feedback ? `
-        <section class="feedback-card">
-          <p class="feedback-eyebrow">这一手定下了</p>
-          <h3>${escapeHtml(model.feedback.headline)}</h3>
-          <p class="feedback-body">${escapeHtml(model.feedback.body)}</p>
-          ${model.feedback.deltaPills.length ? `
-            <div class="feedback-deltas">${renderDeltaPills(model.feedback.deltaPills)}</div>
-          ` : ''}
-          ${model.feedback.resultTags.length ? `
-            <div class="feedback-tags">
-              ${model.feedback.resultTags.map((item) => `<span class="tag tag-result">${escapeHtml(item)}</span>`).join('')}
-            </div>
-          ` : ''}
+      ${model.completed ? renderCompletion(model) : `
+        <section class="stack daily-choice-section">
+          <h2 class="daily-question">你打算怎么走？</h2>
+          ${renderChoiceSection(model)}
         </section>
-        ${model.feedback.lifeChange ? `
-          <details class="feedback-detail">
-            <summary>这一手为后面铺了什么</summary>
-            <p>${escapeHtml(model.feedback.lifeChange.body)}</p>
-          </details>
-        ` : ''}
-        <details class="feedback-detail">
-          <summary>分享文案</summary>
-          <p>${escapeHtml(model.feedback.shareSummary)}</p>
-        </details>
-        ${model.canGoNext ? `
-          <button class="button button-primary" type="button" data-next-game-challenge>${escapeHtml(model.nextStepLabel)} →</button>
-        ` : `
+
+        ${model.feedback ? `
           <section class="feedback-card">
-            <p class="feedback-eyebrow">这一段走完了</p>
-            <h3>这一段已经走完</h3>
-            <p class="feedback-body">你已经走完当前范围的主要关卡。可以回到今日，也可以切到别的时间范围继续。</p>
-            ${model.finalSummary ? `
-              <div class="final-summary">
-                <strong>${escapeHtml(model.finalSummary.title)}</strong>
-                ${model.finalSummary.resultTags.length ? `
-                  <div class="row">
-                    ${model.finalSummary.resultTags.map((item) => `<span class="tag tag-result">${escapeHtml(item)}</span>`).join('')}
-                  </div>
-                ` : ''}
-                <p>${escapeHtml(model.finalSummary.body)}</p>
+            <p class="feedback-eyebrow">这一手定下了</p>
+            <h3>${escapeHtml(model.feedback.headline)}</h3>
+            <p class="feedback-body">${escapeHtml(model.feedback.body)}</p>
+            ${model.feedback.deltaPills.length ? `
+              <div class="feedback-deltas">${renderDeltaPills(model.feedback.deltaPills)}</div>
+            ` : ''}
+            ${model.feedback.resultTags.length ? `
+              <div class="feedback-tags">
+                ${model.feedback.resultTags.map((item) => `<span class="tag tag-result">${escapeHtml(item)}</span>`).join('')}
               </div>
             ` : ''}
           </section>
-          <section class="next-actions">
-            <button class="button button-secondary" type="button" data-page="today">回到今日</button>
-            <button class="button button-primary" type="button" data-page="reading">看深度解读 →</button>
-          </section>
-        `}
-      ` : ''}
+          ${model.feedback.lifeChange ? `
+            <details class="feedback-detail">
+              <summary>这一手为后面铺了什么</summary>
+              <p>${escapeHtml(model.feedback.lifeChange.body)}</p>
+            </details>
+          ` : ''}
+          <details class="feedback-detail">
+            <summary>分享文案</summary>
+            <p>${escapeHtml(model.feedback.shareSummary)}</p>
+          </details>
+          ${model.canGoNext ? `
+            <button class="button button-primary" type="button" data-next-game-challenge>${escapeHtml(model.nextStepLabel)} →</button>
+          ` : renderCompletion(model)}
+        ` : ''}
+      `}
 
       <details class="collapsible-section">
         <summary>行动日志 · 已走 ${model.choicesCount} 关</summary>
