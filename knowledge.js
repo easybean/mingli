@@ -103,7 +103,7 @@ const ZIWEI_CONTEXTUAL_REFERENCE_RULES = [
     topic: '夫子二宫',
     palace: '夫妻宫',
     summary: '《玄微论》看女命先观夫子二宫，看婚恋不能只抓夫妻宫一处，要兼看福德与整体稳定性。',
-    themes: ['marriage']
+    themes: ['relationship']
   },
   {
     source: '斗数玄微论',
@@ -270,7 +270,7 @@ const BAZI_DAYMASTER_REFERENCE_RULES = {
     source: '滴天髓阐微',
     topic: '乙木柔和',
     summary: '《滴天髓阐微》认为乙木最怕失去承接，喜见火暖与依附之根，顺势而生比强行拔高更有效。',
-    themes: ['mindset', 'marriage']
+    themes: ['mindset', 'relationship']
   },
   丙: {
     source: '滴天髓阐微',
@@ -306,7 +306,7 @@ const BAZI_DAYMASTER_REFERENCE_RULES = {
     source: '滴天髓阐微',
     topic: '辛金精细',
     summary: '《滴天髓阐微》认为辛金的价值在于精与清，环境太浊或压力太硬时反而不易发挥长处。',
-    themes: ['career', 'marriage']
+    themes: ['career', 'relationship']
   },
   壬: {
     source: '滴天髓阐微',
@@ -318,24 +318,28 @@ const BAZI_DAYMASTER_REFERENCE_RULES = {
     source: '滴天髓阐微',
     topic: '癸水润泽',
     summary: '《滴天髓阐微》强调癸水的价值在润与通，太弱则干，太滞则阴湿难化。',
-    themes: ['health', 'marriage']
+    themes: ['health', 'relationship']
   }
 };
 
 const TOPIC_DEFINITIONS = [
   { id: 'career', title: '事业主线', palaceNames: ['官禄', '迁移'], tenGods: ['正官', '七杀', '偏官', '正印'], focus: '把职责、节奏和外部机会放在同一条线上看。' },
   { id: 'wealth', title: '财运主线', palaceNames: ['财帛', '田宅'], tenGods: ['正财', '偏财', '食神', '伤官'], focus: '先看收入结构与资产处理方式，再看扩张空间。' },
-  { id: 'marriage', title: '婚恋主线', palaceNames: ['夫妻'], tenGods: ['正官', '七杀', '正财', '偏财'], focus: '看亲密关系中的稳定性、边界和投入方式。' },
+  { id: 'relationship', title: '婚恋主线', palaceNames: ['夫妻'], tenGods: ['正官', '七杀', '正财', '偏财'], focus: '看亲密关系中的稳定性、边界和投入方式。' },
   { id: 'health', title: '健康主线', palaceNames: ['疾厄', '福德'], tenGods: ['偏印', '正印'], focus: '先看恢复力与长期消耗，再看阶段性波动。' },
   { id: 'mindset', title: '心性主线', palaceNames: ['命宫', '福德'], tenGods: ['比肩', '劫财', '偏印', '伤官'], focus: '把自我驱动、情绪惯性和思维模式放在一起理解。' },
+  { id: 'family', title: '家庭主线', palaceNames: ['父母', '子女', '田宅'], tenGods: ['正印', '偏印', '食神', '伤官'], focus: '把长辈支持、子女晚辈和居所根基放在一条线上看后方是否稳。' },
+  { id: 'network', title: '人际主线', palaceNames: ['仆役', '兄弟'], tenGods: ['比肩', '劫财', '食神', '伤官'], focus: '看平辈、合作伙伴与朋友下属这层人际网络的助力与消耗。' },
 ];
 
 const TOPIC_TAKEAWAYS = {
   career: '当前更适合把职责承接、外部平台和持续产出放在一条线上判断。',
   wealth: '当前更要区分资源进出、资产留存和扩张节奏，不宜只盯单点进账。',
-  marriage: '关系判断更要回到边界、投入与兑现节奏，不宜只按单一年份下结论。',
+  relationship: '关系判断更要回到边界、投入与兑现节奏，不宜只按单一年份下结论。',
   health: '健康判断先看恢复节律、长期消耗与支持系统是否稳定。',
   mindset: '心性判断更适合看长期驱动、边界感和情绪恢复方式。',
+  family: '家庭判断要把长辈支持、子女晚辈牵挂和居所稳定放在一起看，重在长期责任与后方是否稳。',
+  network: '人际判断更看平辈合作、朋友下属的助力与消耗是否平衡，不宜只看单次交情。',
 };
 
 const TOPIC_CHAPTER_LENSES = {
@@ -348,7 +352,7 @@ const TOPIC_CHAPTER_LENSES = {
     财帛: '财帛宫先看资源进出与现金流节奏',
     田宅: '田宅宫再看资产留存、居住根基与稳态能力',
   },
-  marriage: {
+  relationship: {
     夫妻: '夫妻宫先看关系里的边界、相处节奏与长期承接',
     身宫: '身宫落点会放大进入关系后的实际投入方式',
   },
@@ -359,6 +363,15 @@ const TOPIC_CHAPTER_LENSES = {
   mindset: {
     命宫: '命宫先看底层驱动力、自我要求与处事底色',
     福德: '福德宫再看情绪恢复、欲望调节与内在缓冲',
+  },
+  family: {
+    父母: '父母宫先看长辈、上司与文书庇护这层支持',
+    子女: '子女宫再看晚辈、创造力与下属互动',
+    田宅: '田宅宫看居所根基与后方稳定度',
+  },
+  network: {
+    仆役: '仆役宫先看朋友、下属与合作对象是助力还是消耗',
+    兄弟: '兄弟宫再看平辈、手足与短期资金往来',
   },
 };
 
@@ -373,7 +386,7 @@ const TOPIC_ZIWEI_STRUCTURE_LENSES = {
     body: '身宫牵到财运主题时，个人习惯和执行方式会直接影响资源留存。',
     mutagen: '四化落在财运相关宫位时，要把钱从哪里来、在哪里耗、靠什么留住一起看。',
   },
-  marriage: {
+  relationship: {
     triad: '婚恋主题要把关系宫、福德和外部环境一起看，重点是长期节奏能不能稳住。',
     body: '身宫落进婚恋主题时，亲密关系更容易和日常选择、行动方式直接绑定。',
     mutagen: '四化落在婚恋相关宫位时，要一起看关系推进、边界变化和现实承接。',
@@ -388,6 +401,16 @@ const TOPIC_ZIWEI_STRUCTURE_LENSES = {
     body: '身宫落在心性线上时，情绪模式更容易直接转成行为习惯。',
     mutagen: '四化落在命福相关宫位时，要连同压力来源和情绪恢复路径一起看。',
   },
+  family: {
+    triad: '家庭主题要把父母、子女与田宅一起看，重点是后方支持系统是否稳定。',
+    body: '身宫落在家庭线上时，家庭责任更直接牵动日常选择。',
+    mutagen: '四化落在父母/子女/田宅相关宫位时，要一起看支持、牵挂与居所变化。',
+  },
+  network: {
+    triad: '人际主题要把兄弟与仆役一起看，重点是平辈与下属这层关系是助力还是消耗。',
+    body: '身宫落在人际线上时，合作与社交更直接影响行动方式。',
+    mutagen: '四化落在兄弟/仆役相关宫位时，要一起看合作机会、竞争压力与人情往来。',
+  },
 };
 
 const TOPIC_REFERENCE_RULES = [
@@ -395,12 +418,16 @@ const TOPIC_REFERENCE_RULES = [
   { id: 'career', source: '子平真诠', summary: '八字体系看事业，先看原局结构是否允许承担职责，再看运限是否把机会真正推到台前。', domain: 'bazi' },
   { id: 'wealth', source: '重补斗数彀率', summary: '财帛与田宅不能分看，钱财节奏与资产留存经常是两套不同问题。', domain: 'ziwei' },
   { id: 'wealth', source: '渊海子平', summary: '财星不只代表钱，还代表资源调度与现实关系，宜结合身强身弱一起看。', domain: 'bazi' },
-  { id: 'marriage', source: '女命骨髓赋', summary: '婚恋判断不宜只看一宫一星，要把命身、夫妻与福德的互动放在一起。', domain: 'ziwei' },
-  { id: 'marriage', source: '千里命稿', summary: '关系稳定度往往来自原局结构和阶段运势共同作用，不能拿单一年份直接下结论。', domain: 'bazi' },
+  { id: 'relationship', source: '女命骨髓赋', summary: '婚恋判断不宜只看一宫一星，要把命身、夫妻与福德的互动放在一起。', domain: 'ziwei' },
+  { id: 'relationship', source: '千里命稿', summary: '关系稳定度往往来自原局结构和阶段运势共同作用，不能拿单一年份直接下结论。', domain: 'bazi' },
   { id: 'health', source: '斗数十喻歌', summary: '疾厄与福德并看时，更容易看出长期消耗是在身体先出现，还是在精神先出现。', domain: 'ziwei' },
   { id: 'health', source: '穷通宝鉴', summary: '寒暖燥湿不调时，健康问题经常先表现为节律和恢复能力失衡。', domain: 'bazi' },
   { id: 'mindset', source: '斗数观音经验谈', summary: '心性判断更适合看长期模式，不适合拿单一吉凶标签概括一个人。', domain: 'ziwei' },
   { id: 'mindset', source: '滴天髓阐微', summary: '心性与命局气势强相关，顺势与逆势的感受差异，往往先体现在人的精神负担上。', domain: 'bazi' },
+  { id: 'family', source: '斗数玄微论', summary: '紫微看家庭不止父母一宫，要连子女、田宅一起看长辈支持与后方根基是否稳。', domain: 'ziwei' },
+  { id: 'family', source: '渊海子平', summary: '印星为庇护与文书，子女宫看晚辈与产出，判断家庭支持要结合印食旺衰与日主需要。', domain: 'bazi' },
+  { id: 'network', source: '重补斗数彀率', summary: '兄弟、仆役二宫合看，才能判断平辈与下属朋友是助力还是牵绊。', domain: 'ziwei' },
+  { id: 'network', source: '子平真诠', summary: '比劫为平辈与竞争，人际的助力或消耗要看比劫与财官之间是否平衡。', domain: 'bazi' },
 ];
 
 const BRANCH_SEQUENCE = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
@@ -416,25 +443,25 @@ const BAZI_TEN_GOD_REFERENCE_RULES = {
     source: '渊海子平',
     topic: '正财主务实',
     summary: '《渊海子平》看正财，更重持续经营、现实供给与可复制的资源管理。',
-    themes: ['wealth', 'marriage'],
+    themes: ['wealth', 'relationship'],
   },
   偏财: {
     source: '渊海子平',
     topic: '偏财主流动',
     summary: '《渊海子平》看偏财，更重机会捕捉、资源流动和对外部关系的调动能力。',
-    themes: ['wealth', 'marriage'],
+    themes: ['wealth', 'relationship'],
   },
   正官: {
     source: '神峰通考',
     topic: '正官主秩序',
     summary: '《神峰通考》看正官，更强调规则、职责与长期秩序是否能落到现实履约上。',
-    themes: ['career', 'marriage'],
+    themes: ['career', 'relationship'],
   },
   七杀: {
     source: '神峰通考',
     topic: '七杀主压力',
     summary: '《神峰通考》看七杀，不把压力直接当凶，而更看是否能驾驭约束、化压为权。',
-    themes: ['career', 'marriage'],
+    themes: ['career', 'relationship'],
   },
   偏官: {
     source: '神峰通考',
@@ -494,57 +521,63 @@ const BAZI_REFERENCE_PRIORITY = {
 const TEN_GOD_TOPIC_NOTES = {
   正官: {
     career: '正官偏重时，事业更容易围绕规则、职责和长期秩序展开。',
-    marriage: '正官进入婚恋主题时，关系里更看重稳定、责任和可持续兑现。',
+    relationship: '正官进入婚恋主题时，关系里更看重稳定、责任和可持续兑现。',
   },
   七杀: {
     career: '七杀偏重时，事业推进更依赖压力管理、决断力和对风险的驯化。',
-    marriage: '七杀落入婚恋主题时，关系中的强度、边界和控制感会更突出。',
+    relationship: '七杀落入婚恋主题时，关系中的强度、边界和控制感会更突出。',
   },
   偏官: {
     career: '偏官偏重时，事业主题往往带有竞争性、变化快和硬碰硬的成分。',
   },
   正财: {
     wealth: '正财偏重时，更适合稳定现金流、持续经营和可复用资源积累。',
-    marriage: '正财进入婚恋主题时，关系中的现实投入与长期供给感更重要。',
+    relationship: '正财进入婚恋主题时，关系中的现实投入与长期供给感更重要。',
   },
   偏财: {
     wealth: '偏财偏重时，更适合看机会捕捉、人脉资源和外部流动性，而不是只看工资型收入。',
-    marriage: '偏财进入婚恋主题时，关系判断更要防止节奏快、边界松和投入不均。',
+    relationship: '偏财进入婚恋主题时，关系判断更要防止节奏快、边界松和投入不均。',
   },
   食神: {
     wealth: '食神偏重时，财富更容易从长期输出、内容、产品和稳定复利里长出来。',
     career: '食神偏重时，事业更依赖持续产出而不是短期压强。',
+    family: '食神偏重时，家庭主题更多体现在对子女晚辈的照护与表达上。',
   },
   伤官: {
     wealth: '伤官偏重时，财富主题更像靠突破、表达和自我开路获得空间。',
     mindset: '伤官偏重时，心性上常伴随强表达、强判断和不愿盲从的倾向。',
+    network: '伤官偏重时，人际里更容易因直率表达而既得机会也招摩擦。',
   },
   正印: {
     health: '正印偏重时，健康主题更强调恢复、滋养和稳定支持系统。',
     career: '正印偏重时，事业更依赖学习、体系和背后支撑，而不是前台冲锋。',
+    family: '正印偏重时，家庭主题更看重长辈庇护、文书与后方支持是否稳定。',
   },
   偏印: {
     health: '偏印偏重时，更要警惕精神消耗、过度抽离和节律打乱。',
     mindset: '偏印偏重时，心性常体现为敏感、内耗与强观察力并存。',
+    family: '偏印偏重时，家庭支持容易偏冷或带条件，更要留意长辈关系里的距离感。',
   },
   比肩: {
     mindset: '比肩偏重时，心性上更强调自持、自我边界和不愿轻易让渡主导权。',
+    network: '比肩偏重时，人际里平辈合作多、竞争也多，界限和分工要先讲清。',
   },
   劫财: {
     mindset: '劫财偏重时，心性上常伴随行动冲劲、资源竞争与对关系分配的敏感。',
     wealth: '劫财进入财运主题时，资源分流与合作博弈会更突出。',
+    network: '劫财偏重时，人际里更容易出现资源分流、借力与被借力的博弈。',
   },
 };
 
 const RETRIEVAL_SNIPPETS = [
   { source: '斗数玄微论', domain: 'ziwei', keywords: ['官禄', '事业主线'], summary: '事业判断要连看命宫、官禄、迁移与三方四正，不能把职位感与承压能力拆开。', themes: ['career'] },
   { source: '重补斗数彀率', domain: 'ziwei', keywords: ['财帛', '财运主线'], summary: '财帛宫的聚散节奏与田宅宫的留存能力要分开判断，动财与守财是两种问题。', themes: ['wealth'] },
-  { source: '女命骨髓赋', domain: 'ziwei', keywords: ['夫妻', '婚恋主线'], summary: '婚恋不只看一宫一星，更看命身与夫妻、福德之间是否形成长期稳定结构。', themes: ['marriage'] },
+  { source: '女命骨髓赋', domain: 'ziwei', keywords: ['夫妻', '婚恋主线'], summary: '婚恋不只看一宫一星，更看命身与夫妻、福德之间是否形成长期稳定结构。', themes: ['relationship'] },
   { source: '斗数十喻歌', domain: 'ziwei', keywords: ['疾厄', '健康主线'], summary: '疾厄宫与福德宫同看时，往往能更早看出长期消耗是从身体还是从精神先起。', themes: ['health'] },
   { source: '斗数观音经验谈', domain: 'ziwei', keywords: ['命宫', '心性主线'], summary: '心性解读更适合看长期倾向与应对方式，不适合落成绝对吉凶标签。', themes: ['mindset'] },
   { source: '穷通宝鉴', domain: 'bazi', keywords: ['月令', '健康主线'], summary: '判断不能脱离季节寒暖燥湿，调候是否得宜会直接影响人的节律、恢复与执行手感。', themes: ['health', 'mindset'] },
   { source: '渊海子平', domain: 'bazi', keywords: ['偏财', '正财', '财运主线'], summary: '财星既是钱财，也代表资源与现实关系，必须连同日主承载力一并判断。', themes: ['wealth'] },
-  { source: '千里命稿', domain: 'bazi', keywords: ['婚恋主线', '正官', '正财'], summary: '关系成败常由原局与运限共同推动，宜看长期结构，不宜只看某一年份的起落。', themes: ['marriage'] },
+  { source: '千里命稿', domain: 'bazi', keywords: ['婚恋主线', '正官', '正财'], summary: '关系成败常由原局与运限共同推动，宜看长期结构，不宜只看某一年份的起落。', themes: ['relationship'] },
   { source: '滴天髓阐微', domain: 'bazi', keywords: ['甲日主', '心性主线'], summary: '强弱与气势决定了人的应对方式，同样的外部事件，顺势与逆势的体感差异很大。', themes: ['mindset'] },
   { source: '三命通会', domain: 'bazi', keywords: ['事业主线', '月令'], summary: '格局成败要先定原局，再看大运流年是否把机会真正引发，不宜只看单点年份。', themes: ['career'] },
 ];
@@ -561,7 +594,7 @@ const buildBaziTopicFocus = ({ topTenGods, climateAdvice, useSpiritAdvice, patte
   const focus = {
     career: [],
     wealth: [],
-    marriage: [],
+    relationship: [],
     health: [],
   };
 
@@ -601,7 +634,7 @@ const buildBaziTopicFocus = ({ topTenGods, climateAdvice, useSpiritAdvice, patte
     if (hasWealth) {
       parts.push('现实投入与资源分配');
     }
-    focus.marriage.push(`婚恋主题更要同时看${parts.join('、')}，关系质量常体现在长期节奏而不是短期起伏。`);
+    focus.relationship.push(`婚恋主题更要同时看${parts.join('、')}，关系质量常体现在长期节奏而不是短期起伏。`);
   }
 
   if (climateAdvice.themes.includes('health') || useSpiritAdvice.themes.includes('health') || hasSeal) {
@@ -618,8 +651,8 @@ const buildBaziTopicFocus = ({ topTenGods, climateAdvice, useSpiritAdvice, patte
     focus.health.push(`健康主题先看${parts.join('、')}是否稳定，再谈阶段性的消耗与波动。`);
   }
 
-  if (patternAdvice.themes.includes('marriage') && focus.marriage.length === 0) {
-    focus.marriage.push(`结构角度看，${patternAdvice.summary}`);
+  if (patternAdvice.themes.includes('relationship') && focus.relationship.length === 0) {
+    focus.relationship.push(`结构角度看，${patternAdvice.summary}`);
   }
   if (patternAdvice.themes.includes('health') && focus.health.length === 0) {
     focus.health.push(`结构角度看，${patternAdvice.summary}`);
@@ -631,8 +664,8 @@ const buildBaziTopicFocus = ({ topTenGods, climateAdvice, useSpiritAdvice, patte
     focus.wealth.push(`结构角度看，${patternAdvice.summary}`);
   }
 
-  if (!focus.marriage.length) {
-    focus.marriage.push('婚恋更适合回到长期结构看边界、投入和节奏是否稳定，不宜只按单一年份判断。');
+  if (!focus.relationship.length) {
+    focus.relationship.push('婚恋更适合回到长期结构看边界、投入和节奏是否稳定，不宜只按单一年份判断。');
   }
   if (!focus.health.length) {
     focus.health.push('健康更适合从恢复节律、精神耗损和长期消耗三条线并看。');
@@ -979,7 +1012,7 @@ const inferPatternAdvice = ({ rootCount, topTenGods }) => {
     return {
       topic: '格局倾向在官杀',
       summary: '本盘对职责、规范和外部压力较敏感，适合看“如何驾驭约束”，而不是简单把压力视作坏事。',
-      themes: ['career', 'marriage'],
+      themes: ['career', 'relationship'],
       source: '三命通会',
     };
   }

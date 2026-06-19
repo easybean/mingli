@@ -116,6 +116,7 @@ src/
 5. `mingli-ui-design.md` — 视觉/色彩/字号/卡片样式基准
 6. `docs/frontend-architecture.md` — 前端架构决策
 7. `docs/life-state-system.md` — lifeState v1 设计
+8. `docs/life-game-algorithm.md` — 人生游戏出题算法（信号/打分/选卡、流命宫叠本命、五尺度怎么随运限变）
 
 ## 不要做的事
 

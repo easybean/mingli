@@ -3,7 +3,7 @@ const META = require('./data/knowledge-meta.json');
 const TOPICS = [
   { id: 'career', title: '事业' },
   { id: 'wealth', title: '财运' },
-  { id: 'marriage', title: '婚恋' },
+  { id: 'relationship', title: '婚恋' },
   { id: 'health', title: '健康' },
   { id: 'mindset', title: '心性' },
 ];
@@ -27,7 +27,7 @@ const getBookPlan = (book) => {
   };
 
   if (book.domain === 'ziwei') {
-    base.topics = ['career', 'wealth', 'marriage', 'mindset'];
+    base.topics = ['career', 'wealth', 'relationship', 'mindset'];
     base.extractionTargets = ['主星落宫', '宫位主题'];
     base.retrievalKeywords = ['命宫', '官禄宫', '财帛宫', '夫妻宫', book.title];
   }
@@ -50,7 +50,7 @@ const getBookPlan = (book) => {
     return {
       ...base,
       plannedLayers: ['rules', 'references', 'topics', 'retrieval'],
-      topics: ['career', 'wealth', 'marriage', 'mindset'],
+      topics: ['career', 'wealth', 'relationship', 'mindset'],
       extractionTargets: ['主星落宫', '宫位组合', '四化落宫'],
     };
   }
@@ -59,7 +59,7 @@ const getBookPlan = (book) => {
     return {
       ...base,
       plannedLayers: ['references', 'topics', 'retrieval'],
-      topics: ['marriage', 'mindset', 'health'],
+      topics: ['relationship', 'mindset', 'health'],
       extractionTargets: ['女命专题', '婚恋专题'],
       retrievalKeywords: ['女命', '夫妻宫', '福德宫', book.title],
     };
@@ -85,7 +85,7 @@ const getBookPlan = (book) => {
     return {
       ...base,
       plannedLayers: ['rules', 'references', 'topics', 'retrieval'],
-      topics: ['career', 'wealth', 'marriage', 'health', 'mindset'],
+      topics: ['career', 'wealth', 'relationship', 'health', 'mindset'],
       extractionTargets: ['月令', '格局', '用神', '旺衰', '调候'],
     };
   }
@@ -94,7 +94,7 @@ const getBookPlan = (book) => {
     return {
       ...base,
       plannedLayers: ['references', 'topics', 'retrieval'],
-      topics: ['career', 'wealth', 'marriage', 'health', 'mindset'],
+      topics: ['career', 'wealth', 'relationship', 'health', 'mindset'],
       extractionTargets: ['案例归纳', '专题旁证'],
     };
   }

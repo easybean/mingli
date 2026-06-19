@@ -4,6 +4,8 @@ export const TODAY_FOCUS_OPTIONS = [
   { id: 'relationship', label: '关系' },
   { id: 'health', label: '健康' },
   { id: 'mindset', label: '心态' },
+  { id: 'family', label: '家庭' },
+  { id: 'network', label: '人际' },
 ];
 
 const THEME_HINT = {
@@ -12,6 +14,8 @@ const THEME_HINT = {
   relationship: '今天先看关系、沟通和边界。',
   health: '今天先看健康、恢复和节奏。',
   mindset: '今天先看内心反应和状态管理。',
+  family: '今天先看长辈、子女和家里的事。',
+  network: '今天先看朋友、合作和人脉往来。',
 };
 
 const normalizeTheme = (theme) => (theme === 'health' ? 'health' : theme);

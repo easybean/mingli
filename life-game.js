@@ -9,6 +9,7 @@ const THEME_LABELS = {
   health: '健康',
   mindset: '心态',
   family: '家庭',
+  network: '人际',
   migration: '迁移',
 };
 
@@ -18,7 +19,8 @@ const THEME_TOPIC_TITLES = {
   relationship: ['婚恋主线', '夫妻', '父母'],
   health: ['健康主线', '疾厄', '福德'],
   mindset: ['心性主线', '命宫', '福德', '身宫'],
-  family: ['父母', '田宅', '兄弟', '子女'],
+  family: ['家庭主线', '父母', '田宅', '兄弟', '子女'],
+  network: ['人际主线', '仆役', '兄弟'],
   migration: ['迁移', '身宫'],
 };
 
@@ -28,7 +30,8 @@ const THEME_PRIMARY_TOPIC = {
   relationship: '婚恋主线',
   health: '健康主线',
   mindset: '心性主线',
-  family: '父母',
+  family: '家庭主线',
+  network: '人际主线',
   migration: '迁移',
 };
 
@@ -39,6 +42,7 @@ const THEME_RELATED_PALACES = {
   health: ['疾厄', '福德', '父母', '田宅'],
   mindset: ['命宫', '福德', '身宫', '迁移'],
   family: ['父母', '田宅', '兄弟', '子女'],
+  network: ['仆役', '兄弟', '迁移'],
   migration: ['迁移', '身宫', '官禄'],
 };
 
@@ -48,7 +52,8 @@ const OPPORTUNITY_SIGNAL_THEMES = {
   relationship: ['月朗天门', '日月照壁', '左右扶命格', '天乙拱命', '太阴', '天同'],
   health: ['正印', '偏印', '福德', '天乙拱命'],
   mindset: ['月生沧海', '石中隐玉', '命无正曜格', '福德', '文昌', '文曲'],
-  family: ['财荫夹印格', '田宅', '太阴', '天府'],
+  family: ['财荫夹印格', '田宅'],
+  network: ['左右扶命格', '仆役', '兄弟'],
   migration: ['禄马交驰格', '迁移', '七杀', '破军'],
 };
 
@@ -406,7 +411,6 @@ const buildSignalIndex = ({ reading, bazi, patterns, palaces }) => {
   const patternVerdicts = new Map();
   const knowledgeTopics = new Set();
   const natalGodCounts = new Map();
-  const daYunGodCounts = new Map();
   const starToPalaces = new Map();
   const palaceSignalMap = new Map();
   const mutagenSignals = new Set();
@@ -472,8 +476,6 @@ const buildSignalIndex = ({ reading, bazi, patterns, palaces }) => {
   });
 
   daYun.forEach((period) => {
-    addCount(daYunGodCounts, period.ganShiShen, 1);
-    addManyCounts(daYunGodCounts, period.hiddenShiShen || [], 1);
     [period.ganShiShen, ...(period.hiddenShiShen || []), period.ganWuXing, period.zhiWuXing]
       .filter(Boolean)
       .forEach((signal) => allSignals.add(signal));
@@ -523,7 +525,6 @@ const buildSignalIndex = ({ reading, bazi, patterns, palaces }) => {
     patternVerdicts,
     knowledgeTopics,
     natalGodCounts,
-    daYunGodCounts,
     starToPalaces,
     palaceSignalMap,
     mutagenSignals,
@@ -847,6 +848,23 @@ const refineOpportunitySelection = (selected, scored) => {
   });
 
   return selected
+    .sort((a, b) => b.score - a.score || a.template.id.localeCompare(b.template.id));
+};
+
+// 今日 scope 专用：每个有题的主题各取最高分一张代表卡，
+// 让焦点条能切换到所有有题的主题（含家庭/人际），而不是只剩 top-3 的几个。
+const selectDayPerTheme = (scored) => {
+  const byTheme = new Map();
+  scored.forEach((item) => {
+    const theme = item.template.theme;
+    const current = byTheme.get(theme);
+    if (!current
+      || item.score > current.score
+      || (item.score === current.score && item.template.id.localeCompare(current.template.id) < 0)) {
+      byTheme.set(theme, item);
+    }
+  });
+  return Array.from(byTheme.values())
     .sort((a, b) => b.score - a.score || a.template.id.localeCompare(b.template.id));
 };
 
@@ -1219,6 +1237,34 @@ const themesFromPalaceNames = (palaceNames = []) => {
   return Array.from(themes);
 };
 
+// 当期"流曜叠本命"：horoscope scope 的 palaceNames[i] 与本命 palaces[i] 同一位置对齐。
+// 用流命宫/流官禄/流财帛/流疾厄/流夫妻落在哪个本命宫，取这些本命宫的主星作为
+// "当期被激活的本命星"，并由流命宫落点的本命宫名定当期主题——逐期变化，可区分流年/月/日。
+const FLOW_KEY_PALACES = ['命宫', '官禄', '财帛', '疾厄', '夫妻', '迁移'];
+
+const flowActivatedSignals = (scope, palaces = []) => {
+  const palaceNames = (scope && scope.palaceNames) || [];
+  if (!Array.isArray(palaces) || palaces.length !== 12 || palaceNames.length !== 12) {
+    return { themes: [], stars: [] };
+  }
+  const natalUnderFlow = (flowPalaceName) => {
+    const idx = palaceNames.indexOf(flowPalaceName);
+    return idx >= 0 ? palaces[idx] || null : null;
+  };
+  const soulNatal = natalUnderFlow('命宫');
+  const themes = soulNatal
+    ? themesFromPalaceNames([soulNatal.isBodyPalace ? '身宫' : soulNatal.name])
+    : [];
+  const stars = new Set();
+  FLOW_KEY_PALACES.forEach((flowName) => {
+    const natal = natalUnderFlow(flowName);
+    if (natal) {
+      (natal.majorStars || []).forEach((star) => stars.add(star.name));
+    }
+  });
+  return { themes, stars: Array.from(stars) };
+};
+
 const findCurrentDaYunPeriod = (bazi, horoscope) => {
   const currentAge = Number(horoscope?.currentAge);
   const periods = bazi.luck?.daYun || [];
@@ -1340,11 +1386,12 @@ const buildDayPeriods = (daily, dayStem) => {
   }));
 };
 
-const buildScopeProfile = ({ scope, bazi, horoscope }) => {
+const buildScopeProfile = ({ scope, bazi, horoscope, palaces }) => {
   if (scope === 'decade') {
     const period = findCurrentDaYunPeriod(bazi, horoscope);
     const stageTheme = period ? stageThemeFromPeriod(period, 0) : { themes: ['career', 'wealth'], title: '当前十年关卡' };
-    const palaceThemes = themesFromPalaceNames(horoscope?.decadal?.palaceNames || []);
+    const activation = flowActivatedSignals(horoscope?.decadal, palaces);
+    const palaceThemes = activation.themes;
     return {
       id: 'decade',
       ...SCOPE_META.decade,
@@ -1356,7 +1403,7 @@ const buildScopeProfile = ({ scope, bazi, horoscope }) => {
         period?.ganShiShen,
         ...(period?.hiddenShiShen || []),
         ...(horoscope?.decadal?.mutagen || []),
-        ...(horoscope?.decadal?.palaceNames || []),
+        ...activation.stars,
       ]),
     };
   }
@@ -1368,7 +1415,8 @@ const buildScopeProfile = ({ scope, bazi, horoscope }) => {
       hiddenShiShen: horoscope?.yearly?.mutagen || [],
       endAge: Number(horoscope?.currentAge || 28),
     }, 0);
-    const palaceThemes = themesFromPalaceNames(horoscope?.yearly?.palaceNames || []);
+    const activation = flowActivatedSignals(horoscope?.yearly, palaces);
+    const palaceThemes = activation.themes;
     return {
       id: 'year',
       ...SCOPE_META.year,
@@ -1379,7 +1427,7 @@ const buildScopeProfile = ({ scope, bazi, horoscope }) => {
       extraSignals: unique([
         yearGod,
         ...(horoscope?.yearly?.mutagen || []),
-        ...(horoscope?.yearly?.palaceNames || []),
+        ...activation.stars,
       ]),
     };
   }
@@ -1391,7 +1439,8 @@ const buildScopeProfile = ({ scope, bazi, horoscope }) => {
       hiddenShiShen: horoscope?.monthly?.mutagen || [],
       endAge: Number(horoscope?.currentAge || 28),
     }, 0);
-    const palaceThemes = themesFromPalaceNames(horoscope?.monthly?.palaceNames || []);
+    const activation = flowActivatedSignals(horoscope?.monthly, palaces);
+    const palaceThemes = activation.themes;
     return {
       id: 'month',
       ...SCOPE_META.month,
@@ -1402,7 +1451,7 @@ const buildScopeProfile = ({ scope, bazi, horoscope }) => {
       extraSignals: unique([
         monthGod,
         ...(horoscope?.monthly?.mutagen || []),
-        ...(horoscope?.monthly?.palaceNames || []),
+        ...activation.stars,
       ]),
     };
   }
@@ -1414,7 +1463,8 @@ const buildScopeProfile = ({ scope, bazi, horoscope }) => {
       hiddenShiShen: horoscope?.daily?.mutagen || [],
       endAge: Number(horoscope?.currentAge || 28),
     }, 0);
-    const palaceThemes = themesFromPalaceNames(horoscope?.daily?.palaceNames || []);
+    const activation = flowActivatedSignals(horoscope?.daily, palaces);
+    const palaceThemes = activation.themes;
     return {
       id: 'day',
       ...SCOPE_META.day,
@@ -1425,7 +1475,7 @@ const buildScopeProfile = ({ scope, bazi, horoscope }) => {
       extraSignals: unique([
         dayGod,
         ...(horoscope?.daily?.mutagen || []),
-        ...(horoscope?.daily?.palaceNames || []),
+        ...activation.stars,
       ]),
     };
   }
@@ -1560,7 +1610,7 @@ const scopeScaleOverrides = (scope, scale) => {
 
 const buildLifeGameScope = ({ scope = 'lifetime', reading, bazi, palaces, patterns, horoscope }) => {
   const signalIndex = buildSignalIndex({ reading, bazi, patterns, palaces });
-  const scopeProfile = buildScopeProfile({ scope, bazi, horoscope });
+  const scopeProfile = buildScopeProfile({ scope, bazi, horoscope, palaces });
   const context = { reading, bazi, palaces, patterns, signalIndex, scopeProfile };
   const periods = scopeProfile.periods;
   const scale = scopeScaleOverrides(scope, computeGameScale({ periods, patterns, signalIndex }));
@@ -1572,23 +1622,33 @@ const buildLifeGameScope = ({ scope = 'lifetime', reading, bazi, palaces, patter
       .concat(scope === 'year' || scope === 'month' ? SHORT_HORIZON_TEMPLATES : [])
       .filter((template) => templateAppliesToScope(template, scope));
   const scored = templates.map((template) => scoreTemplate(template, context));
-  const trials = selectScored(scored, {
-    type: 'trial',
-    min: scale.trialMin,
-    max: scale.trialMax,
-    target: scale.trialTarget,
-    perThemeLimit: scale.trialThemeLimit,
-    minScore: 16,
-  }).map(buildNode);
-  const opportunities = refineOpportunitySelection(selectScored(scored, {
-    type: 'opportunity',
-    min: scale.opportunityMin,
-    max: scale.opportunityMax,
-    target: scale.opportunityTarget,
-    perThemeLimit: scale.opportunityThemeLimit,
-    minScore: 18,
-  }), scored).map(buildNode);
-  const rawCards = trials.concat(opportunities).map((card, index) => ({ ...card, cardNo: index + 1 }));
+  let trials;
+  let opportunities;
+  let rawCards;
+  if (scope === 'day') {
+    const perTheme = selectDayPerTheme(scored).map(buildNode);
+    rawCards = perTheme.map((card, index) => ({ ...card, cardNo: index + 1 }));
+    trials = perTheme.filter((card) => card.type === 'trial');
+    opportunities = perTheme.filter((card) => card.type === 'opportunity');
+  } else {
+    trials = selectScored(scored, {
+      type: 'trial',
+      min: scale.trialMin,
+      max: scale.trialMax,
+      target: scale.trialTarget,
+      perThemeLimit: scale.trialThemeLimit,
+      minScore: 16,
+    }).map(buildNode);
+    opportunities = refineOpportunitySelection(selectScored(scored, {
+      type: 'opportunity',
+      min: scale.opportunityMin,
+      max: scale.opportunityMax,
+      target: scale.opportunityTarget,
+      perThemeLimit: scale.opportunityThemeLimit,
+      minScore: 18,
+    }), scored).map(buildNode);
+    rawCards = trials.concat(opportunities).map((card, index) => ({ ...card, cardNo: index + 1 }));
+  }
   const stats = buildStats({ signalIndex, patterns });
   const archetype = chooseArchetype({ patterns, stats, signalIndex });
   const stages = buildStages(periods, rawCards);

@@ -1,16 +1,23 @@
 {
   "version": 1,
-  "updatedAt": "2026-05-26",
+  "updatedAt": "2026-06-18",
   "templates": [
     {
       "id": "career-role-pressure",
       "type": "trial",
       "theme": "career",
-      "title": "角色压力试炼",
+      "title": "被推上位的那一程",
       "tone": "dramatic",
-      "triggers": ["事业主线", "官禄", "紫府朝垣格", "府相朝垣格", "七杀", "廉贞贪杀"],
+      "triggers": [
+        "事业主线",
+        "官禄",
+        "紫府朝垣格",
+        "府相朝垣格",
+        "七杀",
+        "廉贞贪杀"
+      ],
       "summary": "你容易被推到需要承担责任的位置，真正的考题不是有没有舞台，而是能否承住权责。",
-      "dramaticText": "舞台亮起时，掌声和压力会同时落下。你要决定自己是接住这个角色，还是继续站在幕后观察。",
+      "dramaticText": "一个更重的角色落到你头上——更多职责、更多眼光，也更多压力。你得决定是接住它、稳住现有的，还是把边界重新划清。",
       "choices": [
         {
           "label": "主动接旗",
@@ -18,8 +25,15 @@
           "description": "接下更大的职责，用行动争取位置。",
           "cost": "短期压力和曝光度会明显上升。",
           "reward": "有机会快速打开事业局面。",
-          "statEffects": { "agency": 8, "stability": -3, "resilience": 2 },
-          "feedback": "你选择把压力变成主导权，关键是同步建立节奏和边界。"
+          "feedback": "你选择把压力变成主导权，关键是同步建立节奏和边界。",
+          "stateEffects": {
+            "pressure": 8,
+            "opportunity": 8,
+            "relationship": 0,
+            "stability": -3,
+            "resources": 0,
+            "wellbeing": 2
+          }
         },
         {
           "label": "稳住职责",
@@ -27,8 +41,15 @@
           "description": "先把当前角色做稳，再逐步扩大影响。",
           "cost": "短期突破感不强。",
           "reward": "更容易积累可信度和长期位置。",
-          "statEffects": { "stability": 7, "agency": 3 },
-          "feedback": "你选择先做稳定承接，适合把事业做成可持续结构。"
+          "feedback": "你选择先做稳定承接，适合把事业做成可持续结构。",
+          "stateEffects": {
+            "pressure": -3,
+            "opportunity": 3,
+            "relationship": 0,
+            "stability": 7,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "重订边界",
@@ -36,8 +57,15 @@
           "description": "明确哪些责任该接，哪些责任需要拒绝。",
           "cost": "可能需要经历一次关系或职权摩擦。",
           "reward": "减少被过度消耗的概率。",
-          "statEffects": { "resilience": 6, "connection": 2, "agency": 2 },
-          "feedback": "你选择先修边界，这会让后面的承担更清醒。"
+          "feedback": "你选择先修边界，这会让后面的承担更清醒。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 2,
+            "relationship": 2,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 6
+          }
         }
       ]
     },
@@ -45,11 +73,18 @@
       "id": "career-breakthrough",
       "type": "trial",
       "theme": "career",
-      "title": "破局转型试炼",
+      "title": "旧路走到头的转型期",
       "tone": "dramatic",
-      "triggers": ["事业主线", "迁移", "杀破狼格", "破军", "七杀", "火贪铃贪"],
+      "triggers": [
+        "事业主线",
+        "迁移",
+        "杀破狼格",
+        "破军",
+        "七杀",
+        "火贪铃贪"
+      ],
       "summary": "你的事业关卡容易出现改道、重组、跨界或被迫升级。",
-      "dramaticText": "旧地图开始失效，新门却不一定马上打开。真正的试炼，是在混乱里保留判断力。",
+      "dramaticText": "原来那条路明显走到头了，新路却还没铺好。这段时间你得在不确定里决定：果断换轨，还是一边干一边转。",
       "choices": [
         {
           "label": "快速换轨",
@@ -57,8 +92,15 @@
           "description": "抓住新机会，允许自己边走边修正。",
           "cost": "试错成本会变高。",
           "reward": "可能提前进入新的增长曲线。",
-          "statEffects": { "mobility": 8, "agency": 5, "stability": -4 },
-          "feedback": "你选择用速度换空间，接下来要严控损耗。"
+          "feedback": "你选择用速度换空间，接下来要严控损耗。",
+          "stateEffects": {
+            "pressure": 6,
+            "opportunity": 5,
+            "relationship": 0,
+            "stability": -4,
+            "resources": 8,
+            "wellbeing": 0
+          }
         },
         {
           "label": "双线过渡",
@@ -66,8 +108,15 @@
           "description": "保留旧收入或旧角色，同时测试新方向。",
           "cost": "一段时间内会很累。",
           "reward": "降低转型失败的冲击。",
-          "statEffects": { "stability": 6, "mobility": 4, "resilience": 2 },
-          "feedback": "你选择让新旧系统并行，适合高波动阶段。"
+          "feedback": "你选择让新旧系统并行，适合高波动阶段。",
+          "stateEffects": {
+            "pressure": -3,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 6,
+            "resources": 4,
+            "wellbeing": 2
+          }
         },
         {
           "label": "复盘旧局",
@@ -75,8 +124,15 @@
           "description": "先看清过去失败的模式，再决定下一步。",
           "cost": "推进速度会慢下来。",
           "reward": "减少重复踩坑。",
-          "statEffects": { "resilience": 6, "agency": 2 },
-          "feedback": "你选择先修复判断模型，这会让下一次破局更稳。"
+          "feedback": "你选择先修复判断模型，这会让下一次破局更稳。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 2,
+            "relationship": 0,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 6
+          }
         }
       ]
     },
@@ -84,11 +140,17 @@
       "id": "career-visibility",
       "type": "trial",
       "theme": "career",
-      "title": "被看见的试炼",
+      "title": "开始被人看见的阶段",
       "tone": "dramatic",
-      "triggers": ["事业主线", "日照雷门", "文桂文华", "昌曲拱命格", "科名会禄"],
+      "triggers": [
+        "事业主线",
+        "日照雷门",
+        "文桂文华",
+        "昌曲拱命格",
+        "科名会禄"
+      ],
       "summary": "你有机会被看见，但也容易因为曝光而承受评价。",
-      "dramaticText": "当光照到你身上，隐藏的能力和未处理的短板都会一起显影。",
+      "dramaticText": "你的名字开始被更多人提起，机会和审视一起来。露出来的同时，短板也会被一起看见。",
       "choices": [
         {
           "label": "公开表达",
@@ -96,8 +158,15 @@
           "description": "主动输出观点、作品或成果。",
           "cost": "会面对更直接的评价。",
           "reward": "个人影响力更容易形成。",
-          "statEffects": { "agency": 6, "mobility": 3, "resilience": -2 },
-          "feedback": "你选择走到台前，接下来要让表达和事实彼此支撑。"
+          "feedback": "你选择走到台前，接下来要让表达和事实彼此支撑。",
+          "stateEffects": {
+            "pressure": 10,
+            "opportunity": 6,
+            "relationship": 0,
+            "stability": 0,
+            "resources": 3,
+            "wellbeing": -2
+          }
         },
         {
           "label": "专业沉淀",
@@ -105,8 +174,15 @@
           "description": "把能力沉淀成作品、证据和流程。",
           "cost": "声量增长较慢。",
           "reward": "更容易形成长期可信度。",
-          "statEffects": { "stability": 6, "agency": 3 },
-          "feedback": "你选择让成果替你说话，这是稳健的上升路径。"
+          "feedback": "你选择让成果替你说话，这是稳健的上升路径。",
+          "stateEffects": {
+            "pressure": -3,
+            "opportunity": 3,
+            "relationship": 0,
+            "stability": 6,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "修正叙事",
@@ -114,8 +190,15 @@
           "description": "调整外界对你的理解方式。",
           "cost": "需要持续沟通。",
           "reward": "减少误解和无效消耗。",
-          "statEffects": { "connection": 5, "resilience": 3 },
-          "feedback": "你选择先修叙事，适合有能力但容易被误读的阶段。"
+          "feedback": "你选择先修叙事，适合有能力但容易被误读的阶段。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 0,
+            "relationship": 5,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 3
+          }
         }
       ]
     },
@@ -123,11 +206,18 @@
       "id": "career-system-builder",
       "type": "trial",
       "theme": "career",
-      "title": "系统建造试炼",
+      "title": "从单打到立规矩",
       "tone": "dramatic",
-      "triggers": ["事业主线", "天府", "天相", "府相朝垣格", "田宅", "官禄"],
+      "triggers": [
+        "事业主线",
+        "天府",
+        "天相",
+        "府相朝垣格",
+        "田宅",
+        "官禄"
+      ],
       "summary": "你不适合只靠一时爆发，真正的关卡是把能力做成系统。",
-      "dramaticText": "零散的胜利不足以守城。你需要建造规则、流程和可继承的秩序。",
+      "dramaticText": "光靠几次漂亮发挥已经撑不住摊子了。这一程，要把做事的规则、流程和能交接的秩序立起来。",
       "choices": [
         {
           "label": "重建规则",
@@ -135,8 +225,15 @@
           "description": "主动改造团队、流程或业务结构。",
           "cost": "会触动既有习惯。",
           "reward": "系统效率可能明显提升。",
-          "statEffects": { "agency": 5, "stability": 4 },
-          "feedback": "你选择做建造者，阻力来自旧秩序。"
+          "feedback": "你选择做建造者，阻力来自旧秩序。",
+          "stateEffects": {
+            "pressure": 6,
+            "opportunity": 5,
+            "relationship": 0,
+            "stability": 4,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "小步固化",
@@ -144,8 +241,15 @@
           "description": "把有效经验逐步变成标准动作。",
           "cost": "需要耐心。",
           "reward": "长期稳定性增强。",
-          "statEffects": { "stability": 8, "resilience": 2 },
-          "feedback": "你选择慢慢筑墙，这条路不快，但耐用。"
+          "feedback": "你选择慢慢筑墙，这条路不快，但耐用。",
+          "stateEffects": {
+            "pressure": -3,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 8,
+            "resources": 0,
+            "wellbeing": 2
+          }
         },
         {
           "label": "清理冗余",
@@ -153,8 +257,15 @@
           "description": "先去掉低效关系、流程和责任。",
           "cost": "短期会有阵痛。",
           "reward": "释放被占用的精力。",
-          "statEffects": { "resilience": 5, "stability": 3 },
-          "feedback": "你选择先减负，系统要变强，先要不漏水。"
+          "feedback": "你选择先减负，系统要变强，先要不漏水。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 3,
+            "resources": 0,
+            "wellbeing": 5
+          }
         }
       ]
     },
@@ -162,11 +273,18 @@
       "id": "career-collaboration-test",
       "type": "trial",
       "theme": "career",
-      "title": "协作边界试炼",
+      "title": "要不要绑上一个伙伴",
       "tone": "dramatic",
-      "triggers": ["事业主线", "仆役", "兄弟", "左右扶命格", "天乙拱命", "劫财"],
+      "triggers": [
+        "事业主线",
+        "仆役",
+        "兄弟",
+        "左右扶命格",
+        "天乙拱命",
+        "劫财"
+      ],
       "summary": "你会遇到需要借力的局，但借力之前必须先讲清边界。",
-      "dramaticText": "盟友可以开门，也可能分走你的火把。合作不是把命运交给别人。",
+      "dramaticText": "一个能帮你打开局面的合作摆在面前，但合作也意味着分权、分利、分风险。你得想清楚要绑多深。",
       "choices": [
         {
           "label": "结盟推进",
@@ -174,8 +292,15 @@
           "description": "借助团队或合作者快速推进。",
           "cost": "利益和责任需要重新分配。",
           "reward": "资源效率会提高。",
-          "statEffects": { "connection": 7, "mobility": 3, "stability": -2 },
-          "feedback": "你选择结盟，记得把规则写在热情前面。"
+          "feedback": "你选择结盟，记得把规则写在热情前面。",
+          "stateEffects": {
+            "pressure": 6,
+            "opportunity": 0,
+            "relationship": 7,
+            "stability": -2,
+            "resources": 3,
+            "wellbeing": 0
+          }
         },
         {
           "label": "明确分工",
@@ -183,8 +308,15 @@
           "description": "先定角色、责任和退出机制。",
           "cost": "前期谈判成本增加。",
           "reward": "合作更稳。",
-          "statEffects": { "stability": 5, "connection": 4 },
-          "feedback": "你选择把合作变成结构，冲突会少很多。"
+          "feedback": "你选择把合作变成结构，冲突会少很多。",
+          "stateEffects": {
+            "pressure": -3,
+            "opportunity": 0,
+            "relationship": 4,
+            "stability": 5,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "修复失衡",
@@ -192,8 +324,15 @@
           "description": "处理已经失衡的分工或人情债。",
           "cost": "需要面对尴尬对话。",
           "reward": "减少后续消耗。",
-          "statEffects": { "resilience": 5, "connection": 3 },
-          "feedback": "你选择把暗账摊开，关系才有机会继续。"
+          "feedback": "你选择把暗账摊开，关系才有机会继续。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 0,
+            "relationship": 3,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 5
+          }
         }
       ]
     },
@@ -201,11 +340,18 @@
       "id": "wealth-retention",
       "type": "trial",
       "theme": "wealth",
-      "title": "财务留存试炼",
+      "title": "钱留不住的一段日子",
       "tone": "dramatic",
-      "triggers": ["财运主线", "财帛", "田宅", "比劫", "劫财", "财荫夹印格"],
+      "triggers": [
+        "财运主线",
+        "财帛",
+        "田宅",
+        "比劫",
+        "劫财",
+        "财荫夹印格"
+      ],
       "summary": "你的问题未必是没有资源，而是资源是否能留下来。",
-      "dramaticText": "金流像河，来得快时也走得快。你要学会修堤，而不是只盯着水量。",
+      "dramaticText": "进账不少，可钱总是来得快走得也快。这阵子真正要解决的，是怎么把钱留下，而不是只盯着赚多少。",
       "choices": [
         {
           "label": "扩大投入",
@@ -213,8 +359,15 @@
           "description": "用资源换增长，接受短期波动。",
           "cost": "现金流压力增加。",
           "reward": "有机会放大收益。",
-          "statEffects": { "agency": 5, "mobility": 4, "stability": -4 },
-          "feedback": "你选择进攻，必须同步设置止损线。"
+          "feedback": "你选择进攻，必须同步设置止损线。",
+          "stateEffects": {
+            "pressure": 6,
+            "opportunity": 5,
+            "relationship": 0,
+            "stability": -4,
+            "resources": 4,
+            "wellbeing": 0
+          }
         },
         {
           "label": "建立储备",
@@ -222,8 +375,15 @@
           "description": "先建立预算、储备和资产留存规则。",
           "cost": "短期扩张变慢。",
           "reward": "抗风险能力增强。",
-          "statEffects": { "stability": 8, "resilience": 3 },
-          "feedback": "你选择先修堤坝，这是财务课题里的关键动作。"
+          "feedback": "你选择先修堤坝，这是财务课题里的关键动作。",
+          "stateEffects": {
+            "pressure": -3,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 8,
+            "resources": 0,
+            "wellbeing": 3
+          }
         },
         {
           "label": "修复漏洞",
@@ -231,8 +391,15 @@
           "description": "清理冲动消费、无效投入和模糊分账。",
           "cost": "需要承认过去的浪费。",
           "reward": "减少持续性流失。",
-          "statEffects": { "resilience": 5, "stability": 4 },
-          "feedback": "你选择堵住暗漏，钱才有机会变成底气。"
+          "feedback": "你选择堵住暗漏，钱才有机会变成底气。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 4,
+            "resources": 0,
+            "wellbeing": 5
+          }
         }
       ]
     },
@@ -240,11 +407,17 @@
       "id": "wealth-risk-swing",
       "type": "trial",
       "theme": "wealth",
-      "title": "高波动收益试炼",
+      "title": "高诱惑的机会窗口",
       "tone": "dramatic",
-      "triggers": ["财运主线", "火贪铃贪", "杀破狼格", "偏财", "伤官"],
+      "triggers": [
+        "财运主线",
+        "火贪铃贪",
+        "杀破狼格",
+        "偏财",
+        "伤官"
+      ],
       "summary": "你可能遇到高回报诱惑，真正的考题是能否识别波动背后的代价。",
-      "dramaticText": "机会像火，能照路，也能烧掉判断。你要决定自己靠近到什么距离。",
+      "dramaticText": "一个高回报也高波动的机会就在眼前，诱惑大，风险也大。你得决定，靠近到哪一步。",
       "choices": [
         {
           "label": "押注窗口",
@@ -252,8 +425,15 @@
           "description": "抓住短期机会，快速行动。",
           "cost": "波动和损失概率提高。",
           "reward": "可能获得超额回报。",
-          "statEffects": { "agency": 6, "mobility": 5, "stability": -6 },
-          "feedback": "你选择靠近火光，必须先定义撤退线。"
+          "feedback": "你选择靠近火光，必须先定义撤退线。",
+          "stateEffects": {
+            "pressure": 8,
+            "opportunity": 6,
+            "relationship": 0,
+            "stability": -6,
+            "resources": 5,
+            "wellbeing": 0
+          }
         },
         {
           "label": "分层配置",
@@ -261,8 +441,15 @@
           "description": "把高风险机会限制在可承受范围。",
           "cost": "收益上限降低。",
           "reward": "整体结构更稳。",
-          "statEffects": { "stability": 6, "resilience": 3 },
-          "feedback": "你选择让风险待在笼子里，这是成熟的打法。"
+          "feedback": "你选择让风险待在笼子里，这是成熟的打法。",
+          "stateEffects": {
+            "pressure": -3,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 6,
+            "resources": 0,
+            "wellbeing": 3
+          }
         },
         {
           "label": "冷却欲望",
@@ -270,8 +457,15 @@
           "description": "暂停冲动决策，重新评估动机。",
           "cost": "可能错过热闹窗口。",
           "reward": "避免被诱惑牵着走。",
-          "statEffects": { "resilience": 6, "stability": 2 },
-          "feedback": "你选择先降温，保住判断力就是收益。"
+          "feedback": "你选择先降温，保住判断力就是收益。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 2,
+            "resources": 0,
+            "wellbeing": 6
+          }
         }
       ]
     },
@@ -279,11 +473,18 @@
       "id": "wealth-cooperation",
       "type": "trial",
       "theme": "wealth",
-      "title": "合作分账试炼",
+      "title": "合伙分账的局",
       "tone": "dramatic",
-      "triggers": ["财运主线", "兄弟", "仆役", "劫财", "比肩", "左右扶命格"],
+      "triggers": [
+        "财运主线",
+        "兄弟",
+        "仆役",
+        "劫财",
+        "比肩",
+        "左右扶命格"
+      ],
       "summary": "资源常常经由人而来，也可能经由人而散。",
-      "dramaticText": "桌上的金币不是问题，问题是谁定义规则、谁承担亏损、谁最后离席。",
+      "dramaticText": "和人合伙的钱越做越大，但谁定规则、谁担亏损、谁先离场，一直没说清。这笔糊涂账迟早要算。",
       "choices": [
         {
           "label": "共同做大",
@@ -291,8 +492,15 @@
           "description": "与合作者一起扩大资源盘。",
           "cost": "分配复杂度提高。",
           "reward": "资源获取能力增强。",
-          "statEffects": { "connection": 6, "mobility": 3, "stability": -2 },
-          "feedback": "你选择共同开局，规则必须先于情面。"
+          "feedback": "你选择共同开局，规则必须先于情面。",
+          "stateEffects": {
+            "pressure": 6,
+            "opportunity": 0,
+            "relationship": 6,
+            "stability": -2,
+            "resources": 3,
+            "wellbeing": 0
+          }
         },
         {
           "label": "写清规则",
@@ -300,8 +508,15 @@
           "description": "明确分账、权限和退出机制。",
           "cost": "前期沟通较硬。",
           "reward": "减少后续争议。",
-          "statEffects": { "stability": 6, "connection": 3 },
-          "feedback": "你选择把账写清，合作才不会变成人情债。"
+          "feedback": "你选择把账写清，合作才不会变成人情债。",
+          "stateEffects": {
+            "pressure": -3,
+            "opportunity": 0,
+            "relationship": 3,
+            "stability": 6,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "止损切割",
@@ -309,8 +524,15 @@
           "description": "从失衡合作里撤出或重新谈判。",
           "cost": "关系可能短期降温。",
           "reward": "减少持续流血。",
-          "statEffects": { "resilience": 6, "agency": 3 },
-          "feedback": "你选择止损，这不是失败，是重新拿回方向盘。"
+          "feedback": "你选择止损，这不是失败，是重新拿回方向盘。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 3,
+            "relationship": 0,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 6
+          }
         }
       ]
     },
@@ -318,11 +540,17 @@
       "id": "wealth-asset-root",
       "type": "trial",
       "theme": "wealth",
-      "title": "资产根基试炼",
+      "title": "给财富找个落脚处",
       "tone": "dramatic",
-      "triggers": ["财运主线", "田宅", "天府", "太阴", "财荫夹印格"],
+      "triggers": [
+        "财运主线",
+        "田宅",
+        "天府",
+        "太阴",
+        "财荫夹印格"
+      ],
       "summary": "你需要把流动资源变成能托住生活的根基。",
-      "dramaticText": "漂浮的财富让人兴奋，落地的资产让人安眠。你要决定哪里才是你的城墙。",
+      "dramaticText": "漂着的钱让人心慌，落地的资产让人安心。这一程，你得决定把家底扎在哪里。",
       "choices": [
         {
           "label": "集中配置",
@@ -330,8 +558,15 @@
           "description": "把资源集中到关键资产或核心能力。",
           "cost": "灵活度下降。",
           "reward": "根基感增强。",
-          "statEffects": { "stability": 5, "agency": 3, "mobility": -2 },
-          "feedback": "你选择立柱，重点是别把所有门都封死。"
+          "feedback": "你选择立柱，重点是别把所有门都封死。",
+          "stateEffects": {
+            "pressure": 4,
+            "opportunity": 3,
+            "relationship": 0,
+            "stability": 5,
+            "resources": -2,
+            "wellbeing": 0
+          }
         },
         {
           "label": "长期沉淀",
@@ -339,8 +574,15 @@
           "description": "用稳定节奏积累资产和信用。",
           "cost": "成效显现较慢。",
           "reward": "安全感逐步提升。",
-          "statEffects": { "stability": 8, "resilience": 2 },
-          "feedback": "你选择慢慢建城，这是田宅课题的正解之一。"
+          "feedback": "你选择慢慢建城，这是田宅课题的正解之一。",
+          "stateEffects": {
+            "pressure": -3,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 8,
+            "resources": 0,
+            "wellbeing": 2
+          }
         },
         {
           "label": "修复根基",
@@ -348,8 +590,15 @@
           "description": "处理居住、家庭或资产上的遗留问题。",
           "cost": "需要面对现实压力。",
           "reward": "生活底盘更稳。",
-          "statEffects": { "resilience": 5, "stability": 4 },
-          "feedback": "你选择先修地基，后面的楼才不会晃。"
+          "feedback": "你选择先修地基，后面的楼才不会晃。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 4,
+            "resources": 0,
+            "wellbeing": 5
+          }
         }
       ]
     },
@@ -357,11 +606,17 @@
       "id": "wealth-skill-monetize",
       "type": "trial",
       "theme": "wealth",
-      "title": "技能变现试炼",
+      "title": "把本事换成钱",
       "tone": "dramatic",
-      "triggers": ["财运主线", "食神", "伤官", "昌曲拱命格", "文桂文华"],
+      "triggers": [
+        "财运主线",
+        "食神",
+        "伤官",
+        "昌曲拱命格",
+        "文桂文华"
+      ],
       "summary": "你的表达、技术或作品可能成为资源入口，但需要从兴趣走向定价。",
-      "dramaticText": "才能在暗处发光还不够，它需要被命名、被交付、被交换。",
+      "dramaticText": "你的能力一直在，却还没真正被定价、被交付、被人买单。是时候把它拿出来，换成实在的回报。",
       "choices": [
         {
           "label": "推出作品",
@@ -369,8 +624,15 @@
           "description": "把技能包装成产品、服务或公开成果。",
           "cost": "会面对市场评价。",
           "reward": "变现通道被打开。",
-          "statEffects": { "agency": 6, "mobility": 3 },
-          "feedback": "你选择让才能走上货架，下一步是持续交付。"
+          "feedback": "你选择让才能走上货架，下一步是持续交付。",
+          "stateEffects": {
+            "pressure": 8,
+            "opportunity": 6,
+            "relationship": 0,
+            "stability": 0,
+            "resources": 3,
+            "wellbeing": 0
+          }
         },
         {
           "label": "优化定价",
@@ -378,8 +640,15 @@
           "description": "明确服务边界、交付标准和价格。",
           "cost": "需要克服不好意思开价的心理。",
           "reward": "收入结构更清楚。",
-          "statEffects": { "stability": 5, "agency": 3 },
-          "feedback": "你选择给价值标价，资源才会认真回应你。"
+          "feedback": "你选择给价值标价，资源才会认真回应你。",
+          "stateEffects": {
+            "pressure": -3,
+            "opportunity": 3,
+            "relationship": 0,
+            "stability": 5,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "修复自我怀疑",
@@ -387,8 +656,15 @@
           "description": "先处理对自己能力的低估。",
           "cost": "需要重新整理过往成果。",
           "reward": "表达更稳定。",
-          "statEffects": { "resilience": 5, "agency": 2 },
-          "feedback": "你选择先承认价值，这是变现之前的关键一关。"
+          "feedback": "你选择先承认价值，这是变现之前的关键一关。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 2,
+            "relationship": 0,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 5
+          }
         }
       ]
     },
@@ -396,11 +672,18 @@
       "id": "relationship-boundary",
       "type": "trial",
       "theme": "relationship",
-      "title": "关系边界试炼",
+      "title": "关系里的边界要重划",
       "tone": "dramatic",
-      "triggers": ["婚恋主线", "夫妻", "巨门", "廉贞", "七杀", "月同遇煞"],
+      "triggers": [
+        "婚恋主线",
+        "夫妻",
+        "巨门",
+        "廉贞",
+        "七杀",
+        "月同遇煞"
+      ],
       "summary": "关系里的关键课题是边界、期待和投入比例。",
-      "dramaticText": "亲密不是把城门全部打开。你要学会让爱进入，也让自己保有房间。",
+      "dramaticText": "这段关系越近，边界越模糊。你开始觉得，该给彼此各留一间房，而不是把门全打开。",
       "choices": [
         {
           "label": "直接摊牌",
@@ -408,8 +691,15 @@
           "description": "把真实需求和底线说清楚。",
           "cost": "短期冲突概率上升。",
           "reward": "关系真相更快显现。",
-          "statEffects": { "agency": 5, "connection": 2, "stability": -2 },
-          "feedback": "你选择把话说开，接下来要避免把表达变成审判。"
+          "feedback": "你选择把话说开，接下来要避免把表达变成审判。",
+          "stateEffects": {
+            "pressure": 6,
+            "opportunity": 5,
+            "relationship": 2,
+            "stability": -2,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "建立约定",
@@ -417,8 +707,15 @@
           "description": "用具体规则替代猜测和试探。",
           "cost": "浪漫感会短暂下降。",
           "reward": "关系稳定度提高。",
-          "statEffects": { "connection": 5, "stability": 4 },
-          "feedback": "你选择把关系落到约定里，亲密会更有承载。"
+          "feedback": "你选择把关系落到约定里，亲密会更有承载。",
+          "stateEffects": {
+            "pressure": -1,
+            "opportunity": 0,
+            "relationship": 5,
+            "stability": 4,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "修复旧伤",
@@ -426,8 +723,15 @@
           "description": "识别自己反复带入关系的旧模式。",
           "cost": "会触及脆弱感。",
           "reward": "减少重复受伤。",
-          "statEffects": { "resilience": 6, "connection": 3 },
-          "feedback": "你选择先照见自己，关系里的雾会慢慢散。"
+          "feedback": "你选择先照见自己，关系里的雾会慢慢散。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 0,
+            "relationship": 3,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 6
+          }
         }
       ]
     },
@@ -435,11 +739,17 @@
       "id": "relationship-communication",
       "type": "trial",
       "theme": "relationship",
-      "title": "沟通误解试炼",
+      "title": "一句没说开的话",
       "tone": "dramatic",
-      "triggers": ["婚恋主线", "巨门", "石中隐玉", "巨逢四煞", "夫妻"],
+      "triggers": [
+        "婚恋主线",
+        "巨门",
+        "石中隐玉",
+        "巨逢四煞",
+        "夫妻"
+      ],
       "summary": "你容易在关系里因为表达方式、推测和沉默产生误解。",
-      "dramaticText": "一句没说出口的话，可能比争吵更锋利。真正的关卡是让对方听见，而不是让自己赢。",
+      "dramaticText": "有件事一直没说开，比吵一架更磨人。这一关，是让对方真的听见，而不是争个输赢。",
       "choices": [
         {
           "label": "正面沟通",
@@ -447,8 +757,15 @@
           "description": "把误解放到桌面上谈。",
           "cost": "气氛可能一度紧张。",
           "reward": "问题不再暗中发酵。",
-          "statEffects": { "agency": 4, "connection": 4 },
-          "feedback": "你选择正面处理，记得把目标放在理解，不是胜负。"
+          "feedback": "你选择正面处理，记得把目标放在理解，不是胜负。",
+          "stateEffects": {
+            "pressure": 6,
+            "opportunity": 4,
+            "relationship": 4,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "换种表达",
@@ -456,8 +773,15 @@
           "description": "用更具体的事实和请求表达。",
           "cost": "需要压住情绪反应。",
           "reward": "对方更容易接住。",
-          "statEffects": { "connection": 6, "stability": 2 },
-          "feedback": "你选择把锋利变清晰，这是沟通里的成熟。"
+          "feedback": "你选择把锋利变清晰，这是沟通里的成熟。",
+          "stateEffects": {
+            "pressure": -1,
+            "opportunity": 0,
+            "relationship": 6,
+            "stability": 2,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "暂停内耗",
@@ -465,8 +789,15 @@
           "description": "先停止脑内推演，回到事实。",
           "cost": "需要忍住追问冲动。",
           "reward": "减少关系消耗。",
-          "statEffects": { "resilience": 5, "connection": 2 },
-          "feedback": "你选择先止住内耗，很多误会会少一半。"
+          "feedback": "你选择先止住内耗，很多误会会少一半。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 0,
+            "relationship": 2,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 5
+          }
         }
       ]
     },
@@ -474,11 +805,18 @@
       "id": "relationship-commitment",
       "type": "trial",
       "theme": "relationship",
-      "title": "长期承诺试炼",
+      "title": "要不要再走深一步",
       "tone": "dramatic",
-      "triggers": ["婚恋主线", "天府", "太阴", "月朗天门", "日月照壁", "田宅"],
+      "triggers": [
+        "婚恋主线",
+        "天府",
+        "太阴",
+        "月朗天门",
+        "日月照壁",
+        "田宅"
+      ],
       "summary": "你要面对的不是有没有感情，而是能否把感情变成可持续生活。",
-      "dramaticText": "火花会照亮夜晚，承诺却要负责天亮以后的一日三餐。",
+      "dramaticText": "热度过后，关系走到了要不要更进一步的路口。承诺，意味着要为天亮以后的日常负责。",
       "choices": [
         {
           "label": "推进承诺",
@@ -486,8 +824,15 @@
           "description": "主动推动关系进入下一阶段。",
           "cost": "现实议题会集中出现。",
           "reward": "关系方向更清楚。",
-          "statEffects": { "agency": 4, "connection": 5, "stability": -1 },
-          "feedback": "你选择推动关系，浪漫要接受现实校验。"
+          "feedback": "你选择推动关系，浪漫要接受现实校验。",
+          "stateEffects": {
+            "pressure": 6,
+            "opportunity": 4,
+            "relationship": 5,
+            "stability": -1,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "共建节律",
@@ -495,8 +840,15 @@
           "description": "先稳定作息、财务和生活分工。",
           "cost": "激情感会变平实。",
           "reward": "长期关系更容易落地。",
-          "statEffects": { "connection": 5, "stability": 5 },
-          "feedback": "你选择把爱变成生活结构，这很关键。"
+          "feedback": "你选择把爱变成生活结构，这很关键。",
+          "stateEffects": {
+            "pressure": -3,
+            "opportunity": 0,
+            "relationship": 5,
+            "stability": 5,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "修复不安",
@@ -504,8 +856,15 @@
           "description": "处理安全感和依恋模式里的旧问题。",
           "cost": "需要脆弱地沟通。",
           "reward": "关系更少被旧伤牵动。",
-          "statEffects": { "resilience": 5, "connection": 4 },
-          "feedback": "你选择修复内在不安，承诺才不会变成束缚。"
+          "feedback": "你选择修复内在不安，承诺才不会变成束缚。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 0,
+            "relationship": 4,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 5
+          }
         }
       ]
     },
@@ -513,11 +872,17 @@
       "id": "relationship-independence",
       "type": "trial",
       "theme": "relationship",
-      "title": "亲密与自由试炼",
+      "title": "想靠近又想要自由",
       "tone": "dramatic",
-      "triggers": ["婚恋主线", "迁移", "贪狼", "杀破狼格", "火贪铃贪"],
+      "triggers": [
+        "婚恋主线",
+        "迁移",
+        "贪狼",
+        "杀破狼格",
+        "火贪铃贪"
+      ],
       "summary": "你可能在亲密关系和自由探索之间反复拉扯。",
-      "dramaticText": "你想靠近，也想保留远方。关系的试炼，是让自由不变成逃避，让亲密不变成束缚。",
+      "dramaticText": "你既想和对方更近，又舍不得自己的天地。这一程，要让自由别变成逃避，让亲密别变成捆绑。",
       "choices": [
         {
           "label": "选择探索",
@@ -525,8 +890,15 @@
           "description": "保留更多空间和可能性。",
           "cost": "对方可能感到不安。",
           "reward": "自我探索更充分。",
-          "statEffects": { "mobility": 6, "agency": 3, "connection": -3 },
-          "feedback": "你选择远方，别让自由变成不负责。"
+          "feedback": "你选择远方，别让自由变成不负责。",
+          "stateEffects": {
+            "pressure": 6,
+            "opportunity": 3,
+            "relationship": -3,
+            "stability": 0,
+            "resources": 6,
+            "wellbeing": 0
+          }
         },
         {
           "label": "协商空间",
@@ -534,8 +906,15 @@
           "description": "明确个人空间和共同生活的比例。",
           "cost": "需要持续协商。",
           "reward": "亲密和自由可以共存。",
-          "statEffects": { "connection": 5, "stability": 3, "mobility": 2 },
-          "feedback": "你选择让边界可见，这是成熟关系的技术。"
+          "feedback": "你选择让边界可见，这是成熟关系的技术。",
+          "stateEffects": {
+            "pressure": -1,
+            "opportunity": 0,
+            "relationship": 5,
+            "stability": 3,
+            "resources": 2,
+            "wellbeing": 0
+          }
         },
         {
           "label": "修复逃避",
@@ -543,8 +922,15 @@
           "description": "辨认自己何时用自由回避亲密。",
           "cost": "会触及真实恐惧。",
           "reward": "关系选择更清醒。",
-          "statEffects": { "resilience": 5, "connection": 3 },
-          "feedback": "你选择面对逃避，靠近才不再像失去自己。"
+          "feedback": "你选择面对逃避，靠近才不再像失去自己。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 0,
+            "relationship": 3,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 5
+          }
         }
       ]
     },
@@ -552,11 +938,17 @@
       "id": "relationship-family-pressure",
       "type": "trial",
       "theme": "relationship",
-      "title": "家庭牵制试炼",
+      "title": "两个人的事，一家子的声音",
       "tone": "dramatic",
-      "triggers": ["婚恋主线", "父母", "田宅", "财荫夹印格", "刑忌夹印"],
+      "triggers": [
+        "婚恋主线",
+        "父母",
+        "田宅",
+        "财荫夹印格",
+        "刑忌夹印"
+      ],
       "summary": "关系问题可能不只发生在两个人之间，也会牵动家庭、居住和责任分配。",
-      "dramaticText": "有些关系不是两个人的战场，而是一整座旧城的回声。",
+      "dramaticText": "你们之间的事，总有长辈和旧家庭的影子掺进来。这一关，是处理这座老城的回声。",
       "choices": [
         {
           "label": "主动切分",
@@ -564,8 +956,15 @@
           "description": "清楚划分伴侣、小家和原生家庭的边界。",
           "cost": "会引发短期不适。",
           "reward": "关系主权更清楚。",
-          "statEffects": { "agency": 5, "stability": 2, "connection": -1 },
-          "feedback": "你选择划线，清楚不是冷漠，是保护新结构。"
+          "feedback": "你选择划线，清楚不是冷漠，是保护新结构。",
+          "stateEffects": {
+            "pressure": 6,
+            "opportunity": 5,
+            "relationship": -1,
+            "stability": 2,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "共同协商",
@@ -573,8 +972,15 @@
           "description": "把家庭责任变成可讨论的计划。",
           "cost": "沟通成本高。",
           "reward": "压力分配更公平。",
-          "statEffects": { "connection": 5, "stability": 3 },
-          "feedback": "你选择协商，别让沉默替你们做决定。"
+          "feedback": "你选择协商，别让沉默替你们做决定。",
+          "stateEffects": {
+            "pressure": -1,
+            "opportunity": 0,
+            "relationship": 5,
+            "stability": 3,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "修复旧债",
@@ -582,8 +988,15 @@
           "description": "处理长期被拖欠或过度承担的家庭责任。",
           "cost": "会面对愧疚感。",
           "reward": "关系负担减轻。",
-          "statEffects": { "resilience": 6, "stability": 2 },
-          "feedback": "你选择修旧债，新的亲密才有空间。"
+          "feedback": "你选择修旧债，新的亲密才有空间。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 2,
+            "resources": 0,
+            "wellbeing": 6
+          }
         }
       ]
     },
@@ -591,11 +1004,18 @@
       "id": "health-burnout",
       "type": "trial",
       "theme": "health",
-      "title": "长期消耗试炼",
+      "title": "一直在透支的身体",
       "tone": "dramatic",
-      "triggers": ["健康主线", "疾厄", "福德", "火铃夹命格", "刑忌夹印", "偏印"],
+      "triggers": [
+        "健康主线",
+        "疾厄",
+        "福德",
+        "火铃夹命格",
+        "刑忌夹印",
+        "偏印"
+      ],
       "summary": "你的身体和精神不怕一时辛苦，怕的是长期无恢复的消耗。",
-      "dramaticText": "你可以冲过很多夜路，但不能一直不点灯。真正的敌人是习惯性透支。",
+      "dramaticText": "你能熬过很多个夜，但灯不能一直不灭。真正拖垮你的，是把透支当成了习惯。",
       "choices": [
         {
           "label": "硬闯一程",
@@ -603,8 +1023,15 @@
           "description": "短期集中火力完成关键目标。",
           "cost": "恢复债会累积。",
           "reward": "能快速完成阶段任务。",
-          "statEffects": { "agency": 4, "resilience": -5, "mobility": 2 },
-          "feedback": "你选择硬闯，必须提前安排恢复窗口。"
+          "feedback": "你选择硬闯，必须提前安排恢复窗口。",
+          "stateEffects": {
+            "pressure": 8,
+            "opportunity": 4,
+            "relationship": 0,
+            "stability": 0,
+            "resources": 2,
+            "wellbeing": -5
+          }
         },
         {
           "label": "重建节律",
@@ -612,8 +1039,15 @@
           "description": "固定睡眠、运动、饮食和工作边界。",
           "cost": "短期效率看似下降。",
           "reward": "长期续航明显增强。",
-          "statEffects": { "resilience": 8, "stability": 4 },
-          "feedback": "你选择修复节律，这是健康关卡里的主线任务。"
+          "feedback": "你选择修复节律，这是健康关卡里的主线任务。",
+          "stateEffects": {
+            "pressure": -1,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 4,
+            "resources": 0,
+            "wellbeing": 8
+          }
         },
         {
           "label": "停止透支",
@@ -621,8 +1055,15 @@
           "description": "删减过度责任和无效消耗。",
           "cost": "需要拒绝一些人和事。",
           "reward": "恢复力回升。",
-          "statEffects": { "resilience": 7, "agency": 2 },
-          "feedback": "你选择停损，身体会记住这次选择。"
+          "feedback": "你选择停损，身体会记住这次选择。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 2,
+            "relationship": 0,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 7
+          }
         }
       ]
     },
@@ -630,11 +1071,17 @@
       "id": "health-emotional-weather",
       "type": "trial",
       "theme": "health",
-      "title": "情绪天气试炼",
+      "title": "心里阴晴不定的日子",
       "tone": "dramatic",
-      "triggers": ["健康主线", "福德", "太阴", "月同遇煞", "日月反背"],
+      "triggers": [
+        "健康主线",
+        "福德",
+        "太阴",
+        "月同遇煞",
+        "日月反背"
+      ],
       "summary": "你的状态容易受环境、关系和未说出口的情绪影响。",
-      "dramaticText": "外面下雨时，你的心里也可能起雾。试炼不是消灭情绪，而是学会辨认天气。",
+      "dramaticText": "外面一变天，你心里也跟着起雾。这一关不是消灭情绪，而是先学会辨认自己的天气。",
       "choices": [
         {
           "label": "直接换环境",
@@ -642,8 +1089,15 @@
           "description": "离开持续消耗你的场域。",
           "cost": "需要承担变化成本。",
           "reward": "情绪压力快速下降。",
-          "statEffects": { "mobility": 5, "resilience": 4, "stability": -2 },
-          "feedback": "你选择换空气，有些恢复必须从离开开始。"
+          "feedback": "你选择换空气，有些恢复必须从离开开始。",
+          "stateEffects": {
+            "pressure": 6,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": -2,
+            "resources": 5,
+            "wellbeing": 4
+          }
         },
         {
           "label": "建立缓冲",
@@ -651,8 +1105,15 @@
           "description": "固定给自己留出独处、休息和整理时间。",
           "cost": "需要减少社交或任务。",
           "reward": "情绪稳定性提升。",
-          "statEffects": { "resilience": 6, "stability": 3 },
-          "feedback": "你选择建立缓冲，敏感会变成感知力。"
+          "feedback": "你选择建立缓冲，敏感会变成感知力。",
+          "stateEffects": {
+            "pressure": -1,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 3,
+            "resources": 0,
+            "wellbeing": 6
+          }
         },
         {
           "label": "命名情绪",
@@ -660,8 +1121,15 @@
           "description": "把焦虑、委屈或愤怒说清楚。",
           "cost": "会短暂面对不舒服。",
           "reward": "内耗减少。",
-          "statEffects": { "resilience": 5, "connection": 2 },
-          "feedback": "你选择给情绪命名，雾就不会假装成命运。"
+          "feedback": "你选择给情绪命名，雾就不会假装成命运。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 0,
+            "relationship": 2,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 5
+          }
         }
       ]
     },
@@ -669,11 +1137,17 @@
       "id": "health-accident-prone-rhythm",
       "type": "trial",
       "theme": "health",
-      "title": "急躁节奏试炼",
+      "title": "太急容易出岔的阶段",
       "tone": "dramatic",
-      "triggers": ["健康主线", "羊陀夹命格", "火铃夹命格", "擎羊入庙", "七杀"],
+      "triggers": [
+        "健康主线",
+        "羊陀夹命格",
+        "火铃夹命格",
+        "擎羊入庙",
+        "七杀"
+      ],
       "summary": "你的风险常来自过快、过硬、过急的节奏。",
-      "dramaticText": "锋利的刀能开路，也会伤手。你的试炼是把速度交给判断，而不是交给冲动。",
+      "dramaticText": "你出手快、爱抢在前面，但快也容易出错伤己。这一程，要把速度交给判断，而不是交给冲动。",
       "choices": [
         {
           "label": "抢先行动",
@@ -681,8 +1155,15 @@
           "description": "快速处理问题，不等所有条件成熟。",
           "cost": "失误概率上升。",
           "reward": "抢到先手。",
-          "statEffects": { "agency": 5, "mobility": 4, "resilience": -3 },
-          "feedback": "你选择快攻，记得给自己留刹车。"
+          "feedback": "你选择快攻，记得给自己留刹车。",
+          "stateEffects": {
+            "pressure": 8,
+            "opportunity": 5,
+            "relationship": 0,
+            "stability": 0,
+            "resources": 4,
+            "wellbeing": -3
+          }
         },
         {
           "label": "设置检查点",
@@ -690,8 +1171,15 @@
           "description": "在行动前加入复核、休息和安全边界。",
           "cost": "速度变慢。",
           "reward": "风险明显下降。",
-          "statEffects": { "stability": 6, "resilience": 4 },
-          "feedback": "你选择让速度经过检查，这是锋利者的护甲。"
+          "feedback": "你选择让速度经过检查，这是锋利者的护甲。",
+          "stateEffects": {
+            "pressure": -3,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 6,
+            "resources": 0,
+            "wellbeing": 4
+          }
         },
         {
           "label": "修复冲动",
@@ -699,8 +1187,15 @@
           "description": "识别自己在压力下的急躁反应。",
           "cost": "需要暂停即时反击。",
           "reward": "减少错误成本。",
-          "statEffects": { "resilience": 5, "agency": 2 },
-          "feedback": "你选择让冲动慢半拍，很多风险会因此绕开。"
+          "feedback": "你选择让冲动慢半拍，很多风险会因此绕开。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 2,
+            "relationship": 0,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 5
+          }
         }
       ]
     },
@@ -708,11 +1203,17 @@
       "id": "health-support-system",
       "type": "trial",
       "theme": "health",
-      "title": "支持系统试炼",
+      "title": "该不该开口求援",
       "tone": "dramatic",
-      "triggers": ["健康主线", "正印", "偏印", "天乙拱命", "刑忌夹印"],
+      "triggers": [
+        "健康主线",
+        "正印",
+        "偏印",
+        "天乙拱命",
+        "刑忌夹印"
+      ],
       "summary": "你需要学会让支持系统发挥作用，而不是什么都自己扛。",
-      "dramaticText": "孤军奋战看起来英勇，长期却会耗尽补给。你要学会求援，也学会筛选援军。",
+      "dramaticText": "一个人硬扛看着英勇，时间长了补给会见底。这一关，是学会求援，也学会分清谁是真援军。",
       "choices": [
         {
           "label": "主动求援",
@@ -720,8 +1221,15 @@
           "description": "把压力告诉可信任的人或专业支持。",
           "cost": "需要放下强撑姿态。",
           "reward": "压力被分担。",
-          "statEffects": { "connection": 5, "resilience": 4 },
-          "feedback": "你选择求援，这不是软弱，是补给线。"
+          "feedback": "你选择求援，这不是软弱，是补给线。",
+          "stateEffects": {
+            "pressure": 6,
+            "opportunity": 0,
+            "relationship": 5,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 4
+          }
         },
         {
           "label": "稳定支持",
@@ -729,8 +1237,15 @@
           "description": "建立固定的健康、学习或情绪支持机制。",
           "cost": "需要持续投入。",
           "reward": "恢复更稳定。",
-          "statEffects": { "stability": 5, "resilience": 5 },
-          "feedback": "你选择建补给站，未来的你会因此少受很多伤。"
+          "feedback": "你选择建补给站，未来的你会因此少受很多伤。",
+          "stateEffects": {
+            "pressure": -3,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 5,
+            "resources": 0,
+            "wellbeing": 5
+          }
         },
         {
           "label": "清理伪支持",
@@ -738,8 +1253,15 @@
           "description": "远离表面支持、实际消耗你的人和事。",
           "cost": "关系会重新洗牌。",
           "reward": "恢复空间增加。",
-          "statEffects": { "resilience": 6, "connection": -1 },
-          "feedback": "你选择清理伪支持，留下的才是真补给。"
+          "feedback": "你选择清理伪支持，留下的才是真补给。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 0,
+            "relationship": -1,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 6
+          }
         }
       ]
     },
@@ -747,11 +1269,17 @@
       "id": "mindset-control",
       "type": "trial",
       "theme": "mindset",
-      "title": "控制欲试炼",
+      "title": "什么都想抓在手里",
       "tone": "dramatic",
-      "triggers": ["心性主线", "紫微", "廉贞", "天府", "府相朝垣格"],
+      "triggers": [
+        "心性主线",
+        "紫微",
+        "廉贞",
+        "天府",
+        "府相朝垣格"
+      ],
       "summary": "你容易想把局面收回自己手里，但人生并不总按计划展开。",
-      "dramaticText": "你可以设计棋局，却不能命令所有棋子。真正的力量，是知道何时掌控，何时放手。",
+      "dramaticText": "你能布好棋局，却指挥不动每一颗棋子。这一程的功课，是分清什么该掌控、什么该放手。",
       "choices": [
         {
           "label": "强势掌控",
@@ -759,8 +1287,15 @@
           "description": "主动接管局面，减少不确定性。",
           "cost": "关系压力和责任压力增加。",
           "reward": "局面短期更可控。",
-          "statEffects": { "agency": 6, "connection": -2, "stability": 2 },
-          "feedback": "你选择掌控，别忘了留出他人的空间。"
+          "feedback": "你选择掌控，别忘了留出他人的空间。",
+          "stateEffects": {
+            "pressure": 8,
+            "opportunity": 6,
+            "relationship": -2,
+            "stability": 2,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "制定框架",
@@ -768,8 +1303,15 @@
           "description": "只管关键规则，不控制所有细节。",
           "cost": "需要忍受部分不确定。",
           "reward": "系统更有弹性。",
-          "statEffects": { "stability": 5, "agency": 3, "connection": 2 },
-          "feedback": "你选择管框架不管全部，这是更成熟的控制。"
+          "feedback": "你选择管框架不管全部，这是更成熟的控制。",
+          "stateEffects": {
+            "pressure": -3,
+            "opportunity": 3,
+            "relationship": 2,
+            "stability": 5,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "练习放手",
@@ -777,8 +1319,15 @@
           "description": "把不属于你的责任还回去。",
           "cost": "会感到不安。",
           "reward": "内耗下降。",
-          "statEffects": { "resilience": 6, "connection": 2 },
-          "feedback": "你选择放手，世界不会因此坍塌。"
+          "feedback": "你选择放手，世界不会因此坍塌。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 0,
+            "relationship": 2,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 6
+          }
         }
       ]
     },
@@ -786,11 +1335,17 @@
       "id": "mindset-self-doubt",
       "type": "trial",
       "theme": "mindset",
-      "title": "自我怀疑试炼",
+      "title": "总觉得自己不够好",
       "tone": "dramatic",
-      "triggers": ["心性主线", "命无正曜格", "石中隐玉", "巨门", "偏印"],
+      "triggers": [
+        "心性主线",
+        "命无正曜格",
+        "石中隐玉",
+        "巨门",
+        "偏印"
+      ],
       "summary": "你可能拥有能力，却常在关键时刻怀疑自己是否够资格。",
-      "dramaticText": "宝石在石头里沉默太久，也会误以为自己只是石头。",
+      "dramaticText": "宝石在石头里待久了，会以为自己也只是块石头。这一关，是别让自我怀疑替你下结论。",
       "choices": [
         {
           "label": "先行动",
@@ -798,8 +1353,15 @@
           "description": "不等完全确定，先拿一个结果。",
           "cost": "会暴露不足。",
           "reward": "自信来自现实反馈。",
-          "statEffects": { "agency": 6, "resilience": 2 },
-          "feedback": "你选择用行动打断怀疑，结果会比想象更诚实。"
+          "feedback": "你选择用行动打断怀疑，结果会比想象更诚实。",
+          "stateEffects": {
+            "pressure": 8,
+            "opportunity": 6,
+            "relationship": 0,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 2
+          }
         },
         {
           "label": "证据积累",
@@ -807,8 +1369,15 @@
           "description": "整理成果、技能和真实反馈。",
           "cost": "需要耐心。",
           "reward": "自我评价更稳定。",
-          "statEffects": { "stability": 5, "resilience": 4 },
-          "feedback": "你选择用证据支撑自己，怀疑会少一些空地。"
+          "feedback": "你选择用证据支撑自己，怀疑会少一些空地。",
+          "stateEffects": {
+            "pressure": -3,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 5,
+            "resources": 0,
+            "wellbeing": 4
+          }
         },
         {
           "label": "修复内评",
@@ -816,8 +1385,15 @@
           "description": "识别过度苛责自己的声音。",
           "cost": "需要面对旧评价。",
           "reward": "内耗下降。",
-          "statEffects": { "resilience": 7 },
-          "feedback": "你选择重写内在评审，它不必永远那么严厉。"
+          "feedback": "你选择重写内在评审，它不必永远那么严厉。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 7
+          }
         }
       ]
     },
@@ -825,11 +1401,17 @@
       "id": "mindset-restless",
       "type": "trial",
       "theme": "mindset",
-      "title": "不安定感试炼",
+      "title": "待不住、总想换地方",
       "tone": "dramatic",
-      "triggers": ["心性主线", "杀破狼格", "马落空亡格", "迁移", "贪狼"],
+      "triggers": [
+        "心性主线",
+        "杀破狼格",
+        "马落空亡格",
+        "迁移",
+        "贪狼"
+      ],
       "summary": "你可能总想换一个地方、一个身份、一个方向来重启自己。",
-      "dramaticText": "远方有风，也有重复的自己。真正的迁移不只是换地图，而是换模式。",
+      "dramaticText": "远方有风，也有那个重复的自己。真正的出走不只是换张地图，而是换种活法。",
       "choices": [
         {
           "label": "立刻远行",
@@ -837,8 +1419,15 @@
           "description": "通过迁移、转向或重启打开局面。",
           "cost": "不稳定性增加。",
           "reward": "有机会摆脱旧循环。",
-          "statEffects": { "mobility": 8, "stability": -4 },
-          "feedback": "你选择远行，别把旧模式也装进行李。"
+          "feedback": "你选择远行，别把旧模式也装进行李。",
+          "stateEffects": {
+            "pressure": 6,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": -4,
+            "resources": 8,
+            "wellbeing": 0
+          }
         },
         {
           "label": "阶段探索",
@@ -846,8 +1435,15 @@
           "description": "用小范围试验替代彻底推倒。",
           "cost": "变化不够痛快。",
           "reward": "风险更可控。",
-          "statEffects": { "mobility": 5, "stability": 3 },
-          "feedback": "你选择小步换地图，这更适合长期试错。"
+          "feedback": "你选择小步换地图，这更适合长期试错。",
+          "stateEffects": {
+            "pressure": -1,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 3,
+            "resources": 5,
+            "wellbeing": 0
+          }
         },
         {
           "label": "修复逃离感",
@@ -855,8 +1451,15 @@
           "description": "分辨自己是在探索，还是在逃离压力。",
           "cost": "会面对未解决的问题。",
           "reward": "选择更清醒。",
-          "statEffects": { "resilience": 6, "agency": 2 },
-          "feedback": "你选择看清逃离感，真正的自由会更稳。"
+          "feedback": "你选择看清逃离感，真正的自由会更稳。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 2,
+            "relationship": 0,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 6
+          }
         }
       ]
     },
@@ -864,11 +1467,17 @@
       "id": "mindset-desire",
       "type": "trial",
       "theme": "mindset",
-      "title": "欲望驱动试炼",
+      "title": "心里那团火",
       "tone": "dramatic",
-      "triggers": ["心性主线", "贪狼", "火贪铃贪", "偏财", "伤官"],
+      "triggers": [
+        "心性主线",
+        "贪狼",
+        "火贪铃贪",
+        "偏财",
+        "伤官"
+      ],
       "summary": "欲望会给你动力，也可能把你带进高消耗循环。",
-      "dramaticText": "你心里有火，这不是坏事。问题是你要用它点灯，还是任它烧林。",
+      "dramaticText": "你心里有股劲，这不是坏事。问题是用它点灯照路，还是任它把林子烧了。",
       "choices": [
         {
           "label": "追逐刺激",
@@ -876,8 +1485,15 @@
           "description": "跟随强烈兴趣和欲望推进。",
           "cost": "波动和后悔概率上升。",
           "reward": "创造力和行动力被点燃。",
-          "statEffects": { "agency": 5, "mobility": 5, "stability": -5 },
-          "feedback": "你选择点火，接下来要决定火烧向哪里。"
+          "feedback": "你选择点火，接下来要决定火烧向哪里。",
+          "stateEffects": {
+            "pressure": 6,
+            "opportunity": 5,
+            "relationship": 0,
+            "stability": -5,
+            "resources": 5,
+            "wellbeing": 0
+          }
         },
         {
           "label": "驯化欲望",
@@ -885,8 +1501,15 @@
           "description": "把欲望转成作品、训练或可持续目标。",
           "cost": "需要纪律。",
           "reward": "动力变成成果。",
-          "statEffects": { "stability": 5, "agency": 4 },
-          "feedback": "你选择驯火，热情开始服务于你。"
+          "feedback": "你选择驯火，热情开始服务于你。",
+          "stateEffects": {
+            "pressure": -3,
+            "opportunity": 4,
+            "relationship": 0,
+            "stability": 5,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "修复空洞",
@@ -894,8 +1517,15 @@
           "description": "看见自己用刺激填补什么缺口。",
           "cost": "会碰到孤独或不满足。",
           "reward": "减少冲动循环。",
-          "statEffects": { "resilience": 6, "stability": 2 },
-          "feedback": "你选择看见空洞，欲望就不必一直替你喊话。"
+          "feedback": "你选择看见空洞，欲望就不必一直替你喊话。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 2,
+            "resources": 0,
+            "wellbeing": 6
+          }
         }
       ]
     },
@@ -903,11 +1533,17 @@
       "id": "opportunity-noble-help",
       "type": "opportunity",
       "theme": "career",
-      "title": "贵人开门事件",
+      "title": "有人愿意为你开门",
       "tone": "dramatic",
-      "triggers": ["天乙拱命", "左右扶命格", "天魁", "天钺", "事业主线"],
+      "triggers": [
+        "天乙拱命",
+        "左右扶命格",
+        "天魁",
+        "天钺",
+        "事业主线"
+      ],
       "summary": "关键节点容易出现支持者、引荐者或愿意给你机会的人。",
-      "dramaticText": "门并非凭空打开，是你之前的积累让别人愿意递来钥匙。",
+      "dramaticText": "一扇门被人替你推开了——不是凭空，是你过往的积累让对方愿意递钥匙。接下来看你怎么接。",
       "choices": [
         {
           "label": "顺势上场",
@@ -915,8 +1551,15 @@
           "description": "接住对方给的机会。",
           "cost": "需要快速证明自己。",
           "reward": "局面被打开。",
-          "statEffects": { "agency": 5, "connection": 4 },
-          "feedback": "你选择接钥匙，后面要靠实力守门。"
+          "feedback": "你选择接钥匙，后面要靠实力守门。",
+          "stateEffects": {
+            "pressure": 6,
+            "opportunity": 5,
+            "relationship": 4,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "稳住信用",
@@ -924,8 +1567,15 @@
           "description": "用可靠交付回应支持。",
           "cost": "短期自由度下降。",
           "reward": "信任会继续累积。",
-          "statEffects": { "stability": 5, "connection": 4 },
-          "feedback": "你选择守信用，贵人关系会变成长期资源。"
+          "feedback": "你选择守信用，贵人关系会变成长期资源。",
+          "stateEffects": {
+            "pressure": -3,
+            "opportunity": 0,
+            "relationship": 4,
+            "stability": 5,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "修复互惠",
@@ -933,8 +1583,15 @@
           "description": "明确自己能回馈什么，避免单向索取。",
           "cost": "需要认真管理关系。",
           "reward": "支持关系更健康。",
-          "statEffects": { "connection": 6, "resilience": 2 },
-          "feedback": "你选择互惠，资源才不会变成人情压力。"
+          "feedback": "你选择互惠，资源才不会变成人情压力。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 0,
+            "relationship": 6,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 2
+          }
         }
       ]
     },
@@ -942,11 +1599,17 @@
       "id": "opportunity-platform-upgrade",
       "type": "opportunity",
       "theme": "career",
-      "title": "平台升级事件",
+      "title": "上一个更大的台子",
       "tone": "dramatic",
-      "triggers": ["紫府朝垣格", "府相朝垣格", "三奇嘉会", "官禄", "事业主线"],
+      "triggers": [
+        "紫府朝垣格",
+        "府相朝垣格",
+        "三奇嘉会",
+        "官禄",
+        "事业主线"
+      ],
       "summary": "你有机会进入更大的平台、更高的责任层级或更稳定的系统。",
-      "dramaticText": "新的城门比旧门更高，进去以后，规矩也更重。",
+      "dramaticText": "有机会进到更高的平台，门更高，里面的规矩也更重。进去之后，是另一套玩法。",
       "choices": [
         {
           "label": "争取席位",
@@ -954,8 +1617,15 @@
           "description": "主动申请、竞争或展示能力。",
           "cost": "曝光压力提高。",
           "reward": "进入更高平台。",
-          "statEffects": { "agency": 6, "stability": 1 },
-          "feedback": "你选择争取席位，舞台会检验真实能力。"
+          "feedback": "你选择争取席位，舞台会检验真实能力。",
+          "stateEffects": {
+            "pressure": 8,
+            "opportunity": 6,
+            "relationship": 0,
+            "stability": 1,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "适应规则",
@@ -963,8 +1633,15 @@
           "description": "先理解平台规则和权责边界。",
           "cost": "行动速度降低。",
           "reward": "更容易长期留下。",
-          "statEffects": { "stability": 6, "connection": 2 },
-          "feedback": "你选择先读规则，大平台最怕莽撞。"
+          "feedback": "你选择先读规则，大平台最怕莽撞。",
+          "stateEffects": {
+            "pressure": -3,
+            "opportunity": 0,
+            "relationship": 2,
+            "stability": 6,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "修复短板",
@@ -972,8 +1649,15 @@
           "description": "补齐表达、管理或协作短板。",
           "cost": "需要承认不熟练。",
           "reward": "承接力增强。",
-          "statEffects": { "resilience": 4, "agency": 3 },
-          "feedback": "你选择补短板，这是升级前的必要训练。"
+          "feedback": "你选择补短板，这是升级前的必要训练。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 3,
+            "relationship": 0,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 4
+          }
         }
       ]
     },
@@ -981,11 +1665,17 @@
       "id": "opportunity-skill-output",
       "type": "opportunity",
       "theme": "wealth",
-      "title": "作品变现事件",
+      "title": "把作品端出去",
       "tone": "dramatic",
-      "triggers": ["昌曲拱命格", "文桂文华", "食神", "伤官", "财运主线"],
+      "triggers": [
+        "昌曲拱命格",
+        "文桂文华",
+        "食神",
+        "伤官",
+        "财运主线"
+      ],
       "summary": "表达、技术、内容或专业能力可能变成资源入口。",
-      "dramaticText": "你手里的火种，不只用来照亮自己，也可以成为别人愿意交换的价值。",
+      "dramaticText": "你手里的东西不该只照亮自己。这是个把它变成别人愿意交换的价值的机会。",
       "choices": [
         {
           "label": "公开发布",
@@ -993,8 +1683,15 @@
           "description": "发布作品、服务或方案。",
           "cost": "会被市场评价。",
           "reward": "变现通道打开。",
-          "statEffects": { "agency": 5, "mobility": 3 },
-          "feedback": "你选择让作品出门，市场会给你真实反馈。"
+          "feedback": "你选择让作品出门，市场会给你真实反馈。",
+          "stateEffects": {
+            "pressure": 6,
+            "opportunity": 5,
+            "relationship": 0,
+            "stability": 0,
+            "resources": 3,
+            "wellbeing": 0
+          }
         },
         {
           "label": "稳定交付",
@@ -1002,8 +1699,15 @@
           "description": "建立可重复交付的流程。",
           "cost": "创造自由度降低。",
           "reward": "收入更稳定。",
-          "statEffects": { "stability": 6, "agency": 2 },
-          "feedback": "你选择把灵感做成系统，收益会更可持续。"
+          "feedback": "你选择把灵感做成系统，收益会更可持续。",
+          "stateEffects": {
+            "pressure": -3,
+            "opportunity": 2,
+            "relationship": 0,
+            "stability": 6,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "修复定位",
@@ -1011,8 +1715,15 @@
           "description": "重新定义目标用户和价值表达。",
           "cost": "需要推翻一些旧想法。",
           "reward": "减少无效输出。",
-          "statEffects": { "resilience": 4, "agency": 3 },
-          "feedback": "你选择重写定位，价值需要被听懂。"
+          "feedback": "你选择重写定位，价值需要被听懂。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 3,
+            "relationship": 0,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 4
+          }
         }
       ]
     },
@@ -1020,11 +1731,17 @@
       "id": "opportunity-migration",
       "type": "opportunity",
       "theme": "migration",
-      "title": "远方开局事件",
+      "title": "去远方重开一局",
       "tone": "dramatic",
-      "triggers": ["迁移", "禄马交驰格", "马落空亡格", "迁移主线", "mobility"],
+      "triggers": [
+        "迁移",
+        "禄马交驰格",
+        "马落空亡格",
+        "迁移主线",
+        "mobility"
+      ],
       "summary": "外地、跨圈层、跨行业可能成为机会入口。",
-      "dramaticText": "远方不是逃跑，而是一次重新编排资源和身份的机会。",
+      "dramaticText": "一个去外地重新铺开的机会出现了。它不是逃跑，而是把资源和身份重新编排一次。",
       "choices": [
         {
           "label": "出门开局",
@@ -1032,8 +1749,15 @@
           "description": "主动寻找外部机会。",
           "cost": "生活稳定性下降。",
           "reward": "新资源打开。",
-          "statEffects": { "mobility": 7, "agency": 3, "stability": -3 },
-          "feedback": "你选择出门，记得带上计划，而不只是期待。"
+          "feedback": "你选择出门，记得带上计划，而不只是期待。",
+          "stateEffects": {
+            "pressure": 6,
+            "opportunity": 3,
+            "relationship": 0,
+            "stability": -3,
+            "resources": 7,
+            "wellbeing": 0
+          }
         },
         {
           "label": "先试连接",
@@ -1041,8 +1765,15 @@
           "description": "先通过项目、短期合作或远程关系试水。",
           "cost": "节奏较慢。",
           "reward": "风险可控。",
-          "statEffects": { "mobility": 4, "stability": 3 },
-          "feedback": "你选择试水，远方可以先从一条线开始。"
+          "feedback": "你选择试水，远方可以先从一条线开始。",
+          "stateEffects": {
+            "pressure": -1,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 3,
+            "resources": 4,
+            "wellbeing": 0
+          }
         },
         {
           "label": "修复旧限制",
@@ -1050,8 +1781,15 @@
           "description": "处理让你无法移动的责任或恐惧。",
           "cost": "需要面对现实牵制。",
           "reward": "选择空间变大。",
-          "statEffects": { "resilience": 4, "mobility": 3 },
-          "feedback": "你选择先清路，移动才不是逃离。"
+          "feedback": "你选择先清路，移动才不是逃离。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 0,
+            "resources": 3,
+            "wellbeing": 4
+          }
         }
       ]
     },
@@ -1059,11 +1797,17 @@
       "id": "opportunity-relationship-growth",
       "type": "opportunity",
       "theme": "relationship",
-      "title": "互补关系事件",
+      "title": "遇到一个互补的人",
       "tone": "dramatic",
-      "triggers": ["婚恋主线", "左右扶命格", "天乙拱命", "月朗天门", "日月照壁"],
+      "triggers": [
+        "婚恋主线",
+        "左右扶命格",
+        "天乙拱命",
+        "月朗天门",
+        "日月照壁"
+      ],
       "summary": "你可能遇到能互补、支持或共同成长的关系。",
-      "dramaticText": "好的关系不是替你完成命运，而是让你更有力量走自己的路。",
+      "dramaticText": "出现一个能和你互补的人。好的关系不替你走路，而是让你更有劲走自己的路。",
       "choices": [
         {
           "label": "主动靠近",
@@ -1071,8 +1815,15 @@
           "description": "表达好感、需求或合作意愿。",
           "cost": "需要面对被拒绝的可能。",
           "reward": "关系机会被打开。",
-          "statEffects": { "connection": 6, "agency": 2 },
-          "feedback": "你选择靠近，真诚比完美更重要。"
+          "feedback": "你选择靠近，真诚比完美更重要。",
+          "stateEffects": {
+            "pressure": 6,
+            "opportunity": 2,
+            "relationship": 6,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "共同建设",
@@ -1080,8 +1831,15 @@
           "description": "把关系落到共同计划和稳定互动里。",
           "cost": "需要持续投入。",
           "reward": "关系承接力增强。",
-          "statEffects": { "connection": 5, "stability": 4 },
-          "feedback": "你选择共建，关系会从感觉变成结构。"
+          "feedback": "你选择共建，关系会从感觉变成结构。",
+          "stateEffects": {
+            "pressure": -1,
+            "opportunity": 0,
+            "relationship": 5,
+            "stability": 4,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "修复期待",
@@ -1089,8 +1847,15 @@
           "description": "放下让对方拯救自己的期待。",
           "cost": "需要承担自己的部分。",
           "reward": "关系更平衡。",
-          "statEffects": { "resilience": 4, "connection": 3 },
-          "feedback": "你选择修复期待，互补不是互相填洞。"
+          "feedback": "你选择修复期待，互补不是互相填洞。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 0,
+            "relationship": 3,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 4
+          }
         }
       ]
     },
@@ -1098,11 +1863,17 @@
       "id": "opportunity-inner-renewal",
       "type": "opportunity",
       "theme": "mindset",
-      "title": "内在更新事件",
+      "title": "想把自己重读一遍",
       "tone": "dramatic",
-      "triggers": ["心性主线", "福德", "月生沧海", "石中隐玉", "命无正曜格"],
+      "triggers": [
+        "心性主线",
+        "福德",
+        "月生沧海",
+        "石中隐玉",
+        "命无正曜格"
+      ],
       "summary": "某些阶段会推动你重新理解自己，形成新的内在秩序。",
-      "dramaticText": "你不是换一副命运，而是终于学会用自己的方式读懂它。",
+      "dramaticText": "你不是要换一副命，而是终于有机会用自己的方式，把它读懂、重讲一遍。",
       "choices": [
         {
           "label": "彻底重启",
@@ -1110,8 +1881,15 @@
           "description": "做一次生活方式或身份叙事的更新。",
           "cost": "旧关系和旧习惯会被震动。",
           "reward": "自我感重新点亮。",
-          "statEffects": { "agency": 4, "resilience": 4, "mobility": 3 },
-          "feedback": "你选择重启，新的你需要新的秩序。"
+          "feedback": "你选择重启，新的你需要新的秩序。",
+          "stateEffects": {
+            "pressure": 6,
+            "opportunity": 4,
+            "relationship": 0,
+            "stability": 0,
+            "resources": 3,
+            "wellbeing": 4
+          }
         },
         {
           "label": "稳定修行",
@@ -1119,8 +1897,15 @@
           "description": "通过学习、记录、训练逐步更新自己。",
           "cost": "变化不够戏剧化。",
           "reward": "内在稳定度提升。",
-          "statEffects": { "stability": 4, "resilience": 5 },
-          "feedback": "你选择慢慢更新，真正的变化会越来越稳。"
+          "feedback": "你选择慢慢更新，真正的变化会越来越稳。",
+          "stateEffects": {
+            "pressure": -1,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 4,
+            "resources": 0,
+            "wellbeing": 5
+          }
         },
         {
           "label": "修复旧叙事",
@@ -1128,8 +1913,15 @@
           "description": "重新解释过去的失败、羞耻和遗憾。",
           "cost": "需要回看不舒服的部分。",
           "reward": "自我接纳增强。",
-          "statEffects": { "resilience": 7 },
-          "feedback": "你选择重写过去，它不再只能伤你。"
+          "feedback": "你选择重写过去，它不再只能伤你。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 0,
+            "resources": 0,
+            "wellbeing": 7
+          }
         }
       ]
     },
@@ -1137,11 +1929,17 @@
       "id": "opportunity-asset-foundation",
       "type": "opportunity",
       "theme": "wealth",
-      "title": "资产沉淀事件",
+      "title": "打一块长期的地基",
       "tone": "dramatic",
-      "triggers": ["田宅", "财运主线", "财荫夹印格", "天府", "太阴"],
+      "triggers": [
+        "田宅",
+        "财运主线",
+        "财荫夹印格",
+        "天府",
+        "太阴"
+      ],
       "summary": "你有机会把阶段成果沉淀成资产、信用或稳定生活结构。",
-      "dramaticText": "这不是一场烟火，而是一块地基。它不会天天发光，但会托住你。",
+      "dramaticText": "这不是一场烟火，而是一块地基——它不天天发光，但能在往后稳稳托住你。",
       "choices": [
         {
           "label": "锁定资产",
@@ -1149,8 +1947,15 @@
           "description": "把资源投入长期结构。",
           "cost": "短期灵活度降低。",
           "reward": "底盘变稳。",
-          "statEffects": { "stability": 6, "agency": 2 },
-          "feedback": "你选择落地，资源开始有了重量。"
+          "feedback": "你选择落地，资源开始有了重量。",
+          "stateEffects": {
+            "pressure": 4,
+            "opportunity": 2,
+            "relationship": 0,
+            "stability": 6,
+            "resources": 0,
+            "wellbeing": 0
+          }
         },
         {
           "label": "稳步积累",
@@ -1158,8 +1963,15 @@
           "description": "用长期节奏逐步沉淀。",
           "cost": "成效来得慢。",
           "reward": "安全感持续增强。",
-          "statEffects": { "stability": 7, "resilience": 2 },
-          "feedback": "你选择积累，慢不是弱，是耐久。"
+          "feedback": "你选择积累，慢不是弱，是耐久。",
+          "stateEffects": {
+            "pressure": -3,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 7,
+            "resources": 0,
+            "wellbeing": 2
+          }
         },
         {
           "label": "修复根基",
@@ -1167,8 +1979,285 @@
           "description": "先处理旧债、旧账和居住不稳。",
           "cost": "短期压力上升。",
           "reward": "后续积累更顺。",
-          "statEffects": { "resilience": 5, "stability": 3 },
-          "feedback": "你选择先修地基，之后的增长才不晃。"
+          "feedback": "你选择先修地基，之后的增长才不晃。",
+          "stateEffects": {
+            "pressure": -6,
+            "opportunity": 0,
+            "relationship": 0,
+            "stability": 3,
+            "resources": 0,
+            "wellbeing": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "network-boundary-test",
+      "type": "trial",
+      "theme": "network",
+      "tone": "heavy",
+      "title": "合作伙伴反复越界，占用你的资源和人情",
+      "summary": "长期合作的人不断把成本和风险转嫁到你这边",
+      "dramaticText": "一个长期合作对象总在临界点把麻烦、成本和风险推给你，嘴上是“自己人好商量”，实际一次次越界。再不挑明，这层关系会持续掏空你。",
+      "situation": "平辈合作中对方持续越界，靠交情绑架你不断让渡资源",
+      "conflict": "挑明边界会让合作甚至交情破裂，继续忍让则被长期消耗",
+      "triggers": [
+        "人际主线",
+        "仆役",
+        "兄弟",
+        "比肩",
+        "劫财",
+        "合作边界"
+      ],
+      "choices": [
+        {
+          "label": "直接摊牌，重新谈清责任和分配",
+          "style": "bold",
+          "description": "把越界的事一条条摆出来，重新约定边界与分工，谈不拢就准备退出。",
+          "cost": "关系可能当场降温甚至散伙。",
+          "reward": "止住长期消耗，把主动权拿回自己手里。",
+          "stateEffects": {
+            "pressure": 6,
+            "opportunity": 3,
+            "relationship": -6,
+            "stability": -3,
+            "resources": 3,
+            "wellbeing": -3
+          },
+          "feedback": "你把话挑明，对方要么收敛要么离场，无论哪种，你都不再被一直占便宜。"
+        },
+        {
+          "label": "先划小范围边界，逐步收回让渡",
+          "style": "steady",
+          "description": "不撕破脸，先在具体事项上立规矩，一点点把被占的资源收回来。",
+          "cost": "见效慢，过程里还要继续磨。",
+          "reward": "关系不至于崩，消耗被逐步止住。",
+          "stateEffects": {
+            "pressure": 2,
+            "opportunity": 2,
+            "relationship": 1,
+            "stability": 4,
+            "resources": 2,
+            "wellbeing": 0
+          },
+          "feedback": "你用温和但坚定的方式立界，对方慢慢意识到分寸，合作回到更健康的轨道。"
+        },
+        {
+          "label": "保持距离，把重心转向别的合作",
+          "style": "repair",
+          "description": "不正面冲突，逐渐减少投入，把精力和资源转移到更对等的关系上。",
+          "cost": "已经投入的人情和沉没成本基本收不回。",
+          "reward": "不再被单点拖累，把资源放到更值得的地方。",
+          "stateEffects": {
+            "pressure": -2,
+            "opportunity": 1,
+            "relationship": -1,
+            "stability": 3,
+            "resources": 1,
+            "wellbeing": 3
+          },
+          "feedback": "你悄悄抽身，没闹翻也没纠缠，把省下的精力投向更对等的合作。"
+        }
+      ]
+    },
+    {
+      "id": "opportunity-network-alliance",
+      "type": "opportunity",
+      "theme": "network",
+      "tone": "dramatic",
+      "title": "一群同路人想和你结成长期互助同盟",
+      "summary": "几个志同道合的人提议结成长期资源互助的小圈子",
+      "dramaticText": "几个能力互补、彼此欣赏的人提议结成一个长期互助的小圈子：信息共享、资源互换、关键时刻互相搭把手。机会很好，但也意味着长期的投入和绑定。",
+      "situation": "平辈中出现可长期互助的同盟机会，需要持续投入与共担",
+      "conflict": "加入能获得长期助力，但要付出维护成本、承担同盟的连带与义务",
+      "triggers": [
+        "左右扶命格",
+        "仆役",
+        "兄弟"
+      ],
+      "choices": [
+        {
+          "label": "全力投入，做这个圈子的连接者",
+          "style": "bold",
+          "description": "主动牵头组织、贡献资源、维护关系，让自己成为圈子的核心节点。",
+          "cost": "要持续付出时间精力，圈子的事也会牵扯到你。",
+          "reward": "长期看积累出最稳的人脉资本和互助网络。",
+          "stateEffects": {
+            "pressure": 4,
+            "opportunity": 7,
+            "relationship": 6,
+            "stability": 1,
+            "resources": 4,
+            "wellbeing": -1
+          },
+          "feedback": "你成了圈子的黏合剂，付出不少，但关键时刻这张网会反过来托住你。"
+        },
+        {
+          "label": "加入但量力而行，先做好本分",
+          "style": "steady",
+          "description": "加入同盟，按约定贡献自己擅长的那部分，不过度承担。",
+          "cost": "存在感和话语权不如核心成员。",
+          "reward": "以可持续的投入换长期互助，不透支自己。",
+          "stateEffects": {
+            "pressure": 1,
+            "opportunity": 4,
+            "relationship": 3,
+            "stability": 3,
+            "resources": 2,
+            "wellbeing": 1
+          },
+          "feedback": "你稳稳做好自己那份，圈子认可你的靠谱，关系细水长流。"
+        },
+        {
+          "label": "先松散合作，观察再决定深入",
+          "style": "repair",
+          "description": "暂不正式绑定，先在具体项目上合作几次，看人品和契合度再说。",
+          "cost": "可能被看作不够投入，错过早期红利。",
+          "reward": "避免仓促绑定，把关系建立在验证过的信任上。",
+          "stateEffects": {
+            "pressure": -1,
+            "opportunity": 2,
+            "relationship": 1,
+            "stability": 3,
+            "resources": 1,
+            "wellbeing": 2
+          },
+          "feedback": "你不急着表态，先用几次合作验证彼此，确认靠谱后再深入也不迟。"
+        }
+      ]
+    },
+    {
+      "id": "family-responsibility-pull",
+      "type": "trial",
+      "theme": "family",
+      "tone": "heavy",
+      "title": "家里突发状况，需要你长期分担",
+      "summary": "父母健康或家庭变故，要你长期投入时间、金钱和精力",
+      "dramaticText": "家里出了需要长期照应的事——父母身体、或一桩家庭变故。你是被默认要扛起来的那个人，可你自己的工作和生活也正吃紧。",
+      "situation": "家庭责任突然加重，与个人事业生活的精力发生硬性争夺",
+      "conflict": "全力顾家会拖累自己的节奏，只顾自己又过不了情感和责任这关",
+      "triggers": [
+        "家庭主线",
+        "父母",
+        "子女",
+        "田宅",
+        "正印",
+        "偏印"
+      ],
+      "choices": [
+        {
+          "label": "主动扛起来，重新安排自己的节奏",
+          "style": "bold",
+          "description": "把家庭的事接过来统筹，必要时暂缓个人的部分计划。",
+          "cost": "自己的事业和生活节奏被明显打断。",
+          "reward": "家里稳住，你也在至亲面前立住了担当。",
+          "stateEffects": {
+            "pressure": 7,
+            "opportunity": -3,
+            "relationship": 6,
+            "stability": 2,
+            "resources": -3,
+            "wellbeing": -4
+          },
+          "feedback": "你顶了上去，家里因你而安定，代价是这段时间几乎没有留给自己的余地。"
+        },
+        {
+          "label": "和家人分工，把责任摊开",
+          "style": "steady",
+          "description": "召集相关家人一起商量，明确各自分担的部分，不让自己一个人扛。",
+          "cost": "协调和说服的过程本身就很耗神。",
+          "reward": "责任分散，长期可持续，自己不至于被压垮。",
+          "stateEffects": {
+            "pressure": 3,
+            "opportunity": 0,
+            "relationship": 3,
+            "stability": 5,
+            "resources": -1,
+            "wellbeing": 0
+          },
+          "feedback": "你没有独自硬扛，而是把家人组织起来分工，家里的事有了可持续的安排。"
+        },
+        {
+          "label": "用钱和资源换时间，守住主业",
+          "style": "repair",
+          "description": "在能力范围内出钱请人、调配资源处理家事，自己守住关键工作。",
+          "cost": "开销增加，也可能被说“只出钱不出力”。",
+          "reward": "兼顾家庭与主业，避免节奏被彻底打乱。",
+          "stateEffects": {
+            "pressure": 1,
+            "opportunity": 1,
+            "relationship": 0,
+            "stability": 3,
+            "resources": -5,
+            "wellbeing": 2
+          },
+          "feedback": "你用资源换出了时间，家事有人照应，自己的主线也没断，只是钱包紧了些。"
+        }
+      ]
+    },
+    {
+      "id": "opportunity-family-foundation",
+      "type": "opportunity",
+      "theme": "family",
+      "tone": "dramatic",
+      "title": "把家庭后方经营成你的稳定支撑",
+      "summary": "有机会把家庭关系和居所根基理顺，变成长期后盾",
+      "dramaticText": "一个能把家庭后方理顺的窗口出现了：和父母的关系缓和、或置办/安顿好居所。把它经营好，往后做事都有个稳的后方。",
+      "situation": "出现经营家庭后方的窗口，投入能换来长期稳定支撑",
+      "conflict": "现在投入时间金钱经营家庭，会挤占当下的扩张机会",
+      "triggers": [
+        "财荫夹印格",
+        "田宅",
+        "父母"
+      ],
+      "choices": [
+        {
+          "label": "认真投入，把后方一次理顺",
+          "style": "bold",
+          "description": "花时间修复家庭关系、安顿好居所，把后方彻底打理稳。",
+          "cost": "短期要投入不少时间和金钱，扩张得让位。",
+          "reward": "换来一个长期稳定、能托底的后方。",
+          "stateEffects": {
+            "pressure": 3,
+            "opportunity": 1,
+            "relationship": 6,
+            "stability": 7,
+            "resources": -3,
+            "wellbeing": 3
+          },
+          "feedback": "你把后方经营扎实，往后再往外冲时，家这一头不再是牵挂而是底气。"
+        },
+        {
+          "label": "分阶段经营，边顾家边推进",
+          "style": "steady",
+          "description": "制定节奏，一步步改善家庭关系和居住条件，不影响主线推进。",
+          "cost": "见效慢，需要长期惦记着这件事。",
+          "reward": "家庭与事业两头都不耽误，稳步变好。",
+          "stateEffects": {
+            "pressure": 1,
+            "opportunity": 2,
+            "relationship": 4,
+            "stability": 5,
+            "resources": -1,
+            "wellbeing": 2
+          },
+          "feedback": "你把家事拆成小步慢慢推，后方一点点变稳，事业也没被耽误。"
+        },
+        {
+          "label": "先维持现状，等更宽裕再说",
+          "style": "repair",
+          "description": "暂时维持家庭现状，先把资源投到当下更紧要的地方。",
+          "cost": "后方一直差一口气，关键时刻可能掉链子。",
+          "reward": "集中资源抓住当下机会。",
+          "stateEffects": {
+            "pressure": 0,
+            "opportunity": 3,
+            "relationship": -1,
+            "stability": 1,
+            "resources": 2,
+            "wellbeing": 0
+          },
+          "feedback": "你先把资源压在当下，家庭后方暂时搁置——能撑住，但心里清楚这笔账迟早要补。"
         }
       ]
     }

@@ -1,1551 +1,1790 @@
 [
-    {
-        "id": "career_001",
-        "type": "trial",
-        "theme": "career",
-        "title": "临时接手烂尾项目",
-        "tone": "tight",
-        "summary": "上司把别人做砸的项目转交给你全权收尾",
-        "dramaticText": "原定负责项目的同事突然请假离岗，一堆遗留问题没人处理。领导当众点名，希望你立刻接手稳住局面。团队其他人都抱着观望态度，没人愿意主动搭手。",
-        "situation": "本职工作已经排满，额外新增一个漏洞百出、期限紧迫的遗留项目",
-        "conflict": "接手能刷存在感但透支精力，推脱容易得罪上级，折中分担又怕权责划分不清",
-        "triggers": ["职场扛压", "权责纷争", "临时重担"],
-        "choices": [
-            {
-                "label": "全盘接下独立攻坚",
-                "description": "当场答应接手，加班梳理全部问题，独自推进整改交付",
-                "cost": "连续一周高强度加班，私人时间完全压缩",
-                "reward": "领导高度认可，后续核心资源优先倾斜给你",
-                "style": "bold",
-                "stateEffects": {
-                    "pressure": 7,
-                    "opportunity": 6,
-                    "relationship": 2,
-                    "stability": -2,
-                    "resources": 3,
-                    "wellbeing": -6
-                },
-                "feedback": "你熬夜整改顺利交付项目，领导在部门会议公开表扬，但身体明显疲惫，和原项目同事关系变得微妙疏远"
-            },
-            {
-                "label": "谈条件再接手，划定分工边界",
-                "description": "先找领导沟通，要求调配一名协助人手、放宽3天期限、明确功劳归属后再接任务",
-                "cost": "需要花费半天时间沟通博弈，当下显得不够爽快",
-                "reward": "工作量减半，风险分摊，权责清晰无背锅隐患",
-                "style": "steady",
-                "stateEffects": {
-                    "pressure": 2,
-                    "opportunity": 3,
-                    "relationship": 1,
-                    "stability": 5,
-                    "resources": 2,
-                    "wellbeing": -1
-                },
-                "feedback": "领导同意你的条件，配合人手到位，平稳完成项目，稳步巩固靠谱稳重的职场人设"
-            },
-            {
-                "label": "委婉推脱，坚守本职范围",
-                "description": "坦诚告知自身手头工作量饱和，推荐另一位空闲同事承接此项目",
-                "cost": "短暂让领导观感变差，错失一次展示能力的舞台",
-                "reward": "作息不受打扰，精力全部保留给自己原有工作",
-                "style": "repair",
-                "stateEffects": {
-                    "pressure": -5,
-                    "opportunity": -4,
-                    "relationship": -3,
-                    "stability": 3,
-                    "resources": -1,
-                    "wellbeing": 7
-                },
-                "feedback": "领导虽表面理解，但后续重要任务不再优先考虑你，你的日常工作节奏完全安稳无波动"
-            }
-        ]
-    },
-    {
-        "id": "career_002",
-        "type": "opportunity",
-        "theme": "career",
-        "title": "跨城市升职调岗邀约",
-        "tone": "open",
-        "summary": "总部抛出外地分部管理岗晋升机会，薪资涨幅可观",
-        "dramaticText": "人力私下联系你，外地分部缺主管，薪资上浮三成，平台层级更高。但离家距离很远，日常没法经常回家。留在本部只能缓慢熬资历晋升。",
-        "situation": "手握原地稳步熬资历或远赴他乡快速升职两条职业路线",
-        "conflict": "高薪晋升和陪伴生活、熟悉环境之间难以平衡取舍",
-        "triggers": ["职场晋升", "异地发展", "平台抉择"],
-        "choices": [
-            {
-                "label": "立刻答应调任，奔赴新岗位",
-                "description": "快速回复人力同意调岗，一周内收拾行李动身交接工作",
-                "cost": "长期和家人分居，适应陌生团队与城市环境",
-                "reward": "职级、薪资、行业履历大幅提升，手握更高话语权",
-                "style": "bold",
-                "stateEffects": {
-                    "pressure": 4,
-                    "opportunity": 9,
-                    "relationship": -6,
-                    "stability": -5,
-                    "resources": 5,
-                    "wellbeing": -3
-                },
-                "feedback": "顺利就任管理岗，收入大幅提升，但每周只能视频联系家人，初期磨合团队耗费大量心神"
-            },
-            {
-                "label": "申请半年过渡期远程磨合",
-                "description": "协商先两个月驻场熟悉业务，每周往返家乡，半年后再决定是否长期定居",
-                "cost": "每月多出往返交通开销，来回奔波消耗体力",
-                "reward": "拿到晋升名额，同时暂时不彻底割裂原有生活圈",
-                "style": "steady",
-                "stateEffects": {
-                    "pressure": 2,
-                    "opportunity": 5,
-                    "relationship": -2,
-                    "stability": 1,
-                    "resources": 2,
-                    "wellbeing": -1
-                },
-                "feedback": "总部同意过渡方案，你一边熟悉分部业务，一边维持家庭见面频率，节奏忙碌但两头兼顾"
-            },
-            {
-                "label": "谢绝调岗，深耕本地岗位",
-                "description": "礼貌婉拒晋升邀约，安心留在本部打磨现有业务，等待内部空缺",
-                "cost": "错失跨越式涨薪升职的窗口期，晋升速度放缓",
-                "reward": "生活、人脉、家庭全部稳定，无需适应陌生环境",
-                "style": "repair",
-                "stateEffects": {
-                    "pressure": -4,
-                    "opportunity": -6,
-                    "relationship": 6,
-                    "stability": 8,
-                    "resources": -3,
-                    "wellbeing": 6
-                },
-                "feedback": "留在熟悉的环境稳步工作，家庭陪伴充足，三年后才有小幅内部晋升机会"
-            }
-        ]
-    },
-    {
-        "id": "career_003",
-        "type": "trial",
-        "theme": "career",
-        "title": "同事抢功窃取方案",
-        "tone": "sharp",
-        "summary": "自己熬夜做的策划被同事拿去汇报领功劳",
-        "dramaticText": "你花费数天打磨完整方案，和同组同事简单沟通过思路。开会时对方直接拿着你的成品上台汇报，只字不提你的付出。领导当场夸奖了这位同事。",
-        "situation": "劳动成果被同组同事抢占，当众蒙受不公",
-        "conflict": "当场对峙容易激化矛盾隐忍吃亏，私下沟通力度不足，向上申诉又怕落小心眼名声",
-        "triggers": ["职场竞争", "成果争夺", "人际矛盾"],
-        "choices": [
-            {
-                "label": "会议尾声当场澄清溯源",
-                "description": "等对方讲完后，主动补充方案原始草稿、时间记录，点明核心构思出自自己",
-                "cost": "当场场面尴尬，和同事彻底撕破脸面",
-                "reward": "领导看清真相，确认你的核心贡献，树立不好欺负的形象",
-                "style": "bold",
-                "stateEffects": {
-                    "pressure": 5,
-                    "opportunity": 4,
-                    "relationship": -8,
-                    "stability": -3,
-                    "resources": 2,
-                    "wellbeing": -4
-                },
-                "feedback": "领导核实后纠正功劳归属，同事记恨在心后续处处提防你，但之后没人再敢随意侵占你的工作成果"
-            },
-            {
-                "label": "会后单独找领导递交证据说明",
-                "description": "散会后单独找上级，发送初稿、聊天记录等凭证，客观陈述创作过程，不指责同事",
-                "cost": "没法立刻扭转当场夸奖的第一印象，需要额外花费时间举证",
-                "reward": "领导私下心知肚明你的能力，后续分配核心项目优先给你，表面同事关系维持体面",
-                "style": "steady",
-                "stateEffects": {
-                    "pressure": 3,
-                    "opportunity": 3,
-                    "relationship": -3,
-                    "stability": 2,
-                    "resources": 1,
-                    "wellbeing": -2
-                },
-                "feedback": "领导私下安抚你，悄悄把后续优质资源分配给你，两人表面维持普通同事往来，不再深度合作"
-            },
-            {
-                "label": "隐忍不发作，后续做好文件留底防护",
-                "description": "不追究本次功劳，之后所有方案提前存档加密，不再提前和同事全盘交底思路",
-                "cost": "这次辛苦付出没有得到对等公开认可，心里委屈",
-                "reward": "维持团队和气氛围，杜绝以后再次被抢功的风险",
-                "style": "repair",
-                "stateEffects": {
-                    "pressure": -2,
-                    "opportunity": -2,
-                    "relationship": 4,
-                    "stability": 4,
-                    "resources": -1,
-                    "wellbeing": 3
-                },
-                "feedback": "团队氛围依旧和睦，你养成严谨留档习惯，再也没有出现成果被窃取的情况，但本次的功劳完全归于对方"
-            }
-        ]
-    },
-    {
-        "id": "career_004",
-        "type": "opportunity",
-        "theme": "career",
-        "title": "副业变现稳定，纠结是否裸辞",
-        "tone": "heavy",
-        "summary": "副业收入追平主业，纠结要不要辞去朝九晚五工作",
-        "dramaticText": "经营一年的副业每月收入和上班工资持平，时间完全自由。但主业有五险一金、稳定年假，裸辞后收入没有兜底保障。身边有人劝稳有人劝闯。",
-        "situation": "主业稳定束缚多，副业自由但收入存在波动风险",
-        "conflict": "安稳保障和自由增收两条路线难以抉择，一旦选错影响长期生计",
-        "triggers": ["副业抉择", "裸辞风险", "收入双线"],
-        "choices": [
-            {
-                "label": "直接裸辞全身心做副业",
-                "description": "递交辞职报告，全天投入拓展副业渠道、扩大经营规模",
-                "cost": "失去社保公积金稳定福利，前三个月收入出现小幅起伏波动",
-                "reward": "时间完全自主，深耕半年后副业收入远超原先工资",
-                "style": "bold",
-                "stateEffects": {
-                    "pressure": 6,
-                    "opportunity": 8,
-                    "relationship": 1,
-                    "stability": -7,
-                    "resources": 4,
-                    "wellbeing": -2
-                },
-                "feedback": "脱离职场束缚全力经营，半年后收益翻倍，但前期收入不稳时常焦虑，只能自行缴纳社保"
-            },
-            {
-                "label": "维持双线并行，缓慢扩大副业",
-                "description": "正常上班，利用下班、周末时间稳步拓展副业，不急于扩张规模",
-                "cost": "长期休息时间被挤压，身心持续处于忙碌状态",
-                "reward": "双份收入叠加，社保保障齐全，副业稳步增长无崩盘风险",
-                "style": "steady",
-                "stateEffects": {
-                    "pressure": 3,
-                    "opportunity": 4,
-                    "relationship": 2,
-                    "stability": 5,
-                    "resources": 6,
-                    "wellbeing": -3
-                },
-                "feedback": "两份收入同时入账，生活积蓄快速上涨，只是长期缺少完整放松假期"
-            },
-            {
-                "label": "缩减副业精力，专心深耕主业晋升",
-                "description": "减少副业接单量，把全部业余精力用来学习提升、维护职场人脉冲晋升",
-                "cost": "放弃副业增收空间，短期少一笔额外现金流",
-                "reward": "精力集中无内耗，职场晋升速度加快，身心作息规律轻松",
-                "style": "repair",
-                "stateEffects": {
-                    "pressure": -5,
-                    "opportunity": -5,
-                    "relationship": 3,
-                    "stability": 7,
-                    "resources": -2,
-                    "wellbeing": 7
-                },
-                "feedback": "全身心投入职场，一年顺利升职加薪，副业仅当作偶尔消遣小收入，生活压力大幅减轻"
-            }
-        ]
-    },
-    {
-        "id": "wealth_001",
-        "type": "opportunity",
-        "theme": "wealth",
-        "title": "熟人推荐高回报投资项目",
-        "tone": "tight",
-        "summary": "相熟朋友介绍一个短期高收益理财渠道",
-        "dramaticText": "认识多年的好友主动分享投资渠道，宣称短期回报率远超银行理财，不少共同熟人已经投入赚到小钱。对方催促尽快入场，名额有限。",
-        "situation": "手里有一笔闲置存款，面对高息投资邀约",
-        "conflict": "信任熟人想抓住收益，又担心项目暗藏风险亏损本金",
-        "triggers": ["人际理财", "高息诱惑", "本金风险"],
-        "choices": [
-            {
-                "label": "投入大半闲置资金进场",
-                "description": "拿出7成存款全部投入项目，跟着朋友分批加仓坐等收益",
-                "cost": "本金暴露在未知风险下，一旦暴雷损失惨重",
-                "reward": "短期顺利拿到预期高额利息，资产快速增值",
-                "style": "bold",
-                "stateEffects": {
-                    "pressure": 8,
-                    "opportunity": 7,
-                    "relationship": 5,
-                    "stability": -8,
-                    "resources": 6,
-                    "wellbeing": -7
-                },
-                "feedback": "前两期按时拿到分红，你加大投入，后续项目资金周转放缓，回款周期拉长整日忧心本金安全"
-            },
-            {
-                "label": "小笔试水少量投入观察",
-                "description": "仅拿出一成小钱尝试，持续观察三个月回款稳定性，稳定后再考虑追加",
-                "cost": "只能赚取少量收益，错过短期大额盈利窗口",
-                "reward": "风险可控，即便出问题亏损金额极低，能摸清项目真实底细",
-                "style": "steady",
-                "stateEffects": {
-                    "pressure": 2,
-                    "opportunity": 3,
-                    "relationship": 3,
-                    "stability": 4,
-                    "resources": 2,
-                    "wellbeing": -1
-                },
-                "feedback": "小额投入安稳拿到收益，你看清项目底层模式，后续谨慎决定不再加仓，稳赚小额利润无大额亏损"
-            },
-            {
-                "label": "礼貌拒绝，只存稳健银行理财",
-                "description": "委婉推脱朋友邀约，资金全部存入低风险银行定期、国债产品",
-                "cost": "彻底失去博取高收益的机会，收益微薄增长缓慢",
-                "reward": "本金百分百安全无亏损，夜里不用为资金风险焦虑",
-                "style": "repair",
-                "stateEffects": {
-                    "pressure": -6,
-                    "opportunity": -6,
-                    "relationship": -3,
-                    "stability": 9,
-                    "resources": -3,
-                    "wellbeing": 8
-                },
-                "feedback": "朋友略有失落疏远，你的存款稳稳保本计息，完全没有本金亏损的焦虑烦恼"
-            }
-        ]
-    },
-    {
-        "id": "wealth_002",
-        "type": "trial",
-        "theme": "wealth",
-        "title": "亲友开口借钱周转大额资金",
-        "tone": "heavy",
-        "summary": "亲近亲戚生意遇困，上门开口借一大笔周转款",
-        "dramaticText": "关系很近的亲戚生意资金链断裂，开口借一笔不小的数目，承诺半年全额归还加少许补偿利息。你这笔钱原本预留用来置换大件消费品。",
-        "situation": "亲情人情和自身资金规划产生冲突",
-        "conflict": "不借伤亲情，借出后自身计划搁置、回款存在不确定性",
-        "triggers": ["人情借贷", "资金挪用", "亲情金钱矛盾"],
-        "choices": [
-            {
-                "label": "全额借出全力帮忙",
-                "description": "取出预留全款转账借出，只简单口头约定还款时间，不强行索要借条",
-                "cost": "自己置换计划无限延期，资金回笼时间完全不可控",
-                "reward": "亲戚十分感激，家族里口碑大幅提升，人情债拉满",
-                "style": "bold",
-                "stateEffects": {
-                    "pressure": 7,
-                    "opportunity": 2,
-                    "relationship": 8,
-                    "stability": -6,
-                    "resources": -7,
-                    "wellbeing": -5
-                },
-                "feedback": "亲戚暂时渡过难关，但半年到期只还回一半钱款，剩余部分一再拖延，你不好意思频繁催促"
-            },
-            {
-                "label": "借出一半，签署书面借条",
-                "description": "拿出一半积蓄出借，白纸黑字写清金额、利息、还款日期，双方签字留存凭证",
-                "cost": "亲戚心里略有芥蒂，觉得你防备心太重不够仗义",
-                "reward": "保留一半自有资金不打乱规划，具备法律凭证保障回款",
-                "style": "steady",
-                "stateEffects": {
-                    "pressure": 3,
-                    "opportunity": 1,
-                    "relationship": 2,
-                    "stability": 3,
-                    "resources": -4,
-                    "wellbeing": -2
-                },
-                "feedback": "亲戚收下钱款，虽有点不快但按期足额还清借款，你的资金规划小幅推迟并未全盘打乱"
-            },
-            {
-                "label": "坦诚难处分文不借，提供其他帮扶办法",
-                "description": "直白说明自有资金有固定用途无法拆借，帮对方梳理融资渠道、咨询贷款方式",
-                "cost": "亲戚当下心生不满，短时间走动变少关系降温",
-                "reward": "自身资金规划丝毫不被影响，没有坏账亏损风险",
-                "style": "repair",
-                "stateEffects": {
-                    "pressure": -4,
-                    "opportunity": -1,
-                    "relationship": -5,
-                    "stability": 7,
-                    "resources": 0,
-                    "wellbeing": 6
-                },
-                "feedback": "亲戚初期对你冷淡，后来自行贷到资金周转，时间久了理解你的难处，关系慢慢恢复如初"
-            }
-        ]
-    },
-    {
-        "id": "wealth_003",
-        "type": "opportunity",
-        "theme": "wealth",
-        "title": "置换房产：加杠杆换大房还是持有小户型",
-        "tone": "open",
-        "summary": "楼市行情波动，纠结贷款置换更大户型住房",
-        "dramaticText": "现有小户型可以出手，首付资金足够，多贷百万就能置换改善大户型。房贷月供压力会翻倍，但房产空间、升值潜力更好；守住小房则无负债压力。",
-        "situation": "手握置换条件，在负债扩容和无债安稳之间选择",
-        "conflict": "改善居住资产增值 vs 零负债轻松生活两种财富模式",
-        "triggers": ["房产置换", "贷款杠杆", "资产配置"],
-        "choices": [
-            {
-                "label": "高杠杆置换大户型",
-                "description": "挂牌出售小屋，办理高额房贷置换改善房，拉长还款年限降低月供压力",
-                "cost": "未来十几年背负大额债务，日常消费大幅压缩抗风险资金变少",
-                "reward": "居住品质大幅提升，优质房产长期保值增值空间更高",
-                "style": "bold",
-                "stateEffects": {
-                    "pressure": 9,
-                    "opportunity": 6,
-                    "relationship": 3,
-                    "stability": -7,
-                    "resources": -5,
-                    "wellbeing": -6
-                },
-                "feedback": "搬进宽敞新房生活舒适度提升，每月紧巴巴还贷款，不敢轻易失业、大额开销"
-            },
-            {
-                "label": "小幅升级，少贷轻压力置换",
-                "description": "换一套面积适中的刚需改善户型，尽量提高首付压缩贷款总额，月供增幅可控",
-                "cost": "居住提升幅度有限，增值空间不如顶配大户型",
-                "reward": "居住小幅升级，债务压力适中，手里依旧留存应急存款",
-                "style": "steady",
-                "stateEffects": {
-                    "pressure": 4,
-                    "opportunity": 3,
-                    "relationship": 2,
-                    "stability": 2,
-                    "resources": -2,
-                    "wellbeing": -1
-                },
-                "feedback": "户型刚刚好够用，月供负担不大，手里留有应急存款，资产稳步小幅增值"
-            },
-            {
-                "label": "保留小户型，存款稳健理财",
-                "description": "不置换房屋，小屋自住，卖房所得资金全部投入低波动理财积累现金流",
-                "cost": "居住环境保持现状，错失房产升值红利",
-                "reward": "零房贷负债，现金流充足，手里大把可支配备用资金",
-                "style": "repair",
-                "stateEffects": {
-                    "pressure": -7,
-                    "opportunity": -5,
-                    "relationship": 1,
-                    "stability": 8,
-                    "resources": 7,
-                    "wellbeing": 7
-                },
-                "feedback": "无债务一身轻松，每年理财收益补贴日常开销，只是住房空间多年没有提升"
-            }
-        ]
-    },
-    {
-        "id": "relationship_001",
-        "type": "trial",
-        "theme": "relationship",
-        "title": "伴侣频繁无底线透支你的包容",
-        "tone": "sharp",
-        "summary": "另一半习惯性拖延、失信，反复消耗你的耐心",
-        "dramaticText": "说好共同分担家务开销，对方屡次推脱爽约；承诺改正的毛病一次次重犯，每次犯错后短暂道歉转头照旧。你一次次妥协退让，内心积攒大量委屈。",
-        "situation": "亲密关系里单方面持续包容付出，对方没有对等改变",
-        "conflict": "强硬立规矩怕争吵冷战，继续隐忍内心不断内耗，温和沟通对方听不进去",
-        "triggers": ["亲密磨合", "边界建立", "付出失衡"],
-        "choices": [
-            {
-                "label": "严肃摊牌，定下硬性奖惩规则",
-                "description": "坐下来深度谈话，清晰列出底线，犯错对应分开承担开销、暂停陪伴等实际约束",
-                "cost": "爆发激烈争吵，进入长达数天冷战期",
-                "reward": "对方正视问题，行为出现明显收敛改善，关系权责变得对等",
-                "style": "bold",
-                "stateEffects": {
-                    "pressure": 6,
-                    "opportunity": 2,
-                    "relationship": -4,
-                    "stability": -3,
-                    "resources": 1,
-                    "wellbeing": -5
-                },
-                "feedback": "大吵一架后对方意识到你的底线，慢慢改掉敷衍失信的习惯，两人相处不再是你单方面迁就"
-            },
-            {
-                "label": "分次温和沟通，循序渐进引导改变",
-                "description": "不一次性爆发，每次对方失约犯错时平静指出问题，一点点协商调整分工与承诺",
-                "cost": "改变速度极慢，短期内委屈依旧存在",
-                "reward": "全程无剧烈冲突，对方循序渐进调整，感情氛围平稳过渡",
-                "style": "steady",
-                "stateEffects": {
-                    "pressure": 3,
-                    "opportunity": 1,
-                    "relationship": 2,
-                    "stability": 3,
-                    "resources": 0,
-                    "wellbeing": -2
-                },
-                "feedback": "没有大矛盾爆发，对方一点点调整自身行为，半年后相处平衡度明显变好"
-            },
-            {
-                "label": "降低期待，不再主动付出迁就",
-                "description": "收起多余包容，各自打理自身事务，对方失信不再主动安慰弥补，保持疏离心态保护自己",
-                "cost": "两人亲密感快速变淡，感情温度持续下降",
-                "reward": "不再为对方的问题内耗，自身情绪稳定舒适",
-                "style": "repair",
-                "stateEffects": {
-                    "pressure": -5,
-                    "opportunity": -3,
-                    "relationship": -7,
-                    "stability": 2,
-                    "resources": 0,
-                    "wellbeing": 6
-                },
-                "feedback": "你不再委屈内耗，但彼此之间越来越客气疏远，亲密互动大幅减少"
-            }
-        ]
-    },
-    {
-        "id": "relationship_002",
-        "type": "opportunity",
-        "theme": "relationship",
-        "title": "多年挚友价值观分歧越来越大",
-        "tone": "warm",
-        "summary": "三观差异显现，昔日好友相处越来越别扭",
-        "dramaticText": "曾经无话不谈的老友，近几年消费、婚恋、职场观念完全相悖。见面聊天容易抬杠，客套变多真心变少，但十几年情谊舍不得轻易断掉。",
-        "situation": "老朋友成长路径不同，观念隔阂逐步拉大",
-        "conflict": "强行深交徒增别扭，彻底疏远可惜多年情谊，浅交维持又少了往日真诚",
-        "triggers": ["友谊褪色", "观念分歧", "人脉取舍"],
-        "choices": [
-            {
-                "label": "坦诚交心，直面分歧深度谈心",
-                "description": "主动约对方长谈，直白说出彼此观念差异带来的隔阂，询问对方相处想法",
-                "cost": "谈话气氛尴尬，对方未必认同你的感受",
-                "reward": "打开心结，能磨合则修复深度友情，不合也能坦然划分相处距离",
-                "style": "bold",
-                "stateEffects": {
-                    "pressure": 4,
-                    "opportunity": 3,
-                    "relationship": 5,
-                    "stability": -2,
-                    "resources": 2,
-                    "wellbeing": -3
-                },
-                "feedback": "坦诚沟通后双方放下心结，约定避开争议话题，保留舒服的老友相处模式，不再强求三观一致"
-            },
-            {
-                "label": "调整相处模式，只聊轻松无争议话题",
-                "description": "见面只吃喝玩乐怀旧往事，避开婚恋、赚钱、人生规划等容易对立的话题",
-                "cost": "再也无法像从前一样倾诉心事深度交心",
-                "reward": "平稳维持多年交情，见面氛围轻松不吵架",
-                "style": "steady",
-                "stateEffects": {
-                    "pressure": 1,
-                    "opportunity": 1,
-                    "relationship": 2,
-                    "stability": 4,
-                    "resources": 1,
-                    "wellbeing": 1
-                },
-                "feedback": "聚会全程和睦愉快，友情变成温和淡如水的旧交情，适合偶尔相聚消遣"
-            },
-            {
-                "label": "慢慢淡出，减少主动联络频次",
-                "description": "不主动邀约、少回复长篇消息，对方联系礼貌应付，自然慢慢疏远淡开",
-                "cost": "彻底丢失一段长久陪伴的青春老友",
-                "reward": "不用勉强迎合分歧，社交精力留给同频新朋友",
-                "style": "repair",
-                "stateEffects": {
-                    "pressure": -3,
-                    "opportunity": -4,
-                    "relationship": -8,
-                    "stability": 3,
-                    "resources": -1,
-                    "wellbeing": 5
-                },
-                "feedback": "两人联系越来越少，慢慢变成朋友圈点赞之交，你把社交重心转移到三观契合的新朋友身上"
-            }
-        ]
-    },
-    {
-        "id": "relationship_003",
-        "type": "trial",
-        "theme": "relationship",
-        "title": "相亲对象催促快速敲定婚嫁",
-        "tone": "heavy",
-        "summary": "相处没多久的相亲对象急于定婚期领证",
-        "dramaticText": "相亲认识相处不足两月，对方觉得彼此条件匹配，频繁催见家长、谈彩礼、定结婚日子。你内心还没完全确认心意，节奏完全跟不上对方。",
-        "situation": "婚恋节奏双方落差巨大，一方速推一方犹豫",
-        "conflict": "顺从节奏怕仓促选错人，直白放缓怕对方直接止损分手，拖延消耗双方时间",
-        "triggers": ["相亲婚恋", "节奏分歧", "婚嫁抉择"],
-        "choices": [
-            {
-                "label": "加速流程，顺着对方节奏推进婚事",
-                "description": "答应尽快见双方父母，同步洽谈婚嫁各项事宜，压缩彼此了解磨合时间",
-                "cost": "没有充足时间看清对方本性，婚后磨合期隐患变多",
-                "reward": "快速敲定终身大事，满足双方家庭期待，省去反复相亲消耗",
-                "style": "bold",
-                "stateEffects": {
-                    "pressure": 7,
-                    "opportunity": 5,
-                    "relationship": 6,
-                    "stability": -4,
-                    "resources": 3,
-                    "wellbeing": -7
-                },
-                "feedback": "顺利敲定订婚事宜，但相处细节矛盾逐渐暴露，婚后前期频繁争吵磨合"
-            },
-            {
-                "label": "坦诚约定缓冲考察期限",
-                "description": "认真说明自己需要半年以上磨合观察，达成共识：这段时间正常相处，到期再决定婚嫁",
-                "cost": "对方短暂失落，家里长辈会施加催婚压力",
-                "reward": "拥有足够时间深度了解人品习惯，决策更加稳妥安心",
-                "style": "steady",
-                "stateEffects": {
-                    "pressure": 3,
-                    "opportunity": 2,
-                    "relationship": 2,
-                    "stability": 4,
-                    "resources": 1,
-                    "wellbeing": -1
-                },
-                "feedback": "对方接受缓冲期限，两人踏踏实实相处半年，彼此适配度清晰，再平稳敲定婚嫁"
-            },
-            {
-                "label": "不愿将就，直接坦诚分开止损",
-                "description": "直白告知节奏不合、心意未定，和平提出结束相亲相处关系",
-                "cost": "再次回归单身，重新投入相亲消耗时间精力",
-                "reward": "不用勉强自己赶进度，保留选择真心契合伴侣的余地",
-                "style": "repair",
-                "stateEffects": {
-                    "pressure": -5,
-                    "opportunity": -6,
-                    "relationship": -9,
-                    "stability": 2,
-                    "resources": -2,
-                    "wellbeing": 6
-                },
-                "feedback": "和平分手互不耽误，你重新慢慢接触其他相亲对象，不再被迫追赶别人的婚嫁节奏"
-            }
-        ]
-    },
-    {
-        "id": "relationship_004",
-        "type": "trial",
-        "theme": "relationship",
-        "title": "合作合伙人私心算计分摊利益",
-        "tone": "tight",
-        "summary": "生意合伙人暗中在成本、分红上动小心思",
-        "dramaticText": "合伙开店办事，对账时发现对方悄悄多报开销、划分收益时偏向自己。当面核对账目对方含糊打太极，不愿清晰透明对账。",
-        "situation": "合伙共事遭遇伙伴利己算计，信任出现裂痕",
-        "conflict": "强硬对账容易散伙生意崩盘，隐忍吃亏长期损失，温和协商对方不肯让步",
-        "triggers": ["合伙人际", "利益分割", "信任危机"],
-        "choices": [
-            {
-                "label": "当众彻底对账，拆分权责重新签约",
-                "description": "拉上第三方会计全盘核账，重新拟定严谨分红、支出合同，明确违规追责条款",
-                "cost": "双方撕破信任，合作氛围僵硬，经营配合度下降",
-                "reward": "账目完全透明公平，杜绝后续继续被克扣利益",
-                "style": "bold",
-                "stateEffects": {
-                    "pressure": 6,
-                    "opportunity": 3,
-                    "relationship": -8,
-                    "stability": -3,
-                    "resources": 4,
-                    "wellbeing": -5
-                },
-                "feedback": "账目理清纠正差额，合同规范到位，但两人合作只剩利益往来，再也没有从前的信任默契"
-            },
-            {
-                "label": "私下一对一约谈，温和要求规范记账",
-                "description": "单独约合伙人沟通顾虑，提出统一记账平台、每笔支出双人确认的简易规范",
-                "cost": "对方表面答应，细小地方依旧偶尔钻空子",
-                "reward": "大体收益分配回归公平，合作关系不至于彻底破裂",
-                "style": "steady",
-                "stateEffects": {
-                    "pressure": 3,
-                    "opportunity": 2,
-                    "relationship": -3,
-                    "stability": 2,
-                    "resources": 2,
-                    "wellbeing": -2
-                },
-                "feedback": "大额收支变得透明公正，小额零碎开销对方依旧略有私心，整体生意能平稳运转"
-            },
-            {
-                "label": "隐忍观察，逐步筹备退出拆分",
-                "description": "暂时不撕破脸，默默留存全部对账证据，同步盘算转让股份、撤出合伙事宜",
-                "cost": "这段过渡期持续承受小幅利益损失",
-                "reward": "平稳体面抽身离场，不用直面激烈对峙冲突",
-                "style": "repair",
-                "stateEffects": {
-                    "pressure": -2,
-                    "opportunity": -5,
-                    "relationship": -6,
-                    "stability": 4,
-                    "resources": -6,
-                    "wellbeing": 7
-                },
-                "feedback": "悄无声息谈妥股份转让，平稳退出合伙项目，避开正面争吵，但这段时间亏损了一部分收益"
-            }
-        ]
-    },
-    {
-        "id": "health_001",
-        "type": "trial",
-        "theme": "health",
-        "title": "长期熬夜透支，体检亮起多项异常",
-        "tone": "heavy",
-        "summary": "熬夜加班作息混乱，体检报告出现多处指标超标",
-        "dramaticText": "常年熬夜赶工作、刷手机，年度体检查出血脂、肝功能、睡眠指标全部异常。医生叮嘱必须早睡调养，但手头工作任务繁重没法早早休息。",
-        "situation": "身体健康发出预警，工作节奏和养生修复产生巨大冲突",
-        "conflict": "拼命保工作继续透支身体，放缓进度调养收入机会受损，折中平衡两边都顾不完美",
-        "triggers": ["作息损耗", "体检预警", "身心平衡"],
-        "choices": [
-            {
-                "label": "优先赶进度，暂时延后调养计划",
-                "description": "照旧熬夜完成工作目标，等项目阶段结束后再抽时间调理身体",
-                "cost": "身体指标持续恶化，容易出现疲惫、头疼、免疫力下降等不适",
-                "reward": "工作节点顺利完成，绩效奖金、晋升机会不受耽误",
-                "style": "bold",
-                "stateEffects": {
-                    "pressure": 8,
-                    "opportunity": 5,
-                    "relationship": 1,
-                    "stability": -4,
-                    "resources": 3,
-                    "wellbeing": -9
-                },
-                "feedback": "项目顺利交付拿到奖励，但短短三个月频繁感冒乏力，复查指标比上次还要差一截"
-            },
-            {
-                "label": "调整工时，固定23点强制收工休息",
-                "description": "和领导沟通调整工作量，白天提高效率，到点停下工作绝不熬夜，空余时间简单运动饮食调理",
-                "cost": "短期工作产出略有下滑，部分加急任务只能延后交付",
-                "reward": "作息逐步规律，身体指标缓慢回落，精气神稳步恢复",
-                "style": "steady",
-                "stateEffects": {
-                    "pressure": 3,
-                    "opportunity": 2,
-                    "relationship": 2,
-                    "stability": 5,
-                    "resources": 1,
-                    "wellbeing": 4
-                },
-                "feedback": "工作量小幅缩减，坚持早睡调理半年后复查，大部分异常指标回归正常范围"
-            },
-            {
-                "label": "大幅减负，推掉非必要加班任务专心养身",
-                "description": "主动减少额外加班、副业任务，把晚间时间全部用来静养、运动、就医调理",
-                "cost": "绩效评分下滑，额外收入、职场展示机会大量减少",
-                "reward": "全身心养护身体，身心快速恢复稳定健康状态",
-                "style": "repair",
-                "stateEffects": {
-                    "pressure": -6,
-                    "opportunity": -6,
-                    "relationship": 0,
-                    "stability": 3,
-                    "resources": -4,
-                    "wellbeing": 9
-                },
-                "feedback": "全身心调养作息饮食，身体很快恢复舒适状态，只是当年绩效和额外收益大打折扣"
-            }
-        ]
-    },
-    {
-        "id": "health_002",
-        "type": "trial",
-        "theme": "health",
-        "title": "情绪内耗严重，时常焦虑失眠",
-        "tone": "tight",
-        "summary": "琐事堆积心理压力大，长期失眠情绪低落",
-        "dramaticText": "工作、人际、家庭琐事堆在一起，一到夜里脑子停不下来胡思乱想，入睡困难，白天心慌烦躁，影响做事效率和待人态度。朋友劝散心或寻求专业疏导。",
-        "situation": "心理情绪持续亚健康，自我调节收效微弱",
-        "conflict": "硬扛自愈怕持续加重，心理咨询花费时间金钱，放空散心会耽误手头事务进度",
-        "triggers": ["情绪焦虑", "失眠内耗", "心理调节"],
-        "choices": [
-            {
-                "label": "硬扛自我消化，靠意志力压下情绪",
-                "description": "不额外花费时间散心咨询，强迫自己专注做事，压抑焦虑情绪不去理会",
-                "cost": "失眠、心慌持续加重，偶尔出现易怒崩溃的情况",
-                "reward": "不耽误工作生活进度，不用额外支出疏导费用",
-                "style": "bold",
-                "stateEffects": {
-                    "pressure": 7,
-                    "opportunity": 2,
-                    "relationship": -3,
-                    "stability": -2,
-                    "resources": 0,
-                    "wellbeing": -8
-                },
-                "feedback": "表面照常运转生活工作，但情绪阈值越来越低，一点小事就容易烦躁低落，睡眠质量持续变差"
-            },
-            {
-                "label": "每周固定短途散心运动疏导",
-                "description": "挤出固定时段爬山、散步、运动放空，搭配睡前冥想放松，自主调节情绪睡眠",
-                "cost": "每周牺牲几小时做事时间，短期看不到立刻好转效果",
-                "reward": "身心缓慢舒缓，焦虑程度逐步减轻，睡眠轻微改善",
-                "style": "steady",
-                "stateEffects": {
-                    "pressure": 2,
-                    "opportunity": 1,
-                    "relationship": 1,
-                    "stability": 4,
-                    "resources": -1,
-                    "wellbeing": 5
-                },
-                "feedback": "坚持规律运动放空两个月，夜里胡思乱想变少，入睡速度变快，情绪稳定不少"
-            },
-            {
-                "label": "预约心理咨询，系统疏导情绪问题",
-                "description": "预约正规心理咨询师定期面诊，完整梳理压力根源，配合专业方案调整心态睡眠",
-                "cost": "咨询有不小开销，每周需要预留固定就诊时间",
-                "reward": "精准找到内耗根源，快速缓解焦虑失眠，心理状态大幅修复",
-                "style": "repair",
-                "stateEffects": {
-                    "pressure": -7,
-                    "opportunity": -2,
-                    "relationship": 3,
-                    "stability": 5,
-                    "resources": -5,
-                    "wellbeing": 8
-                },
-                "feedback": "经过数次专业疏导，心结慢慢解开，失眠基本痊愈，待人处事心态平和很多"
-            }
-        ]
-    },
-    {
-        "id": "health_003",
-        "type": "opportunity",
-        "theme": "health",
-        "title": "健身办卡大额年卡vs零散单次锻炼",
-        "tone": "open",
-        "summary": "健身房推出低价年卡，纠结大额充值还是按需单次运动",
-        "dramaticText": "健身房大促年卡折扣力度很大，一次性付费便宜很多；但你不确定自己能不能长期坚持锻炼。单次付费单价更高，不想去也无资金沉没损失。",
-        "situation": "运动健身两种消费模式，考验自律与资金规划",
-        "conflict": "大额年卡划算但怕浪费，单次灵活省心但长期总成本更高",
-        "triggers": ["健身自律", "消费抉择", "运动养护"],
-        "choices": [
-            {
-                "label": "直接办理全年大额年卡",
-                "description": "全款购入低价年卡，给自己资金压力倒逼每周固定到店训练",
-                "cost": "一次性支出一笔不小开支，一旦懈怠等于白白浪费钱款",
-                "reward": "单次健身成本极低，长期坚持能高效塑形增强体质",
-                "style": "bold",
-                "stateEffects": {
-                    "pressure": 4,
-                    "opportunity": 3,
-                    "relationship": 0,
-                    "stability": -3,
-                    "resources": -6,
-                    "wellbeing": 6
-                },
-                "feedback": "心疼花销倒逼自己高频锻炼，一年坚持下来体态体能明显提升，年卡价值完全用满"
-            },
-            {
-                "label": "先办季度卡试水适应节奏",
-                "description": "选择周期短、金额适中的季度卡，试练三个月，能坚持再续全年套餐",
-                "cost": "单价介于年卡和次卡之间，整体性价比中等",
-                "reward": "风险折中，适应健身节奏再长期投入，不会一次性大额亏损",
-                "style": "steady",
-                "stateEffects": {
-                    "pressure": 1,
-                    "opportunity": 1,
-                    "relationship": 0,
-                    "stability": 3,
-                    "resources": -3,
-                    "wellbeing": 3
-                },
-                "feedback": "三个月顺利养成运动习惯，之后续办年卡长期坚持，循序渐进养好身体状态"
-            },
-            {
-                "label": "不办卡，只按需单次付费锻炼",
-                "description": "无预付充值，想运动就买单次票，没时间没兴致就完全零开销",
-                "cost": "长期频繁锻炼的话累计花费远高于年卡，价格不划算",
-                "reward": "资金完全灵活无绑定，不想动毫无心理负担",
-                "style": "repair",
-                "stateEffects": {
-                    "pressure": -4,
-                    "opportunity": -2,
-                    "relationship": 0,
-                    "stability": 4,
-                    "resources": -1,
-                    "wellbeing": 1
-                },
-                "feedback": "自由度拉满，兴致来了才去锻炼，整体去的频次偏低，体能改善幅度比较有限"
-            }
-        ]
-    },
-    {
-        "id": "mindset_001",
-        "type": "trial",
-        "theme": "mindset",
-        "title": "总爱对比别人，越攀比越自卑焦虑",
-        "tone": "sharp",
-        "summary": "习惯性对比同辈朋友，心态失衡自我否定",
-        "dramaticText": "刷社交平台、同学聚会总忍不住对比别人的收入、房车、婚恋进度。越对比越觉得自己一事无成，明明自身稳步前进，内心却满是挫败感。",
-        "situation": "攀比心态持续内耗，无法接纳自身成长节奏",
-        "conflict": "强行屏蔽外界对比源治标不治本，放任攀比持续自我否定，主动重塑认知需要长期心理建设",
-        "triggers": ["攀比内耗", "自我认同", "心态调整"],
-        "choices": [
-            {
-                "label": "主动对标优秀者，拼命追赶缩小差距",
-                "description": "把比自己优秀的同辈当作目标，疯狂加码加班、学习、搞副业追赶对方进度",
-                "cost": "超负荷给自己施压，身心紧绷疲惫，容易急功近利出错",
-                "reward": "行动力大幅提升，事业财富进度加速追赶上来",
-                "style": "bold",
-                "stateEffects": {
-                    "pressure": 9,
-                    "opportunity": 7,
-                    "relationship": 2,
-                    "stability": -5,
-                    "resources": 4,
-                    "wellbeing": -7
-                },
-                "feedback": "高强度追赶一年收入提升明显，但长期紧绷，一刻放松就充满愧疚焦虑"
-            },
-            {
-                "label": "减少信息输入，定量浏览社交圈子",
-                "description": "限制刷社交软件、少参加攀比氛围浓的聚会，每天留出时间复盘自身进步亮点",
-                "cost": "减少和同辈交流接触，社交圈子轻微收缩",
-                "reward": "外界对比刺激变少，心态慢慢平稳，能看见自己的成长",
-                "style": "steady",
-                "stateEffects": {
-                    "pressure": 3,
-                    "opportunity": 1,
-                    "relationship": -2,
-                    "stability": 4,
-                    "resources": 0,
-                    "wellbeing": 5
-                },
-                "feedback": "屏蔽大量攀比信息后，不再频繁自我否定，踏实按照自己的节奏稳步生活"
-            },
-            {
-                "label": "深度接纳自我，放下对比专注自身感受",
-                "description": "主动练习正向心理暗示，承认人和人节奏不同，不再用别人标准评判自己好坏",
-                "cost": "短期行动力放缓，追赶别人的冲劲大幅减弱",
-                "reward": "从根源消除自卑内耗，内心稳定知足，幸福感显著提升",
-                "style": "repair",
-                "stateEffects": {
-                    "pressure": -8,
-                    "opportunity": -5,
-                    "relationship": 3,
-                    "stability": 7,
-                    "resources": -2,
-                    "wellbeing": 9
-                },
-                "feedback": "彻底摆脱攀比枷锁，不再羡慕别人的生活，安心经营属于自己的小日子，内心平和充实"
-            }
-        ]
-    },
-    {
-        "id": "mindset_002",
-        "type": "trial",
-        "theme": "mindset",
-        "title": "害怕犯错，遇事习惯性畏难退缩",
-        "tone": "tight",
-        "summary": "担心做不好出洋相，遇到新挑战第一反应逃避",
-        "dramaticText": "但凡陌生、没十足把握的任务机会，第一想法就是推脱躲开，怕失误被人笑话指责。明明有能力尝试，却被恐惧困住不敢迈出第一步。",
-        "situation": "恐惧失败的心态限制自我成长与机会抓取",
-        "conflict": "硬冲挑战容易受挫打击自信，一直逃避持续原地踏步，小步试探又需要克服心理恐惧",
-        "triggers": ["畏难心态", "失败恐惧", "突破自我"],
-        "choices": [
-            {
-                "label": "强迫自己接下所有陌生挑战",
-                "description": "但凡有新机会一概不推脱，硬着头皮上手实操，允许过程里出错试错",
-                "cost": "初期频繁失误受挫，承受他人质疑眼光，自信心短暂受挫",
-                "reward": "快速积累陌生领域经验，大量抓住别人不敢接的上升机会",
-                "style": "bold",
-                "stateEffects": {
-                    "pressure": 8,
-                    "opportunity": 9,
-                    "relationship": 3,
-                    "stability": -6,
-                    "resources": 5,
-                    "wellbeing": -6
-                },
-                "feedback": "虽然前期踩坑不断，但半年后你能熟练驾驭各类新任务，职场里可承担的业务范围远超同龄人"
-            },
-            {
-                "label": "拆分任务，从小步骤试探入手",
-                "description": "接到挑战后拆解成简单小环节，先做准备功课，完成一小步确认没问题再往下推进",
-                "cost": "上手速度慢于敢冲的人，抢占机会的速度滞后",
-                "reward": "稳步试错风险低，每一步积累正向反馈，恐惧心理慢慢弱化",
-                "style": "steady",
-                "stateEffects": {
-                    "pressure": 3,
-                    "opportunity": 4,
-                    "relationship": 2,
-                    "stability": 5,
-                    "resources": 2,
-                    "wellbeing": 2
-                },
-                "feedback": "稳扎稳打分步攻克难题，失误很少，一点点克服畏难情绪，慢慢敢于承接中等难度新任务"
-            },
-            {
-                "label": "只承接百分百稳妥熟悉的事",
-                "description": "只要心里没十足把握的事情一律委婉拒绝，只做自己熟练不会出错的内容",
-                "cost": "永远接触不到新领域新机遇，能力圈子持续固化狭窄",
-                "reward": "全程零失误零指责，内心安稳没有受挫压力",
-                "style": "repair",
-                "stateEffects": {
-                    "pressure": -7,
-                    "opportunity": -8,
-                    "relationship": -1,
-                    "stability": 8,
-                    "resources": -4,
-                    "wellbeing": 7
-                },
-                "feedback": "生活工作毫无波折失误，但多年下来能力、眼界始终停留在舒适区，没有明显成长突破"
-            }
-        ]
-    },
-    {
-        "id": "mindset_003",
-        "type": "opportunity",
-        "theme": "mindset",
-        "title": "过往挫折留下心结，遇事容易悲观预判",
-        "tone": "heavy",
-        "summary": "以前栽过跟头，现在做事总先往最坏结果预想",
-        "dramaticText": "早年投资、人际、事业都踩过大坑，现在但凡开启一件新事，下意识先脑补失败崩盘的结局，很难放开手脚全力投入。明明局势尚可，心态先消极退缩。",
-        "situation": "过往创伤形成悲观思维定式，束缚当下行动力",
-        "conflict": "强行乐观硬冲怕再次受伤，躺平消极彻底放弃机会，循序渐进重塑心态耗时漫长",
-        "triggers": ["悲观思维", "过往心结", "心态重塑"],
-        "choices": [
-            {
-                "label": "抛开顾虑全力投入，不信过往阴影",
-                "description": "刻意忽略消极预判，全身心投入新项目新尝试，相信这次情况和过去不一样",
-                "cost": "一旦遭遇不顺，旧挫败感加倍反扑，情绪打击更强",
-                "reward": "放开手脚全力发挥，更容易抓住翻盘逆袭的机会",
-                "style": "bold",
-                "stateEffects": {
-                    "pressure": 7,
-                    "opportunity": 8,
-                    "relationship": 2,
-                    "stability": -6,
-                    "resources": 4,
-                    "wellbeing": -7
-                },
-                "feedback": "本次项目顺利落地收获不错成果，一次成功大幅冲淡过去失败留下的心理阴影"
-            },
-            {
-                "label": "做好最坏预案，中性心态稳步推进",
-                "description": "提前制定失败兜底方案，不盲目乐观也不极致悲观，按计划一步步落地执行",
-                "cost": "筹备兜底方案耗费额外精力，前期筹备流程更加繁琐",
-                "reward": "进退皆有保障，弱化悲观内耗，以平稳心态推进事务，容错率拉满",
-                "style": "steady",
-                "stateEffects": {
-                    "pressure": 2,
-                    "opportunity": 5,
-                    "relationship": 1,
-"stability": 6,
-"resources": 2,
-"wellbeing": 3
-},
-"feedback": "凡事留有退路，你不再惧怕潜在失败，既能全力做事，也能坦然接受所有不理想的结果，心态逐渐成熟中性化"
-},
-{
-"label": "顺从悲观直觉，规避一切高风险尝试",
-"description": "尊重内心消极预判，主动放弃所有具备不确定性的新机会，只维持现有安稳状态",
-"cost": "长期规避风险，错失大量翻盘、成长的优质契机，发展上限被锁死",
-"reward": "规避所有潜在失败风险，内心无需承受试错带来的心理内耗",
-"style": "repair",
-"stateEffects": {
-"pressure": -6,
-"opportunity": -7,
-"relationship": 0,
-"stability": 9,
-"resources": -3,
-"wellbeing": 6
-},
-"feedback": "生活毫无波折与挫败，但日复一日停滞不前，过往的心结依旧存在，始终无法真正和解释怀"
-}
+  {
+    "id": "career_001",
+    "type": "trial",
+    "theme": "career",
+    "title": "临时接手烂尾项目",
+    "tone": "tight",
+    "summary": "上司把别人做砸的项目转交给你全权收尾",
+    "dramaticText": "原定负责项目的同事突然请假离岗，一堆遗留问题没人处理。领导当众点名，希望你立刻接手稳住局面。团队其他人都抱着观望态度，没人愿意主动搭手。",
+    "situation": "本职工作已经排满，额外新增一个漏洞百出、期限紧迫的遗留项目",
+    "conflict": "接手能刷存在感但透支精力，推脱容易得罪上级，折中分担又怕权责划分不清",
+    "triggers": [
+      "职场扛压",
+      "权责纷争",
+      "临时重担"
+    ],
+    "choices": [
+      {
+        "label": "全盘接下独立攻坚",
+        "description": "当场答应接手，加班梳理全部问题，独自推进整改交付",
+        "cost": "连续一周高强度加班，私人时间完全压缩",
+        "reward": "领导高度认可，后续核心资源优先倾斜给你",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 7,
+          "opportunity": 6,
+          "relationship": 2,
+          "stability": -2,
+          "resources": 3,
+          "wellbeing": -6
+        },
+        "feedback": "你熬夜整改顺利交付项目，领导在部门会议公开表扬，但身体明显疲惫，和原项目同事关系变得微妙疏远"
+      },
+      {
+        "label": "谈条件再接手，划定分工边界",
+        "description": "先找领导沟通，要求调配一名协助人手、放宽3天期限、明确功劳归属后再接任务",
+        "cost": "需要花费半天时间沟通博弈，当下显得不够爽快",
+        "reward": "工作量减半，风险分摊，权责清晰无背锅隐患",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 3,
+          "relationship": 1,
+          "stability": 5,
+          "resources": 2,
+          "wellbeing": -1
+        },
+        "feedback": "领导同意你的条件，配合人手到位，平稳完成项目，稳步巩固靠谱稳重的职场人设"
+      },
+      {
+        "label": "委婉推脱，坚守本职范围",
+        "description": "坦诚告知自身手头工作量饱和，推荐另一位空闲同事承接此项目",
+        "cost": "短暂让领导观感变差，错失一次展示能力的舞台",
+        "reward": "作息不受打扰，精力全部保留给自己原有工作",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -5,
+          "opportunity": -4,
+          "relationship": -3,
+          "stability": 3,
+          "resources": -1,
+          "wellbeing": 7
+        },
+        "feedback": "领导虽表面理解，但后续重要任务不再优先考虑你，你的日常工作节奏完全安稳无波动"
+      }
+    ]
+  },
+  {
+    "id": "career_002",
+    "type": "opportunity",
+    "theme": "career",
+    "title": "跨城市升职调岗邀约",
+    "tone": "open",
+    "summary": "总部抛出外地分部管理岗晋升机会，薪资涨幅可观",
+    "dramaticText": "人力私下联系你，外地分部缺主管，薪资上浮三成，平台层级更高。但离家距离很远，日常没法经常回家。留在本部只能缓慢熬资历晋升。",
+    "situation": "手握原地稳步熬资历或远赴他乡快速升职两条职业路线",
+    "conflict": "高薪晋升和陪伴生活、熟悉环境之间难以平衡取舍",
+    "triggers": [
+      "职场晋升",
+      "异地发展",
+      "平台抉择"
+    ],
+    "choices": [
+      {
+        "label": "立刻答应调任，奔赴新岗位",
+        "description": "快速回复人力同意调岗，一周内收拾行李动身交接工作",
+        "cost": "长期和家人分居，适应陌生团队与城市环境",
+        "reward": "职级、薪资、行业履历大幅提升，手握更高话语权",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 9,
+          "relationship": -6,
+          "stability": -5,
+          "resources": 5,
+          "wellbeing": -3
+        },
+        "feedback": "顺利就任管理岗，收入大幅提升，但每周只能视频联系家人，初期磨合团队耗费大量心神"
+      },
+      {
+        "label": "申请半年过渡期远程磨合",
+        "description": "协商先两个月驻场熟悉业务，每周往返家乡，半年后再决定是否长期定居",
+        "cost": "每月多出往返交通开销，来回奔波消耗体力",
+        "reward": "拿到晋升名额，同时暂时不彻底割裂原有生活圈",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 5,
+          "relationship": -2,
+          "stability": 1,
+          "resources": 2,
+          "wellbeing": -1
+        },
+        "feedback": "总部同意过渡方案，你一边熟悉分部业务，一边维持家庭见面频率，节奏忙碌但两头兼顾"
+      },
+      {
+        "label": "谢绝调岗，深耕本地岗位",
+        "description": "礼貌婉拒晋升邀约，安心留在本部打磨现有业务，等待内部空缺",
+        "cost": "错失跨越式涨薪升职的窗口期，晋升速度放缓",
+        "reward": "生活、人脉、家庭全部稳定，无需适应陌生环境",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -4,
+          "opportunity": -6,
+          "relationship": 6,
+          "stability": 8,
+          "resources": -3,
+          "wellbeing": 6
+        },
+        "feedback": "留在熟悉的环境稳步工作，家庭陪伴充足，三年后才有小幅内部晋升机会"
+      }
+    ]
+  },
+  {
+    "id": "career_003",
+    "type": "trial",
+    "theme": "career",
+    "title": "同事抢功窃取方案",
+    "tone": "sharp",
+    "summary": "自己熬夜做的策划被同事拿去汇报领功劳",
+    "dramaticText": "你花费数天打磨完整方案，和同组同事简单沟通过思路。开会时对方直接拿着你的成品上台汇报，只字不提你的付出。领导当场夸奖了这位同事。",
+    "situation": "劳动成果被同组同事抢占，当众蒙受不公",
+    "conflict": "当场对峙容易激化矛盾隐忍吃亏，私下沟通力度不足，向上申诉又怕落小心眼名声",
+    "triggers": [
+      "职场竞争",
+      "成果争夺",
+      "人际矛盾"
+    ],
+    "choices": [
+      {
+        "label": "会议尾声当场澄清溯源",
+        "description": "等对方讲完后，主动补充方案原始草稿、时间记录，点明核心构思出自自己",
+        "cost": "当场场面尴尬，和同事彻底撕破脸面",
+        "reward": "领导看清真相，确认你的核心贡献，树立不好欺负的形象",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 5,
+          "opportunity": 4,
+          "relationship": -8,
+          "stability": -3,
+          "resources": 2,
+          "wellbeing": -4
+        },
+        "feedback": "领导核实后纠正功劳归属，同事记恨在心后续处处提防你，但之后没人再敢随意侵占你的工作成果"
+      },
+      {
+        "label": "会后单独找领导递交证据说明",
+        "description": "散会后单独找上级，发送初稿、聊天记录等凭证，客观陈述创作过程，不指责同事",
+        "cost": "没法立刻扭转当场夸奖的第一印象，需要额外花费时间举证",
+        "reward": "领导私下心知肚明你的能力，后续分配核心项目优先给你，表面同事关系维持体面",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 3,
+          "relationship": -3,
+          "stability": 2,
+          "resources": 1,
+          "wellbeing": -2
+        },
+        "feedback": "领导私下安抚你，悄悄把后续优质资源分配给你，两人表面维持普通同事往来，不再深度合作"
+      },
+      {
+        "label": "隐忍不发作，后续做好文件留底防护",
+        "description": "不追究本次功劳，之后所有方案提前存档加密，不再提前和同事全盘交底思路",
+        "cost": "这次辛苦付出没有得到对等公开认可，心里委屈",
+        "reward": "维持团队和气氛围，杜绝以后再次被抢功的风险",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": -2,
+          "relationship": 4,
+          "stability": 4,
+          "resources": -1,
+          "wellbeing": 3
+        },
+        "feedback": "团队氛围依旧和睦，你养成严谨留档习惯，再也没有出现成果被窃取的情况，但本次的功劳完全归于对方"
+      }
+    ]
+  },
+  {
+    "id": "career_004",
+    "type": "opportunity",
+    "theme": "career",
+    "title": "副业变现稳定，纠结是否裸辞",
+    "tone": "heavy",
+    "summary": "副业收入追平主业，纠结要不要辞去朝九晚五工作",
+    "dramaticText": "经营一年的副业每月收入和上班工资持平，时间完全自由。但主业有五险一金、稳定年假，裸辞后收入没有兜底保障。身边有人劝稳有人劝闯。",
+    "situation": "主业稳定束缚多，副业自由但收入存在波动风险",
+    "conflict": "安稳保障和自由增收两条路线难以抉择，一旦选错影响长期生计",
+    "triggers": [
+      "副业抉择",
+      "裸辞风险",
+      "收入双线"
+    ],
+    "choices": [
+      {
+        "label": "直接裸辞全身心做副业",
+        "description": "递交辞职报告，全天投入拓展副业渠道、扩大经营规模",
+        "cost": "失去社保公积金稳定福利，前三个月收入出现小幅起伏波动",
+        "reward": "时间完全自主，深耕半年后副业收入远超原先工资",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 6,
+          "opportunity": 8,
+          "relationship": 1,
+          "stability": -7,
+          "resources": 4,
+          "wellbeing": -2
+        },
+        "feedback": "脱离职场束缚全力经营，半年后收益翻倍，但前期收入不稳时常焦虑，只能自行缴纳社保"
+      },
+      {
+        "label": "维持双线并行，缓慢扩大副业",
+        "description": "正常上班，利用下班、周末时间稳步拓展副业，不急于扩张规模",
+        "cost": "长期休息时间被挤压，身心持续处于忙碌状态",
+        "reward": "双份收入叠加，社保保障齐全，副业稳步增长无崩盘风险",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 4,
+          "relationship": 2,
+          "stability": 5,
+          "resources": 6,
+          "wellbeing": -3
+        },
+        "feedback": "两份收入同时入账，生活积蓄快速上涨，只是长期缺少完整放松假期"
+      },
+      {
+        "label": "缩减副业精力，专心深耕主业晋升",
+        "description": "减少副业接单量，把全部业余精力用来学习提升、维护职场人脉冲晋升",
+        "cost": "放弃副业增收空间，短期少一笔额外现金流",
+        "reward": "精力集中无内耗，职场晋升速度加快，身心作息规律轻松",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -5,
+          "opportunity": -5,
+          "relationship": 3,
+          "stability": 7,
+          "resources": -2,
+          "wellbeing": 7
+        },
+        "feedback": "全身心投入职场，一年顺利升职加薪，副业仅当作偶尔消遣小收入，生活压力大幅减轻"
+      }
+    ]
+  },
+  {
+    "id": "wealth_001",
+    "type": "opportunity",
+    "theme": "wealth",
+    "title": "熟人推荐高回报投资项目",
+    "tone": "tight",
+    "summary": "相熟朋友介绍一个短期高收益理财渠道",
+    "dramaticText": "认识多年的好友主动分享投资渠道，宣称短期回报率远超银行理财，不少共同熟人已经投入赚到小钱。对方催促尽快入场，名额有限。",
+    "situation": "手里有一笔闲置存款，面对高息投资邀约",
+    "conflict": "信任熟人想抓住收益，又担心项目暗藏风险亏损本金",
+    "triggers": [
+      "人际理财",
+      "高息诱惑",
+      "本金风险"
+    ],
+    "choices": [
+      {
+        "label": "投入大半闲置资金进场",
+        "description": "拿出7成存款全部投入项目，跟着朋友分批加仓坐等收益",
+        "cost": "本金暴露在未知风险下，一旦暴雷损失惨重",
+        "reward": "短期顺利拿到预期高额利息，资产快速增值",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 8,
+          "opportunity": 7,
+          "relationship": 5,
+          "stability": -8,
+          "resources": 6,
+          "wellbeing": -7
+        },
+        "feedback": "前两期按时拿到分红，你加大投入，后续项目资金周转放缓，回款周期拉长整日忧心本金安全"
+      },
+      {
+        "label": "小笔试水少量投入观察",
+        "description": "仅拿出一成小钱尝试，持续观察三个月回款稳定性，稳定后再考虑追加",
+        "cost": "只能赚取少量收益，错过短期大额盈利窗口",
+        "reward": "风险可控，即便出问题亏损金额极低，能摸清项目真实底细",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 3,
+          "relationship": 3,
+          "stability": 4,
+          "resources": 2,
+          "wellbeing": -1
+        },
+        "feedback": "小额投入安稳拿到收益，你看清项目底层模式，后续谨慎决定不再加仓，稳赚小额利润无大额亏损"
+      },
+      {
+        "label": "礼貌拒绝，只存稳健银行理财",
+        "description": "委婉推脱朋友邀约，资金全部存入低风险银行定期、国债产品",
+        "cost": "彻底失去博取高收益的机会，收益微薄增长缓慢",
+        "reward": "本金百分百安全无亏损，夜里不用为资金风险焦虑",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -6,
+          "opportunity": -6,
+          "relationship": -3,
+          "stability": 9,
+          "resources": -3,
+          "wellbeing": 8
+        },
+        "feedback": "朋友略有失落疏远，你的存款稳稳保本计息，完全没有本金亏损的焦虑烦恼"
+      }
+    ]
+  },
+  {
+    "id": "wealth_002",
+    "type": "trial",
+    "theme": "wealth",
+    "title": "亲友开口借钱周转大额资金",
+    "tone": "heavy",
+    "summary": "亲近亲戚生意遇困，上门开口借一大笔周转款",
+    "dramaticText": "关系很近的亲戚生意资金链断裂，开口借一笔不小的数目，承诺半年全额归还加少许补偿利息。你这笔钱原本预留用来置换大件消费品。",
+    "situation": "亲情人情和自身资金规划产生冲突",
+    "conflict": "不借伤亲情，借出后自身计划搁置、回款存在不确定性",
+    "triggers": [
+      "人情借贷",
+      "资金挪用",
+      "亲情金钱矛盾"
+    ],
+    "choices": [
+      {
+        "label": "全额借出全力帮忙",
+        "description": "取出预留全款转账借出，只简单口头约定还款时间，不强行索要借条",
+        "cost": "自己置换计划无限延期，资金回笼时间完全不可控",
+        "reward": "亲戚十分感激，家族里口碑大幅提升，人情债拉满",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 7,
+          "opportunity": 2,
+          "relationship": 8,
+          "stability": -6,
+          "resources": -7,
+          "wellbeing": -5
+        },
+        "feedback": "亲戚暂时渡过难关，但半年到期只还回一半钱款，剩余部分一再拖延，你不好意思频繁催促"
+      },
+      {
+        "label": "借出一半，签署书面借条",
+        "description": "拿出一半积蓄出借，白纸黑字写清金额、利息、还款日期，双方签字留存凭证",
+        "cost": "亲戚心里略有芥蒂，觉得你防备心太重不够仗义",
+        "reward": "保留一半自有资金不打乱规划，具备法律凭证保障回款",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 1,
+          "relationship": 2,
+          "stability": 3,
+          "resources": -4,
+          "wellbeing": -2
+        },
+        "feedback": "亲戚收下钱款，虽有点不快但按期足额还清借款，你的资金规划小幅推迟并未全盘打乱"
+      },
+      {
+        "label": "坦诚难处分文不借，提供其他帮扶办法",
+        "description": "直白说明自有资金有固定用途无法拆借，帮对方梳理融资渠道、咨询贷款方式",
+        "cost": "亲戚当下心生不满，短时间走动变少关系降温",
+        "reward": "自身资金规划丝毫不被影响，没有坏账亏损风险",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -4,
+          "opportunity": -1,
+          "relationship": -5,
+          "stability": 7,
+          "resources": 0,
+          "wellbeing": 6
+        },
+        "feedback": "亲戚初期对你冷淡，后来自行贷到资金周转，时间久了理解你的难处，关系慢慢恢复如初"
+      }
+    ]
+  },
+  {
+    "id": "wealth_003",
+    "type": "opportunity",
+    "theme": "wealth",
+    "title": "置换房产：加杠杆换大房还是持有小户型",
+    "tone": "open",
+    "summary": "楼市行情波动，纠结贷款置换更大户型住房",
+    "dramaticText": "现有小户型可以出手，首付资金足够，多贷百万就能置换改善大户型。房贷月供压力会翻倍，但房产空间、升值潜力更好；守住小房则无负债压力。",
+    "situation": "手握置换条件，在负债扩容和无债安稳之间选择",
+    "conflict": "改善居住资产增值 vs 零负债轻松生活两种财富模式",
+    "triggers": [
+      "房产置换",
+      "贷款杠杆",
+      "资产配置"
+    ],
+    "choices": [
+      {
+        "label": "高杠杆置换大户型",
+        "description": "挂牌出售小屋，办理高额房贷置换改善房，拉长还款年限降低月供压力",
+        "cost": "未来十几年背负大额债务，日常消费大幅压缩抗风险资金变少",
+        "reward": "居住品质大幅提升，优质房产长期保值增值空间更高",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 9,
+          "opportunity": 6,
+          "relationship": 3,
+          "stability": -7,
+          "resources": -5,
+          "wellbeing": -6
+        },
+        "feedback": "搬进宽敞新房生活舒适度提升，每月紧巴巴还贷款，不敢轻易失业、大额开销"
+      },
+      {
+        "label": "小幅升级，少贷轻压力置换",
+        "description": "换一套面积适中的刚需改善户型，尽量提高首付压缩贷款总额，月供增幅可控",
+        "cost": "居住提升幅度有限，增值空间不如顶配大户型",
+        "reward": "居住小幅升级，债务压力适中，手里依旧留存应急存款",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 3,
+          "relationship": 2,
+          "stability": 2,
+          "resources": -2,
+          "wellbeing": -1
+        },
+        "feedback": "户型刚刚好够用，月供负担不大，手里留有应急存款，资产稳步小幅增值"
+      },
+      {
+        "label": "保留小户型，存款稳健理财",
+        "description": "不置换房屋，小屋自住，卖房所得资金全部投入低波动理财积累现金流",
+        "cost": "居住环境保持现状，错失房产升值红利",
+        "reward": "零房贷负债，现金流充足，手里大把可支配备用资金",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -7,
+          "opportunity": -5,
+          "relationship": 1,
+          "stability": 8,
+          "resources": 7,
+          "wellbeing": 7
+        },
+        "feedback": "无债务一身轻松，每年理财收益补贴日常开销，只是住房空间多年没有提升"
+      }
+    ]
+  },
+  {
+    "id": "relationship_001",
+    "type": "trial",
+    "theme": "relationship",
+    "title": "伴侣频繁无底线透支你的包容",
+    "tone": "sharp",
+    "summary": "另一半习惯性拖延、失信，反复消耗你的耐心",
+    "dramaticText": "说好共同分担家务开销，对方屡次推脱爽约；承诺改正的毛病一次次重犯，每次犯错后短暂道歉转头照旧。你一次次妥协退让，内心积攒大量委屈。",
+    "situation": "亲密关系里单方面持续包容付出，对方没有对等改变",
+    "conflict": "强硬立规矩怕争吵冷战，继续隐忍内心不断内耗，温和沟通对方听不进去",
+    "triggers": [
+      "亲密磨合",
+      "边界建立",
+      "付出失衡"
+    ],
+    "choices": [
+      {
+        "label": "严肃摊牌，定下硬性奖惩规则",
+        "description": "坐下来深度谈话，清晰列出底线，犯错对应分开承担开销、暂停陪伴等实际约束",
+        "cost": "爆发激烈争吵，进入长达数天冷战期",
+        "reward": "对方正视问题，行为出现明显收敛改善，关系权责变得对等",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 6,
+          "opportunity": 2,
+          "relationship": -4,
+          "stability": -3,
+          "resources": 1,
+          "wellbeing": -5
+        },
+        "feedback": "大吵一架后对方意识到你的底线，慢慢改掉敷衍失信的习惯，两人相处不再是你单方面迁就"
+      },
+      {
+        "label": "分次温和沟通，循序渐进引导改变",
+        "description": "不一次性爆发，每次对方失约犯错时平静指出问题，一点点协商调整分工与承诺",
+        "cost": "改变速度极慢，短期内委屈依旧存在",
+        "reward": "全程无剧烈冲突，对方循序渐进调整，感情氛围平稳过渡",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 1,
+          "relationship": 2,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": -2
+        },
+        "feedback": "没有大矛盾爆发，对方一点点调整自身行为，半年后相处平衡度明显变好"
+      },
+      {
+        "label": "降低期待，不再主动付出迁就",
+        "description": "收起多余包容，各自打理自身事务，对方失信不再主动安慰弥补，保持疏离心态保护自己",
+        "cost": "两人亲密感快速变淡，感情温度持续下降",
+        "reward": "不再为对方的问题内耗，自身情绪稳定舒适",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -5,
+          "opportunity": -3,
+          "relationship": -7,
+          "stability": 2,
+          "resources": 0,
+          "wellbeing": 6
+        },
+        "feedback": "你不再委屈内耗，但彼此之间越来越客气疏远，亲密互动大幅减少"
+      }
+    ]
+  },
+  {
+    "id": "relationship_002",
+    "type": "opportunity",
+    "theme": "relationship",
+    "title": "多年挚友价值观分歧越来越大",
+    "tone": "warm",
+    "summary": "三观差异显现，昔日好友相处越来越别扭",
+    "dramaticText": "曾经无话不谈的老友，近几年消费、婚恋、职场观念完全相悖。见面聊天容易抬杠，客套变多真心变少，但十几年情谊舍不得轻易断掉。",
+    "situation": "老朋友成长路径不同，观念隔阂逐步拉大",
+    "conflict": "强行深交徒增别扭，彻底疏远可惜多年情谊，浅交维持又少了往日真诚",
+    "triggers": [
+      "友谊褪色",
+      "观念分歧",
+      "人脉取舍"
+    ],
+    "choices": [
+      {
+        "label": "坦诚交心，直面分歧深度谈心",
+        "description": "主动约对方长谈，直白说出彼此观念差异带来的隔阂，询问对方相处想法",
+        "cost": "谈话气氛尴尬，对方未必认同你的感受",
+        "reward": "打开心结，能磨合则修复深度友情，不合也能坦然划分相处距离",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 3,
+          "relationship": 5,
+          "stability": -2,
+          "resources": 2,
+          "wellbeing": -3
+        },
+        "feedback": "坦诚沟通后双方放下心结，约定避开争议话题，保留舒服的老友相处模式，不再强求三观一致"
+      },
+      {
+        "label": "调整相处模式，只聊轻松无争议话题",
+        "description": "见面只吃喝玩乐怀旧往事，避开婚恋、赚钱、人生规划等容易对立的话题",
+        "cost": "再也无法像从前一样倾诉心事深度交心",
+        "reward": "平稳维持多年交情，见面氛围轻松不吵架",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 1,
+          "relationship": 2,
+          "stability": 4,
+          "resources": 1,
+          "wellbeing": 1
+        },
+        "feedback": "聚会全程和睦愉快，友情变成温和淡如水的旧交情，适合偶尔相聚消遣"
+      },
+      {
+        "label": "慢慢淡出，减少主动联络频次",
+        "description": "不主动邀约、少回复长篇消息，对方联系礼貌应付，自然慢慢疏远淡开",
+        "cost": "彻底丢失一段长久陪伴的青春老友",
+        "reward": "不用勉强迎合分歧，社交精力留给同频新朋友",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": -4,
+          "relationship": -8,
+          "stability": 3,
+          "resources": -1,
+          "wellbeing": 5
+        },
+        "feedback": "两人联系越来越少，慢慢变成朋友圈点赞之交，你把社交重心转移到三观契合的新朋友身上"
+      }
+    ]
+  },
+  {
+    "id": "relationship_003",
+    "type": "trial",
+    "theme": "relationship",
+    "title": "相亲对象催促快速敲定婚嫁",
+    "tone": "heavy",
+    "summary": "相处没多久的相亲对象急于定婚期领证",
+    "dramaticText": "相亲认识相处不足两月，对方觉得彼此条件匹配，频繁催见家长、谈彩礼、定结婚日子。你内心还没完全确认心意，节奏完全跟不上对方。",
+    "situation": "婚恋节奏双方落差巨大，一方速推一方犹豫",
+    "conflict": "顺从节奏怕仓促选错人，直白放缓怕对方直接止损分手，拖延消耗双方时间",
+    "triggers": [
+      "相亲婚恋",
+      "节奏分歧",
+      "婚嫁抉择"
+    ],
+    "choices": [
+      {
+        "label": "加速流程，顺着对方节奏推进婚事",
+        "description": "答应尽快见双方父母，同步洽谈婚嫁各项事宜，压缩彼此了解磨合时间",
+        "cost": "没有充足时间看清对方本性，婚后磨合期隐患变多",
+        "reward": "快速敲定终身大事，满足双方家庭期待，省去反复相亲消耗",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 7,
+          "opportunity": 5,
+          "relationship": 6,
+          "stability": -4,
+          "resources": 3,
+          "wellbeing": -7
+        },
+        "feedback": "顺利敲定订婚事宜，但相处细节矛盾逐渐暴露，婚后前期频繁争吵磨合"
+      },
+      {
+        "label": "坦诚约定缓冲考察期限",
+        "description": "认真说明自己需要半年以上磨合观察，达成共识：这段时间正常相处，到期再决定婚嫁",
+        "cost": "对方短暂失落，家里长辈会施加催婚压力",
+        "reward": "拥有足够时间深度了解人品习惯，决策更加稳妥安心",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 2,
+          "relationship": 2,
+          "stability": 4,
+          "resources": 1,
+          "wellbeing": -1
+        },
+        "feedback": "对方接受缓冲期限，两人踏踏实实相处半年，彼此适配度清晰，再平稳敲定婚嫁"
+      },
+      {
+        "label": "不愿将就，直接坦诚分开止损",
+        "description": "直白告知节奏不合、心意未定，和平提出结束相亲相处关系",
+        "cost": "再次回归单身，重新投入相亲消耗时间精力",
+        "reward": "不用勉强自己赶进度，保留选择真心契合伴侣的余地",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -5,
+          "opportunity": -6,
+          "relationship": -9,
+          "stability": 2,
+          "resources": -2,
+          "wellbeing": 6
+        },
+        "feedback": "和平分手互不耽误，你重新慢慢接触其他相亲对象，不再被迫追赶别人的婚嫁节奏"
+      }
+    ]
+  },
+  {
+    "id": "relationship_004",
+    "type": "trial",
+    "theme": "relationship",
+    "title": "合作合伙人私心算计分摊利益",
+    "tone": "tight",
+    "summary": "生意合伙人暗中在成本、分红上动小心思",
+    "dramaticText": "合伙开店办事，对账时发现对方悄悄多报开销、划分收益时偏向自己。当面核对账目对方含糊打太极，不愿清晰透明对账。",
+    "situation": "合伙共事遭遇伙伴利己算计，信任出现裂痕",
+    "conflict": "强硬对账容易散伙生意崩盘，隐忍吃亏长期损失，温和协商对方不肯让步",
+    "triggers": [
+      "合伙人际",
+      "利益分割",
+      "信任危机"
+    ],
+    "choices": [
+      {
+        "label": "当众彻底对账，拆分权责重新签约",
+        "description": "拉上第三方会计全盘核账，重新拟定严谨分红、支出合同，明确违规追责条款",
+        "cost": "双方撕破信任，合作氛围僵硬，经营配合度下降",
+        "reward": "账目完全透明公平，杜绝后续继续被克扣利益",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 6,
+          "opportunity": 3,
+          "relationship": -8,
+          "stability": -3,
+          "resources": 4,
+          "wellbeing": -5
+        },
+        "feedback": "账目理清纠正差额，合同规范到位，但两人合作只剩利益往来，再也没有从前的信任默契"
+      },
+      {
+        "label": "私下一对一约谈，温和要求规范记账",
+        "description": "单独约合伙人沟通顾虑，提出统一记账平台、每笔支出双人确认的简易规范",
+        "cost": "对方表面答应，细小地方依旧偶尔钻空子",
+        "reward": "大体收益分配回归公平，合作关系不至于彻底破裂",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 2,
+          "relationship": -3,
+          "stability": 2,
+          "resources": 2,
+          "wellbeing": -2
+        },
+        "feedback": "大额收支变得透明公正，小额零碎开销对方依旧略有私心，整体生意能平稳运转"
+      },
+      {
+        "label": "隐忍观察，逐步筹备退出拆分",
+        "description": "暂时不撕破脸，默默留存全部对账证据，同步盘算转让股份、撤出合伙事宜",
+        "cost": "这段过渡期持续承受小幅利益损失",
+        "reward": "平稳体面抽身离场，不用直面激烈对峙冲突",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": -5,
+          "relationship": -6,
+          "stability": 4,
+          "resources": -6,
+          "wellbeing": 7
+        },
+        "feedback": "悄无声息谈妥股份转让，平稳退出合伙项目，避开正面争吵，但这段时间亏损了一部分收益"
+      }
+    ]
+  },
+  {
+    "id": "health_001",
+    "type": "trial",
+    "theme": "health",
+    "title": "长期熬夜透支，体检亮起多项异常",
+    "tone": "heavy",
+    "summary": "熬夜加班作息混乱，体检报告出现多处指标超标",
+    "dramaticText": "常年熬夜赶工作、刷手机，年度体检查出血脂、肝功能、睡眠指标全部异常。医生叮嘱必须早睡调养，但手头工作任务繁重没法早早休息。",
+    "situation": "身体健康发出预警，工作节奏和养生修复产生巨大冲突",
+    "conflict": "拼命保工作继续透支身体，放缓进度调养收入机会受损，折中平衡两边都顾不完美",
+    "triggers": [
+      "作息损耗",
+      "体检预警",
+      "身心平衡"
+    ],
+    "choices": [
+      {
+        "label": "优先赶进度，暂时延后调养计划",
+        "description": "照旧熬夜完成工作目标，等项目阶段结束后再抽时间调理身体",
+        "cost": "身体指标持续恶化，容易出现疲惫、头疼、免疫力下降等不适",
+        "reward": "工作节点顺利完成，绩效奖金、晋升机会不受耽误",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 8,
+          "opportunity": 5,
+          "relationship": 1,
+          "stability": -4,
+          "resources": 3,
+          "wellbeing": -9
+        },
+        "feedback": "项目顺利交付拿到奖励，但短短三个月频繁感冒乏力，复查指标比上次还要差一截"
+      },
+      {
+        "label": "调整工时，固定23点强制收工休息",
+        "description": "和领导沟通调整工作量，白天提高效率，到点停下工作绝不熬夜，空余时间简单运动饮食调理",
+        "cost": "短期工作产出略有下滑，部分加急任务只能延后交付",
+        "reward": "作息逐步规律，身体指标缓慢回落，精气神稳步恢复",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 2,
+          "relationship": 2,
+          "stability": 5,
+          "resources": 1,
+          "wellbeing": 4
+        },
+        "feedback": "工作量小幅缩减，坚持早睡调理半年后复查，大部分异常指标回归正常范围"
+      },
+      {
+        "label": "大幅减负，推掉非必要加班任务专心养身",
+        "description": "主动减少额外加班、副业任务，把晚间时间全部用来静养、运动、就医调理",
+        "cost": "绩效评分下滑，额外收入、职场展示机会大量减少",
+        "reward": "全身心养护身体，身心快速恢复稳定健康状态",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -6,
+          "opportunity": -6,
+          "relationship": 0,
+          "stability": 3,
+          "resources": -4,
+          "wellbeing": 9
+        },
+        "feedback": "全身心调养作息饮食，身体很快恢复舒适状态，只是当年绩效和额外收益大打折扣"
+      }
+    ]
+  },
+  {
+    "id": "health_002",
+    "type": "trial",
+    "theme": "health",
+    "title": "情绪内耗严重，时常焦虑失眠",
+    "tone": "tight",
+    "summary": "琐事堆积心理压力大，长期失眠情绪低落",
+    "dramaticText": "工作、人际、家庭琐事堆在一起，一到夜里脑子停不下来胡思乱想，入睡困难，白天心慌烦躁，影响做事效率和待人态度。朋友劝散心或寻求专业疏导。",
+    "situation": "心理情绪持续亚健康，自我调节收效微弱",
+    "conflict": "硬扛自愈怕持续加重，心理咨询花费时间金钱，放空散心会耽误手头事务进度",
+    "triggers": [
+      "情绪焦虑",
+      "失眠内耗",
+      "心理调节"
+    ],
+    "choices": [
+      {
+        "label": "硬扛自我消化，靠意志力压下情绪",
+        "description": "不额外花费时间散心咨询，强迫自己专注做事，压抑焦虑情绪不去理会",
+        "cost": "失眠、心慌持续加重，偶尔出现易怒崩溃的情况",
+        "reward": "不耽误工作生活进度，不用额外支出疏导费用",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 7,
+          "opportunity": 2,
+          "relationship": -3,
+          "stability": -2,
+          "resources": 0,
+          "wellbeing": -8
+        },
+        "feedback": "表面照常运转生活工作，但情绪阈值越来越低，一点小事就容易烦躁低落，睡眠质量持续变差"
+      },
+      {
+        "label": "每周固定短途散心运动疏导",
+        "description": "挤出固定时段爬山、散步、运动放空，搭配睡前冥想放松，自主调节情绪睡眠",
+        "cost": "每周牺牲几小时做事时间，短期看不到立刻好转效果",
+        "reward": "身心缓慢舒缓，焦虑程度逐步减轻，睡眠轻微改善",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 1,
+          "relationship": 1,
+          "stability": 4,
+          "resources": -1,
+          "wellbeing": 5
+        },
+        "feedback": "坚持规律运动放空两个月，夜里胡思乱想变少，入睡速度变快，情绪稳定不少"
+      },
+      {
+        "label": "预约心理咨询，系统疏导情绪问题",
+        "description": "预约正规心理咨询师定期面诊，完整梳理压力根源，配合专业方案调整心态睡眠",
+        "cost": "咨询有不小开销，每周需要预留固定就诊时间",
+        "reward": "精准找到内耗根源，快速缓解焦虑失眠，心理状态大幅修复",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -7,
+          "opportunity": -2,
+          "relationship": 3,
+          "stability": 5,
+          "resources": -5,
+          "wellbeing": 8
+        },
+        "feedback": "经过数次专业疏导，心结慢慢解开，失眠基本痊愈，待人处事心态平和很多"
+      }
+    ]
+  },
+  {
+    "id": "health_003",
+    "type": "opportunity",
+    "theme": "health",
+    "title": "健身办卡大额年卡vs零散单次锻炼",
+    "tone": "open",
+    "summary": "健身房推出低价年卡，纠结大额充值还是按需单次运动",
+    "dramaticText": "健身房大促年卡折扣力度很大，一次性付费便宜很多；但你不确定自己能不能长期坚持锻炼。单次付费单价更高，不想去也无资金沉没损失。",
+    "situation": "运动健身两种消费模式，考验自律与资金规划",
+    "conflict": "大额年卡划算但怕浪费，单次灵活省心但长期总成本更高",
+    "triggers": [
+      "健身自律",
+      "消费抉择",
+      "运动养护"
+    ],
+    "choices": [
+      {
+        "label": "直接办理全年大额年卡",
+        "description": "全款购入低价年卡，给自己资金压力倒逼每周固定到店训练",
+        "cost": "一次性支出一笔不小开支，一旦懈怠等于白白浪费钱款",
+        "reward": "单次健身成本极低，长期坚持能高效塑形增强体质",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 3,
+          "relationship": 0,
+          "stability": -3,
+          "resources": -6,
+          "wellbeing": 6
+        },
+        "feedback": "心疼花销倒逼自己高频锻炼，一年坚持下来体态体能明显提升，年卡价值完全用满"
+      },
+      {
+        "label": "先办季度卡试水适应节奏",
+        "description": "选择周期短、金额适中的季度卡，试练三个月，能坚持再续全年套餐",
+        "cost": "单价介于年卡和次卡之间，整体性价比中等",
+        "reward": "风险折中，适应健身节奏再长期投入，不会一次性大额亏损",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 1,
+          "relationship": 0,
+          "stability": 3,
+          "resources": -3,
+          "wellbeing": 3
+        },
+        "feedback": "三个月顺利养成运动习惯，之后续办年卡长期坚持，循序渐进养好身体状态"
+      },
+      {
+        "label": "不办卡，只按需单次付费锻炼",
+        "description": "无预付充值，想运动就买单次票，没时间没兴致就完全零开销",
+        "cost": "长期频繁锻炼的话累计花费远高于年卡，价格不划算",
+        "reward": "资金完全灵活无绑定，不想动毫无心理负担",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -4,
+          "opportunity": -2,
+          "relationship": 0,
+          "stability": 4,
+          "resources": -1,
+          "wellbeing": 1
+        },
+        "feedback": "自由度拉满，兴致来了才去锻炼，整体去的频次偏低，体能改善幅度比较有限"
+      }
+    ]
+  },
+  {
+    "id": "mindset_001",
+    "type": "trial",
+    "theme": "mindset",
+    "title": "总爱对比别人，越攀比越自卑焦虑",
+    "tone": "sharp",
+    "summary": "习惯性对比同辈朋友，心态失衡自我否定",
+    "dramaticText": "刷社交平台、同学聚会总忍不住对比别人的收入、房车、婚恋进度。越对比越觉得自己一事无成，明明自身稳步前进，内心却满是挫败感。",
+    "situation": "攀比心态持续内耗，无法接纳自身成长节奏",
+    "conflict": "强行屏蔽外界对比源治标不治本，放任攀比持续自我否定，主动重塑认知需要长期心理建设",
+    "triggers": [
+      "攀比内耗",
+      "自我认同",
+      "心态调整"
+    ],
+    "choices": [
+      {
+        "label": "主动对标优秀者，拼命追赶缩小差距",
+        "description": "把比自己优秀的同辈当作目标，疯狂加码加班、学习、搞副业追赶对方进度",
+        "cost": "超负荷给自己施压，身心紧绷疲惫，容易急功近利出错",
+        "reward": "行动力大幅提升，事业财富进度加速追赶上来",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 9,
+          "opportunity": 7,
+          "relationship": 2,
+          "stability": -5,
+          "resources": 4,
+          "wellbeing": -7
+        },
+        "feedback": "高强度追赶一年收入提升明显，但长期紧绷，一刻放松就充满愧疚焦虑"
+      },
+      {
+        "label": "减少信息输入，定量浏览社交圈子",
+        "description": "限制刷社交软件、少参加攀比氛围浓的聚会，每天留出时间复盘自身进步亮点",
+        "cost": "减少和同辈交流接触，社交圈子轻微收缩",
+        "reward": "外界对比刺激变少，心态慢慢平稳，能看见自己的成长",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 1,
+          "relationship": -2,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 5
+        },
+        "feedback": "屏蔽大量攀比信息后，不再频繁自我否定，踏实按照自己的节奏稳步生活"
+      },
+      {
+        "label": "深度接纳自我，放下对比专注自身感受",
+        "description": "主动练习正向心理暗示，承认人和人节奏不同，不再用别人标准评判自己好坏",
+        "cost": "短期行动力放缓，追赶别人的冲劲大幅减弱",
+        "reward": "从根源消除自卑内耗，内心稳定知足，幸福感显著提升",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -8,
+          "opportunity": -5,
+          "relationship": 3,
+          "stability": 7,
+          "resources": -2,
+          "wellbeing": 9
+        },
+        "feedback": "彻底摆脱攀比枷锁，不再羡慕别人的生活，安心经营属于自己的小日子，内心平和充实"
+      }
+    ]
+  },
+  {
+    "id": "mindset_002",
+    "type": "trial",
+    "theme": "mindset",
+    "title": "害怕犯错，遇事习惯性畏难退缩",
+    "tone": "tight",
+    "summary": "担心做不好出洋相，遇到新挑战第一反应逃避",
+    "dramaticText": "但凡陌生、没十足把握的任务机会，第一想法就是推脱躲开，怕失误被人笑话指责。明明有能力尝试，却被恐惧困住不敢迈出第一步。",
+    "situation": "恐惧失败的心态限制自我成长与机会抓取",
+    "conflict": "硬冲挑战容易受挫打击自信，一直逃避持续原地踏步，小步试探又需要克服心理恐惧",
+    "triggers": [
+      "畏难心态",
+      "失败恐惧",
+      "突破自我"
+    ],
+    "choices": [
+      {
+        "label": "强迫自己接下所有陌生挑战",
+        "description": "但凡有新机会一概不推脱，硬着头皮上手实操，允许过程里出错试错",
+        "cost": "初期频繁失误受挫，承受他人质疑眼光，自信心短暂受挫",
+        "reward": "快速积累陌生领域经验，大量抓住别人不敢接的上升机会",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 8,
+          "opportunity": 9,
+          "relationship": 3,
+          "stability": -6,
+          "resources": 5,
+          "wellbeing": -6
+        },
+        "feedback": "虽然前期踩坑不断，但半年后你能熟练驾驭各类新任务，职场里可承担的业务范围远超同龄人"
+      },
+      {
+        "label": "拆分任务，从小步骤试探入手",
+        "description": "接到挑战后拆解成简单小环节，先做准备功课，完成一小步确认没问题再往下推进",
+        "cost": "上手速度慢于敢冲的人，抢占机会的速度滞后",
+        "reward": "稳步试错风险低，每一步积累正向反馈，恐惧心理慢慢弱化",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 4,
+          "relationship": 2,
+          "stability": 5,
+          "resources": 2,
+          "wellbeing": 2
+        },
+        "feedback": "稳扎稳打分步攻克难题，失误很少，一点点克服畏难情绪，慢慢敢于承接中等难度新任务"
+      },
+      {
+        "label": "只承接百分百稳妥熟悉的事",
+        "description": "只要心里没十足把握的事情一律委婉拒绝，只做自己熟练不会出错的内容",
+        "cost": "永远接触不到新领域新机遇，能力圈子持续固化狭窄",
+        "reward": "全程零失误零指责，内心安稳没有受挫压力",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -7,
+          "opportunity": -8,
+          "relationship": -1,
+          "stability": 8,
+          "resources": -4,
+          "wellbeing": 7
+        },
+        "feedback": "生活工作毫无波折失误，但多年下来能力、眼界始终停留在舒适区，没有明显成长突破"
+      }
+    ]
+  },
+  {
+    "id": "mindset_003",
+    "type": "opportunity",
+    "theme": "mindset",
+    "title": "过往挫折留下心结，遇事容易悲观预判",
+    "tone": "heavy",
+    "summary": "以前栽过跟头，现在做事总先往最坏结果预想",
+    "dramaticText": "早年投资、人际、事业都踩过大坑，现在但凡开启一件新事，下意识先脑补失败崩盘的结局，很难放开手脚全力投入。明明局势尚可，心态先消极退缩。",
+    "situation": "过往创伤形成悲观思维定式，束缚当下行动力",
+    "conflict": "强行乐观硬冲怕再次受伤，躺平消极彻底放弃机会，循序渐进重塑心态耗时漫长",
+    "triggers": [
+      "悲观思维",
+      "过往心结",
+      "心态重塑"
+    ],
+    "choices": [
+      {
+        "label": "抛开顾虑全力投入，不信过往阴影",
+        "description": "刻意忽略消极预判，全身心投入新项目新尝试，相信这次情况和过去不一样",
+        "cost": "一旦遭遇不顺，旧挫败感加倍反扑，情绪打击更强",
+        "reward": "放开手脚全力发挥，更容易抓住翻盘逆袭的机会",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 7,
+          "opportunity": 8,
+          "relationship": 2,
+          "stability": -6,
+          "resources": 4,
+          "wellbeing": -7
+        },
+        "feedback": "本次项目顺利落地收获不错成果，一次成功大幅冲淡过去失败留下的心理阴影"
+      },
+      {
+        "label": "做好最坏预案，中性心态稳步推进",
+        "description": "提前制定失败兜底方案，不盲目乐观也不极致悲观，按计划一步步落地执行",
+        "cost": "筹备兜底方案耗费额外精力，前期筹备流程更加繁琐",
+        "reward": "进退皆有保障，弱化悲观内耗，以平稳心态推进事务，容错率拉满",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 5,
+          "relationship": 1,
+          "stability": 6,
+          "resources": 2,
+          "wellbeing": 3
+        },
+        "feedback": "凡事留有退路，你不再惧怕潜在失败，既能全力做事，也能坦然接受所有不理想的结果，心态逐渐成熟中性化"
+      },
+      {
+        "label": "顺从悲观直觉，规避一切高风险尝试",
+        "description": "尊重内心消极预判，主动放弃所有具备不确定性的新机会，只维持现有安稳状态",
+        "cost": "长期规避风险，错失大量翻盘、成长的优质契机，发展上限被锁死",
+        "reward": "规避所有潜在失败风险，内心无需承受试错带来的心理内耗",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -6,
+          "opportunity": -7,
+          "relationship": 0,
+          "stability": 9,
+          "resources": -3,
+          "wellbeing": 6
+        },
+        "feedback": "生活毫无波折与挫败，但日复一日停滞不前，过往的心结依旧存在，始终无法真正和解释怀"
+      }
+    ]
+  },
+  {
+    "id": "family_001",
+    "type": "trial",
+    "theme": "family",
+    "title": "长辈强行干涉你的职业与婚恋选择",
+    "tone": "heavy",
+    "summary": "父母强硬要求你换掉工作、快速相亲结婚",
+    "dramaticText": "父母觉得你现在的工作不稳定、伴侣不合心意，天天唠叨施压，甚至用断绝经济支持、情绪绑架的方式逼你妥协。你清楚自己的人生规划，但不愿和至亲彻底撕破脸面。",
+    "situation": "个人人生规划与长辈固有期待形成对立，被亲情裹挟被迫二选一",
+    "conflict": "顺从本心会引发家庭矛盾，妥协退让就要委屈自我，温和沟通无法扭转长辈固有观念",
+    "triggers": [
+      "长辈干涉",
+      "亲子分歧",
+      "人生规划拉扯"
+    ],
+    "choices": [
+      {
+        "label": "坚持自我，正面直白对抗施压",
+        "description": "严肃和父母摊牌，明确划定个人选择底线，直白告知不会更改工作与婚恋标准，拒绝被安排人生",
+        "cost": "家庭陷入数周冷战，长辈情绪失落，日常居家氛围压抑僵硬",
+        "reward": "彻底守住个人人生节奏，摆脱长辈掌控，不用活在他人期待之下",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 7,
+          "opportunity": 4,
+          "relationship": -8,
+          "stability": -4,
+          "resources": 2,
+          "wellbeing": -6
+        },
+        "feedback": "你坚守了自己的选择，父母不再强行逼迫，但双方之间产生隔阂，后续相处始终无法回到从前融洽状态"
+      },
+      {
+        "label": "分步安抚，用阶段性成果慢慢说服",
+        "description": "表面安抚长辈情绪，暂缓正面冲突，制定短期收入、婚恋阶段性目标，用实际成果逐步打消长辈顾虑",
+        "cost": "短期内仍要承受日常唠叨与精神施压，说服周期漫长，见效速度较慢",
+        "reward": "规避激烈家庭争吵，潜移默化改变长辈想法，平稳平衡亲情与自我选择",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 2,
+          "relationship": 3,
+          "stability": 5,
+          "resources": 1,
+          "wellbeing": -2
+        },
+        "feedback": "凭借稳定的工作收益和正向的生活状态，半年后父母态度逐步软化，不再强行插手你的职业与婚嫁大事"
+      },
+      {
+        "label": "暂时妥协敷衍，表面顺从私下照旧",
+        "description": "口头答应配合相亲、考虑更换工作，安抚长辈情绪，实际依旧按照自己原本的人生规划稳步前行",
+        "cost": "长期需要编造说辞敷衍长辈，内心积攒压抑情绪，谎言堆积易引发更大亲子矛盾",
+        "reward": "瞬间缓和当下家庭紧张氛围，规避即时冲突，无需直面正面争吵",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -4,
+          "opportunity": -3,
+          "relationship": 2,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 5
+        },
+        "feedback": "短期内家里风平浪静，但每次长辈追问进度都需要费心圆场，长久下来内心积压大量委屈与疲惫"
+      }
+    ]
+  },
+  {
+    "id": "family_002",
+    "type": "trial",
+    "theme": "family",
+    "title": "手足希望你出钱帮他偿还债务",
+    "tone": "tight",
+    "summary": "兄弟姐妹欠下外债，上门恳求你大额出资兜底还债",
+    "dramaticText": "至亲手足因盲目消费、投资亏损背负一笔高额外债，无力独自偿还，上门哭诉恳求你拿出个人积蓄帮忙填平欠款，并口头承诺按期归还。这笔存款是你多年辛苦积攒的应急备用金。",
+    "situation": "亲情道义与个人资产安全产生尖锐冲突，陷入两难抉择",
+    "conflict": "全额帮扶易滋生对方依赖性，小额资助易引发手足不满，直接拒绝会彻底损伤至亲情谊",
+    "triggers": [
+      "手足金钱矛盾",
+      "亲情帮扶",
+      "资产自保"
+    ],
+    "choices": [
+      {
+        "label": "拿出大半积蓄全额帮其还债",
+        "description": "取出个人大部分应急存款，一次性帮手足结清全部外债，仅口头叮嘱改正消费陋习，无硬性约束条款",
+        "cost": "自身应急储备大幅缩水，遭遇突发用钱需求时会陷入被动困境",
+        "reward": "收获手足极致感激，赢得家族所有亲属认可，积累丰厚人情",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 6,
+          "opportunity": 1,
+          "relationship": 9,
+          "stability": -7,
+          "resources": -8,
+          "wellbeing": -5
+        },
+        "feedback": "短期帮手足解决债务危机，但对方并未彻底改正挥霍陋习，一年后再次负债，习惯性依赖你帮忙兜底"
+      },
+      {
+        "label": "资助小额款项，同步制定还款约束",
+        "description": "拿出小部分积蓄予以帮扶，剩余债务指导对方打工偿还，双方签订正规借条，约定固定分期还款金额与日期",
+        "cost": "手足心生不满，认为你防备心过重，短期内对你产生隔阂",
+        "reward": "兼顾亲情与自身利益，既提供帮扶，又有法律凭证保障回款，守住大部分个人资产",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 0,
+          "relationship": 3,
+          "stability": 4,
+          "resources": -3,
+          "wellbeing": -1
+        },
+        "feedback": "手足初期略有芥蒂，但后续按期足额还款，同时改掉超前透支的习惯，至亲关系并未受到实质性影响"
+      },
+      {
+        "label": "资金无力帮扶，只提供规划和打工门路",
+        "description": "直白告知对方个人存款有刚性用途，无法拆借，全程协助梳理债务清单、对接兼职渠道、协商贷款分期方案",
+        "cost": "手足当下极度失望且心生怨恨，主动减少日常往来，亲情短期降温",
+        "reward": "个人资产分毫未损，倒逼手足自主成长，从根源戒掉依附他人的惰性",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -5,
+          "opportunity": -2,
+          "relationship": -6,
+          "stability": 8,
+          "resources": 0,
+          "wellbeing": 7
+        },
+        "feedback": "初期二人关系冷淡，手足独自吃苦还清债务，多年后幡然醒悟，明白你是为了让他学会独立，亲情重归于好"
+      }
+    ]
+  },
+  {
+    "id": "family_003",
+    "type": "opportunity",
+    "theme": "family",
+    "title": "长辈年迈，纠结是否接至身边赡养",
+    "tone": "warm",
+    "summary": "父母年事已高身体变差，纠结就近赡养还是异地留守养老",
+    "dramaticText": "独居老家的长辈身体素质逐年下滑，自理能力变差。接来身边可以贴身照料，但会打乱你的生活节奏、增加经济与精力负担；留守老家聘请护工，又无法随时掌握长辈健康状况。",
+    "situation": "孝心赡养与个人生活独立产生冲突，面临养老模式抉择",
+    "conflict": "贴身赡养透支个人精力财力，异地养老无法尽孝，折中托管难以平衡照料质量与成本",
+    "triggers": [
+      "长辈养老",
+      "亲情尽孝",
+      "生活取舍"
+    ],
+    "choices": [
+      {
+        "label": "直接接至身边，贴身全权照料",
+        "description": "收拾居住房间，将长辈接到自己住所一同生活，日常全权负责饮食起居、就医体检等所有事宜",
+        "cost": "私人独立空间消失，日常开销翻倍，自由时间被大幅压缩",
+        "reward": "全天候守护长辈健康，及时尽孝，规避独居养老的安全隐患",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 8,
+          "opportunity": -3,
+          "relationship": 7,
+          "stability": -5,
+          "resources": -6,
+          "wellbeing": -4
+        },
+        "feedback": "长辈身心健康得到全方位保障，亲子关系愈发和睦，但你长期兼顾工作与养老，身心处于高压疲惫状态"
+      },
+      {
+        "label": "同城就近租房，定时上门陪护",
+        "description": "在自家小区或邻近楼栋租赁小户型住房，让长辈同城独居，每日固定时段上门照料起居，兼顾陪伴与独立空间",
+        "cost": "新增房租、日常照料双重开销，每日需要耗费固定时间往返陪护",
+        "reward": "既能随时尽孝看护长辈，又能保留双方独立生活空间，矛盾冲突最少",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": -1,
+          "relationship": 4,
+          "stability": 3,
+          "resources": -4,
+          "wellbeing": 2
+        },
+        "feedback": "同城分隔的模式适配双方需求，长辈独居自在无束缚，你也能轻松兼顾工作与尽孝，整体生活节奏平稳可控"
+      },
+      {
+        "label": "留守老家，聘请专职护工托管",
+        "description": "让长辈继续留在熟悉的老宅，每月出资聘请专业护工，定期视频通话、节假日返乡探望陪伴",
+        "cost": "无法及时应对突发健康问题，长期缺失日常陪伴，内心易滋生愧疚感",
+        "reward": "无需改变双方现有生活模式，大幅降低个人精力消耗，仅增加固定养老支出",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -5,
+          "opportunity": 2,
+          "relationship": -5,
+          "stability": 6,
+          "resources": -3,
+          "wellbeing": 5
+        },
+        "feedback": "护工妥善照料长辈基础起居，老宅环境让长辈更有归属感，但你无法参与长辈日常，每逢佳节愧疚感会明显加重"
+      }
+    ]
+  },
+  {
+    "id": "family_004",
+    "type": "trial",
+    "theme": "family",
+    "title": "育儿观念分歧，和伴侣爆发家庭矛盾",
+    "tone": "sharp",
+    "summary": "孩子教育问题引发分歧，夫妻二人育儿理念严重对立",
+    "dramaticText": "孩子成长阶段，你主张从严管教、重视学业培养，伴侣坚持快乐教育、放养式成长；双方长辈也各自站队，小矛盾逐步升级，频繁爆发争吵，影响家庭整体氛围。",
+    "situation": "夫妻双方及长辈圈层，针对孩子教育模式产生全方位分歧",
+    "conflict": "强势推行自身理念易激化夫妻矛盾，妥协放任不利于孩子成长，折中调和双方均无法满意",
+    "triggers": [
+      "育儿分歧",
+      "夫妻矛盾",
+      "家庭教育"
+    ],
+    "choices": [
+      {
+        "label": "坚持自身理念，主导孩子教育规划",
+        "description": "主动牵头制定完整育儿方案，明确学业、兴趣、习惯培养细则，主导孩子所有教育相关决策",
+        "cost": "伴侣及对立长辈心生不满，夫妻频繁争吵，家庭内耗加剧",
+        "reward": "按照自己认可的模式培养孩子，牢牢把控孩子成长方向，减少教育隐患",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 6,
+          "opportunity": 2,
+          "relationship": -7,
+          "stability": -4,
+          "resources": 1,
+          "wellbeing": -5
+        },
+        "feedback": "孩子教育规划顺利落地，但夫妻关系持续紧张，家庭氛围压抑，偶尔会波及孩子情绪状态"
+      },
+      {
+        "label": "取长补短，融合两种教育模式折中执行",
+        "description": "夫妻深度沟通，拆分教育板块：学业基础从严管控，课余生活自由放养，划定双方权责，各司其职互不干涉",
+        "cost": "方案制定需要大量沟通磨合，部分教育规则存在冲突，执行难度偏高",
+        "reward": "兼顾双方教育诉求，化解夫妻矛盾，助力孩子全方位平衡成长",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 3,
+          "relationship": 4,
+          "stability": 5,
+          "resources": 2,
+          "wellbeing": 1
+        },
+        "feedback": "经过一段时间磨合，折中教育方案平稳落地，夫妻不再因育儿问题争吵，孩子兼顾学业与课余快乐成长"
+      },
+      {
+        "label": "搁置争议，暂时沿用原有松散教育模式",
+        "description": "暂时搁置教育理念分歧，不强行推行新方案，维持当下松散的育儿状态，规避正面冲突",
+        "cost": "孩子成长缺乏系统化规划，陋习容易逐步积累，长期不利于综合素质培养",
+        "reward": "快速平息家庭争吵，维护家庭和睦氛围，无需耗费精力博弈磨合",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -4,
+          "opportunity": -4,
+          "relationship": 6,
+          "stability": 7,
+          "resources": -1,
+          "wellbeing": 6
+        },
+        "feedback": "家庭矛盾暂时平息，但孩子缺乏系统化管教，学习习惯散漫，后续需要花费更多精力纠正不良习性"
+      }
+    ]
+  },
+  {
+    "id": "migration_001",
+    "type": "opportunity",
+    "theme": "migration",
+    "title": "举家搬迁去外地定居发展",
+    "tone": "open",
+    "summary": "有机会全家搬到另一座城市长期生活谋生",
+    "dramaticText": "外地一线城市拥有更优质的就业岗位、教育医疗资源，发展上限远超老家；但故土承载了你所有的人脉、亲友与社交圈层，举家搬迁意味着彻底斩断熟悉的生活根基，家庭成员内部意见也难以统一。",
+    "situation": "坚守故土安稳与奔赴异地开拓，两条人生迁徙路线二选一",
+    "conflict": "远走他乡能提升发展上限，但割舍亲情人脉；留守故土生活安稳，但错失优质成长配套资源",
+    "triggers": [
+      "城市迁徙",
+      "举家搬迁",
+      "环境变动抉择"
+    ],
+    "choices": [
+      {
+        "label": "敲定计划，一年内全家搬迁落地",
+        "description": "快速敲定目标城市房源、对接工作岗位、办理子女转学手续，一年内完成全家整体搬迁落地",
+        "cost": "前期适应期孤独无依靠，探亲往返成本高昂，长辈易出现水土不服、思乡情绪",
+        "reward": "收入、教育、医疗、居住条件全方位升级，拓宽子女与自身长期发展天花板",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 5,
+          "opportunity": 9,
+          "relationship": -7,
+          "stability": -6,
+          "resources": 4,
+          "wellbeing": -4
+        },
+        "feedback": "新家配套资源全面升级，家庭整体收入稳步上涨，耗费一年时间彻底融入本地圈层，唯一弊端就是节假日返乡路途奔波劳累"
+      },
+      {
+        "label": "先单人驻外试水，稳定后再接家人",
+        "description": "本人独自前往目标城市打拼 1-2 年，扎根站稳脚跟、置办住房后，再接全体家属前往团聚定居",
+        "cost": "长期与家人分居两地，日常亲情陪伴缺失，异地沟通易滋生误会与隔阂",
+        "reward": "拆分迁徙风险，提前探清异地真实生存现状，避免全家一次性押注造成重大损失",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 5,
+          "relationship": -3,
+          "stability": 2,
+          "resources": 2,
+          "wellbeing": -2
+        },
+        "feedback": "你顺利在异地站稳脚跟，两年后平稳接家人团聚，分阶段搬迁大幅降低水土不服风险，过渡过程毫无剧烈波折"
+      },
+      {
+        "label": "放弃搬迁机会，坚守故土长期发展",
+        "description": "婉拒所有异地发展邀约，留守老家深耕本地人脉圈层，依托现有资源稳步经营生活",
+        "cost": "彻底错失一线城市优质资源，个人与子女成长发展天花板受限",
+        "reward": "亲友邻里环绕身边，生活节奏熟悉安稳，亲情陪伴完整，无分居与适应压力",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -6,
+          "opportunity": -8,
+          "relationship": 8,
+          "stability": 9,
+          "resources": -3,
+          "wellbeing": 8
+        },
+        "feedback": "一辈子生活安稳无大风大浪，随时能与亲友相聚，但收入增长缓慢，始终无法触及更高层级的发展平台"
+      }
+    ]
+  },
+  {
+    "id": "migration_002",
+    "type": "trial",
+    "theme": "migration",
+    "title": "返乡创业：逃离高压大城市还是咬牙坚持",
+    "tone": "heavy",
+    "summary": "大城市内卷严重，纠结辞职返乡创业安稳度日",
+    "dramaticText": "一线城市职场内卷加剧，房价高昂、通勤疲惫，长期高压让你身心俱疲。老家扶持本土创业项目，成本低、生活压力小，但小城市行业资源匮乏，创业赛道狭窄。",
+    "situation": "高压内卷大城市 vs 低成本安逸小城，人生赛道双向抉择",
+    "conflict": "留城内卷透支身心，返乡创业上限过低，折中往返无法兼顾两边优势",
+    "triggers": [
+      "返乡发展",
+      "城市抉择",
+      "创业迁徙"
+    ],
+    "choices": [
+      {
+        "label": "果断辞职，全职返乡自主创业",
+        "description": "辞去大城市现有工作，返回老家结合自身技能，依托本地扶持政策启动创业项目",
+        "cost": "脱离行业核心圈层，信息资源滞后，创业试错成本全部由自己承担",
+        "reward": "生活成本骤降，无内卷内耗，时间自由，身心状态大幅回升",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 6,
+          "relationship": 7,
+          "stability": -5,
+          "resources": -4,
+          "wellbeing": 5
+        },
+        "feedback": "返乡后摆脱内卷焦虑，生活幸福感大幅提升，创业项目稳步盈利，但很难接触前沿行业资源，发展格局受限"
+      },
+      {
+        "label": "双城兼顾，线上创业 + 留守大城市工作",
+        "description": "保留大城市本职工作，利用业余时间对接老家供应链，开展线上轻资产创业项目，双线并行发展",
+        "cost": "休息时间被彻底挤压，长期高强度双线运转，身心疲惫无法放松",
+        "reward": "兼顾大城市资源与小城低成本优势，双重收入加持，进退皆有退路",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 7,
+          "opportunity": 4,
+          "relationship": 2,
+          "stability": 1,
+          "resources": 5,
+          "wellbeing": -3
+        },
+        "feedback": "双赛道同步创收，积蓄快速增长，但全年无完整假期，长期高压运转容易产生职业倦怠"
+      },
+      {
+        "label": "坚守大城市，调整心态适应内卷节奏",
+        "description": "放弃返乡念头，优化自身作息与工作模式，降低无效内耗，继续深耕一线城市职场赛道",
+        "cost": "生活成本居高不下，长期面临职场竞争压力，身心偶尔陷入焦虑",
+        "reward": "坐拥顶级行业资源与晋升机会，职业发展上限更高，人脉圈层质量远超小城",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": 7,
+          "relationship": -2,
+          "stability": 4,
+          "resources": 3,
+          "wellbeing": -1
+        },
+        "feedback": "你学会规避无效内卷，专注自身成长，在大城市稳步升职加薪，虽然压力尚存，但未来发展潜力远超返乡同行"
+      }
+    ]
+  },
+  {
+    "id": "wealth_004",
+    "type": "trial",
+    "theme": "wealth",
+    "title": "突发意外，急需大额应急资金周转",
+    "tone": "heavy",
+    "summary": "家人突发意外状况，短期内需要筹措大额应急资金",
+    "dramaticText": "至亲突发疾病需要立刻入院治疗，短期内需要一笔大额资金支付手术、住院费用。你手头存款不足，可选择借贷、变卖闲置资产、求助亲友三种方式筹措资金。",
+    "situation": "突发紧急危机，急需筹措资金解决家人就医难题",
+    "conflict": "借贷背负债务压力，变卖资产亏损折价，公开求助损耗个人口碑",
+    "triggers": [
+      "应急筹资",
+      "突发危机",
+      "资金周转"
+    ],
+    "choices": [
+      {
+        "label": "办理正规信贷，背负债务解决危机",
+        "description": "向银行申请低息消费信贷，快速筹措足额资金，优先保障家人治疗，后续按月分期偿还欠款",
+        "cost": "新增长期负债，每月固定还款挤占日常开销，短期内财务压力剧增",
+        "reward": "无需变卖固有资产，快速凑齐治疗资金，不耽误最佳救治时机",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 9,
+          "opportunity": -2,
+          "relationship": 3,
+          "stability": -6,
+          "resources": -7,
+          "wellbeing": -6
+        },
+        "feedback": "资金快速到位保障家人顺利救治，后续两年你需要缩减非必要消费，分期还清信贷欠款，财务状态长期紧绷"
+      },
+      {
+        "label": "折价变卖闲置资产，自筹资金脱困",
+        "description": "折价出售闲置奢侈品、多余理财产品、备用房产车位等资产，自筹资金支付医疗费用",
+        "cost": "资产折价出售产生直接经济亏损，部分稀缺资产卖出后难以重新购入",
+        "reward": "零借贷无负债风险，全程自主解决危机，无需向外求助欠人情",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": -3,
+          "relationship": 1,
+          "stability": 3,
+          "resources": -5,
+          "wellbeing": 2
+        },
+        "feedback": "虽然变卖资产亏损部分收益，但零债务顺利渡过危机，家人康复后你的财务状态逐步恢复平稳"
+      },
+      {
+        "label": "求助亲友，多方筹措资金",
+        "description": "向至亲好友拆借部分资金，凑齐医疗款项，后续慢慢分批归还人情欠款",
+        "cost": "欠下多笔人情债，日常相处多了一层亏欠心理",
+        "reward": "不用背负商业贷款利息，也不用折价变卖自有资产",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -4,
+          "opportunity": -1,
+          "relationship": -6,
+          "stability": 5,
+          "resources": -3,
+          "wellbeing": 4
+        },
+        "feedback": "资金快速凑齐助力家人康复，之后数年你逐一回馈帮扶过你的亲友，人情慢慢还清"
+      }
+    ]
+  },
+  {
+    "id": "wealth_005",
+    "type": "opportunity",
+    "theme": "wealth",
+    "title": "小众新兴赛道，低门槛创业投资风口",
+    "tone": "open",
+    "summary": "新兴小众赛道爆发红利，低门槛入局即可创业增收",
+    "dramaticText": "市场诞生一条全新小众蓝海赛道，现阶段入局门槛低、竞争压力小、短期回报率极高。业内资深人士预判红利周期仅有一年左右，错过本次机会短期内再无入局契机。",
+    "situation": "手握闲置资金，可选择入局新兴赛道或坚守传统稳健理财",
+    "conflict": "入局风口能快速增收，但赛道生命周期未知；保守理财安稳保本，但收益微薄错失红利",
+    "triggers": [
+      "风口投资",
+      "小众创业",
+      "资产增值"
+    ],
+    "choices": [
+      {
+        "label": "重仓入局，全力抢占赛道红利",
+        "description": "投入半数以上闲置资金，全方位布局新兴赛道，抢占早期市场红利",
+        "cost": "赛道红利周期存在不确定性，一旦风口褪去，本金大概率面临大幅亏损",
+        "reward": "短期借助行业风口，实现资产跨越式增值，收益远超传统理财数倍",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 7,
+          "opportunity": 9,
+          "relationship": 2,
+          "stability": -8,
+          "resources": 7,
+          "wellbeing": -5
+        },
+        "feedback": "你精准抓住风口窗口期，短短半年实现资产翻倍，在赛道热度顶峰及时退场，完成财富快速积累"
+      },
+      {
+        "label": "小额试水，轻资产测试市场反馈",
+        "description": "投入少量资金做轻资产尝试，以副业模式试水赛道，验证盈利逻辑后再追加投入",
+        "cost": "无法吃到风口最大红利，盈利规模有限，入场节奏落后重仓玩家",
+        "reward": "风险可控进退自由，既能享受赛道红利，又不会影响整体资产稳定性",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 4,
+          "relationship": 1,
+          "stability": 4,
+          "resources": 3,
+          "wellbeing": 1
+        },
+        "feedback": "轻资产模式稳步盈利，虽未实现财富暴涨，但低风险赚取额外收益，整体资产结构更加多元化"
+      },
+      {
+        "label": "无视风口，坚持低风险稳健理财",
+        "description": "放弃新兴赛道入局机会，所有闲置资金依旧投入国债、定期存款、头部货币基金等稳健产品",
+        "cost": "彻底错失短期暴富的风口机遇，资产增值速度长期处于低位",
+        "reward": "资产百分百安全无风险，不受市场风口波动影响，心态安稳无投资焦虑",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -6,
+          "opportunity": -7,
+          "relationship": 0,
+          "stability": 9,
+          "resources": -4,
+          "wellbeing": 8
+        },
+        "feedback": "你规避了赛道崩盘的潜在风险，资产稳步保本计息，虽无暴富机会，但从未经历投资亏损与焦虑内耗"
+      }
+    ]
+  },
+  {
+    "id": "network_001",
+    "type": "trial",
+    "theme": "network",
+    "title": "多年好友拉你给他的生意无偿站台背书",
+    "tone": "medium",
+    "summary": "关系很好的朋友想借你的名义和人脉给他的新生意背书",
+    "dramaticText": "一个交情多年的朋友新开了公司，想让你出面对接资源、在圈子里替他说话，甚至挂个名。帮，是拿自己的信用替他兜底；不帮，又怕伤了这些年的交情。",
+    "situation": "平辈好友请你用个人信用与人脉为其背书，人情与风险绑在一起",
+    "conflict": "答应要替对方的结果担信用风险，拒绝又怕被说不够意思、伤了交情",
+    "triggers": [
+      "仆役",
+      "兄弟",
+      "人际主线",
+      "比肩",
+      "劫财",
+      "朋友请托"
+    ],
+    "choices": [
+      {
+        "label": "答应帮忙，但把边界和丑话先讲清楚",
+        "style": "bold",
+        "description": "出面引荐，同时明确说清你只负责牵线、不为结果兜底，挂名免谈。",
+        "cost": "万一对方把事搞砸，圈子里多少会算到你头上。",
+        "reward": "守住交情也守住底线，人脉照常流动。",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 5,
+          "relationship": 4,
+          "stability": -2,
+          "resources": 3,
+          "wellbeing": -2
+        },
+        "feedback": "你把分寸提前讲明，朋友领情，后面真出岔子时你也不至于被连带追责。"
+      },
+      {
+        "label": "只接自己能负责的那部分，挂名不碰",
+        "style": "steady",
+        "description": "答应帮他引荐一两个具体的人，但拒绝挂名和公开背书。",
+        "cost": "对方可能觉得你留了一手、不够爽快。",
+        "reward": "人情给到位，信用风险留在自己可控范围内。",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 2,
+          "relationship": 1,
+          "stability": 4,
+          "resources": 1,
+          "wellbeing": 1
+        },
+        "feedback": "你帮了能帮的，也守住了不该越的线，关系没断，自己也没背上风险。"
+      },
+      {
+        "label": "婉拒站台，换个方式表达支持",
+        "style": "repair",
+        "description": "坦白说明不便背书，改成私下给建议、帮他看看合同条款。",
+        "cost": "短期内对方会有点失落，热乎劲降一档。",
+        "reward": "避开信用风险，关系靠真诚而不是挂名维系。",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": -2,
+          "relationship": 2,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没有勉强自己，朋友起初有点失望，但你给的实在建议反而让他记你的好。"
+      }
+    ]
+  },
+  {
+    "id": "network_002",
+    "type": "opportunity",
+    "theme": "network",
+    "title": "敬重的前辈主动要把你引荐进核心圈子",
+    "tone": "light",
+    "summary": "一位有分量的前辈愿意带你进他的人脉圈",
+    "dramaticText": "一个你一直敬重的前辈，主动说要在下次聚会把你介绍给圈里几个关键的人。机会难得，但你也清楚，进了圈子就意味着要还人情、要持续维护这层关系。",
+    "situation": "贵人级前辈主动引荐，机会与长期人情维护同时到来",
+    "conflict": "抓住引荐能打开人脉，但要持续投入精力维护，日后难免被回请人情",
+    "triggers": [
+      "仆役",
+      "兄弟",
+      "人际主线",
+      "天魁",
+      "天钺",
+      "贵人引荐"
+    ],
+    "choices": [
+      {
+        "label": "积极进圈，主动经营这层关系",
+        "style": "bold",
+        "description": "答应引荐，提前做功课，聚会上主动连接，后续持续跟进维护。",
+        "cost": "要持续投入时间精力，回头人情债也不少。",
+        "reward": "一次性接入高质量人脉，机会面被明显打开。",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 7,
+          "relationship": 5,
+          "stability": 0,
+          "resources": 4,
+          "wellbeing": -2
+        },
+        "feedback": "你认真经营这次机会，圈子开始认得你，但接下来你也得花心思维护这些关系。"
+      },
+      {
+        "label": "去，但只深交合得来的一两个",
+        "style": "steady",
+        "description": "接受引荐，不广撒网，只和真正契合的人建立长期联系。",
+        "cost": "可能错过部分泛泛之交带来的机会。",
+        "reward": "人脉重质不重量，维护成本可控。",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 4,
+          "relationship": 3,
+          "stability": 3,
+          "resources": 2,
+          "wellbeing": 1
+        },
+        "feedback": "你没被场面冲昏头，挑了能长期走下去的人深交，关系更稳也更省心。"
+      },
+      {
+        "label": "先谢绝，等自己更有底气再说",
+        "style": "repair",
+        "description": "婉谢这次引荐，先把自己的本事和作品打磨扎实。",
+        "cost": "错过当下这个窗口，下次未必还有。",
+        "reward": "避免在没准备好时消耗掉贵人的情面。",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": -3,
+          "relationship": 1,
+          "stability": 2,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你选择先沉淀，前辈表示理解，机会暂时放下，但你心里更踏实。"
+      }
+    ]
+  }
 ]
-},
-{
-"id": "family_001",
-"type": "trial",
-"theme": "family",
-"title": "长辈强行干涉你的职业与婚恋选择",
-"tone": "heavy",
-"summary": "父母强硬要求你换掉工作、快速相亲结婚",
-"dramaticText": "父母觉得你现在的工作不稳定、伴侣不合心意，天天唠叨施压，甚至用断绝经济支持、情绪绑架的方式逼你妥协。你清楚自己的人生规划，但不愿和至亲彻底撕破脸面。",
-"situation": "个人人生规划与长辈固有期待形成对立，被亲情裹挟被迫二选一",
-"conflict": "顺从本心会引发家庭矛盾，妥协退让就要委屈自我，温和沟通无法扭转长辈固有观念",
-"triggers": ["长辈干涉", "亲子分歧", "人生规划拉扯"],
-"choices": [
-{
-"label": "坚持自我，正面直白对抗施压",
-"description": "严肃和父母摊牌，明确划定个人选择底线，直白告知不会更改工作与婚恋标准，拒绝被安排人生",
-"cost": "家庭陷入数周冷战，长辈情绪失落，日常居家氛围压抑僵硬",
-"reward": "彻底守住个人人生节奏，摆脱长辈掌控，不用活在他人期待之下",
-"style": "bold",
-"stateEffects": {
-"pressure": 7,
-"opportunity": 4,
-"relationship": -8,
-"stability": -4,
-"resources": 2,
-"wellbeing": -6
-},
-"feedback": "你坚守了自己的选择，父母不再强行逼迫，但双方之间产生隔阂，后续相处始终无法回到从前融洽状态"
-},
-{
-"label": "分步安抚，用阶段性成果慢慢说服",
-"description": "表面安抚长辈情绪，暂缓正面冲突，制定短期收入、婚恋阶段性目标，用实际成果逐步打消长辈顾虑",
-"cost": "短期内仍要承受日常唠叨与精神施压，说服周期漫长，见效速度较慢",
-"reward": "规避激烈家庭争吵，潜移默化改变长辈想法，平稳平衡亲情与自我选择",
-"style": "steady",
-"stateEffects": {
-"pressure": 3,
-"opportunity": 2,
-"relationship": 3,
-"stability": 5,
-"resources": 1,
-"wellbeing": -2
-},
-"feedback": "凭借稳定的工作收益和正向的生活状态，半年后父母态度逐步软化，不再强行插手你的职业与婚嫁大事"
-},
-{
-"label": "暂时妥协敷衍，表面顺从私下照旧",
-"description": "口头答应配合相亲、考虑更换工作，安抚长辈情绪，实际依旧按照自己原本的人生规划稳步前行",
-"cost": "长期需要编造说辞敷衍长辈，内心积攒压抑情绪，谎言堆积易引发更大亲子矛盾",
-"reward": "瞬间缓和当下家庭紧张氛围，规避即时冲突，无需直面正面争吵",
-"style": "repair",
-"stateEffects": {
-"pressure": -4,
-"opportunity": -3,
-"relationship": 2,
-"stability": 3,
-"resources": 0,
-"wellbeing": 5
-},
-"feedback": "短期内家里风平浪静，但每次长辈追问进度都需要费心圆场，长久下来内心积压大量委屈与疲惫"
-}
-]
-},
-{
-"id": "family_002",
-"type": "trial",
-"theme": "family",
-"title": "手足希望你出钱帮他偿还债务",
-"tone": "tight",
-"summary": "兄弟姐妹欠下外债，上门恳求你大额出资兜底还债",
-"dramaticText": "至亲手足因盲目消费、投资亏损背负一笔高额外债，无力独自偿还，上门哭诉恳求你拿出个人积蓄帮忙填平欠款，并口头承诺按期归还。这笔存款是你多年辛苦积攒的应急备用金。",
-"situation": "亲情道义与个人资产安全产生尖锐冲突，陷入两难抉择",
-"conflict": "全额帮扶易滋生对方依赖性，小额资助易引发手足不满，直接拒绝会彻底损伤至亲情谊",
-"triggers": ["手足金钱矛盾", "亲情帮扶", "资产自保"],
-"choices": [
-{
-"label": "拿出大半积蓄全额帮其还债",
-"description": "取出个人大部分应急存款，一次性帮手足结清全部外债，仅口头叮嘱改正消费陋习，无硬性约束条款",
-"cost": "自身应急储备大幅缩水，遭遇突发用钱需求时会陷入被动困境",
-"reward": "收获手足极致感激，赢得家族所有亲属认可，积累丰厚人情",
-"style": "bold",
-"stateEffects": {
-"pressure": 6,
-"opportunity": 1,
-"relationship": 9,
-"stability": -7,
-"resources": -8,
-"wellbeing": -5
-},
-"feedback": "短期帮手足解决债务危机，但对方并未彻底改正挥霍陋习，一年后再次负债，习惯性依赖你帮忙兜底"
-},
-{
-"label": "资助小额款项，同步制定还款约束",
-"description": "拿出小部分积蓄予以帮扶，剩余债务指导对方打工偿还，双方签订正规借条，约定固定分期还款金额与日期",
-"cost": "手足心生不满，认为你防备心过重，短期内对你产生隔阂",
-"reward": "兼顾亲情与自身利益，既提供帮扶，又有法律凭证保障回款，守住大部分个人资产",
-"style": "steady",
-"stateEffects": {
-"pressure": 3,
-"opportunity": 0,
-"relationship": 3,
-"stability": 4,
-"resources": -3,
-"wellbeing": -1
-},
-"feedback": "手足初期略有芥蒂，但后续按期足额还款，同时改掉超前透支的习惯，至亲关系并未受到实质性影响"
-},
-{
-"label": "资金无力帮扶，只提供规划和打工门路",
-"description": "直白告知对方个人存款有刚性用途，无法拆借，全程协助梳理债务清单、对接兼职渠道、协商贷款分期方案",
-"cost": "手足当下极度失望且心生怨恨，主动减少日常往来，亲情短期降温",
-"reward": "个人资产分毫未损，倒逼手足自主成长，从根源戒掉依附他人的惰性",
-"style": "repair",
-"stateEffects": {
-"pressure": -5,
-"opportunity": -2,
-"relationship": -6,
-"stability": 8,
-"resources": 0,
-"wellbeing": 7
-},
-"feedback": "初期二人关系冷淡，手足独自吃苦还清债务，多年后幡然醒悟，明白你是为了让他学会独立，亲情重归于好"
-}
-]
-},
-{
-"id": "family_003",
-"type": "opportunity",
-"theme": "family",
-"title": "长辈年迈，纠结是否接至身边赡养",
-"tone": "warm",
-"summary": "父母年事已高身体变差，纠结就近赡养还是异地留守养老",
-"dramaticText": "独居老家的长辈身体素质逐年下滑，自理能力变差。接来身边可以贴身照料，但会打乱你的生活节奏、增加经济与精力负担；留守老家聘请护工，又无法随时掌握长辈健康状况。",
-"situation": "孝心赡养与个人生活独立产生冲突，面临养老模式抉择",
-"conflict": "贴身赡养透支个人精力财力，异地养老无法尽孝，折中托管难以平衡照料质量与成本",
-"triggers": ["长辈养老", "亲情尽孝", "生活取舍"],
-"choices": [
-{
-"label": "直接接至身边，贴身全权照料",
-"description": "收拾居住房间，将长辈接到自己住所一同生活，日常全权负责饮食起居、就医体检等所有事宜",
-"cost": "私人独立空间消失，日常开销翻倍，自由时间被大幅压缩",
-"reward": "全天候守护长辈健康，及时尽孝，规避独居养老的安全隐患",
-"style": "bold",
-"stateEffects": {
-"pressure": 8,
-"opportunity": -3,
-"relationship": 7,
-"stability": -5,
-"resources": -6,
-"wellbeing": -4
-},
-"feedback": "长辈身心健康得到全方位保障，亲子关系愈发和睦，但你长期兼顾工作与养老，身心处于高压疲惫状态"
-},
-{
-"label": "同城就近租房，定时上门陪护",
-"description": "在自家小区或邻近楼栋租赁小户型住房，让长辈同城独居，每日固定时段上门照料起居，兼顾陪伴与独立空间",
-"cost": "新增房租、日常照料双重开销，每日需要耗费固定时间往返陪护",
-"reward": "既能随时尽孝看护长辈，又能保留双方独立生活空间，矛盾冲突最少",
-"style": "steady",
-"stateEffects": {
-"pressure": 4,
-"opportunity": -1,
-"relationship": 4,
-"stability": 3,
-"resources": -4,
-"wellbeing": 2
-},
-"feedback": "同城分隔的模式适配双方需求，长辈独居自在无束缚，你也能轻松兼顾工作与尽孝，整体生活节奏平稳可控"
-},
-{
-"label": "留守老家，聘请专职护工托管",
-"description": "让长辈继续留在熟悉的老宅，每月出资聘请专业护工，定期视频通话、节假日返乡探望陪伴",
-"cost": "无法及时应对突发健康问题，长期缺失日常陪伴，内心易滋生愧疚感",
-"reward": "无需改变双方现有生活模式，大幅降低个人精力消耗，仅增加固定养老支出",
-"style": "repair",
-"stateEffects": {
-"pressure": -5,
-"opportunity": 2,
-"relationship": -5,
-"stability": 6,
-"resources": -3,
-"wellbeing": 5
-},
-"feedback": "护工妥善照料长辈基础起居，老宅环境让长辈更有归属感，但你无法参与长辈日常，每逢佳节愧疚感会明显加重"
-}
-]
-},
-{
-"id": "family_004",
-"type": "trial",
-"theme": "family",
-"title": "育儿观念分歧，和伴侣爆发家庭矛盾",
-"tone": "sharp",
-"summary": "孩子教育问题引发分歧，夫妻二人育儿理念严重对立",
-"dramaticText": "孩子成长阶段，你主张从严管教、重视学业培养，伴侣坚持快乐教育、放养式成长；双方长辈也各自站队，小矛盾逐步升级，频繁爆发争吵，影响家庭整体氛围。",
-"situation": "夫妻双方及长辈圈层，针对孩子教育模式产生全方位分歧",
-"conflict": "强势推行自身理念易激化夫妻矛盾，妥协放任不利于孩子成长，折中调和双方均无法满意",
-"triggers": ["育儿分歧", "夫妻矛盾", "家庭教育"],
-"choices": [
-{
-"label": "坚持自身理念，主导孩子教育规划",
-"description": "主动牵头制定完整育儿方案，明确学业、兴趣、习惯培养细则，主导孩子所有教育相关决策",
-"cost": "伴侣及对立长辈心生不满，夫妻频繁争吵，家庭内耗加剧",
-"reward": "按照自己认可的模式培养孩子，牢牢把控孩子成长方向，减少教育隐患",
-"style": "bold",
-"stateEffects": {
-"pressure": 6,
-"opportunity": 2,
-"relationship": -7,
-"stability": -4,
-"resources": 1,
-"wellbeing": -5
-},
-"feedback": "孩子教育规划顺利落地，但夫妻关系持续紧张，家庭氛围压抑，偶尔会波及孩子情绪状态"
-},
-{
-"label": "取长补短，融合两种教育模式折中执行",
-"description": "夫妻深度沟通，拆分教育板块：学业基础从严管控，课余生活自由放养，划定双方权责，各司其职互不干涉",
-"cost": "方案制定需要大量沟通磨合，部分教育规则存在冲突，执行难度偏高",
-"reward": "兼顾双方教育诉求，化解夫妻矛盾，助力孩子全方位平衡成长",
-"style": "steady",
-"stateEffects": {
-"pressure": 3,
-"opportunity": 3,
-"relationship": 4,
-"stability": 5,
-"resources": 2,
-"wellbeing": 1
-},
-"feedback": "经过一段时间磨合，折中教育方案平稳落地，夫妻不再因育儿问题争吵，孩子兼顾学业与课余快乐成长"
-},
-{
-"label": "搁置争议，暂时沿用原有松散教育模式",
-"description": "暂时搁置教育理念分歧，不强行推行新方案，维持当下松散的育儿状态，规避正面冲突",
-"cost": "孩子成长缺乏系统化规划，陋习容易逐步积累，长期不利于综合素质培养",
-"reward": "快速平息家庭争吵，维护家庭和睦氛围，无需耗费精力博弈磨合",
-"style": "repair",
-"stateEffects": {
-"pressure": -4,
-"opportunity": -4,
-"relationship": 6,
-"stability": 7,
-"resources": -1,
-"wellbeing": 6
-},
-"feedback": "家庭矛盾暂时平息，但孩子缺乏系统化管教，学习习惯散漫，后续需要花费更多精力纠正不良习性"
-}
-]
-},
-{
-"id": "migration_001",
-"type": "opportunity",
-"theme": "migration",
-"title": "举家搬迁去外地定居发展",
-"tone": "open",
-"summary": "有机会全家搬到另一座城市长期生活谋生",
-"dramaticText": "外地一线城市拥有更优质的就业岗位、教育医疗资源，发展上限远超老家；但故土承载了你所有的人脉、亲友与社交圈层，举家搬迁意味着彻底斩断熟悉的生活根基，家庭成员内部意见也难以统一。",
-"situation": "坚守故土安稳与奔赴异地开拓，两条人生迁徙路线二选一",
-"conflict": "远走他乡能提升发展上限，但割舍亲情人脉；留守故土生活安稳，但错失优质成长配套资源",
-"triggers": ["城市迁徙", "举家搬迁", "环境变动抉择"],
-"choices": [
-{
-"label": "敲定计划，一年内全家搬迁落地",
-"description": "快速敲定目标城市房源、对接工作岗位、办理子女转学手续，一年内完成全家整体搬迁落地",
-"cost": "前期适应期孤独无依靠，探亲往返成本高昂，长辈易出现水土不服、思乡情绪",
-"reward": "收入、教育、医疗、居住条件全方位升级，拓宽子女与自身长期发展天花板",
-"style": "bold",
-"stateEffects": {
-"pressure": 5,
-"opportunity": 9,
-"relationship": -7,
-"stability": -6,
-"resources": 4,
-"wellbeing": -4
-},
-"feedback": "新家配套资源全面升级，家庭整体收入稳步上涨，耗费一年时间彻底融入本地圈层，唯一弊端就是节假日返乡路途奔波劳累"
-},
-{
-"label": "先单人驻外试水，稳定后再接家人",
-"description": "本人独自前往目标城市打拼 1-2 年，扎根站稳脚跟、置办住房后，再接全体家属前往团聚定居",
-"cost": "长期与家人分居两地，日常亲情陪伴缺失，异地沟通易滋生误会与隔阂",
-"reward": "拆分迁徙风险，提前探清异地真实生存现状，避免全家一次性押注造成重大损失",
-"style": "steady",
-"stateEffects": {
-"pressure": 3,
-"opportunity": 5,
-"relationship": -3,
-"stability": 2,
-"resources": 2,
-"wellbeing": -2
-},
-"feedback": "你顺利在异地站稳脚跟，两年后平稳接家人团聚，分阶段搬迁大幅降低水土不服风险，过渡过程毫无剧烈波折"
-},
-{
-"label": "放弃搬迁机会，坚守故土长期发展",
-"description": "婉拒所有异地发展邀约，留守老家深耕本地人脉圈层，依托现有资源稳步经营生活",
-"cost": "彻底错失一线城市优质资源，个人与子女成长发展天花板受限",
-"reward": "亲友邻里环绕身边，生活节奏熟悉安稳，亲情陪伴完整，无分居与适应压力",
-"style": "repair",
-"stateEffects": {
-"pressure": -6,
-"opportunity": -8,
-"relationship": 8,
-"stability": 9,
-"resources": -3,
-"wellbeing": 8
-},
-"feedback": "一辈子生活安稳无大风大浪，随时能与亲友相聚，但收入增长缓慢，始终无法触及更高层级的发展平台"
-}
-]
-},
-{
-"id": "migration_002",
-"type": "trial",
-"theme": "migration",
-"title": "返乡创业：逃离高压大城市还是咬牙坚持",
-"tone": "heavy",
-"summary": "大城市内卷严重，纠结辞职返乡创业安稳度日",
-"dramaticText": "一线城市职场内卷加剧，房价高昂、通勤疲惫，长期高压让你身心俱疲。老家扶持本土创业项目，成本低、生活压力小，但小城市行业资源匮乏，创业赛道狭窄。",
-"situation": "高压内卷大城市 vs 低成本安逸小城，人生赛道双向抉择",
-"conflict": "留城内卷透支身心，返乡创业上限过低，折中往返无法兼顾两边优势",
-"triggers": ["返乡发展", "城市抉择", "创业迁徙"],
-"choices": [
-{
-"label": "果断辞职，全职返乡自主创业",
-"description": "辞去大城市现有工作，返回老家结合自身技能，依托本地扶持政策启动创业项目",
-"cost": "脱离行业核心圈层，信息资源滞后，创业试错成本全部由自己承担",
-"reward": "生活成本骤降，无内卷内耗，时间自由，身心状态大幅回升",
-"style": "bold",
-"stateEffects": {
-"pressure": 4,
-"opportunity": 6,
-"relationship": 7,
-"stability": -5,
-"resources": -4,
-"wellbeing": 5
-},
-"feedback": "返乡后摆脱内卷焦虑，生活幸福感大幅提升，创业项目稳步盈利，但很难接触前沿行业资源，发展格局受限"
-},
-{
-"label": "双城兼顾，线上创业 + 留守大城市工作",
-"description": "保留大城市本职工作，利用业余时间对接老家供应链，开展线上轻资产创业项目，双线并行发展",
-"cost": "休息时间被彻底挤压，长期高强度双线运转，身心疲惫无法放松",
-"reward": "兼顾大城市资源与小城低成本优势，双重收入加持，进退皆有退路",
-"style": "steady",
-"stateEffects": {
-"pressure": 7,
-"opportunity": 4,
-"relationship": 2,
-"stability": 1,
-"resources": 5,
-"wellbeing": -3
-},
-"feedback": "双赛道同步创收，积蓄快速增长，但全年无完整假期，长期高压运转容易产生职业倦怠"
-},
-{
-"label": "坚守大城市，调整心态适应内卷节奏",
-"description": "放弃返乡念头，优化自身作息与工作模式，降低无效内耗，继续深耕一线城市职场赛道",
-"cost": "生活成本居高不下，长期面临职场竞争压力，身心偶尔陷入焦虑",
-"reward": "坐拥顶级行业资源与晋升机会，职业发展上限更高，人脉圈层质量远超小城",
-"style": "repair",
-"stateEffects": {
-"pressure": -3,
-"opportunity": 7,
-"relationship": -2,
-"stability": 4,
-"resources": 3,
-"wellbeing": -1
-},
-"feedback": "你学会规避无效内卷，专注自身成长，在大城市稳步升职加薪，虽然压力尚存，但未来发展潜力远超返乡同行"
-}
-]
-},
-{
-"id": "wealth_004",
-"type": "trial",
-"theme": "wealth",
-"title": "突发意外，急需大额应急资金周转",
-"tone": "heavy",
-"summary": "家人突发意外状况，短期内需要筹措大额应急资金",
-"dramaticText": "至亲突发疾病需要立刻入院治疗，短期内需要一笔大额资金支付手术、住院费用。你手头存款不足，可选择借贷、变卖闲置资产、求助亲友三种方式筹措资金。",
-"situation": "突发紧急危机，急需筹措资金解决家人就医难题",
-"conflict": "借贷背负债务压力，变卖资产亏损折价，公开求助损耗个人口碑",
-"triggers": ["应急筹资", "突发危机", "资金周转"],
-"choices": [
-{
-"label": "办理正规信贷，背负债务解决危机",
-"description": "向银行申请低息消费信贷，快速筹措足额资金，优先保障家人治疗，后续按月分期偿还欠款",
-"cost": "新增长期负债，每月固定还款挤占日常开销，短期内财务压力剧增",
-"reward": "无需变卖固有资产，快速凑齐治疗资金，不耽误最佳救治时机",
-"style": "bold",
-"stateEffects": {
-"pressure": 9,
-"opportunity": -2,
-"relationship": 3,
-"stability": -6,
-"resources": -7,
-"wellbeing": -6
-},
-"feedback": "资金快速到位保障家人顺利救治，后续两年你需要缩减非必要消费，分期还清信贷欠款，财务状态长期紧绷"
-},
-{
-"label": "折价变卖闲置资产，自筹资金脱困",
-"description": "折价出售闲置奢侈品、多余理财产品、备用房产车位等资产，自筹资金支付医疗费用",
-"cost": "资产折价出售产生直接经济亏损，部分稀缺资产卖出后难以重新购入",
-"reward": "零借贷无负债风险，全程自主解决危机，无需向外求助欠人情",
-"style": "steady",
-"stateEffects": {
-"pressure": 4,
-"opportunity": -3,
-"relationship": 1,
-"stability": 3,
-"resources": -5,
-"wellbeing": 2
-},
-"feedback": "虽然变卖资产亏损部分收益，但零债务顺利渡过危机，家人康复后你的财务状态逐步恢复平稳"
-},
-{
-"label": "求助亲友，多方筹措资金",
-"description": "向至亲好友拆借部分资金，凑齐医疗款项，后续慢慢分批归还人情欠款",
-"cost": "欠下多笔人情债，日常相处多了一层亏欠心理",
-"reward": "不用背负商业贷款利息，也不用折价变卖自有资产",
-"style": "repair",
-"stateEffects": {
-"pressure": -4,
-"opportunity": -1,
-"relationship": -6,
-"stability": 5,
-"resources": -3,
-"wellbeing": 4
-},
-"feedback": "资金快速凑齐助力家人康复，之后数年你逐一回馈帮扶过你的亲友，人情慢慢还清"
-}
-]
-},
-{
-"id": "wealth_005",
-"type": "opportunity",
-"theme": "wealth",
-"title": "小众新兴赛道，低门槛创业投资风口",
-"tone": "open",
-"summary": "新兴小众赛道爆发红利，低门槛入局即可创业增收",
-"dramaticText": "市场诞生一条全新小众蓝海赛道，现阶段入局门槛低、竞争压力小、短期回报率极高。业内资深人士预判红利周期仅有一年左右，错过本次机会短期内再无入局契机。",
-"situation": "手握闲置资金，可选择入局新兴赛道或坚守传统稳健理财",
-"conflict": "入局风口能快速增收，但赛道生命周期未知；保守理财安稳保本，但收益微薄错失红利",
-"triggers": ["风口投资", "小众创业", "资产增值"],
-"choices": [
-{
-"label": "重仓入局，全力抢占赛道红利",
-"description": "投入半数以上闲置资金，全方位布局新兴赛道，抢占早期市场红利",
-"cost": "赛道红利周期存在不确定性，一旦风口褪去，本金大概率面临大幅亏损",
-"reward": "短期借助行业风口，实现资产跨越式增值，收益远超传统理财数倍",
-"style": "bold",
-"stateEffects": {
-"pressure": 7,
-"opportunity": 9,
-"relationship": 2,
-"stability": -8,
-"resources": 7,
-"wellbeing": -5
-},
-"feedback": "你精准抓住风口窗口期，短短半年实现资产翻倍，在赛道热度顶峰及时退场，完成财富快速积累"
-},
-{
-"label": "小额试水，轻资产测试市场反馈",
-"description": "投入少量资金做轻资产尝试，以副业模式试水赛道，验证盈利逻辑后再追加投入",
-"cost": "无法吃到风口最大红利，盈利规模有限，入场节奏落后重仓玩家",
-"reward": "风险可控进退自由，既能享受赛道红利，又不会影响整体资产稳定性",
-"style": "steady",
-"stateEffects": {
-"pressure": 2,
-"opportunity": 4,
-"relationship": 1,
-"stability": 4,
-"resources": 3,
-"wellbeing": 1
-},
-"feedback": "轻资产模式稳步盈利，虽未实现财富暴涨，但低风险赚取额外收益，整体资产结构更加多元化"
-},
-{
-"label": "无视风口，坚持低风险稳健理财",
-"description": "放弃新兴赛道入局机会，所有闲置资金依旧投入国债、定期存款、头部货币基金等稳健产品",
-"cost": "彻底错失短期暴富的风口机遇，资产增值速度长期处于低位",
-"reward": "资产百分百安全无风险，不受市场风口波动影响，心态安稳无投资焦虑",
-"style": "repair",
-"stateEffects": {
-"pressure": -6,
-"opportunity": -7,
-"relationship": 0,
-"stability": 9,
-"resources": -4,
-"wellbeing": 8
-},
-"feedback": "你规避了赛道崩盘的潜在风险，资产稳步保本计息，虽无暴富机会，但从未经历投资亏损与焦虑内耗"
-}
-]
-}]
