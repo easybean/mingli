@@ -1141,3 +1141,48 @@
   font-size: 12.5px;
   line-height: 1.5;
 }
+
+/* —— 综合解读卡 —— */
+.choice-overall {
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+  margin-bottom: 4px;
+}
+
+.choice-overall-kicker {
+  margin: 0;
+  color: var(--gold);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+}
+
+.choice-overall-body {
+  margin: 0;
+  color: var(--ink-soft);
+  font-family: var(--font-serif);
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+.choice-overall-alerts {
+  display: grid;
+  gap: 6px;
+  margin: 2px 0 0;
+  padding-left: 18px;
+}
+
+.choice-overall-alerts li {
+  color: var(--ink-muted);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.choice-scope-lead {
+  margin: 18px 0 -2px;
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}

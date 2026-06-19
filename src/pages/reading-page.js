@@ -46,9 +46,24 @@ export const renderReadingPage = (state) => {
 
       <section class="reading-block">
         <h2 class="reading-block-title">你的选择</h2>
-        ${choice.hasAny
-          ? choice.scopes.map(renderChoiceScope).join('')
-          : `<p class="page-subtitle reading-empty">${escapeHtml(choice.emptyText)}</p>`}
+        ${choice.hasAny ? `
+          <article class="choice-overall card-main">
+            <p class="choice-overall-kicker">综合解读 · ${choice.overall.count} 个选择</p>
+            <p class="choice-overall-body">${escapeHtml(choice.overall.body)}</p>
+            ${choice.overall.pills.length ? `
+              <div class="feedback-deltas">
+                ${choice.overall.pills.map((pill) => `<span class="delta-pill delta-pill--${pill.tone}">${escapeHtml(pill.label)} ${pill.value > 0 ? '+' : ''}${pill.value}</span>`).join('')}
+              </div>
+            ` : ''}
+            ${choice.overall.alerts.length ? `
+              <ul class="choice-overall-alerts">
+                ${choice.overall.alerts.map((a) => `<li>${escapeHtml(a)}</li>`).join('')}
+              </ul>
+            ` : ''}
+          </article>
+          <p class="choice-scope-lead">分尺度看：</p>
+          ${choice.scopes.map(renderChoiceScope).join('')}
+        ` : `<p class="page-subtitle reading-empty">${escapeHtml(choice.emptyText)}</p>`}
       </section>
 
       <section class="reading-block">
