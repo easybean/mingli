@@ -118,6 +118,7 @@ src/
 7. `docs/life-state-system.md` — lifeState v1 设计
 8. `docs/life-game-algorithm.md` — 人生游戏出题算法（信号/打分/选卡、流命宫叠本命、五尺度怎么随运限变）
 9. `docs/backend-scope-cadence.md` — 后端阶段：多尺度关卡的持久化/刷新机制（周期键+自定节奏+跨期解锁，长尺度做总结而非 grind）
+10. `docs/card-authoring-guide.md` — 关卡命题设计指南（可整篇交给大模型出题）：卡片 schema、触发词词表、主题↔信号、分类矩阵、示范题、现成 prompt
 
 ## 不要做的事
 
