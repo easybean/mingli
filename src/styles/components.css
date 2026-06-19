@@ -1,24 +1,24 @@
 /* ============== 星象主题：玻璃态表面 ============== */
 /* 半透明表面 + 模糊，让 #cosmos 星空从卡片后透出。只在星象主题生效。 */
-:root[data-theme="star"] .card,
-:root[data-theme="star"] .card-main,
-:root[data-theme="star"] .card-plain,
-:root[data-theme="star"] .card-soft,
-:root[data-theme="star"] .scenario-card,
-:root[data-theme="star"] .choice-card,
-:root[data-theme="star"] .feedback-card,
-:root[data-theme="star"] .quick-entry,
-:root[data-theme="star"] .modal-sheet,
-:root[data-theme="star"] .daily-focus-strip,
-:root[data-theme="star"] .life-state-panel,
-:root[data-theme="star"] .collapsible-section,
-:root[data-theme="star"] .final-summary,
-:root[data-theme="star"] .action-log li,
-:root[data-theme="star"] .stage-item,
-:root[data-theme="star"] .feedback-detail,
-:root[data-theme="star"] .theme-option,
-:root[data-theme="star"] .field input,
-:root[data-theme="star"] .field select {
+:root[data-theme^="star"] .card,
+:root[data-theme^="star"] .card-main,
+:root[data-theme^="star"] .card-plain,
+:root[data-theme^="star"] .card-soft,
+:root[data-theme^="star"] .scenario-card,
+:root[data-theme^="star"] .choice-card,
+:root[data-theme^="star"] .feedback-card,
+:root[data-theme^="star"] .quick-entry,
+:root[data-theme^="star"] .modal-sheet,
+:root[data-theme^="star"] .daily-focus-strip,
+:root[data-theme^="star"] .life-state-panel,
+:root[data-theme^="star"] .collapsible-section,
+:root[data-theme^="star"] .final-summary,
+:root[data-theme^="star"] .action-log li,
+:root[data-theme^="star"] .stage-item,
+:root[data-theme^="star"] .feedback-detail,
+:root[data-theme^="star"] .theme-option,
+:root[data-theme^="star"] .field input,
+:root[data-theme^="star"] .field select {
   backdrop-filter: blur(7px);
   -webkit-backdrop-filter: blur(7px);
 }

@@ -20,7 +20,7 @@ const starfield = (n, w, h, seed) => {
     const rad = (0.4 + r() * 1.5).toFixed(2);
     const o = (0.18 + r() * 0.7).toFixed(2);
     const big = Number(rad) > 1.4;
-    els += `<circle cx="${cx}" cy="${cy}" r="${rad}" fill="${big ? '#F0DCA0' : '#E8DFC9'}" opacity="${o}"`
+    els += `<circle cx="${cx}" cy="${cy}" r="${rad}" fill="${big ? 'var(--cosmos-star-bright,#F0DCA0)' : 'var(--cosmos-star,#E8DFC9)'}" opacity="${o}"`
       + `${big ? ' style="filter:drop-shadow(0 0 3px rgba(240,220,160,0.9))"' : ''}/>`;
   }
   return `<svg width="100%" height="100%" viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid slice">${els}</svg>`;
@@ -41,12 +41,12 @@ const dipper = () => {
   // 连线顺序即折线，勺口开口不闭合
   const chain = [yaoguang, kaiyang, yuheng, tianquan, tianji, tianxuan, tianshu];
 
-  const line = `<polyline points="${chain.map((p) => p.join(',')).join(' ')}" fill="none" stroke="#D6B25E" stroke-width="1.2" stroke-opacity="0.55" stroke-linejoin="round" stroke-linecap="round"/>`;
-  const guide = `<line x1="${tianshu[0]}" y1="${tianshu[1]}" x2="${polaris[0]}" y2="${polaris[1]}" stroke="#B498DC" stroke-width="1" stroke-opacity="0.4" stroke-dasharray="3 5"/>`;
-  const ziwei = `<circle cx="${polaris[0]}" cy="${polaris[1]}" r="4.5" fill="#B498DC" opacity="0.9" style="filter:drop-shadow(0 0 7px rgba(180,152,220,0.9))"/>`
-    + `<circle cx="${polaris[0]}" cy="${polaris[1]}" r="9" fill="none" stroke="#B498DC" stroke-width="0.8" stroke-opacity="0.4"/>`;
-  const stars = chain.map((p) => `<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="#F0DCA0" style="filter:drop-shadow(0 0 5px rgba(240,220,160,0.95))"/>`
-    + `<circle cx="${p[0]}" cy="${p[1]}" r="7" fill="none" stroke="#D6B25E" stroke-width="0.6" stroke-opacity="0.35"/>`).join('');
+  const line = `<polyline points="${chain.map((p) => p.join(',')).join(' ')}" fill="none" stroke="var(--cosmos-line,#D6B25E)" stroke-width="1.2" stroke-opacity="0.55" stroke-linejoin="round" stroke-linecap="round"/>`;
+  const guide = `<line x1="${tianshu[0]}" y1="${tianshu[1]}" x2="${polaris[0]}" y2="${polaris[1]}" stroke="var(--cosmos-violet,#B498DC)" stroke-width="1" stroke-opacity="0.4" stroke-dasharray="3 5"/>`;
+  const ziwei = `<circle cx="${polaris[0]}" cy="${polaris[1]}" r="4.5" fill="var(--cosmos-violet,#B498DC)" opacity="0.9" style="filter:drop-shadow(0 0 7px rgba(180,152,220,0.9))"/>`
+    + `<circle cx="${polaris[0]}" cy="${polaris[1]}" r="9" fill="none" stroke="var(--cosmos-violet,#B498DC)" stroke-width="0.8" stroke-opacity="0.4"/>`;
+  const stars = chain.map((p) => `<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="var(--cosmos-star-bright,#F0DCA0)" style="filter:drop-shadow(0 0 5px rgba(240,220,160,0.95))"/>`
+    + `<circle cx="${p[0]}" cy="${p[1]}" r="7" fill="none" stroke="var(--cosmos-line,#D6B25E)" stroke-width="0.6" stroke-opacity="0.35"/>`).join('');
   return `<svg width="100%" height="100%" viewBox="0 30 380 250" style="overflow:visible">${line}${guide}${ziwei}${stars}</svg>`;
 };
 
@@ -66,24 +66,24 @@ const baguaRing = (size, withTaichi) => {
     t.forEach((yang, j) => {
       const y = (j - 1) * step;
       if (yang) {
-        bars += `<rect x="${-barW / 2}" y="${y - lh / 2}" width="${barW}" height="${lh}" rx="${lh / 2}" fill="#D6B25E"/>`;
+        bars += `<rect x="${-barW / 2}" y="${y - lh / 2}" width="${barW}" height="${lh}" rx="${lh / 2}" fill="var(--cosmos-line,#D6B25E)"/>`;
       } else {
         const seg = (barW - gap) / 2;
-        bars += `<rect x="${-barW / 2}" y="${y - lh / 2}" width="${seg}" height="${lh}" rx="${lh / 2}" fill="#D6B25E"/>`
-          + `<rect x="${gap / 2}" y="${y - lh / 2}" width="${seg}" height="${lh}" rx="${lh / 2}" fill="#D6B25E"/>`;
+        bars += `<rect x="${-barW / 2}" y="${y - lh / 2}" width="${seg}" height="${lh}" rx="${lh / 2}" fill="var(--cosmos-line,#D6B25E)"/>`
+          + `<rect x="${gap / 2}" y="${y - lh / 2}" width="${seg}" height="${lh}" rx="${lh / 2}" fill="var(--cosmos-line,#D6B25E)"/>`;
       }
     });
     groups += `<g transform="rotate(${ang} ${c} ${c}) translate(${c} ${c - R})">${bars}</g>`;
   });
-  const rings = `<circle cx="${c}" cy="${c}" r="${R + size * 0.075}" fill="none" stroke="#D6B25E" stroke-width="0.8" stroke-opacity="0.5"/>`
-    + `<circle cx="${c}" cy="${c}" r="${R - size * 0.075}" fill="none" stroke="#D6B25E" stroke-width="0.8" stroke-opacity="0.5"/>`;
+  const rings = `<circle cx="${c}" cy="${c}" r="${R + size * 0.075}" fill="none" stroke="var(--cosmos-line,#D6B25E)" stroke-width="0.8" stroke-opacity="0.5"/>`
+    + `<circle cx="${c}" cy="${c}" r="${R - size * 0.075}" fill="none" stroke="var(--cosmos-line,#D6B25E)" stroke-width="0.8" stroke-opacity="0.5"/>`;
   let taichi = '';
   if (withTaichi) {
     const tr = size * 0.13;
-    taichi = `<circle cx="${c}" cy="${c}" r="${tr}" fill="none" stroke="#D6B25E" stroke-width="1" stroke-opacity="0.7"/>`
-      + `<path d="M ${c} ${c - tr} A ${tr / 2} ${tr / 2} 0 0 1 ${c} ${c} A ${tr / 2} ${tr / 2} 0 0 0 ${c} ${c + tr}" fill="none" stroke="#D6B25E" stroke-width="1" stroke-opacity="0.7"/>`
-      + `<circle cx="${c}" cy="${c - tr / 2}" r="${tr * 0.13}" fill="#D6B25E" opacity="0.85"/>`
-      + `<circle cx="${c}" cy="${c + tr / 2}" r="${tr * 0.13}" fill="none" stroke="#D6B25E" stroke-width="1" stroke-opacity="0.7"/>`;
+    taichi = `<circle cx="${c}" cy="${c}" r="${tr}" fill="none" stroke="var(--cosmos-line,#D6B25E)" stroke-width="1" stroke-opacity="0.7"/>`
+      + `<path d="M ${c} ${c - tr} A ${tr / 2} ${tr / 2} 0 0 1 ${c} ${c} A ${tr / 2} ${tr / 2} 0 0 0 ${c} ${c + tr}" fill="none" stroke="var(--cosmos-line,#D6B25E)" stroke-width="1" stroke-opacity="0.7"/>`
+      + `<circle cx="${c}" cy="${c - tr / 2}" r="${tr * 0.13}" fill="var(--cosmos-line,#D6B25E)" opacity="0.85"/>`
+      + `<circle cx="${c}" cy="${c + tr / 2}" r="${tr * 0.13}" fill="none" stroke="var(--cosmos-line,#D6B25E)" stroke-width="1" stroke-opacity="0.7"/>`;
   }
   return `<svg width="100%" height="100%" viewBox="0 0 ${size} ${size}">${rings}${groups}${taichi}</svg>`;
 };

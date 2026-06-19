@@ -84,80 +84,6 @@
   --shadow-cta: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 8px 20px -10px rgba(208, 169, 90, 0.50);
 }
 
-/* ================= 水墨禅意（浅色 · 可选） =================
-   宣纸基底 · 深墨为字 · 若有若无的青 · 赭石极少。
-   只覆盖随主题变化的变量，结构 / 尺寸沿用默认。 */
-:root[data-theme="ink"] {
-  /* 表面 */
-  --page-bg: #F0ECE4;
-  --surface: #FBF9F4;
-  --surface-soft: #EAE6DD;
-  --overlay: rgba(42, 48, 46, 0.05);
-  --paper-noise: repeating-linear-gradient(135deg, rgba(42, 48, 46, 0.012) 0 2px, transparent 2px 7px);
-
-  /* 青色（替代金色的点缀角色） */
-  --gold: #6E8F88;
-  --gold-bright: #4F6F69;
-  --gold-deep: #4F6F69;
-  --gold-soft: rgba(110, 143, 136, 0.16);
-  --gold-line: rgba(110, 143, 136, 0.40);
-  --gold-line-strong: rgba(110, 143, 136, 0.55);
-  --gold-gradient: #2A2E2C; /* 主按钮：深墨实心 */
-
-  /* 赭石（替代朱砂红的极少强调角色） */
-  --accent-red: #A6705C;
-  --accent-red-soft: rgba(166, 112, 92, 0.14);
-  --accent-red-line: rgba(166, 112, 92, 0.32);
-  --accent-red-text: #A6705C;
-
-  /* 文字（深墨系） */
-  --ink: #2A2E2C;
-  --ink-soft: #565E5A;
-  --ink-muted: #565E5A;
-  --muted: #8C918A;
-  --muted-deep: #6E726E;
-
-  /* 状态色 */
-  --positive: #4F6F69;
-  --positive-text: #4F6F69;
-  --positive-line: rgba(110, 143, 136, 0.40);
-  --positive-soft: rgba(110, 143, 136, 0.14);
-  --warning: #6E8F88;
-  --warning-text: #4F6F69;
-  --neutral-line: rgba(42, 46, 44, 0.14);
-  --neutral-soft: rgba(42, 46, 44, 0.05);
-  --neutral-text: #8C918A;
-
-  /* 线条 */
-  --line: rgba(42, 46, 44, 0.10);
-  --line-soft: rgba(42, 46, 44, 0.07);
-  --dash-line: rgba(42, 46, 44, 0.16);
-
-  /* 主题派生色 */
-  --bg-glow-top: rgba(42, 48, 46, 0.05);
-  --bg-glow-bottom: rgba(110, 143, 136, 0.06);
-  --select-bg: rgba(110, 143, 136, 0.22);
-  --card-main-border: rgba(42, 46, 44, 0.07);
-  --card-top-wash: rgba(255, 255, 255, 0.6);
-  --inset-wash: rgba(42, 46, 44, 0.02);
-  --button-primary-ink: #F4F1EA;
-  --button-secondary-bg: rgba(110, 143, 136, 0.10);
-  --focus-ring: rgba(110, 143, 136, 0.14);
-  --accent-line-soft: rgba(110, 143, 136, 0.20);
-  --cost-text: #A6705C;
-  --progress-end: #6E8F88;
-  --track-bg: rgba(42, 46, 44, 0.10);
-  --backdrop: rgba(42, 46, 44, 0.45);
-  --nav-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.35)), var(--page-bg);
-  --shadow-dot: 0 0 7px rgba(110, 143, 136, 0.7);
-  --shadow-nav-active: 0 0 7px rgba(110, 143, 136, 0.6);
-
-  /* 阴影（浅色版用柔和投影代替金光） */
-  --shadow-soft: 0 18px 44px -30px rgba(42, 48, 46, 0.35);
-  --shadow-gold-glow: 0 0 0 1px rgba(110, 143, 136, 0.18), 0 12px 30px -18px rgba(42, 48, 46, 0.28);
-  --shadow-cta: 0 10px 26px -14px rgba(42, 48, 46, 0.45);
-}
-
 /* ================= 星象（深空 · 默认） =================
    深空近黑紫底 + 程序星图/北斗/八卦氛围层 + 玻璃态卡片。
    表面用半透明，让 #cosmos 星空从卡片后透出（配合 backdrop-filter）。 */
@@ -230,4 +156,84 @@
   --shadow-soft: 0 36px 80px -40px rgba(0, 0, 0, 0.9);
   --shadow-gold-glow: 0 0 0 1px rgba(214, 178, 94, 0.25), 0 0 50px -16px rgba(214, 178, 94, 0.45);
   --shadow-cta: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 10px 26px -10px rgba(214, 178, 94, 0.7);
+}
+
+/* ================= 星象 · 昼（浅色 · 可选） =================
+   晨纸暖底 + 同一套星图/北斗/八卦氛围层 + 白玉玻璃卡片。
+   与「星象」共用 #cosmos，但宇宙层用深一档的金/紫，才在浅纸上看得见。 */
+:root[data-theme="star-day"] {
+  /* 表面 */
+  --page-bg: #F4EFE4;
+  --surface: rgba(255, 255, 255, 0.72);
+  --surface-soft: #F3ECDF;
+  --overlay: rgba(46, 40, 66, 0.05);
+  --paper-noise: none;
+
+  /* 金色（浅底上用深金，保证对比度） */
+  --gold: #A8801F;
+  --gold-bright: #C9A646;
+  --gold-deep: #CFA449;
+  --gold-soft: rgba(168, 128, 31, 0.16);
+  --gold-line: rgba(168, 128, 31, 0.40);
+  --gold-line-strong: rgba(168, 128, 31, 0.55);
+  --gold-gradient: linear-gradient(180deg, #EBCE7E, #CFA449);
+
+  /* 朱砂红（仅点今日/当前） */
+  --accent-red: #C8452F;
+  --accent-red-soft: rgba(200, 69, 47, 0.14);
+  --accent-red-line: rgba(200, 69, 47, 0.32);
+  --accent-red-text: #C8452F;
+
+  /* 文字（暖墨 + 紫调） */
+  --ink: #2E2842;
+  --ink-soft: #4A4360;
+  --ink-muted: #5C5470;
+  --muted: #8B8398;
+  --muted-deep: #6B6478;
+
+  /* 状态色 */
+  --positive: #4F7C63;
+  --positive-text: #4F7C63;
+  --positive-line: rgba(79, 124, 99, 0.36);
+  --positive-soft: rgba(79, 124, 99, 0.16);
+  --warning: #A8801F;
+  --warning-text: #A8801F;
+  --neutral-line: rgba(46, 40, 66, 0.16);
+  --neutral-soft: rgba(46, 40, 66, 0.05);
+  --neutral-text: #8B8398;
+
+  /* 线条 */
+  --line: rgba(46, 40, 66, 0.10);
+  --line-soft: rgba(46, 40, 66, 0.07);
+  --dash-line: rgba(46, 40, 66, 0.16);
+
+  /* 主题派生色 */
+  --bg-glow-top: rgba(120, 86, 170, 0.16);
+  --bg-glow-bottom: rgba(196, 150, 72, 0.12);
+  --select-bg: rgba(168, 128, 31, 0.24);
+  --card-main-border: rgba(168, 128, 31, 0.20);
+  --card-top-wash: rgba(255, 255, 255, 0.60);
+  --inset-wash: rgba(255, 255, 255, 0.45);
+  --button-primary-ink: #1A1207;
+  --button-secondary-bg: rgba(168, 128, 31, 0.10);
+  --focus-ring: rgba(168, 128, 31, 0.18);
+  --accent-line-soft: rgba(168, 128, 31, 0.20);
+  --cost-text: #B5542E;
+  --progress-end: #C9A646;
+  --track-bg: rgba(46, 40, 66, 0.08);
+  --backdrop: rgba(46, 40, 66, 0.45);
+  --nav-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.72)), var(--page-bg);
+  --shadow-dot: 0 0 8px rgba(200, 69, 47, 0.5);
+  --shadow-nav-active: 0 0 8px rgba(168, 128, 31, 0.55);
+
+  /* 阴影（浅色版柔和投影） */
+  --shadow-soft: 0 18px 44px -28px rgba(46, 40, 66, 0.30);
+  --shadow-gold-glow: 0 0 0 1px rgba(168, 128, 31, 0.22), 0 12px 30px -18px rgba(46, 40, 66, 0.22);
+  --shadow-cta: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 10px 26px -12px rgba(168, 128, 31, 0.5);
+
+  /* 宇宙层配色（浅纸上要深一档才看得见） */
+  --cosmos-star-bright: #C9A646;
+  --cosmos-star: #A8801F;
+  --cosmos-line: #A8801F;
+  --cosmos-violet: #7A56AC;
 }

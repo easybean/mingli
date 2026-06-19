@@ -724,22 +724,13 @@
   box-shadow: 0 0 6px rgba(240, 220, 160, 0.85);
 }
 
-.theme-swatch--dark {
-  background: radial-gradient(130% 100% at 30% 0%, #2C2620, #181410);
+.theme-swatch--star-day {
+  background: radial-gradient(130% 120% at 80% 0%, rgba(122, 86, 172, 0.28), transparent 55%), linear-gradient(160deg, #FBF6EC, #F4EFE4);
 }
 
-.theme-swatch--dark::after {
-  background: #D0A95A;
-  box-shadow: 0 0 6px rgba(208, 169, 90, 0.6);
-}
-
-.theme-swatch--ink {
-  background: radial-gradient(130% 100% at 30% 0%, #FBF9F4, #EAE6DD);
-}
-
-.theme-swatch--ink::after {
-  background: #6E8F88;
-  box-shadow: 0 0 6px rgba(110, 143, 136, 0.6);
+.theme-swatch--star-day::after {
+  background: #A8801F;
+  box-shadow: 0 0 6px rgba(168, 128, 31, 0.5);
 }
 
 .theme-option-text {

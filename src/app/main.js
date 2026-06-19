@@ -11,7 +11,7 @@ let cosmosMounted = false;
 
 const render = () => {
   document.documentElement.setAttribute('data-theme', state.ui.theme);
-  if (state.ui.theme === 'star' && cosmosRoot && !cosmosMounted) {
+  if (state.ui.theme.startsWith('star') && cosmosRoot && !cosmosMounted) {
     cosmosRoot.innerHTML = renderCosmos();
     cosmosMounted = true;
   }

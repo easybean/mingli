@@ -20,7 +20,7 @@ const defaultBirthInput = () => ({
 
 const savedInput = loadBirthInput();
 
-export const THEMES = ['star', 'dark', 'ink'];
+export const THEMES = ['star', 'star-day'];
 const DEFAULT_THEME = 'star';
 const savedTheme = loadTheme();
 

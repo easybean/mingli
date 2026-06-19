@@ -57,7 +57,8 @@ body::before {
   pointer-events: none;
 }
 
-:root[data-theme="star"] #cosmos {
+:root[data-theme="star"] #cosmos,
+:root[data-theme="star-day"] #cosmos {
   display: block;
 }
 
