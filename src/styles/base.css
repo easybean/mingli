@@ -33,11 +33,12 @@ body::before {
   z-index: 0;
 }
 
-#app,
-#bottom-nav {
+#app {
   position: relative;
   z-index: 1;
 }
+/* #bottom-nav 的定位/层级交给 .bottom-nav（fixed + z-index:20）处理，
+   这里不要用 ID 选择器覆盖它的 position，否则导航会退回文档流、不再吸底。 */
 
 /* —— 宇宙背景层（星象主题） —— */
 @keyframes star-spin {
