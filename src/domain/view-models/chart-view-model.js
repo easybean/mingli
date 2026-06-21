@@ -119,14 +119,27 @@ export const createChartViewModel = (state) => {
     verdict: item.verdict || '',
   }));
 
+  // 命盘依据拆两处：八字基础随基础信息一起看；紫微主线按 theme 归到对应筛选 tab 下。
+  const baziBasis = {
+    title: '八字基础',
+    summary: data.reading?.manual?.[0]?.body || data.reading?.headline || '',
+  };
+  const topicsByTheme = (data.reading?.topics || []).reduce((acc, topic) => {
+    if (topic.id) acc[topic.id] = { title: topic.title, summary: topic.takeaway || topic.summary || '' };
+    return acc;
+  }, {});
+  const activeTopic = filter !== 'all' ? (topicsByTheme[filter] || null) : null;
+
   return {
     ready: true,
     title: '命盘',
     subtitle: '紫微十二宫与八字四柱的结构盘面，供查阅依据。',
     basics,
+    baziBasis: baziBasis.summary ? baziBasis : null,
     highlights,
     filters,
     activeFilter: filter,
+    activeTopic,
     cards: visibleCards,
     patterns,
   };

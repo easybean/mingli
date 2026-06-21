@@ -50,7 +50,7 @@ export const renderHomePage = (state) => {
         `).join('')}
       </section>
 
-      <button class="deep-reading-link" type="button" data-page="reading">想看为什么是这些题？进入深度解读 →</button>
+      <button class="deep-reading-link" type="button" data-page="chart">想看为什么是这些题？去命盘看命盘依据 →</button>
     </section>
   `;
 };

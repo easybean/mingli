@@ -1,5 +1,6 @@
 import { escapeHtml } from '../components/html.js';
 import { createGameViewModel } from '../domain/view-models/game-view-model.js';
+import { createReadingViewModel } from '../domain/view-models/reading-view-model.js';
 
 const renderChoice = (choice, index, selectedIndex) => {
   const selected = selectedIndex === index;
@@ -73,26 +74,61 @@ const renderCompletion = (model) => `
   </section>
   <section class="next-actions">
     <button class="button button-secondary" type="button" data-page="today">回到今日</button>
-    <button class="button button-primary" type="button" data-page="reading">看深度解读 →</button>
+    <button class="button button-primary" type="button" data-game-view="recap">看你的选择回顾 →</button>
   </section>
 `;
 
-export const renderGamePage = (state) => {
-  const model = createGameViewModel(state);
-  if (!model.ready) {
-    return `
-      <section class="page">
-        <h1 class="page-title">人生游戏</h1>
-        <div class="empty-state">
-          <p>先生成命盘，再进入人生主线。</p>
-          <button class="button button-primary" type="button" data-page="home">去生成关卡</button>
-        </div>
-      </section>
-    `;
-  }
+// 回顾 tab：把「你的选择」综合解读 + 分尺度搬到游戏页（原解读页上半），命盘依据归命盘页。
+const renderRecapScope = (scope) => `
+  <details class="card card-plain stack chart-choice-scope" open>
+    <summary class="choice-title">
+      <span>${escapeHtml(scope.label)}</span>
+      <span class="choice-scope-count">${scope.count} 个选择</span>
+    </summary>
+    <p class="page-subtitle choice-scope-tendency">${escapeHtml(scope.tendency)}</p>
+    ${scope.pills.length ? `
+      <div class="feedback-deltas">
+        ${scope.pills.map((pill) => `<span class="delta-pill delta-pill--${pill.tone}">${escapeHtml(pill.label)} ${pill.value > 0 ? '+' : ''}${pill.value}</span>`).join('')}
+      </div>
+    ` : ''}
+    <ul class="choice-recap">
+      ${scope.items.map((item) => `
+        <li><span class="choice-recap-q">${escapeHtml(item.title)}</span><span class="choice-recap-a">你选了：${escapeHtml(item.choice)}</span></li>
+      `).join('')}
+    </ul>
+  </details>
+`;
 
+const renderRecap = (state) => {
+  const choice = createReadingViewModel(state).choiceReading;
   return `
-    <section class="page game-page">
+    <header class="page-header">
+      <p class="page-kicker">你的选择</p>
+      <h1 class="page-title">回顾</h1>
+      <p class="page-subtitle">这里把你在关卡里的选择综合起来说明了什么。命盘本身为什么给出这些题，去「命盘」页看命盘依据。</p>
+    </header>
+    ${choice.hasAny ? `
+      <article class="choice-overall card-main">
+        <p class="choice-overall-kicker">综合解读 · ${choice.overall.count} 个选择</p>
+        <p class="choice-overall-body">${escapeHtml(choice.overall.body)}</p>
+        ${choice.overall.pills.length ? `
+          <div class="feedback-deltas">
+            ${choice.overall.pills.map((pill) => `<span class="delta-pill delta-pill--${pill.tone}">${escapeHtml(pill.label)} ${pill.value > 0 ? '+' : ''}${pill.value}</span>`).join('')}
+          </div>
+        ` : ''}
+        ${choice.overall.alerts.length ? `
+          <ul class="choice-overall-alerts">
+            ${choice.overall.alerts.map((a) => `<li>${escapeHtml(a)}</li>`).join('')}
+          </ul>
+        ` : ''}
+      </article>
+      <p class="choice-scope-lead">分尺度看：</p>
+      ${choice.scopes.map(renderRecapScope).join('')}
+    ` : `<p class="page-subtitle reading-empty">${escapeHtml(choice.emptyText)}</p>`}
+  `;
+};
+
+const renderPlay = (model) => `
       <nav class="scope-tabs" aria-label="时间范围">
         ${model.scopeTabs.map((tab) => `
           <button class="scope-tab ${tab.active ? 'is-active' : ''}" type="button" data-page="game" data-scope="${escapeHtml(tab.id)}">${escapeHtml(tab.label)}</button>
@@ -182,6 +218,30 @@ export const renderGamePage = (state) => {
           `).join('')}
         </div>
       </details>
+  `;
+
+export const renderGamePage = (state) => {
+  const model = createGameViewModel(state);
+  if (!model.ready) {
+    return `
+      <section class="page">
+        <h1 class="page-title">人生游戏</h1>
+        <div class="empty-state">
+          <p>先生成命盘，再进入人生主线。</p>
+          <button class="button button-primary" type="button" data-page="home">去生成关卡</button>
+        </div>
+      </section>
+    `;
+  }
+
+  const view = state.ui.gameView === 'recap' ? 'recap' : 'play';
+  return `
+    <section class="page game-page">
+      <nav class="scope-tabs game-view-tabs" aria-label="游戏视图">
+        <button class="scope-tab ${view === 'play' ? 'is-active' : ''}" type="button" data-game-view="play">闯关</button>
+        <button class="scope-tab ${view === 'recap' ? 'is-active' : ''}" type="button" data-game-view="recap">回顾</button>
+      </nav>
+      ${view === 'recap' ? renderRecap(state) : renderPlay(model)}
     </section>
   `;
 };

@@ -59,6 +59,7 @@ export const state = {
     todayHelpOpen: false,
     theme: THEMES.includes(savedTheme) ? savedTheme : DEFAULT_THEME,
     chartThemeFilter: 'all',
+    gameView: 'play',
   },
 };
 
@@ -119,7 +120,14 @@ export const setAstrolabeData = (data) => {
   state.gameSession.routeScores = { bold: 0, steady: 0, repair: 0 };
   state.ui.todayHelpOpen = false;
   state.ui.chartThemeFilter = 'all';
+  state.ui.gameView = 'play';
   saveBirthInput(state.birthInput);
+  notify();
+};
+
+export const setGameView = (view = 'play') => {
+  state.ui.gameView = view === 'recap' ? 'recap' : 'play';
+  state.activePage = 'game';
   notify();
 };
 
@@ -157,6 +165,7 @@ export const setGameScope = (scope = 'lifetime') => {
   state.gameSession.gameFeedback = null;
   state.gameSession.gameLifeChange = null;
   state.activePage = 'game';
+  state.ui.gameView = 'play';
   notify();
 };
 

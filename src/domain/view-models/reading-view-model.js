@@ -108,29 +108,8 @@ const buildChoiceReading = (state) => {
   return { hasAny: true, overall, scopes: byScope };
 };
 
-export const createReadingViewModel = (state) => {
-  const data = state.astrolabeData;
-  if (!data) {
-    return { ready: false, sections: [] };
-  }
-
-  const sections = [
-    {
-      id: 'bazi',
-      title: '八字基础',
-      summary: data.reading.manual?.[0]?.body || data.reading.headline,
-    },
-    ...data.reading.topics.slice(0, 7).map((topic, index) => ({
-      id: `topic-${index}`,
-      title: topic.title,
-      summary: topic.takeaway || topic.summary,
-    })),
-  ];
-
-  return {
-    ready: true,
-    intro: '这里把两件事分开看：上半是你在关卡里的选择综合说明了什么，下半是命盘本身（八字 / 紫微）为什么给出这些题。',
-    choiceReading: buildChoiceReading(state),
-    sections,
-  };
-};
+// 解读层已拆解：「你的选择」进游戏页「回顾」tab（choiceReading），
+// 「命盘依据」（八字基础 / 紫微主线）改由 chart-view-model 直接产出并归到命盘页。
+export const createReadingViewModel = (state) => ({
+  choiceReading: buildChoiceReading(state),
+});

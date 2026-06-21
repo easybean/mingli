@@ -5,6 +5,7 @@ import {
   setBirthInput,
   setError,
   setGameScope,
+  setGameView,
   setLoading,
   setTheme,
   setChartThemeFilter,
@@ -79,6 +80,12 @@ export const bindEvents = (root) => {
     const todayHelpBackdrop = event.target.closest('[data-today-help-backdrop]');
     if (todayHelpBackdrop && event.target === todayHelpBackdrop) {
       setTodayHelpOpen(false);
+      return;
+    }
+
+    const gameViewButton = event.target.closest('[data-game-view]');
+    if (gameViewButton) {
+      setGameView(gameViewButton.dataset.gameView);
       return;
     }
 

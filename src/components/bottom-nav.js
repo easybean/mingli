@@ -9,7 +9,6 @@ const NAV_ICONS = {
 const navItems = [
   { id: 'today', label: '今日' },
   { id: 'game', label: '游戏' },
-  { id: 'reading', label: '解读' },
   { id: 'chart', label: '命盘' },
   { id: 'profile', label: '我的' },
 ];

@@ -853,6 +853,25 @@
   letter-spacing: 1.5px;
 }
 
+.chart-bazi-basis,
+.chart-theme-topic {
+  margin-top: 12px;
+}
+
+.chart-theme-topic-title {
+  margin: 4px 0 6px;
+  color: var(--gold-bright);
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.chart-topic-hint {
+  margin: 12px 2px 0;
+  opacity: 0.75;
+}
+
 .chart-pattern-tags {
   display: flex;
   flex-wrap: wrap;

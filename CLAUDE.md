@@ -54,10 +54,10 @@ src/
     life-state.js                                 # 6 维 lifeState 系统（v1）
     game-branching.js                             # 按 lifeState 重排卡牌
     view-models/                                  # 把后端 reading 翻译成页面可消费结构
-  pages/      home / today / game / reading / simple
-  components/ birth-form / focus-picker / bottom-nav / html
+  pages/      home / today / game / chart / profile  (reading / simple 已弃用)
+  components/ birth-form / focus-picker / bottom-nav / cosmos / html
   styles/     tokens / base / layout / components / pages
-  adapters/   web-storage / web-time              # 浏览器适配，跨端时替换
+  adapters/   web-storage / web-time              # 浏览器适配（含主题持久化），跨端时替换
   platform/   wechat-mini-program.md / social-share.md
 ```
 
@@ -67,18 +67,19 @@ src/
 
 **页面 ↔ View Model：** 页面只做渲染+点击，命理规则放 view model：
 - `home-view-model.js` — 已生成态用 `pickTodayCard` 在首页直接复用今日卡数据
-- `today-view-model.js` — 今日一题、focus 主题选择、反馈结构
-- `game-view-model.js` — 路线名、进度、当前卡、`lifeState` 排序后的下一题、终局总结
-- `reading-view-model.js` — 解释层目录
-- `choice-presentation.js` — 按 `theme + label 正则` 把抽象 style 翻成具体动作词
+- `today-view-model.js` — 今日一题、focus 主题选择（7 项，按当天有题的主题点亮/置灰）、反馈结构
+- `game-view-model.js` — 路线名、进度、当前卡、`lifeState` 排序后的下一题、完成态、终局总结（按"已答卡"续作，不重做）
+- `reading-view-model.js` — 现仅产出「你的选择」（`choiceReading`：按尺度分组 + 综合解读，读 `gameSession.choices`），供游戏页「回顾」tab 用；原「命盘依据」已拆给 chart-view-model
+- `chart-view-model.js` — 命盘页：基础信息 / 八字基础（`baziBasis`，接基础信息下方）/ 重点宫位 / 十二宫列表（可按主题筛选）/ 各主题 tab 下的紫微主线（`activeTopic`，按 theme id 一一对应 `reading.topics`）/ 格局
+- `today-focus.js` — 今日 focus 选项 + 流命宫叠本命的主题判断
 
-**lifeState（6 维：pressure / opportunity / relationship / stability / resources / wellbeing）：** 数值 0-100，初始 50。`deltaForChoice` 优先吃后端 `stateEffects`，没有时回退 `STYLE_DELTAS[bold/steady/repair]`。**当前缺口**：`lifeState` 已经能改、能在 `game-branching.js` 里影响排序，但选项三件套骨架感仍重，且不同命盘在题库上拉不开差异。
+**lifeState（6 维：pressure / opportunity / relationship / stability / resources / wellbeing）：** 数值 0-100，初始 50；pressure 升=坏，其余升=好。`deltaForChoice` 优先吃题库 `stateEffects`，没有才回退 `STYLE_DELTAS`。两个题库池现在都用 6 维 stateEffects（旧 2 维 statEffects 已统一）。`game-branching.js` 按 lifeState 影响非月度尺度的排序；选择去重见 `store.recordChoice`（同 scope+cardId 只留一条）。
 
 ### 主题 ID 与展示标签的映射约定
 
-后端和领域层用英文 id：`career / wealth / relationship / health / mindset`（家庭/迁移用 `family / migration`）。
-展示层统一为中文：**事业 / 财富 / 关系 / 健康 / 心态**。
-两套不要互相串改，`choice-presentation.js`、`helpers.js`、`life-state.js`、`today-focus.js` 里都按英文 id 走。
+后端/领域层用英文 id：`career / wealth / relationship / health / mindset / family / network`（迁移 `migration`）。
+展示层中文：**事业 / 财富 / 关系 / 健康 / 心态 / 家庭 / 人际**（迁移）。
+解读层主线标题另用书面语（事业主线 / 财运主线 / 婚恋主线 / 健康主线 / 心性主线 / 家庭主线 / 人际主线），但 id 已全栈统一为 `relationship`（原 `marriage` 已废）。`helpers.js`、`life-state.js`、`today-focus.js`、`knowledge.js`、`life-game.js` 都按英文 id 走。
 
 ## 文案约束（重要）
 
@@ -92,16 +93,16 @@ src/
 - **选项必须是动作，不是态度**。
   - ❌ "主动突破" / "稳健推进" / "修复关系"
   - ✅ "直接接下任务，并争取把成果展示出来" / "先确认边界，只接自己能负责的部分"
-- 当前文案系统的**未清干净的地方**：`helpers.js` 的 `routeName / outcomeTags / shareSummaryText` 里仍在多个出口暴露"主动路线/稳健路线/修复路线"标签——这是骨架感的主要来源。
+- 当前文案系统**未清干净的地方**：`game-view-model.js` 的 `tendencyDescription`、`helpers.js` 的 `routeName / outcomeTags / shareSummaryText` 仍在个别出口暴露"主动/稳健/修复"倾向词（解读页「综合解读 / 你的选择」已改用具体描述、避开了这些标签）。
 
 ## 视觉与移动端基线
 
 `mingli-ui-design.md` 和 `mingli-mobile-ux-design.md` 是**用户已确认的设计基准**，不是参考稿。改 UI 前先对照：
 
-- 视觉关键词：沉静 / 纸感 / 微光 / 选择感 / 阶段感 / 个人化。不要后台风、玄学广告页、大面积渐变。
-- 色 token 已经落进 `src/styles/tokens.css`（主色 `#245C63`，纸感背景 `#F8F3E8`）。
+- 视觉关键词：沉静 / 微光 / 选择感 / 阶段感 / 个人化。不要后台风、玄学广告页、大面积渐变。
+- **主题系统**：`src/styles/tokens.css` 是色彩单一真相源；`:root` 为基底，主题用 `:root[data-theme="..."]` 覆盖 CSS 变量。当前两套外观（旧的「深暖墨金」「水墨禅意」已按用户要求删除）：**星象·夜**（默认，深空近黑 `#0B0913`）/ **星象·昼**（晨纸浅底 `#F4EFE4`），共用 `#cosmos` 星图/北斗/八卦氛围层（`src/components/cosmos.js`，配色用 `--cosmos-*` 变量按主题切换；北斗为已按真实图样修正的版本）。切换在「我的」页、localStorage 持久化（`web-storage.js` + `store.ui.theme`，`main.js` 在 `<html>` 上切 `data-theme`）。
 - 手机端规则：单列为主、单手可点、首屏只保留最重要路径、卡片按任务顺序排，不按数据结构排。
-- 底部导航固定 5 项：**今日 / 游戏 / 解读 / 命盘 / 我的**。`chart` 和 `profile` 当前是 `simple-page.js` 占位页。
+- 底部导航固定 4 项：**今日 / 游戏 / 命盘 / 我的**。原「解读」页已拆解下线：「你的选择」进游戏页「闯关 / 回顾」切换的回顾 tab（`store.ui.gameView`），「命盘依据」拆成八字基础 + 紫微主线归入命盘页。命盘 = 十二宫页（`chart-page.js`），我的 = 外观/设置页（`profile-page.js`，含主题切换）；`reading-page.js`、`simple-page.js` 已弃用。
 
 ## 验证样例
 

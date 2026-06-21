@@ -83,6 +83,13 @@ export const renderChartPage = (state) => {
         `).join('')}
       </section>
 
+      ${model.baziBasis ? `
+        <section class="card card-plain chart-bazi-basis">
+          <span class="chart-section-label">八字基础</span>
+          <p class="page-subtitle">${escapeHtml(model.baziBasis.summary)}</p>
+        </section>
+      ` : ''}
+
       ${model.highlights.length ? `
         <section class="chart-highlights">
           ${model.highlights.map(renderHighlight).join('')}
@@ -111,6 +118,16 @@ export const renderChartPage = (state) => {
           >${escapeHtml(item.label)}<i>${item.count}</i></button>
         `).join('')}
       </section>
+
+      ${model.activeTopic ? `
+        <article class="card card-plain chart-theme-topic">
+          <span class="chart-section-label">紫微主线</span>
+          <h2 class="chart-theme-topic-title">${escapeHtml(model.activeTopic.title)}</h2>
+          <p class="page-subtitle">${escapeHtml(model.activeTopic.summary)}</p>
+        </article>
+      ` : `
+        <p class="page-subtitle chart-topic-hint">按上面的主题筛选，可看到对应「紫微主线」的命盘依据。</p>
+      `}
 
       <section class="chart-palace-list">
         ${model.cards.map(renderPalaceCard).join('')}
