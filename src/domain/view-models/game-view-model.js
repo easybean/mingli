@@ -12,8 +12,9 @@ const tendencyDescription = (style) => ({
   repair: '更想先收口，把卡点和损耗处理掉',
 }[style] || '还没明显倾向，多走两手再看');
 
+// 「今日」已彻底归入底部导航的今日主页，游戏只承载需要坐下来想的长尺度关卡，
+// 不再有 day 档（去重，见今日/游戏定位拆分）。
 const SCOPE_TAB_LIST = [
-  { id: 'day', label: '今日' },
   { id: 'month', label: '最近一月' },
   { id: 'year', label: '最近一年' },
   { id: 'decade', label: '最近十年' },
@@ -142,21 +143,9 @@ export const createGameViewModel = (state) => {
     feedback: feedback ? {
       headline: `你选了：${tendencyChoiceLabel || '这一手'}`,
       resultTags: feedbackTags,
-      shareSummary: shareSummaryText({
-        scope,
-        theme: currentCard?.theme,
-        title: currentCard?.title,
-        choiceLabel: tendencyChoiceLabel,
-        tags: feedbackTags,
-        lifeChange,
-      }),
       body: feedback.body,
       effects: effectList(feedback.effects),
       deltaPills: feedbackDeltaPills,
-      lifeChange: lifeChange ? {
-        title: lifeChange.title,
-        body: lifeChange.body,
-      } : null,
     } : null,
     canGoNext: awaitingAdvance && !finished,
     completed,

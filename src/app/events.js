@@ -10,6 +10,12 @@ import {
   setTheme,
   setChartThemeFilter,
   toggleAccessory,
+  togglePortrait,
+  clearAstrolabe,
+  revealTap,
+  acceptReveal,
+  declineReveal,
+  pickRevealTheme,
   setTodayHelpOpen,
   setTodayFocusTheme,
   state,
@@ -87,6 +93,42 @@ export const bindEvents = (root) => {
     const accessoryToggle = event.target.closest('[data-accessory-toggle]');
     if (accessoryToggle) {
       toggleAccessory();
+      return;
+    }
+
+    const portraitToggle = event.target.closest('[data-portrait-toggle]');
+    if (portraitToggle) {
+      togglePortrait();
+      return;
+    }
+
+    const resetChartButton = event.target.closest('[data-reset-chart]');
+    if (resetChartButton) {
+      clearAstrolabe();
+      return;
+    }
+
+    const revealTapButton = event.target.closest('[data-reveal-tap]');
+    if (revealTapButton) {
+      revealTap();
+      return;
+    }
+
+    const revealAcceptButton = event.target.closest('[data-reveal-accept]');
+    if (revealAcceptButton) {
+      acceptReveal();
+      return;
+    }
+
+    const revealDeclineButton = event.target.closest('[data-reveal-decline]');
+    if (revealDeclineButton) {
+      declineReveal();
+      return;
+    }
+
+    const revealPickButton = event.target.closest('[data-reveal-pick]');
+    if (revealPickButton) {
+      pickRevealTheme(revealPickButton.dataset.revealPick);
       return;
     }
 

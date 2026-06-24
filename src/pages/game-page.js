@@ -185,16 +185,6 @@ const renderPlay = (model) => `
               </div>
             ` : ''}
           </section>
-          ${model.feedback.lifeChange ? `
-            <details class="feedback-detail">
-              <summary>这一手为后面铺了什么</summary>
-              <p>${escapeHtml(model.feedback.lifeChange.body)}</p>
-            </details>
-          ` : ''}
-          <details class="feedback-detail">
-            <summary>分享文案</summary>
-            <p>${escapeHtml(model.feedback.shareSummary)}</p>
-          </details>
           ${model.canGoNext ? `
             <button class="button button-primary" type="button" data-next-game-challenge>${escapeHtml(model.nextStepLabel)} →</button>
           ` : renderCompletion(model)}
@@ -228,7 +218,7 @@ export const renderGamePage = (state) => {
         <h1 class="page-title">人生游戏</h1>
         <div class="empty-state">
           <p>先生成命盘，再进入人生主线。</p>
-          <button class="button button-primary" type="button" data-page="home">去生成关卡</button>
+          <button class="button button-primary" type="button" data-page="today">去生成关卡</button>
         </div>
       </section>
     `;

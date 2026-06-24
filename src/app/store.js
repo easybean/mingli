@@ -1,4 +1,7 @@
-import { loadBirthInput, saveBirthInput, loadTheme, saveTheme } from '../adapters/web-storage.js';
+import {
+  loadBirthInput, saveBirthInput, loadTheme, saveTheme,
+  loadChart, saveChart, loadProgress, saveProgress, clearSavedChart,
+} from '../adapters/web-storage.js';
 import { targetDateTimeValue, todayInputValue } from '../adapters/web-time.js';
 import {
   applyLifeStateDelta,
@@ -24,17 +27,22 @@ export const THEMES = ['star', 'star-day'];
 const DEFAULT_THEME = 'star';
 const savedTheme = loadTheme();
 
+// 从 localStorage 恢复命盘与进度：刷新不丢，落到今日主页。
+const savedChart = loadChart();
+const savedProgress = loadProgress();
+const restoredData = savedChart?.astrolabeData || null;
+
 export const state = {
-  activePage: 'home',
+  activePage: restoredData ? 'today' : 'home',
   birthInput: {
     ...defaultBirthInput(),
     ...(savedInput || {}),
     // "当前时间"永远取本次进入页面的此刻，其余出生信息仍从缓存恢复。
     target: targetDateTimeValue(),
   },
-  astrolabeData: null,
+  astrolabeData: restoredData,
   gameSession: {
-    lifeState: createInitialLifeState(),
+    lifeState: (restoredData && savedProgress?.lifeState) || createInitialLifeState(),
     todayFocusTheme: null,
     activeScope: 'lifetime',
     currentIndex: 0,
@@ -45,22 +53,25 @@ export const state = {
     todayFeedback: null,
     todayLifeChange: null,
     gameLifeChange: null,
-    routeScores: {
+    routeScores: (restoredData && savedProgress?.routeScores) || {
       bold: 0,
       steady: 0,
       repair: 0,
     },
-    choices: [],
+    choices: (restoredData && savedProgress?.choices) || [],
   },
   ui: {
     loading: false,
     error: '',
-    generatedAt: '',
+    generatedAt: (restoredData && savedChart?.generatedAt) || '',
     todayHelpOpen: false,
     theme: THEMES.includes(savedTheme) ? savedTheme : DEFAULT_THEME,
     chartThemeFilter: 'all',
     gameView: 'play',
     accessoryOpen: false,
+    portraitOpen: restoredData ? (savedProgress?.portraitOpen ?? true) : true,
+    // 飞牌仪式：{ date, phase: sealed|revealed|choosing|done }，按日期一天一次。
+    reveal: (restoredData && savedProgress?.reveal) || { date: '', phase: 'sealed' },
   },
 };
 
@@ -71,7 +82,20 @@ export const subscribe = (listener) => {
   return () => listeners.delete(listener);
 };
 
+// 把轻量进度写回 localStorage（只在有命盘时；命盘本身只在 setAstrolabeData 时单独写）。
+const persistProgress = () => {
+  if (!state.astrolabeData) return;
+  saveProgress({
+    choices: state.gameSession.choices,
+    lifeState: state.gameSession.lifeState,
+    routeScores: state.gameSession.routeScores,
+    portraitOpen: state.ui.portraitOpen,
+    reveal: state.ui.reveal,
+  });
+};
+
 export const notify = () => {
+  persistProgress();
   listeners.forEach((listener) => listener(state));
 };
 
@@ -104,9 +128,9 @@ export const setError = (error) => {
 
 export const setAstrolabeData = (data) => {
   state.astrolabeData = data;
-  // 生成后落到首页：人物画像（「说中我了」第一击）在这屏顶部，
-  // 首页本身有「开始今日选择 →」把人导进今日，不丢原流程。
-  state.activePage = 'home';
+  // 今日 = 主页：生成后落到今日主页（画像/运势/今日一题都在这屏），画像默认展开。
+  state.activePage = 'today';
+  state.ui.portraitOpen = true;
   state.ui.generatedAt = todayInputValue();
   state.gameSession.todayChoiceIndex = null;
   state.gameSession.todayFeedback = null;
@@ -124,7 +148,61 @@ export const setAstrolabeData = (data) => {
   state.ui.todayHelpOpen = false;
   state.ui.chartThemeFilter = 'all';
   state.ui.gameView = 'play';
+  state.ui.reveal = { date: '', phase: 'sealed' };
   saveBirthInput(state.birthInput);
+  saveChart({ astrolabeData: data, generatedAt: state.ui.generatedAt });
+  notify();
+};
+
+// 跨天刷新：新的一天重新拉命盘（流日变了），重置今日临时态与仪式，
+// 但保留闯关进度(choices/lifeState/routeScores)。
+export const refreshAstrolabeData = (data) => {
+  state.astrolabeData = data;
+  state.ui.generatedAt = todayInputValue();
+  state.gameSession.todayChoiceIndex = null;
+  state.gameSession.todayFeedback = null;
+  state.gameSession.todayLifeChange = null;
+  state.gameSession.todayFocusTheme = null;
+  state.ui.reveal = { date: '', phase: 'sealed' };
+  saveChart({ astrolabeData: data, generatedAt: state.ui.generatedAt });
+  notify();
+};
+
+// —— 飞牌仪式动作 ——
+export const revealTap = () => {
+  state.ui.reveal = { date: todayInputValue(), phase: 'revealed' };
+  notify();
+};
+
+export const acceptReveal = () => {
+  // 接受命盘选定那张：focus 留空 → pickTodayCard 取主卡(cards[0])。
+  state.gameSession.todayFocusTheme = null;
+  state.ui.reveal = { date: todayInputValue(), phase: 'done' };
+  notify();
+};
+
+export const declineReveal = () => {
+  state.ui.reveal = { date: todayInputValue(), phase: 'choosing' };
+  notify();
+};
+
+export const pickRevealTheme = (theme) => {
+  state.gameSession.todayFocusTheme = theme || null;
+  state.ui.reveal = { date: todayInputValue(), phase: 'done' };
+  notify();
+};
+
+// 重新填写出生信息：清掉命盘与进度，回到出生表单。
+export const clearAstrolabe = () => {
+  state.astrolabeData = null;
+  state.activePage = 'home';
+  state.gameSession.choices = [];
+  state.gameSession.lifeState = createInitialLifeState();
+  state.gameSession.routeScores = { bold: 0, steady: 0, repair: 0 };
+  state.gameSession.todayChoiceIndex = null;
+  state.gameSession.todayFeedback = null;
+  state.gameSession.todayLifeChange = null;
+  clearSavedChart();
   notify();
 };
 
@@ -137,6 +215,11 @@ export const setGameView = (view = 'play') => {
 export const toggleAccessory = (open) => {
   state.ui.accessoryOpen = open === undefined ? !state.ui.accessoryOpen : Boolean(open);
   state.activePage = 'profile';
+  notify();
+};
+
+export const togglePortrait = (open) => {
+  state.ui.portraitOpen = open === undefined ? !state.ui.portraitOpen : Boolean(open);
   notify();
 };
 

@@ -1,5 +1,4 @@
-import { LIFE_STATE_LABELS } from '../life-state.js';
-import { effectList, firstOf, lifeStateDeltaList, outcomeTags, shareSummaryText, topDeltaPills } from './helpers.js';
+import { effectList, firstOf, outcomeTags, topDeltaPills } from './helpers.js';
 import { focusAvailabilityHint, focusFallbackHint, pickTodayCard } from './today-focus.js';
 
 const WEEKDAY_LABELS = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
@@ -25,10 +24,30 @@ export const createTodayViewModel = (state) => {
   const dayScope = data.reading.lifeGame?.scopes?.day || {};
   const todaySelection = pickTodayCard(dayScope, state.gameSession.todayFocusTheme);
   const card = todaySelection.card;
-  const selectedIndex = state.gameSession.todayChoiceIndex;
+
+  // 「答没答过」以持久记录(gameSession.choices, scope=day)为准：临时态（刚答完这一屏）
+  // 优先；切焦点会清空临时态，这时回退到持久记录，已答的卡保持锁定、不会"复活"重答。
+  let selectedIndex = state.gameSession.todayChoiceIndex;
+  let feedback = state.gameSession.todayFeedback;
+  let lifeChange = state.gameSession.todayLifeChange;
+  if (!Number.isInteger(selectedIndex) && card) {
+    const record = (state.gameSession.choices || []).find(
+      (item) => item.scope === 'day' && item.cardId === card.id,
+    );
+    const idx = record ? (card.choices || []).findIndex((ch) => ch.label === record.choiceLabel) : -1;
+    if (idx >= 0) {
+      selectedIndex = idx;
+      const ch = card.choices[idx];
+      feedback = {
+        body: ch.feedback || '这个选择会影响今天的推进方式。',
+        effects: ch.statEffects || {},
+        style: record.style,
+        choiceLabel: record.choiceLabel,
+      };
+      lifeChange = record.lifeChange || null;
+    }
+  }
   const selectedChoice = Number.isInteger(selectedIndex) ? card?.choices?.[selectedIndex] : null;
-  const feedback = state.gameSession.todayFeedback;
-  const lifeChange = state.gameSession.todayLifeChange;
   const themeLabel = card?.themeLabel || '今日';
   const tagsForResult = feedback ? outcomeTags({
     theme: card?.theme,
@@ -77,21 +96,8 @@ export const createTodayViewModel = (state) => {
       headline: `你选了：${feedback.choiceLabel || selectedChoice?.label || '这一手'}`,
       resultTags: tagsForResult,
       deltaPills: lifeChange ? topDeltaPills(lifeChange.delta) : [],
-      shareSummary: shareSummaryText({
-        scope: 'day',
-        theme: card?.theme,
-        title: card?.title,
-        choiceLabel: feedback.choiceLabel || selectedChoice?.label || '',
-        tags: tagsForResult,
-        lifeChange,
-      }),
       body: feedback.body,
       effects: effectList(feedback.effects),
-      lifeChange: lifeChange ? {
-        title: lifeChange.title,
-        body: lifeChange.body,
-        deltas: lifeStateDeltaList(lifeChange.delta, LIFE_STATE_LABELS),
-      } : null,
       tomorrowHint: '明天再来，会按新的流日重新出一题。',
     } : null,
     nextActions: [

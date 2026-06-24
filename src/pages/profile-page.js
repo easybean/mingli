@@ -97,6 +97,15 @@ export const renderProfilePage = (state) => {
         ${accessoryOpen ? `<div class="accessory-body">${renderAccessoryBody(accessoryModel)}</div>` : ''}
       </section>
 
+      ${state.astrolabeData ? `
+        <section class="birth-reset">
+          <div class="page-kicker page-kicker--muted">出生信息</div>
+          <p class="birth-reset-summary">${escapeHtml(state.astrolabeData.summary?.solarDate || '')}${state.astrolabeData.summary?.time ? ` · ${escapeHtml(state.astrolabeData.summary.time)}` : ''}${state.astrolabeData.input?.birthPlace ? ` · ${escapeHtml(state.astrolabeData.input.birthPlace)}` : ''}</p>
+          <button class="button button-secondary" type="button" data-reset-chart>重新填写出生信息</button>
+          <p class="focus-hint">会清掉当前命盘和闯关进度，回到出生表单重新生成。</p>
+        </section>
+      ` : ''}
+
       <button class="button button-primary" type="button" data-page="today">返回今日</button>
     </section>
   `;

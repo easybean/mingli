@@ -61,7 +61,7 @@ export const renderChartPage = (state) => {
         </header>
         <div class="empty-state">
           <p>${escapeHtml(model.emptyText)}</p>
-          <button class="button button-primary" type="button" data-page="home">去生成命盘</button>
+          <button class="button button-primary" type="button" data-page="today">去生成命盘</button>
         </div>
       </section>
     `;
