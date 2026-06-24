@@ -729,6 +729,7 @@ const buildReading = ({ summary, palaces, bazi, horoscope }) => {
       `专题层已整理 ${knowledge.topics.length} 条主线，并已把命中格局回接到章节与专题层。`,
     ],
     manual: manualWithPatterns,
+    fiveElement: knowledge.chapters[0]?.fiveElement || null,
     gameLevels: knowledge.chapters.slice(1, 6).map((chapter, index) => ({
       level: index + 1,
       name: `${chapter.palace}关卡`,

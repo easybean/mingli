@@ -38,6 +38,188 @@
   letter-spacing: 0.3px;
 }
 
+.portrait-card {
+  display: grid;
+  gap: 12px;
+  padding: 20px 18px 18px;
+  border: 1px solid var(--gold-line);
+  border-radius: var(--radius-md, 16px);
+  background:
+    radial-gradient(120% 90% at 0% 0%, var(--gold-soft), transparent 60%),
+    var(--surface-soft, var(--surface));
+}
+
+.portrait-kicker {
+  color: var(--gold);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  letter-spacing: 0.6px;
+}
+
+.portrait-title {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: 19px;
+  letter-spacing: 0.4px;
+}
+
+.portrait-hook {
+  margin: 2px 0 0;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: 16px;
+  line-height: 1.95;
+}
+
+.portrait-line {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+.portrait-turn {
+  margin: 4px 0 0;
+  padding: 12px 14px;
+  border-left: 2px solid var(--gold-line-strong);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--gold-soft);
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: 14.5px;
+  line-height: 1.9;
+}
+
+.portrait-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11.5px;
+  line-height: 1.6;
+}
+
+.share-block {
+  display: grid;
+  gap: 10px;
+}
+
+.share-poster {
+  display: grid;
+  gap: 12px;
+  padding: 22px 20px;
+  text-align: center;
+  border: 1px solid var(--gold-line-strong);
+  border-radius: var(--radius-md, 16px);
+  background:
+    radial-gradient(90% 70% at 50% 0%, var(--gold-soft), transparent 70%),
+    var(--surface-soft, var(--surface));
+}
+
+.share-brand {
+  color: var(--gold);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+
+.share-tagline {
+  margin: 0;
+  color: var(--gold-bright);
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.share-tension {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: 14.5px;
+  line-height: 1.95;
+}
+
+.share-turn {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.85;
+}
+
+.share-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.share-actions .button {
+  flex: none;
+}
+
+.share-hint {
+  flex: 1;
+  min-width: 140px;
+  color: var(--muted);
+  font-size: 11.5px;
+  line-height: 1.6;
+}
+
+.today-card-fortune {
+  margin: 0;
+  color: var(--ink-soft);
+  font-family: var(--font-serif);
+  font-size: 13.5px;
+  line-height: 1.85;
+}
+
+.fortune-card {
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px;
+  border: 1px solid var(--gold-line);
+  border-radius: var(--radius-md, 16px);
+  background:
+    radial-gradient(130% 100% at 100% 0%, var(--gold-soft), transparent 62%),
+    var(--surface-soft, var(--surface));
+}
+
+.fortune-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.fortune-kicker {
+  color: var(--gold);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  letter-spacing: 0.6px;
+}
+
+.fortune-tag {
+  color: var(--gold-bright);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.fortune-line {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.fortune-favored {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+
 .today-card {
   display: grid;
   gap: 14px;
@@ -1195,4 +1377,220 @@
   color: var(--muted);
   font-size: 12px;
   letter-spacing: 0.5px;
+}
+
+/* —— 我适合戴什么（八字五行喜用延伸） —— */
+.accessory-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.accessory-card.is-open {
+  border-color: var(--gold-line-strong);
+  box-shadow: var(--shadow-gold-glow);
+}
+
+.accessory-toggle {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 16px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+}
+
+.accessory-toggle-text {
+  display: grid;
+  gap: 4px;
+  flex: 1 1 auto;
+}
+
+.accessory-toggle-title {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.accessory-toggle-sub {
+  color: var(--ink-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.accessory-toggle-icon {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--gold-line-strong);
+  color: var(--gold-bright);
+  font-size: 18px;
+  line-height: 1;
+}
+
+.accessory-body {
+  display: grid;
+  gap: 12px;
+  padding: 0 16px 18px;
+}
+
+.accessory-intro,
+.accessory-empty {
+  margin: 0;
+}
+
+.accessory-intro {
+  color: var(--ink-soft);
+  font-family: var(--font-serif);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.accessory-principle {
+  margin: 0;
+  padding: 11px 13px;
+  border-left: 2px solid var(--gold-line-strong);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--surface-soft, var(--surface));
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  line-height: 1.75;
+}
+
+.accessory-list {
+  display: grid;
+  gap: 10px;
+}
+
+.accessory-item {
+  display: grid;
+  gap: 8px;
+  padding: 13px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-soft, var(--surface));
+}
+
+.accessory-item-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.accessory-element {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  border: 1px solid var(--gold-line-strong);
+  color: var(--gold-bright);
+  font-family: var(--font-serif);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.accessory-role {
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--gold-line-strong);
+  color: var(--gold-bright);
+  font-size: 11px;
+  letter-spacing: 0.3px;
+}
+
+.accessory-color {
+  margin-left: auto;
+  color: var(--ink);
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.accessory-reason {
+  margin: 0;
+  color: var(--ink-soft);
+  font-family: var(--font-serif);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.accessory-categories {
+  display: grid;
+  gap: 9px;
+}
+
+.accessory-category {
+  display: grid;
+  gap: 5px;
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+.accessory-category-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.accessory-category-type {
+  flex: none;
+  min-width: 3.2em;
+  color: var(--ink);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.accessory-materials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.accessory-chip {
+  padding: 4px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface-soft, var(--surface));
+  color: var(--ink-soft);
+  font-size: 12.5px;
+}
+
+.accessory-category-why {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.accessory-vibe {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.accessory-howto {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+
+.accessory-disclaimer {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11.5px;
+  line-height: 1.6;
 }

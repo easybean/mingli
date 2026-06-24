@@ -9,6 +9,7 @@ import {
   setLoading,
   setTheme,
   setChartThemeFilter,
+  toggleAccessory,
   setTodayHelpOpen,
   setTodayFocusTheme,
   state,
@@ -83,9 +84,28 @@ export const bindEvents = (root) => {
       return;
     }
 
+    const accessoryToggle = event.target.closest('[data-accessory-toggle]');
+    if (accessoryToggle) {
+      toggleAccessory();
+      return;
+    }
+
     const gameViewButton = event.target.closest('[data-game-view]');
     if (gameViewButton) {
       setGameView(gameViewButton.dataset.gameView);
+      return;
+    }
+
+    const copyShareButton = event.target.closest('[data-copy-share]');
+    if (copyShareButton) {
+      const text = copyShareButton.dataset.shareText || '';
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text)
+          .then(() => { copyShareButton.textContent = '已复制 ✓'; })
+          .catch(() => { copyShareButton.textContent = '复制失败，长按上面选中'; });
+      } else {
+        copyShareButton.textContent = '请长按上面文字复制';
+      }
       return;
     }
 

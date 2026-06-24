@@ -1,6 +1,21 @@
 import { escapeHtml } from '../components/html.js';
 import { renderFocusPicker } from '../components/focus-picker.js';
 import { createTodayViewModel } from '../domain/view-models/today-view-model.js';
+import { createTodayFortuneViewModel } from '../domain/view-models/today-fortune-view-model.js';
+
+const renderTodayFortune = (fortune) => {
+  if (!fortune.ready) return '';
+  return `
+    <article class="fortune-card">
+      <div class="fortune-head">
+        <span class="fortune-kicker">${escapeHtml(fortune.kicker)}</span>
+        <span class="fortune-tag">${escapeHtml(fortune.ganZhi)} · ${escapeHtml(fortune.label)}</span>
+      </div>
+      <p class="fortune-line">${escapeHtml(fortune.line)}</p>
+      ${fortune.favoredHint ? `<p class="fortune-favored">${escapeHtml(fortune.favoredHint)}</p>` : ''}
+    </article>
+  `;
+};
 
 const renderChoice = (choice, index, selectedIndex) => {
   const selected = selectedIndex === index;
@@ -89,6 +104,8 @@ export const renderTodayPage = (state) => {
           </section>
         </div>
       ` : ''}
+
+      ${renderTodayFortune(createTodayFortuneViewModel(state))}
 
       <article class="scenario-card">
         <p class="scenario-text">${escapeHtml(model.scenario)}</p>

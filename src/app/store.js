@@ -60,6 +60,7 @@ export const state = {
     theme: THEMES.includes(savedTheme) ? savedTheme : DEFAULT_THEME,
     chartThemeFilter: 'all',
     gameView: 'play',
+    accessoryOpen: false,
   },
 };
 
@@ -103,7 +104,9 @@ export const setError = (error) => {
 
 export const setAstrolabeData = (data) => {
   state.astrolabeData = data;
-  state.activePage = 'today';
+  // 生成后落到首页：人物画像（「说中我了」第一击）在这屏顶部，
+  // 首页本身有「开始今日选择 →」把人导进今日，不丢原流程。
+  state.activePage = 'home';
   state.ui.generatedAt = todayInputValue();
   state.gameSession.todayChoiceIndex = null;
   state.gameSession.todayFeedback = null;
@@ -128,6 +131,12 @@ export const setAstrolabeData = (data) => {
 export const setGameView = (view = 'play') => {
   state.ui.gameView = view === 'recap' ? 'recap' : 'play';
   state.activePage = 'game';
+  notify();
+};
+
+export const toggleAccessory = (open) => {
+  state.ui.accessoryOpen = open === undefined ? !state.ui.accessoryOpen : Boolean(open);
+  state.activePage = 'profile';
   notify();
 };
 
