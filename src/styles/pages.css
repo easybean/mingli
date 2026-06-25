@@ -560,6 +560,13 @@
   text-align: left;
 }
 
+.quick-entry.is-recommended {
+  border-color: var(--gold-line-strong);
+  background:
+    radial-gradient(120% 100% at 0% 0%, var(--gold-soft), transparent 65%),
+    var(--surface);
+}
+
 .quick-entry::after {
   position: absolute;
   top: 16px;

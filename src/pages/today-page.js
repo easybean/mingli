@@ -5,6 +5,7 @@ import { createTodayFortuneViewModel } from '../domain/view-models/today-fortune
 import { createHomeViewModel } from '../domain/view-models/home-view-model.js';
 import { createPortraitViewModel } from '../domain/view-models/portrait-view-model.js';
 import { createTodayRevealViewModel } from '../domain/view-models/today-reveal-view-model.js';
+import { createTodayInviteViewModel } from '../domain/view-models/today-invite-view-model.js';
 
 // 飞牌仪式：摊开 7 张牌 → 翻开飞出命盘选定那张 → 接受答它 / 自己选。
 const renderReveal = (reveal) => {
@@ -220,14 +221,14 @@ const renderPortraitSection = (portrait, open) => {
   `;
 };
 
-// 想认真理一理 → 进游戏：今日主页通往深度场的引流入口。
-const renderGameInvite = (quickEntries) => `
+// 想认真理一理 → 进游戏：今日主页通往深度场的智能引流入口（lead 按最近选择个人化）。
+const renderGameInvite = (quickEntries, invite) => `
   <section class="game-invite">
-    <p class="game-invite-lead">最近有件事想认真理一理？</p>
+    <p class="game-invite-lead">${escapeHtml(invite.lead)}</p>
     <div class="quick-entry-grid">
       ${quickEntries.map((entry) => `
-        <button class="quick-entry" type="button" data-page="game" data-scope="${escapeHtml(entry.id)}">
-          <span class="quick-entry-label">${escapeHtml(entry.label)}</span>
+        <button class="quick-entry ${entry.id === invite.scope ? 'is-recommended' : ''}" type="button" data-page="game" data-scope="${escapeHtml(entry.id)}">
+          <span class="quick-entry-label">${escapeHtml(entry.label)}${entry.id === invite.scope ? ' · 推荐' : ''}</span>
           <span class="quick-entry-title">${escapeHtml(entry.title)}</span>
           <span class="quick-entry-sub">${entry.sub}</span>
         </button>
@@ -265,7 +266,7 @@ export const renderTodayPage = (state) => {
       ${renderTodayFortune(fortune)}
       ${reveal.active ? renderReveal(reveal) : (model.ready ? renderDailyQuestion(model) : '')}
       ${renderPortraitSection(portrait, portraitOpen)}
-      ${home.quickEntries ? renderGameInvite(home.quickEntries) : ''}
+      ${home.quickEntries ? renderGameInvite(home.quickEntries, createTodayInviteViewModel(state)) : ''}
       <button class="deep-reading-link" type="button" data-page="profile">想知道自己适合戴什么？去「我的」看看 →</button>
     </section>
   `;
