@@ -44,16 +44,3 @@ export const pickTodayCard = (dayScope, preferredTheme) => {
   };
 };
 
-export const focusAvailabilityHint = ({ options = [] }) => {
-  const hasUnavailable = options.some((item) => item.available === false);
-  if (hasUnavailable) {
-    return '点亮的主题今天有对应的题，变灰的是命盘当天没有浮现的方向。';
-  }
-  return '今天这几个主题都有对应的题，选你最想先看的那块。';
-};
-
-export const focusFallbackHint = ({ preferredTheme, matchedTheme, card }) => {
-  if (!preferredTheme || matchedTheme || !card) return '';
-  const option = TODAY_FOCUS_OPTIONS.find((item) => item.id === preferredTheme);
-  return `你今天更想看${option?.label || '这一块'}，但命盘今天更先浮出来的是${card.themeLabel || '当前主线'}。`;
-};

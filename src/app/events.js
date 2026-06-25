@@ -17,7 +17,6 @@ import {
   declineReveal,
   pickRevealTheme,
   setTodayHelpOpen,
-  setTodayFocusTheme,
   state,
   nextGameChallenge,
   selectGameChoice,
@@ -158,12 +157,6 @@ export const bindEvents = (root) => {
         return;
       }
       setActivePage(pageButton.dataset.page);
-      return;
-    }
-
-    const focusButton = event.target.closest('[data-today-focus]');
-    if (focusButton) {
-      setTodayFocusTheme(focusButton.dataset.todayFocus);
       return;
     }
 

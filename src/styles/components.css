@@ -501,40 +501,6 @@
 
 /* ============== focus chip 选择条 ============== */
 
-.focus-picker {
-  display: flex;
-  gap: 7px;
-}
-
-.focus-chip {
-  flex: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 32px;
-  padding: 7px 0;
-  border: 1px solid transparent;
-  border-radius: 9px;
-  background: transparent;
-  color: var(--muted);
-  font-family: var(--font-sans);
-  font-size: 13px;
-  font-weight: 500;
-  transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
-}
-
-.focus-chip.is-selected {
-  border-color: var(--gold-line);
-  background: var(--gold-soft);
-  color: var(--gold-bright);
-  font-weight: 600;
-}
-
-.focus-chip.is-unavailable {
-  opacity: 0.34;
-  cursor: not-allowed;
-}
-
 /* ============== 通用 details / 折叠 ============== */
 
 details.card-plain,

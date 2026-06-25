@@ -1,5 +1,5 @@
 import { effectList, firstOf, outcomeTags, topDeltaPills } from './helpers.js';
-import { focusAvailabilityHint, focusFallbackHint, pickTodayCard } from './today-focus.js';
+import { pickTodayCard } from './today-focus.js';
 
 const WEEKDAY_LABELS = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 
@@ -88,8 +88,6 @@ export const createTodayViewModel = (state) => {
     conflictLine: card?.conflict || '',
     question: '你打算怎么走？',
     triggerSummary: card?.triggerSummary || dayScope.focusLabel || '',
-    focusOptions: todaySelection.options,
-    focusHint: focusFallbackHint(todaySelection) || focusAvailabilityHint(todaySelection),
     choices: card?.choices || [],
     selectedIndex,
     feedback: feedback ? {

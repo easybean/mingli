@@ -27,11 +27,6 @@ export const effectList = (effects = {}) => Object.entries(effects)
   .filter(([, value]) => Number(value) !== 0)
   .map(([key, value]) => `${statLabel(key)} ${Number(value) > 0 ? '+' : ''}${value}`);
 
-export const lifeStateDeltaList = (delta = {}, labels = {}) => Object.entries(delta)
-  .filter(([, value]) => Number(value) !== 0)
-  .sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]))
-  .map(([key, value]) => `${labels[key] || key} ${Number(value) > 0 ? '+' : ''}${value}`);
-
 const THEME_RESULT_LABELS = {
   career: {
     bold: '本局抢位',

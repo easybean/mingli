@@ -228,15 +228,6 @@ export const setChartThemeFilter = (filter = 'all') => {
   notify();
 };
 
-export const setTodayFocusTheme = (theme) => {
-  state.gameSession.todayFocusTheme = theme || null;
-  state.gameSession.todayChoiceIndex = null;
-  state.gameSession.todayFeedback = null;
-  state.gameSession.todayLifeChange = null;
-  state.activePage = 'today';
-  notify();
-};
-
 export const setTheme = (theme) => {
   if (!THEMES.includes(theme) || state.ui.theme === theme) return;
   state.ui.theme = theme;
