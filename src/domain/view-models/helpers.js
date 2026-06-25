@@ -91,10 +91,11 @@ export const outcomeTags = ({ theme, style, delta = {}, scope = 'lifetime' }) =>
   if (stateTag && !tags.includes(stateTag)) {
     tags.push(stateTag);
   }
+  // 时间标签只标"哪个尺度"，不按 style 译成态度词（具体动作已由 themeLabel 承载）。
   if (scope === 'day') {
-    tags.push(style === 'bold' ? '今日破局' : style === 'repair' ? '今日修复' : '今日稳盘');
+    tags.push('今日一手');
   } else if (scope === 'month') {
-    tags.push(style === 'bold' ? '本月起势' : style === 'repair' ? '本月收口' : '本月稳步推进');
+    tags.push('本月一步');
   } else if (scope === 'year') {
     tags.push('年度节点');
   } else if (scope === 'decade') {
