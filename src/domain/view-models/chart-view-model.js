@@ -30,6 +30,25 @@ const THEME_ORDER = ['career', 'wealth', 'relationship', 'health', 'mindset', 'f
 
 const PALACE_ORDER = ['命宫', '兄弟', '夫妻', '子女', '财帛', '疾厄', '迁移', '仆役', '官禄', '田宅', '福德', '父母'];
 
+// 引用上屏：只露"可溯源到原文具体古诀"的依据；滤掉"泛泛描述这本书 / 通用常识"的挂名条目。
+const META_CITATIONS = new Set([
+  '千里命稿:案例归纳', '渊海子平:十神成象', '神峰通考:取用细辨', '三命通会:格局成败',
+]);
+
+const isTraceableRef = (ref) => Boolean(ref && ref.source && ref.summary)
+  && !META_CITATIONS.has(`${ref.source}:${ref.topic}`);
+
+// summary 常以《书名》开头，与单列的来源标签重复，去掉开头那一截。
+const toCitation = (ref) => {
+  const text = String(ref.summary).replace(/^《[^》]+》/, '').replace(/^[，、：:\s]+/, '').trim();
+  return { source: ref.source, text: text || ref.summary };
+};
+
+const dedupeBySource = (list) => {
+  const seen = new Set();
+  return list.filter((item) => (seen.has(item.source) ? false : seen.add(item.source)));
+};
+
 const starName = (star) => star?.name || '';
 
 const collectMutagens = (palace) => [palace.majorStars, palace.minorStars, palace.adjectiveStars]
@@ -123,9 +142,20 @@ export const createChartViewModel = (state) => {
   const baziBasis = {
     title: '八字基础',
     summary: data.reading?.manual?.[0]?.body || data.reading?.headline || '',
+    citations: dedupeBySource(
+      (data.reading?.references || [])
+        .filter((ref) => ref.domain === 'bazi' && isTraceableRef(ref))
+        .map(toCitation),
+    ).slice(0, 3),
   };
   const topicsByTheme = (data.reading?.topics || []).reduce((acc, topic) => {
-    if (topic.id) acc[topic.id] = { title: topic.title, summary: topic.takeaway || topic.summary || '' };
+    if (topic.id) {
+      acc[topic.id] = {
+        title: topic.title,
+        summary: topic.takeaway || topic.summary || '',
+        citations: dedupeBySource((topic.references || []).filter(isTraceableRef).map(toCitation)).slice(0, 2),
+      };
+    }
     return acc;
   }, {});
   const activeTopic = filter !== 'all' ? (topicsByTheme[filter] || null) : null;

@@ -3,6 +3,19 @@ import { createChartViewModel } from '../domain/view-models/chart-view-model.js'
 
 const VERDICT_TONE = { 吉: 'positive', 凶: 'negative', 待辨: 'neutral' };
 
+// 古诀依据：来源 + 原文要义（已在 view model 过滤掉泛化/挂名条目）。
+const renderCitations = (citations = []) => (citations.length ? `
+  <div class="chart-citations">
+    <span class="chart-citations-label">依据</span>
+    ${citations.map((c) => `
+      <p class="chart-citation">
+        <span class="chart-citation-source">《${escapeHtml(c.source)}》</span>
+        <span class="chart-citation-text">${escapeHtml(c.text)}</span>
+      </p>
+    `).join('')}
+  </div>
+` : '');
+
 const renderHighlight = (item) => `
   <div class="chart-highlight">
     <span class="chart-highlight-label">${escapeHtml(item.label)}</span>
@@ -87,6 +100,7 @@ export const renderChartPage = (state) => {
         <section class="card card-plain chart-bazi-basis">
           <span class="chart-section-label">八字基础</span>
           <p class="page-subtitle">${escapeHtml(model.baziBasis.summary)}</p>
+          ${renderCitations(model.baziBasis.citations)}
         </section>
       ` : ''}
 
@@ -124,6 +138,7 @@ export const renderChartPage = (state) => {
           <span class="chart-section-label">紫微主线</span>
           <h2 class="chart-theme-topic-title">${escapeHtml(model.activeTopic.title)}</h2>
           <p class="page-subtitle">${escapeHtml(model.activeTopic.summary)}</p>
+          ${renderCitations(model.activeTopic.citations)}
         </article>
       ` : `
         <p class="page-subtitle chart-topic-hint">按上面的主题筛选，可看到对应「紫微主线」的命盘依据。</p>

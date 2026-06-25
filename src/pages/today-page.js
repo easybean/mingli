@@ -1,5 +1,4 @@
 import { escapeHtml } from '../components/html.js';
-import { renderFocusPicker } from '../components/focus-picker.js';
 import { renderBirthForm } from '../components/birth-form.js';
 import { createTodayViewModel } from '../domain/view-models/today-view-model.js';
 import { createTodayFortuneViewModel } from '../domain/view-models/today-fortune-view-model.js';
@@ -156,11 +155,6 @@ const renderDailyQuestion = (model) => `
         </div>
       ` : ''}
     </article>
-
-    <div class="daily-focus-strip">
-      ${renderFocusPicker(model.focusOptions)}
-      ${model.focusHint ? `<p class="focus-hint">${escapeHtml(model.focusHint)}</p>` : ''}
-    </div>
 
     <div class="stack daily-choice-section">
       <h3 class="daily-question">${escapeHtml(model.question)}</h3>
