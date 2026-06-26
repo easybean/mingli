@@ -22,6 +22,7 @@ const SLUG = {
   左辅: 'zuofu', 右弼: 'youbi', 文昌: 'wenchang', 文曲: 'wenqu', 天魁: 'tiankui', 天钺: 'tianyue', 禄存: 'lucun',
   天马: 'tianma', 擎羊: 'qingyang', 陀罗: 'tuoluo', 火星: 'huoxing', 铃星: 'lingxing', 地空: 'dikong', 地劫: 'dijie',
   化禄: 'hualu', 化权: 'huaquan', 化科: 'huake', 化忌: 'huaji',
+  四化空: 'sihuakong',
 };
 
 const illustHtml = (card) => {
