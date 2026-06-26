@@ -14,6 +14,25 @@ const LEVEL = {
 
 export const levelMeta = (lv) => LEVEL[lv] || LEVEL['主星'];
 
+// 星名 → 插画文件名（拼音）。图放 src/tools/ziling-pai/illust/<slug>.png；没图自动回退 ✦。
+// 范围：主星14 + 甲级14 + 四化4 = 32。乙/丙级与空宫牌无图、走占位。
+const SLUG = {
+  紫微: 'ziwei', 天机: 'tianji', 太阳: 'taiyang', 武曲: 'wuqu', 天同: 'tiantong', 廉贞: 'lianzhen', 天府: 'tianfu',
+  太阴: 'taiyin', 贪狼: 'tanlang', 巨门: 'jumen', 天相: 'tianxiang', 天梁: 'tianliang', 七杀: 'qisha', 破军: 'pojun',
+  左辅: 'zuofu', 右弼: 'youbi', 文昌: 'wenchang', 文曲: 'wenqu', 天魁: 'tiankui', 天钺: 'tianyue', 禄存: 'lucun',
+  天马: 'tianma', 擎羊: 'qingyang', 陀罗: 'tuoluo', 火星: 'huoxing', 铃星: 'lingxing', 地空: 'dikong', 地劫: 'dijie',
+  化禄: 'hualu', 化权: 'huaquan', 化科: 'huake', 化忌: 'huaji',
+};
+
+const illustHtml = (card) => {
+  const slug = SLUG[card['名']];
+  const img = slug
+    ? `<img class="zl-illust-img" src="/src/tools/ziling-pai/illust/${slug}.jpg" alt="" loading="lazy" onerror="this.remove()">`
+    : '';
+  // 占位（✦+名）垫在底层，图片盖在上面：有图就完全遮住占位，图缺失/加载失败才露出来回退。
+  return `<div class="zl-illust"><span class="zl-illust-glyph"><span>✦</span><span>${slug ? card['名'] : '插画位'}</span></span>${img}</div>`;
+};
+
 // 不同级别牌面字段不同，统一成 {wuxing, centerWord}
 const frontMeta = (card) => {
   const lv = card['级别'];
@@ -88,7 +107,7 @@ export const renderCard = ({ card, sealed = false, idx = 0 }) => {
               <span class="zl-lvtag">${esc(m.short)}</span>
               <span class="zl-lven">${esc(m.en)}</span>
             </div>
-            <div class="zl-illust"><span>✦</span><span>插画位</span></div>
+            ${illustHtml(card)}
             <div class="zl-cardname">${esc(card['名'])}</div>
             ${fm.wuxing ? `<span class="zl-wx">${esc(fm.wuxing)}</span>` : ''}
             <div class="zl-cw">${esc(fm.centerWord)}</div>

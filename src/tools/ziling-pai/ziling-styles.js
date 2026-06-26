@@ -146,11 +146,12 @@ const CSS = `
 .zl-face-top{ width:100%; display:flex; align-items:center; justify-content:space-between; }
 .zl-lvtag{ font-size:9.5px; font-weight:700; letter-spacing:1px; color:var(--zl-lv); background:var(--zl-lv-soft); border:1px solid var(--zl-lv-line); border-radius:7px; padding:2px 8px; }
 .zl-lven{ font-family:'Inter',sans-serif; font-size:7.5px; font-weight:600; letter-spacing:1.2px; color:var(--zl-card-muted); }
-.zl-illust{ margin-top:10px; width:58px; height:58px; border-radius:50%; border:1px dashed var(--zl-lv-line);
-  background:radial-gradient(circle at 50% 38%, var(--zl-lv-soft), transparent 72%);
-  display:flex; flex-direction:column; align-items:center; justify-content:center; flex-shrink:0; }
-.zl-illust span:first-child{ font-size:18px; color:var(--zl-lv); opacity:.72; line-height:1; }
-.zl-illust span:last-child{ font-family:'Inter',sans-serif; font-size:6.5px; letter-spacing:.5px; color:var(--zl-card-muted); margin-top:3px; }
+.zl-illust{ position:relative; margin-top:10px; width:58px; height:58px; border-radius:50%; overflow:hidden;
+  border:1px solid var(--zl-lv-line); background:radial-gradient(circle at 50% 38%, var(--zl-lv-soft), transparent 72%); flex-shrink:0; }
+.zl-illust-img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.zl-illust-glyph{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.zl-illust-glyph span:first-child{ font-size:18px; color:var(--zl-lv); opacity:.72; line-height:1; }
+.zl-illust-glyph span:last-child{ font-family:'Inter',sans-serif; font-size:6.5px; letter-spacing:.5px; color:var(--zl-card-muted); margin-top:3px; }
 .zl-cardname{ font-family:'Noto Serif SC',serif; font-weight:700; color:var(--zl-card-ink); margin-top:9px; letter-spacing:1px; line-height:1.05; font-size:clamp(16px,5.5cqw,24px); }
 .zl-wx{ font-size:9.5px; color:var(--zl-card-muted); border:1px solid var(--zl-card-line); border-radius:6px; padding:1px 8px; margin-top:6px; }
 .zl-cw{ font-size:10.5px; line-height:1.5; color:var(--zl-card-ink-muted); text-align:center; margin-top:8px;

@@ -5,7 +5,7 @@ import { ensureZilingStyles } from './ziling-styles.js';
 import { QUESTION_TYPES, buildSpread, assembleReading } from './ziling-view-model.js';
 import { renderCard } from './ziling-card.js';
 import { createChartAdapter } from './chart-adapter.js';
-import { starfield, baguaRing, dipper, pileArt } from './ziling-art.js';
+import { starfield, baguaRing, dipper, backArt } from './ziling-art.js';
 
 const SCREENS = ['cover', 'types', 'shuffle', 'spread', 'reading'];
 
@@ -34,11 +34,13 @@ const DEAL_LAYOUT = [
   { left: '158px', top: '8px', z: 2, w: '84px' },    // 四化（一排右）
 ];
 
+// 牌堆背面 = 正式牌背（与落盘后的牌背一致：北斗 + 紫灵牌字样）
+const pileBack = (seed) => `${backArt(seed)}<div class="zl-back-title">紫 灵 牌</div>`;
 const renderPile = () => `
   <div class="zl-pile">
-    <div class="zl-pile-card">${pileArt(5)}</div>
-    <div class="zl-pile-card">${pileArt(9)}</div>
-    <div class="zl-pile-card">${pileArt(13)}</div>
+    <div class="zl-pile-card">${pileBack(5)}</div>
+    <div class="zl-pile-card">${pileBack(9)}</div>
+    <div class="zl-pile-card">${pileBack(13)}</div>
   </div>`;
 
 const renderDealStage = (spread, revealedCount) => `
