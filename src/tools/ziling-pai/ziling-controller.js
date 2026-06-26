@@ -3,7 +3,7 @@
 // 与主 app 仅两处相连：openZiling 入参（命盘 + 主题回调）。删本目录即可整体移除。
 import { ensureZilingStyles } from './ziling-styles.js';
 import { QUESTION_TYPES, buildSpread, assembleReading } from './ziling-view-model.js';
-import { renderCard } from './ziling-card.js';
+import { renderCard, renderZoomCard } from './ziling-card.js';
 import { createChartAdapter } from './chart-adapter.js';
 import { starfield, baguaRing, dipper, backArt } from './ziling-art.js';
 
@@ -27,11 +27,11 @@ const clearTimers = () => { (model?.timers || []).forEach(clearTimeout); if (mod
 // 注意：水平定位只用像素 left，不用 transform/translateX——zl-rise 入场动画会动 transform，
 // 用 translateX 定位会被动画覆盖导致牌挤到正中重叠。 ----
 const DEAL_LAYOUT = [
-  { left: '58px', top: '8px', z: 2, w: '84px' },     // 主星（一排左）
-  { left: '8px', top: '162px', z: 1, w: '84px' },    // 甲（二排）
-  { left: '108px', top: '162px', z: 1, w: '84px' },  // 乙
-  { left: '208px', top: '162px', z: 1, w: '84px' },  // 丙
-  { left: '158px', top: '8px', z: 2, w: '84px' },    // 四化（一排右）
+  { left: '14%', top: '4px', z: 2, w: '34%' },     // 主星（一排左，放大）
+  { left: '2%', top: '196px', z: 1, w: '31%' },    // 甲（二排铺满）
+  { left: '34.5%', top: '196px', z: 1, w: '31%' }, // 乙
+  { left: '67%', top: '196px', z: 1, w: '31%' },   // 丙
+  { left: '52%', top: '4px', z: 2, w: '34%' },     // 四化（一排右，放大）
 ];
 
 // 牌堆背面 = 正式牌背（与落盘后的牌背一致：北斗 + 紫灵牌字样）
@@ -210,8 +210,24 @@ const render = () => {
 };
 
 // ---- 动作 ----
-const go = (screen) => { clearTimers(); model.screen = screen; render(); };
+const go = (screen) => { clearTimers(); closeZoom(); model.screen = screen; render(); };
 const goBack = () => { const i = SCREENS.indexOf(model.screen); if (i > 0) go(SCREENS[i - 1]); };
+
+// 放大大卡：点牌 → 占大半屏读释义；再点任意处复原
+const openZoom = (idx) => {
+  const card = model.spread && model.spread[idx];
+  if (!card || !root) return;
+  closeZoom();
+  const el = document.createElement('div');
+  el.className = 'zl-zoom-backdrop';
+  el.setAttribute('data-zl-zoom', '');
+  el.innerHTML = renderZoomCard(card);
+  root.appendChild(el);
+};
+function closeZoom() {
+  const e = root && root.querySelector('[data-zl-zoom]');
+  if (e) e.remove();
+}
 
 const setTheme = (theme) => {
   document.documentElement.setAttribute('data-theme', theme);
@@ -285,8 +301,10 @@ const bind = () => {
       model.type = null; model.question = ''; model.phase = 'idle'; model.revealCount = 0; model.spread = null;
       return go('cover');
     }
+    // 大卡已开：点任意处（含背景与大卡本身）关闭
+    if (event.target.closest('[data-zl-zoom]')) return closeZoom();
     const card = event.target.closest('[data-zl-card]');
-    if (card && model.screen === 'spread') { card.classList.toggle('is-details'); }
+    if (card && model.screen === 'spread') return openZoom(Number(card.dataset.zlCard));
   });
 
   // 问句输入：只存值、不重渲染（避免打断输入）

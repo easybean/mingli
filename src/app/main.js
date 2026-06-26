@@ -1,14 +1,16 @@
-import { bindEvents, bindNavEvents } from './events.js';
+import { bindEvents, bindNavEvents, bindThemeToggle } from './events.js';
 import { renderActivePage } from './router.js';
 import { state, subscribe, refreshAstrolabeData } from './store.js';
 import { fetchAstrolabe } from '../api/mingli-api.js';
 import { todayInputValue } from '../adapters/web-time.js';
 import { renderBottomNav } from '../components/bottom-nav.js';
 import { renderCosmos } from '../components/cosmos.js';
+import { renderThemeToggle } from '../components/theme-toggle.js';
 
 const appRoot = document.querySelector('#app');
 const navRoot = document.querySelector('#bottom-nav');
 const cosmosRoot = document.querySelector('#cosmos');
+const themeToggleRoot = document.querySelector('#theme-toggle');
 let cosmosMounted = false;
 
 const render = () => {
@@ -16,6 +18,9 @@ const render = () => {
   if (state.ui.theme.startsWith('star') && cosmosRoot && !cosmosMounted) {
     cosmosRoot.innerHTML = renderCosmos();
     cosmosMounted = true;
+  }
+  if (themeToggleRoot) {
+    themeToggleRoot.innerHTML = renderThemeToggle(state.ui.theme);
   }
   appRoot.innerHTML = renderActivePage();
   renderBottomNav({
@@ -27,6 +32,7 @@ const render = () => {
 
 bindEvents(appRoot);
 bindNavEvents(navRoot);
+if (themeToggleRoot) bindThemeToggle(themeToggleRoot);
 subscribe(render);
 render();
 

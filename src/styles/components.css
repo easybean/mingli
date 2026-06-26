@@ -664,3 +664,39 @@ details.card-soft[open] > summary::after {
   font-size: 13px;
   line-height: 1.7;
 }
+
+/* —— 全局昼夜切换（固定右上角） —— */
+.theme-toggle {
+  position: fixed;
+  top: max(10px, env(safe-area-inset-top));
+  right: 14px;
+  z-index: 60;
+}
+
+.theme-toggle-inner {
+  display: flex;
+  gap: 3px;
+  padding: 3px;
+  border-radius: 11px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: 0 6px 18px -10px rgba(0, 0, 0, 0.6);
+}
+
+.theme-tab {
+  border: none;
+  background: none;
+  border-radius: 8px;
+  padding: 4px 11px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.theme-tab.is-active {
+  font-weight: 700;
+  color: var(--button-primary-ink);
+  background: var(--gold-gradient);
+}

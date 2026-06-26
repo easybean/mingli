@@ -1,11 +1,6 @@
 import { escapeHtml } from '../components/html.js';
 import { createAccessoryViewModel } from '../domain/view-models/accessory-view-model.js';
 
-const THEME_OPTIONS = [
-  { id: 'star', name: '星象 · 夜', desc: '深空近黑 · 金色星图 · 北斗指紫微 · 玻璃卡片' },
-  { id: 'star-day', name: '星象 · 昼', desc: '晨纸暖底 · 同一星图氛围 · 白玉玻璃卡片' },
-];
-
 const renderAccessoryCategory = (category) => `
   <div class="accessory-category">
     <div class="accessory-category-head">
@@ -49,7 +44,6 @@ const renderAccessoryBody = (model) => {
 };
 
 export const renderProfilePage = (state) => {
-  const current = state.ui.theme;
   const accessoryOpen = state.ui.accessoryOpen;
   const accessoryModel = createAccessoryViewModel(state);
   return `
@@ -58,28 +52,6 @@ export const renderProfilePage = (state) => {
         <h1 class="page-title">我的</h1>
         <p class="page-subtitle">这里后续承载出生信息、当前路线、设置和说明，避免首页堆太多内容。</p>
       </header>
-
-      <section class="theme-switch">
-        <div class="page-kicker page-kicker--muted">外观风格</div>
-        <div class="theme-option-list">
-          ${THEME_OPTIONS.map((opt) => `
-            <button
-              class="theme-option ${current === opt.id ? 'is-active' : ''}"
-              type="button"
-              data-theme-set="${opt.id}"
-              aria-pressed="${current === opt.id}"
-            >
-              <span class="theme-swatch theme-swatch--${opt.id}" aria-hidden="true"></span>
-              <span class="theme-option-text">
-                <span class="theme-option-name">${opt.name}</span>
-                <span class="theme-option-desc">${opt.desc}</span>
-              </span>
-              <span class="theme-option-check" aria-hidden="true"></span>
-            </button>
-          `).join('')}
-        </div>
-        <p class="focus-hint">切换会立即生效，并记住你的选择。</p>
-      </section>
 
       <section class="accessory-card ${accessoryOpen ? 'is-open' : ''}">
         <button

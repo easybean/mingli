@@ -202,3 +202,10 @@ export const bindNavEvents = (root) => {
     setActivePage(button.dataset.page);
   });
 };
+
+export const bindThemeToggle = (root) => {
+  root.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-theme-set]');
+    if (button) setTheme(button.dataset.themeSet);
+  });
+};

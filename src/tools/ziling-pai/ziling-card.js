@@ -112,7 +112,7 @@ export const renderCard = ({ card, sealed = false, idx = 0 }) => {
             <div class="zl-cardname">${esc(card['名'])}</div>
             ${fm.wuxing ? `<span class="zl-wx">${esc(fm.wuxing)}</span>` : ''}
             <div class="zl-cw">${esc(fm.centerWord)}</div>
-            <div class="zl-hint">轻点翻面 ›</div>
+            <div class="zl-hint">轻点放大 ›</div>
           </div>
         </div>
         <div class="zl-face zl-face-back">
@@ -130,5 +130,29 @@ export const renderCard = ({ card, sealed = false, idx = 0 }) => {
           </div>
         </div>
       </div>
+    </div>`;
+};
+
+// 放大大卡：点牌后占大半屏、字号舒适，便于阅读释义。
+export const renderZoomCard = (card) => {
+  const m = levelMeta(card['级别']);
+  const fm = frontMeta(card);
+  const lvVars = `--zl-lv:${m.color};--zl-lv-soft:${m.soft};--zl-lv-line:${m.line};`;
+  const rows = detailRows(card).map((d) => `
+    <div class="zl-zrow">
+      <span class="zl-zk" style="color:${d.c}">${esc(d.k)}</span>
+      <span class="zl-zv">${esc(d.v)}</span>
+    </div>`).join('');
+  return `
+    <div class="zl-zoom-card" style="${lvVars}">
+      <div class="zl-lvbar ${m.multi ? 'multi' : ''}"></div>
+      <div class="zl-zoom-head">
+        ${illustHtml(card)}
+        <div class="zl-zoom-name">${esc(card['名'])}</div>
+        <span class="zl-zoom-tag">${esc(m.short)}${fm.wuxing ? ` · ${esc(fm.wuxing)}` : ''}</span>
+        ${fm.centerWord ? `<div class="zl-zoom-cw">${esc(fm.centerWord)}</div>` : ''}
+      </div>
+      <div class="zl-zoom-body">${rows}</div>
+      <div class="zl-zoom-hint">轻点任意处关闭</div>
     </div>`;
 };
