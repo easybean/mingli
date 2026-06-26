@@ -24,6 +24,7 @@ import {
 } from './store.js';
 import { createGameViewModel } from '../domain/view-models/game-view-model.js';
 import { createTodayViewModel } from '../domain/view-models/today-view-model.js';
+import { openZiling } from '../tools/ziling-pai/ziling-controller.js';
 
 const formDataToInput = (form) => {
   const formData = new FormData(form);
@@ -92,6 +93,12 @@ export const bindEvents = (root) => {
     const accessoryToggle = event.target.closest('[data-accessory-toggle]');
     if (accessoryToggle) {
       toggleAccessory();
+      return;
+    }
+
+    const zilingOpen = event.target.closest('[data-ziling-open]');
+    if (zilingOpen) {
+      openZiling({ astrolabeData: state.astrolabeData, onTheme: setTheme });
       return;
     }
 

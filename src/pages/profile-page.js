@@ -97,6 +97,16 @@ export const renderProfilePage = (state) => {
         ${accessoryOpen ? `<div class="accessory-body">${renderAccessoryBody(accessoryModel)}</div>` : ''}
       </section>
 
+      <section class="accessory-card">
+        <button class="accessory-toggle" type="button" data-ziling-open>
+          <span class="accessory-toggle-text">
+            <span class="accessory-toggle-title">紫灵牌问事 ✦</span>
+            <span class="accessory-toggle-sub">紫微五星成阵，为心中一事抽牌问趋势 · 趣味占卜</span>
+          </span>
+          <span class="accessory-toggle-icon" aria-hidden="true">›</span>
+        </button>
+      </section>
+
       ${state.astrolabeData ? `
         <section class="birth-reset">
           <div class="page-kicker page-kicker--muted">出生信息</div>
