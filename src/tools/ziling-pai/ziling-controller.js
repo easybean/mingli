@@ -9,6 +9,9 @@ import { starfield, baguaRing, dipper, pileArt } from './ziling-art.js';
 
 const SCREENS = ['cover', 'types', 'shuffle', 'spread', 'reading'];
 
+const esc = (s) => String(s == null ? '' : s)
+  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
 let root = null;
 let model = null;
 let chart = null;
@@ -82,8 +85,10 @@ const typesScreen = () => {
           <div class="zl-type-en">${x.en}</div>
         </div>`).join('')}
     </div>
+    <textarea class="zl-qinput" data-zl-question rows="2" maxlength="40"
+      placeholder="想问的具体一句（可留空，如：该不该接这个 offer）">${esc(model.question)}</textarea>
     <button class="zl-btn" data-zl-to-shuffle ${model.type ? '' : 'disabled'}
-      style="margin-top:24px;width:100%;height:52px;font-size:15px">
+      style="margin-top:14px;width:100%;height:52px;font-size:15px">
       ${model.type ? `就问「${t.name}」 →` : '请先择一类'}
     </button>
   </div>`;
@@ -135,13 +140,13 @@ const spreadScreen = () => {
 };
 
 const spreadQuestion = () => {
-  const r = assembleReading({ spread: model.spread, typeKey: model.type, chart });
+  const r = assembleReading({ spread: model.spread, typeKey: model.type, chart, question: model.question });
   return r.questionText || '此一事';
 };
 
 const readingScreen = () => {
   if (!model.spread) model.spread = buildSpread({ typeKey: model.type, chart });
-  const r = assembleReading({ spread: model.spread, typeKey: model.type, chart });
+  const r = assembleReading({ spread: model.spread, typeKey: model.type, chart, question: model.question });
   return `
   <div class="zl-pad">
     <div class="zl-kicker">STEP 04 · 解读</div>
@@ -275,11 +280,17 @@ const bind = () => {
     if (event.target.closest('[data-zl-to-spread]')) return go('spread');
     if (event.target.closest('[data-zl-to-reading]')) return go('reading');
     if (event.target.closest('[data-zl-restart]')) {
-      model.type = null; model.phase = 'idle'; model.revealCount = 0; model.spread = null;
+      model.type = null; model.question = ''; model.phase = 'idle'; model.revealCount = 0; model.spread = null;
       return go('cover');
     }
     const card = event.target.closest('[data-zl-card]');
     if (card && model.screen === 'spread') { card.classList.toggle('is-details'); }
+  });
+
+  // 问句输入：只存值、不重渲染（避免打断输入）
+  root.addEventListener('input', (event) => {
+    const q = event.target.closest('[data-zl-question]');
+    if (q) model.question = q.value;
   });
 };
 
@@ -288,7 +299,7 @@ export const openZiling = ({ astrolabeData = null, onTheme = null } = {}) => {
   ensureZilingStyles();
   chart = createChartAdapter(astrolabeData);
   onThemeChange = onTheme;
-  model = { screen: 'cover', type: null, phase: 'idle', revealCount: 0, spread: null, timers: [] };
+  model = { screen: 'cover', type: null, question: '', phase: 'idle', revealCount: 0, spread: null, timers: [] };
   if (!root) {
     root = document.createElement('div');
     root.className = 'zl-overlay';

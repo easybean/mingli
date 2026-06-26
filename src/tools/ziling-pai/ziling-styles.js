@@ -85,6 +85,11 @@ const CSS = `
 .zl-type-glyph{ font-family:'Noto Serif SC',serif; font-size:23px; line-height:1; color:var(--zl-gold); margin-bottom:8px; }
 .zl-type-name{ font-size:13.5px; font-weight:600; color:var(--zl-ink); }
 .zl-type-en{ font-family:'Inter',sans-serif; font-size:9px; letter-spacing:1px; color:var(--zl-muted); margin-top:4px; }
+.zl-qinput{ width:100%; box-sizing:border-box; margin-top:18px; border-radius:13px; border:1px solid var(--zl-line);
+  background:var(--zl-surface); color:var(--zl-ink); font-family:inherit; font-size:13px; line-height:1.6;
+  padding:11px 13px; resize:none; backdrop-filter:blur(var(--zl-blur)); }
+.zl-qinput::placeholder{ color:var(--zl-muted); }
+.zl-qinput:focus{ outline:none; border-color:var(--zl-gold-line); }
 
 /* ---- shuffle stage ---- */
 .zl-stage{ position:relative; width:100%; height:330px; margin-top:14px; display:flex; align-items:center; justify-content:center; }

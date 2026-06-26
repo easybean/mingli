@@ -21,6 +21,19 @@ const QUESTION_TEXT = {
   estate: '此时置业时机如何？', study: '这个方向值得深耕吗？', all: '我眼下整体如何？',
 };
 
+// 直断结论表：问题类型 × 四化倾向(favor顺 / caution阻 / neutral惯性) → 直接给方向
+const VERDICT = {
+  career: { favor: '偏宜接、可顺势推进', caution: '先别急着接，有变数要理清再说', neutral: '接不接都不强求，看你准备够不够' },
+  wealth: { favor: '财气偏旺，可顺势进取，但别贪快钱', caution: '财气偏紧，不宜贪进，先守住为上', neutral: '财气平平，多靠日常积累、少指望横财' },
+  love: { favor: '这段偏宜继续、推进，气候是顺的', caution: '眼下宜缓，有心结要先解、别硬推', neutral: '顺其自然，别强求也别急着断' },
+  health: { favor: '状态偏稳，按部就班养着即可', caution: '有要留意处，别硬扛、早处理早安心', neutral: '无大起伏，规律作息是关键' },
+  social: { favor: '关系偏顺，可主动靠近、借力', caution: '先拿捏好边界，别交浅言深', neutral: '不冷不热，看你想投入多少' },
+  travel: { favor: '宜动，此行偏顺、可放心走', caution: '宜守或缓行，有变数先备好退路', neutral: '动守皆可，按实际需要定' },
+  estate: { favor: '时机偏成熟，可认真看、择优下手', caution: '先别急着下手，再等等、多比比', neutral: '不催不拖，按自己节奏来' },
+  study: { favor: '这方向偏值得深耕，投入有回响', caution: '先确认是否真合适，别盲目投入', neutral: '可学，但回报偏慢，要有耐心' },
+  all: { favor: '整体偏顺，是可以往前走的时候', caution: '整体偏滞，宜稳守、先把根基理清', neutral: '平稳无大波，靠日常选择慢慢累积' },
+};
+
 // 机制牌：主星空宫（借对宫）、四化空宫（惯性）
 const EMPTY_MAJOR = { 级别: '主星', 名: '空宫', 空宫: true, 五行: '', 中心词: '此事暂无明确主轴，须借对宫之星而论', 牌义: '主星落空宫：这件事本身没有定数、主轴不明，借你命盘对宫的本命主星来看。' };
 const EMPTY_HUA = { 级别: '四化', 名: '四化空', 空宫: true, 方位五行: '', 本意: '惯性而行', 牌义: '四化落空：当下没有明显的禄、权、科、忌力量介入，事情大概率按自身惯性发展。' };
@@ -98,17 +111,24 @@ const sectionLead = (lead, hua, q) => {
     prefix = `命主以「${star['名']}」领此一阵，定下这件事的底色——${parts(star['中心词'], 2)}。`;
   }
 
+  let body;
   if (lean === 'favor') {
-    return `${prefix}叠上${huaName}，这股力量偏顺，更容易走向它好的一面：${axisText(star, q.axis, '优势')}。`;
+    body = `${prefix}叠上${huaName}，这股力量偏顺，更容易走向它好的一面：${axisText(star, q.axis, '优势')}。`;
+  } else if (lean === 'caution') {
+    body = `${prefix}但叠了化忌，眼下偏阻，要留意它的另一面：${axisText(star, q.axis, '缺陷')}。`;
+  } else {
+    body = `${prefix}这次没有明显的四化介入，事情多半按它本来的性子走——顺则${axisText(star, q.axis, '优势')}，滞则${axisText(star, q.axis, '缺陷')}，全看你怎么用。`;
   }
-  if (lean === 'caution') {
-    return `${prefix}但叠了化忌，眼下偏阻，要留意它的另一面：${axisText(star, q.axis, '缺陷')}。`;
+  // 按问题领域补一句（财运 / 健康）
+  if (q.extra && star[q.extra]) {
+    const label = q.extra === '财运' ? '财上' : '身体上';
+    body += `${label}，这颗星偏「${parts(star[q.extra], 2)}」，可一并参看。`;
   }
-  return `${prefix}这次没有明显的四化介入，事情多半按它本来的性子走——顺则${axisText(star, q.axis, '优势')}，滞则${axisText(star, q.axis, '缺陷')}，全看你怎么用。`;
+  return body;
 };
 
-// 命盘底子（命盘加持，仅在有命盘时出）
-const sectionChart = (q, chart) => {
+// 命盘底子（命盘加持：本命此宫底子 + 与今日抽到主星的呼应；仅在有命盘时出）
+const sectionChart = (q, chart, leadName) => {
   if (!chart || !chart.ready) return null;
   const p = chart.getPalace(q.palace);
   if (!p) return null;
@@ -120,44 +140,71 @@ const sectionChart = (q, chart) => {
   if (p.庙旺) bits.push(`星势${p.庙旺}`);
   if (p.四化 && p.四化.length) bits.push(`带${p.四化.join('、')}`);
   const tail = bits.length ? `（${bits.join('，')}）` : '';
-  return `回到你的命盘，这件事看${palaceLabel(q.palace)}，本命坐「${stars}」${tail}——这是你面对此事自带的底子，把抽到的牌象叠在这层上看，才贴你自己。`;
+  const hit = p.主星.some((s) => s['名'] === leadName);
+  const echo = hit
+    ? `巧的是，今日抽到的「${leadName}」正应你本命此宫——象与命相合，这一卦的信号格外清晰、格外贴你。`
+    : `这是你面对此事长期自带的底子；今日抽到的牌象是"此刻之象"，把两层叠起来看，才既贴你、又贴当下。`;
+  return `回到你的命盘，这件事看${palaceLabel(q.palace)}，本命坐「${stars}」${tail}。${echo}`;
 };
 
-// 助力与变量（甲/乙/丙三层）
-const sectionAux = (jia, yi, bing) => {
-  const jiaText = parts(jia['事业优势'] || jia['中心词'], 2);
+// 助力与变量（甲=主力助援 / 乙=次要变量 / 丙=时机底噪，三角色分述）
+const sectionAux = (jia, yi, bing, q) => {
+  const jiaText = parts(jia[`${q.axis}优势`] || jia['事业优势'] || jia['中心词'], 3);
   const yiText = firstSentence(yi['解释']);
+  const bingGood = bing['吉凶'] === '吉';
   const bingText = firstSentence(bing['释义']);
-  return `甲级「${jia['名']}」是这一阵最实的助力，多从${jiaText}一路而来；乙级「${yi['名']}」主${yi['主'] || '—'}，${yiText}；丙级「${bing['名']}」为${bing['吉凶'] || '—'}，${bingText}——是背景里的细微变量，留心时机、顺势而为。`;
+  return `甲级「${jia['名']}」是这一阵最实的助力——它给的是${jiaText}这类正面支援，遇事多往这处借力。`
+    + `乙级「${yi['名']}」点出一重次要变量：主${yi['主'] || '—'}，${yiText}，推进时顺手用上、或留个心。`
+    + `丙级「${bing['名']}」是背景里的时机与底噪，${bingGood ? '偏吉' : '偏扰'}——${bingText}。`;
 };
 
-// 吉凶走向（四化）
-const sectionHua = (hua) => {
+// 吉凶走向（四化，点名主星）
+const sectionHua = (hua, leadName) => {
   if (hua['空宫']) {
     return '四化落空——当下没有明显的禄、权、科、忌介入，这件事大概率按它自身的惯性发展。既没有外力推、也没有外力拦，结果更多取决于你日常选择的累积。';
   }
   const name = hua['名'];
   const body = parts(hua['会意'] || hua['本意'], 3);
   if (name === '化忌') {
-    return `四化「化忌」压于主星之下，为此局添一重变数：${body}。不必慌——凡事留三分余地、把没看清的先看清，反而更稳。`;
+    return `四化「化忌」落在主星之上，给「${leadName}」添一重变数：${body}。不必慌——留三分余地、把没看清的先看清，反而更稳。`;
   }
-  return `四化「${name}」压于主星之下，为此局添一重顺势：${body}。整体偏吉，但行动的火候仍由你自己拿捏。`;
+  return `四化「${name}」落在主星之上，把「${leadName}」往好的方向推：${body}。整体偏吉，但行动的火候仍由你自己拿捏。`;
 };
 
-// assembleReading({ spread, typeKey, chart }) → { title, questionText, chips, sections }
-export const assembleReading = ({ spread, typeKey, chart }) => {
+// 直断：开头直接回答问题（围绕用户问句 + 结论表 + 主轴/四化一句）
+const sectionVerdict = (q, lead, hua, question) => {
+  const lean = huaLean(hua);
+  const verdict = (VERDICT[q.key] || VERDICT.all)[lean];
+  const ask = question ? `你问「${question}」` : `你问的这件「${q.name}」事`;
+  const huaTail = lean === 'favor'
+    ? `主轴落在「${lead['名']}」，又得${hua['名']}之助`
+    : lean === 'caution'
+      ? `主轴落在「${lead['名']}」，却遇化忌生变`
+      : `主轴落在「${lead['名']}」，四化落空、全凭它本身的惯性`;
+  return `${ask}——本阵给的方向是：${verdict}。（${huaTail}）下面把这一卦拆开来看。`;
+};
+
+// assembleReading({ spread, typeKey, chart, question }) → { title, questionText, chips, sections }
+export const assembleReading = ({ spread, typeKey, chart, question }) => {
   const q = QUESTION_TYPES.find((t) => t.key === typeKey) || QUESTION_TYPES[QUESTION_TYPES.length - 1];
   const [lead, jia, yi, bing, hua] = spread;
+  const ask = (question || '').trim();
 
   const sections = [
+    { h: '直断', body: sectionVerdict(q, lead, hua, ask) },
     { h: '本阵主调', body: sectionLead(lead, hua, q) },
-    { h: '命盘底子', body: sectionChart(q, chart) },
-    { h: '助力与变量', body: sectionAux(jia, yi, bing) },
-    { h: '吉凶走向', body: sectionHua(hua) },
+    { h: '命盘底子', body: sectionChart(q, chart, lead['名']) },
+    { h: '助力与变量', body: sectionAux(jia, yi, bing, q) },
+    { h: '吉凶走向', body: sectionHua(hua, lead['名']) },
     { h: '给你的一句', body: '牌象只照见趋势的轮廓，真正落子的是你。若心已有所向，此阵不过添一分笃定；若仍迟疑，便把它当作一次与自己对话的契机。' },
   ].filter((s) => s.body);
 
   const chips = spread.map((c) => ({ label: c['名'], color: LEVEL_COLOR[c['级别']] || '#C9A646' }));
 
-  return { title: `「${q.name}」· 此阵的解读`, questionText: QUESTION_TEXT[q.key] || '', chips, sections };
+  return {
+    title: ask ? '此阵的解读' : `「${q.name}」· 此阵的解读`,
+    questionText: ask || QUESTION_TEXT[q.key] || '',
+    chips,
+    sections,
+  };
 };
