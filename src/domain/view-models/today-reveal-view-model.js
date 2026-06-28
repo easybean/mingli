@@ -2,13 +2,14 @@
 // phase: sealed(摊开待翻) → revealed(飞出命盘选定那张, 接受/自选) → choosing(自己挑) → done(进入今日一题)。
 // 一天一次：reveal.date 不是今天就当 sealed（新的一天自动重放）。
 
-import { pickTodayCard } from './today-focus.js';
+import { pickTodayCard, dayIndexFromDate } from './today-focus.js';
 import { todayInputValue } from '../../adapters/web-time.js';
 
 export const createTodayRevealViewModel = (state) => {
   const data = state.astrolabeData;
   const dayScope = data?.reading?.lifeGame?.scopes?.day || {};
-  const selection = pickTodayCard(dayScope, null); // focus 留空 → 命盘主卡
+  // focus 留空 → 命盘主卡；按当天日期轮换，和今日页主卡保持一致。
+  const selection = pickTodayCard(dayScope, null, dayIndexFromDate(data?.input?.target));
   const picked = selection.card;
 
   const reveal = state.ui.reveal || {};

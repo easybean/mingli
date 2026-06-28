@@ -709,6 +709,7 @@ const buildReading = ({ summary, palaces, bazi, horoscope }) => {
     palaces,
     patterns,
     horoscope,
+    gender: summary.gender,
   });
   const currentMutagens = [
     ['大限', horoscope.decadal],

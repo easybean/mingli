@@ -1,5 +1,5 @@
 import { firstOf } from './helpers.js';
-import { pickTodayCard } from './today-focus.js';
+import { pickTodayCard, dayIndexFromDate } from './today-focus.js';
 
 export const createHomeViewModel = (state) => {
   const data = state.astrolabeData;
@@ -18,7 +18,11 @@ export const createHomeViewModel = (state) => {
   const dayScope = data.reading.lifeGame?.scopes?.day || {};
   const monthScope = data.reading.lifeGame?.scopes?.month || {};
   const lifetimeScope = data.reading.lifeGame?.scopes?.lifetime || data.reading.lifeGame || {};
-  const todaySelection = pickTodayCard(dayScope, state.gameSession.todayFocusTheme);
+  const todaySelection = pickTodayCard(
+    dayScope,
+    state.gameSession.todayFocusTheme,
+    dayIndexFromDate(data.input?.target),
+  );
   const todayCard = todaySelection.card;
   const monthCards = monthScope.cards || [];
   const archetypeName = data.reading.lifeGame?.archetype?.name || '';

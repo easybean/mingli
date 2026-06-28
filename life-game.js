@@ -210,6 +210,9 @@ const normalizeTemplate = (template = {}, source = 'base') => ({
   situation: template.situation || '',
   conflict: template.conflict || '',
   scopes: inferredScopes(template, source),
+  // 人生阶段 / 性别标注：透传给打分门槛用（缺省 = 各阶段通用 / 不分性别）。
+  stages: Array.isArray(template.stages) ? template.stages : undefined,
+  gender: template.gender || undefined,
   choices: Array.isArray(template.choices) ? template.choices.map(normalizeChoice) : [],
 });
 
@@ -643,6 +646,57 @@ const isSpecificSignal = (signal, template) => (
   || isRelevantStarSignal(signal, template)
 );
 
+// 人生阶段（7 段）：每张题用 stages 标注适用阶段，引擎按用户当前年龄只浮本阶段的题。
+// 不写 stages = 各阶段通用（如"焦虑失眠""攀比内耗"）。
+const LIFE_STAGES = [
+  { id: 'teen', label: '少年求学', min: 0, max: 17 },
+  { id: 'college', label: '大学青年', min: 18, max: 23 },
+  { id: 'earlyCareer', label: '初入社会', min: 24, max: 29 },
+  { id: 'establish', label: '立业成家', min: 30, max: 39 },
+  { id: 'midlife', label: '中年', min: 40, max: 49 },
+  { id: 'senior', label: '中老年', min: 50, max: 64 },
+  { id: 'elder', label: '老年', min: 65, max: 200 },
+];
+
+const stageForAge = (age) => {
+  if (!Number.isFinite(age)) return null;
+  const hit = LIFE_STAGES.find((s) => age >= s.min && age <= s.max);
+  return (hit || LIFE_STAGES[LIFE_STAGES.length - 1]).id;
+};
+
+const normalizeGender = (g) => {
+  if (g === '男' || g === 'male' || g === 1 || g === '1') return 'male';
+  if (g === '女' || g === 'female' || g === 0 || g === '0') return 'female';
+  return null;
+};
+
+// 阶段/性别门槛：本阶段题加分浮出，错阶段/性别不符的题标记 offStage 并大幅减分。
+// 通用题（无 stages）不受阶段加减，按本身命理得分竞争，各阶段都能出。
+// 返回 { score, offStage }：offStage 用布尔判定（不靠分数大小），交给选卡阶段直接过滤，
+// 避免"错阶段但挂了强格局、基础分高"的题盖过门槛。
+const applyStageGate = (score, template, scopeProfile) => {
+  const userStage = stageForAge(Number(scopeProfile?.currentAge));
+  const cardStages = Array.isArray(template.stages) ? template.stages : [];
+  const userGender = normalizeGender(scopeProfile?.gender);
+  const cardGender = normalizeGender(template.gender);
+
+  let next = score;
+  let offStage = false;
+  if (userStage && cardStages.length) {
+    if (cardStages.includes(userStage)) {
+      next += 12;
+    } else {
+      next -= 100;
+      offStage = true;
+    }
+  }
+  if (cardGender && userGender && cardGender !== userGender) {
+    next -= 100;
+    offStage = true;
+  }
+  return { score: next, offStage };
+};
+
 const scoreTemplate = (template, context) => {
   const matchedSignals = (template.triggers || [])
     .map((trigger) => matchTrigger(trigger, template, context.signalIndex))
@@ -721,32 +775,14 @@ const scoreTemplate = (template, context) => {
     score -= 8;
   }
 
-  const currentAge = Number(context.scopeProfile?.currentAge);
-  if (Number.isFinite(currentAge) && currentAge <= 18) {
-    if (['family', 'relationship', 'health', 'mindset'].includes(template.theme)) {
-      score += 8;
-    }
-    if (template.id === 'opportunity-relationship-growth' || template.id === 'opportunity-noble-help' || template.id === 'opportunity-migration') {
-      score += 8;
-    }
-    if (template.type === 'opportunity' && ['career', 'wealth'].includes(template.theme)) {
-      score -= 10;
-    }
-    if (template.id === 'opportunity-platform-upgrade' || template.id === 'opportunity-asset-foundation' || template.id === 'opportunity-skill-output') {
-      score -= 16;
-    }
-  } else if (Number.isFinite(currentAge) && currentAge <= 22) {
-    if (['mindset', 'relationship', 'career'].includes(template.theme)) {
-      score += 4;
-    }
-    if (template.type === 'opportunity' && template.id === 'opportunity-asset-foundation') {
-      score -= 6;
-    }
-  }
+  // 人生阶段 / 性别门槛：用标注的 stages、gender 把题对到当前用户的人生处境。
+  const gate = applyStageGate(score, template, context.scopeProfile);
+  score = gate.score;
 
   return {
     template,
     score,
+    offStage: gate.offStage,
     strongHitCount: strongSignals.length,
     hits: unique(strongSignals.concat(matchedSignals).map((signal) => signal.trigger)).slice(0, 6),
     matchedSignals,
@@ -851,21 +887,29 @@ const refineOpportunitySelection = (selected, scored) => {
     .sort((a, b) => b.score - a.score || a.template.id.localeCompare(b.template.id));
 };
 
-// 今日 scope 专用：每个有题的主题各取最高分一张代表卡，
-// 让焦点条能切换到所有有题的主题（含家庭/人际），而不是只剩 top-3 的几个。
-const selectDayPerTheme = (scored) => {
+// 今日 scope 专用：每个有题的主题各取 top-N 张代表卡（不再只留 1 张），
+// 让焦点条能切换到所有有题的主题（含家庭/人际），同时给前端按天轮换留出卡池
+// ——同一主题不会天天只出最高分那一张（见 today-focus.js 的 dayIndex 轮换）。
+const DAY_THEME_LIMIT = 5;
+const selectDayPerTheme = (scored, perThemeLimit = DAY_THEME_LIMIT) => {
   const byTheme = new Map();
   scored.forEach((item) => {
     const theme = item.template.theme;
-    const current = byTheme.get(theme);
-    if (!current
-      || item.score > current.score
-      || (item.score === current.score && item.template.id.localeCompare(current.template.id) < 0)) {
-      byTheme.set(theme, item);
+    if (!byTheme.has(theme)) {
+      byTheme.set(theme, []);
     }
+    byTheme.get(theme).push(item);
   });
-  return Array.from(byTheme.values())
-    .sort((a, b) => b.score - a.score || a.template.id.localeCompare(b.template.id));
+  const out = [];
+  byTheme.forEach((items) => {
+    items.sort((a, b) => b.score - a.score || a.template.id.localeCompare(b.template.id));
+    // 优先只用"对得上当前人生阶段/性别"的题；该主题若一张都不剩，才退回最高分一张兜底，
+    // 保证焦点条上这个主题不至于凭空消失。
+    const inStage = items.filter((item) => !item.offStage);
+    const pool = inStage.length ? inStage : items.slice(0, 1);
+    out.push(...pool.slice(0, perThemeLimit));
+  });
+  return out.sort((a, b) => b.score - a.score || a.template.id.localeCompare(b.template.id));
 };
 
 const applyChoiceDefaults = (choice) => normalizeChoice(choice);
@@ -1608,9 +1652,9 @@ const scopeScaleOverrides = (scope, scale) => {
   return scale;
 };
 
-const buildLifeGameScope = ({ scope = 'lifetime', reading, bazi, palaces, patterns, horoscope }) => {
+const buildLifeGameScope = ({ scope = 'lifetime', reading, bazi, palaces, patterns, horoscope, gender }) => {
   const signalIndex = buildSignalIndex({ reading, bazi, patterns, palaces });
-  const scopeProfile = buildScopeProfile({ scope, bazi, horoscope, palaces });
+  const scopeProfile = { ...buildScopeProfile({ scope, bazi, horoscope, palaces }), gender };
   const context = { reading, bazi, palaces, patterns, signalIndex, scopeProfile };
   const periods = scopeProfile.periods;
   const scale = scopeScaleOverrides(scope, computeGameScale({ periods, patterns, signalIndex }));
@@ -1681,7 +1725,7 @@ const buildLifeGameScope = ({ scope = 'lifetime', reading, bazi, palaces, patter
   };
 };
 
-const buildLifeGame = ({ reading, bazi, palaces, patterns, horoscope }) => {
+const buildLifeGame = ({ reading, bazi, palaces, patterns, horoscope, gender }) => {
   const lifetime = buildLifeGameScope({
     scope: 'lifetime',
     reading,
@@ -1689,6 +1733,7 @@ const buildLifeGame = ({ reading, bazi, palaces, patterns, horoscope }) => {
     palaces,
     patterns,
     horoscope,
+    gender,
   });
   const decade = buildLifeGameScope({
     scope: 'decade',
@@ -1697,6 +1742,7 @@ const buildLifeGame = ({ reading, bazi, palaces, patterns, horoscope }) => {
     palaces,
     patterns,
     horoscope,
+    gender,
   });
   const year = buildLifeGameScope({
     scope: 'year',
@@ -1705,6 +1751,7 @@ const buildLifeGame = ({ reading, bazi, palaces, patterns, horoscope }) => {
     palaces,
     patterns,
     horoscope,
+    gender,
   });
   const month = buildLifeGameScope({
     scope: 'month',
@@ -1713,6 +1760,7 @@ const buildLifeGame = ({ reading, bazi, palaces, patterns, horoscope }) => {
     palaces,
     patterns,
     horoscope,
+    gender,
   });
   const day = buildLifeGameScope({
     scope: 'day',
@@ -1721,6 +1769,7 @@ const buildLifeGame = ({ reading, bazi, palaces, patterns, horoscope }) => {
     palaces,
     patterns,
     horoscope,
+    gender,
   });
 
   return {

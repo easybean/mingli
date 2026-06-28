@@ -63,6 +63,11 @@
         },
         "feedback": "领导虽表面理解，但后续重要任务不再优先考虑你，你的日常工作节奏完全安稳无波动"
       }
+    ],
+    "stages": [
+      "earlyCareer",
+      "establish",
+      "midlife"
     ]
   },
   {
@@ -129,6 +134,11 @@
         },
         "feedback": "留在熟悉的环境稳步工作，家庭陪伴充足，三年后才有小幅内部晋升机会"
       }
+    ],
+    "stages": [
+      "earlyCareer",
+      "establish",
+      "midlife"
     ]
   },
   {
@@ -195,6 +205,11 @@
         },
         "feedback": "团队氛围依旧和睦，你养成严谨留档习惯，再也没有出现成果被窃取的情况，但本次的功劳完全归于对方"
       }
+    ],
+    "stages": [
+      "earlyCareer",
+      "establish",
+      "midlife"
     ]
   },
   {
@@ -261,6 +276,10 @@
         },
         "feedback": "全身心投入职场，一年顺利升职加薪，副业仅当作偶尔消遣小收入，生活压力大幅减轻"
       }
+    ],
+    "stages": [
+      "earlyCareer",
+      "establish"
     ]
   },
   {
@@ -327,6 +346,11 @@
         },
         "feedback": "朋友略有失落疏远，你的存款稳稳保本计息，完全没有本金亏损的焦虑烦恼"
       }
+    ],
+    "stages": [
+      "establish",
+      "midlife",
+      "senior"
     ]
   },
   {
@@ -393,6 +417,11 @@
         },
         "feedback": "亲戚初期对你冷淡，后来自行贷到资金周转，时间久了理解你的难处，关系慢慢恢复如初"
       }
+    ],
+    "stages": [
+      "earlyCareer",
+      "establish",
+      "midlife"
     ]
   },
   {
@@ -459,6 +488,10 @@
         },
         "feedback": "无债务一身轻松，每年理财收益补贴日常开销，只是住房空间多年没有提升"
       }
+    ],
+    "stages": [
+      "establish",
+      "midlife"
     ]
   },
   {
@@ -525,6 +558,11 @@
         },
         "feedback": "你不再委屈内耗，但彼此之间越来越客气疏远，亲密互动大幅减少"
       }
+    ],
+    "stages": [
+      "earlyCareer",
+      "establish",
+      "midlife"
     ]
   },
   {
@@ -591,6 +629,13 @@
         },
         "feedback": "两人联系越来越少，慢慢变成朋友圈点赞之交，你把社交重心转移到三观契合的新朋友身上"
       }
+    ],
+    "stages": [
+      "college",
+      "earlyCareer",
+      "establish",
+      "midlife",
+      "senior"
     ]
   },
   {
@@ -657,6 +702,10 @@
         },
         "feedback": "和平分手互不耽误，你重新慢慢接触其他相亲对象，不再被迫追赶别人的婚嫁节奏"
       }
+    ],
+    "stages": [
+      "earlyCareer",
+      "establish"
     ]
   },
   {
@@ -723,6 +772,11 @@
         },
         "feedback": "悄无声息谈妥股份转让，平稳退出合伙项目，避开正面争吵，但这段时间亏损了一部分收益"
       }
+    ],
+    "stages": [
+      "earlyCareer",
+      "establish",
+      "midlife"
     ]
   },
   {
@@ -789,6 +843,11 @@
         },
         "feedback": "全身心调养作息饮食，身体很快恢复舒适状态，只是当年绩效和额外收益大打折扣"
       }
+    ],
+    "stages": [
+      "earlyCareer",
+      "establish",
+      "midlife"
     ]
   },
   {
@@ -921,6 +980,12 @@
         },
         "feedback": "自由度拉满，兴致来了才去锻炼，整体去的频次偏低，体能改善幅度比较有限"
       }
+    ],
+    "stages": [
+      "college",
+      "earlyCareer",
+      "establish",
+      "midlife"
     ]
   },
   {
@@ -1185,6 +1250,11 @@
         },
         "feedback": "短期内家里风平浪静，但每次长辈追问进度都需要费心圆场，长久下来内心积压大量委屈与疲惫"
       }
+    ],
+    "stages": [
+      "college",
+      "earlyCareer",
+      "establish"
     ]
   },
   {
@@ -1251,6 +1321,11 @@
         },
         "feedback": "初期二人关系冷淡，手足独自吃苦还清债务，多年后幡然醒悟，明白你是为了让他学会独立，亲情重归于好"
       }
+    ],
+    "stages": [
+      "establish",
+      "midlife",
+      "senior"
     ]
   },
   {
@@ -1317,6 +1392,11 @@
         },
         "feedback": "护工妥善照料长辈基础起居，老宅环境让长辈更有归属感，但你无法参与长辈日常，每逢佳节愧疚感会明显加重"
       }
+    ],
+    "stages": [
+      "establish",
+      "midlife",
+      "senior"
     ]
   },
   {
@@ -1383,6 +1463,10 @@
         },
         "feedback": "家庭矛盾暂时平息，但孩子缺乏系统化管教，学习习惯散漫，后续需要花费更多精力纠正不良习性"
       }
+    ],
+    "stages": [
+      "establish",
+      "midlife"
     ]
   },
   {
@@ -1449,6 +1533,11 @@
         },
         "feedback": "一辈子生活安稳无大风大浪，随时能与亲友相聚，但收入增长缓慢，始终无法触及更高层级的发展平台"
       }
+    ],
+    "stages": [
+      "establish",
+      "midlife",
+      "senior"
     ]
   },
   {
@@ -1515,6 +1604,11 @@
         },
         "feedback": "你学会规避无效内卷，专注自身成长，在大城市稳步升职加薪，虽然压力尚存，但未来发展潜力远超返乡同行"
       }
+    ],
+    "stages": [
+      "earlyCareer",
+      "establish",
+      "midlife"
     ]
   },
   {
@@ -1581,6 +1675,12 @@
         },
         "feedback": "资金快速凑齐助力家人康复，之后数年你逐一回馈帮扶过你的亲友，人情慢慢还清"
       }
+    ],
+    "stages": [
+      "earlyCareer",
+      "establish",
+      "midlife",
+      "senior"
     ]
   },
   {
@@ -1647,6 +1747,11 @@
         },
         "feedback": "你规避了赛道崩盘的潜在风险，资产稳步保本计息，虽无暴富机会，但从未经历投资亏损与焦虑内耗"
       }
+    ],
+    "stages": [
+      "earlyCareer",
+      "establish",
+      "midlife"
     ]
   },
   {
@@ -1716,6 +1821,11 @@
         },
         "feedback": "你没有勉强自己，朋友起初有点失望，但你给的实在建议反而让他记你的好。"
       }
+    ],
+    "stages": [
+      "earlyCareer",
+      "establish",
+      "midlife"
     ]
   },
   {
@@ -1784,6 +1894,5258 @@
           "wellbeing": 2
         },
         "feedback": "你选择先沉淀，前辈表示理解，机会暂时放下，但你心里更踏实。"
+      }
+    ],
+    "stages": [
+      "earlyCareer",
+      "establish",
+      "midlife"
+    ]
+  },
+  {
+    "id": "network-jumen-rumor",
+    "type": "trial",
+    "theme": "network",
+    "title": "群里有人含沙射影地编排你",
+    "tone": "medium",
+    "summary": "共同的群里有人话里有话地暗指你不地道，几个人跟着附和",
+    "dramaticText": "一个大家都在的群里，有人没点名却话里有话地暗指你做事不讲究，紧接着两三个人跟着搭腔起哄。消息一条条往上顶，你的手机在震。",
+    "situation": "一个共同的群里，有人含沙射影地暗指你做事不地道，几个人随声附和",
+    "conflict": "当场对质怕把事闹大、显得小气；沉默不回又怕被默认坐实",
+    "triggers": [
+      "巨门",
+      "仆役",
+      "劫财"
+    ],
+    "choices": [
+      {
+        "label": "当场把话挑明，请对方说清指的是谁",
+        "description": "在群里平静而直接地问对方到底指什么事，要一个明确说法",
+        "cost": "可能把矛盾摆到台面、一时下不来台",
+        "reward": "把含糊的暗箭逼成明话，旁人看得清是非",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 6,
+          "opportunity": 3,
+          "relationship": -4,
+          "stability": -3,
+          "resources": 0,
+          "wellbeing": -4
+        },
+        "feedback": "你没让暗话发酵，当场把它摊开，气氛一度紧绷，但起哄的人收了声。"
+      },
+      {
+        "label": "不在群里接招，私下找当事人对清楚",
+        "description": "群里不回应，转头单独找发难的人把事情一条条对清楚",
+        "cost": "需要花精力私下沟通，群里短时间像是默认了",
+        "reward": "避免当众撕破脸，又把误会真正解开",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 1,
+          "relationship": 1,
+          "stability": 5,
+          "resources": 0,
+          "wellbeing": 0
+        },
+        "feedback": "你没被带进群里的节奏，私下把事对清楚，风波没扩散开。"
+      },
+      {
+        "label": "先稳住自己，找信得过的人把事实讲清",
+        "description": "不急着辩，先跟几个了解你的人把来龙去脉说明白",
+        "cost": "当下憋着一口气，显得没有立刻回击",
+        "reward": "把情绪降下来，靠口碑慢慢把话正过来",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": -1,
+          "relationship": 3,
+          "stability": 2,
+          "resources": 0,
+          "wellbeing": 4
+        },
+        "feedback": "你没接那口气，先把自己稳住，靠平时攒下的信任把话慢慢正了回来。"
+      }
+    ]
+  },
+  {
+    "id": "network-zuoyou-allies",
+    "type": "opportunity",
+    "theme": "network",
+    "title": "两个靠谱的人同时愿意长期搭把手",
+    "tone": "light",
+    "summary": "想做的一件事，刚好有两个能力互补的人都愿意长期一起做",
+    "dramaticText": "你一直想推进的一件事，最近有两个人不约而同地表示愿意长期一起做——一个擅长对外，一个擅长落地，正好补上你缺的两块。",
+    "situation": "手上想做的一件事，恰好有两个能力互补的人都表示愿意长期合作",
+    "conflict": "拉他们入伙能省力很多，但要分权、分利、还要长期维护这段关系",
+    "triggers": [
+      "左右扶命格",
+      "左辅",
+      "右弼"
+    ],
+    "choices": [
+      {
+        "label": "趁热把三人的事敲定，分工分成一次讲清",
+        "description": "抓住势头把合作正式定下来，当场谈妥各自负责什么、怎么分",
+        "cost": "绑定后灵活度下降，要持续协调三方",
+        "reward": "一步搭起一个互补的小班底",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 6,
+          "relationship": 2,
+          "stability": 2,
+          "resources": 2,
+          "wellbeing": -1
+        },
+        "feedback": "你没让热乎劲凉掉，把班底搭了起来，往后省力，也欠下了要好好维护的关系。"
+      },
+      {
+        "label": "先从一件小事合作试水，跑顺了再深绑",
+        "description": "不急着全绑定，挑一件具体的事先一起做一轮看看",
+        "cost": "推进慢一些，可能错过一鼓作气的势头",
+        "reward": "在低风险里看清彼此能不能长期合得来",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": -1,
+          "opportunity": 3,
+          "relationship": 2,
+          "stability": 5,
+          "resources": 1,
+          "wellbeing": 1
+        },
+        "feedback": "你没头脑一热全压上，先小步合作探了路，合得来再深绑，盘面更稳。"
+      },
+      {
+        "label": "先把丑话说在前面，约定好分歧与退出",
+        "description": "开始前就把分成、决策权、谁想退出怎么办都讲清楚",
+        "cost": "一上来谈这些略显见外、有点扫兴",
+        "reward": "把日后最容易翻脸的地方提前钉死",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 1,
+          "relationship": 3,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你把最难开口的话放在了最前面，关系反而更踏实，省了日后撕扯。"
+      }
+    ],
+    "stages": [
+      "earlyCareer",
+      "establish",
+      "midlife"
+    ]
+  },
+  {
+    "id": "network-puyi-drag",
+    "type": "trial",
+    "theme": "network",
+    "title": "你带的人接连出岔子，账算到了你头上",
+    "tone": "medium",
+    "summary": "牵头带的几个人接连掉链子，上面开始把责任算到你身上",
+    "dramaticText": "这阵子你牵头带的几个人接连掉链子，一件接一件。上面今天找你谈话，话里的意思是：人是你带的，账得你认。",
+    "situation": "你牵头带的几个人接连出岔子，上面开始把责任算到你头上",
+    "conflict": "替他们扛是护住团队却自己背锅，切割清楚又怕寒了人心",
+    "triggers": [
+      "陀罗",
+      "仆役",
+      "巨逢四煞"
+    ],
+    "choices": [
+      {
+        "label": "重新分工，把扛不住的环节直接换人",
+        "description": "不再将就，按谁能扛把关键环节重新摆一遍",
+        "cost": "动人事会得罪人、短期更乱",
+        "reward": "把漏水的地方堵上，止住连环出错",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 6,
+          "opportunity": 4,
+          "relationship": -3,
+          "stability": -1,
+          "resources": 1,
+          "wellbeing": -3
+        },
+        "feedback": "你没继续替人兜，重排了分工，短期得罪了人也乱了一阵，但出错的链条断了。"
+      },
+      {
+        "label": "一对一谈清问题，给期限观察，自己先顶住对外",
+        "description": "私下逐个把问题说透、给改的期限，对外的压力先自己扛着",
+        "cost": "自己短期更累，要盯着一段时间",
+        "reward": "给了人机会，也稳住了对外的口子",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 1,
+          "relationship": 2,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": -2
+        },
+        "feedback": "你没一刀切，给了人改的机会，自己先顶住外面，团队没散，你也累了一程。"
+      },
+      {
+        "label": "先把责任边界跟上面讲清，再回头稳人心",
+        "description": "先和上面厘清哪些该你扛、哪些是结构问题，再回来安抚团队",
+        "cost": "可能被觉得在推责任",
+        "reward": "不替结构性问题背锅，护住自己也护住人",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 0,
+          "relationship": 3,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你先把该谁负责的账算清，没把所有锅都接下，回头再稳住人心，心里也松了。"
+      }
+    ],
+    "stages": [
+      "establish",
+      "midlife"
+    ]
+  },
+  {
+    "id": "network-shishen-payback",
+    "type": "opportunity",
+    "theme": "network",
+    "title": "早年随手帮过的人，带着资源回来找你",
+    "tone": "light",
+    "summary": "一个你早年顺手帮过、没图回报的人，如今手握资源主动来找你",
+    "dramaticText": "一个你早年顺手帮过、当时压根没想图回报的人，如今做出了点名堂，主动找上门来，说手里有个资源想第一个想到你。",
+    "situation": "一个你早年无偿帮过的人，如今手握资源主动回来找你合作",
+    "conflict": "接是顺水推舟的好机会，但也怕欠下新人情、被绑进对方的盘子",
+    "triggers": [
+      "食神",
+      "右弼",
+      "天魁"
+    ],
+    "choices": [
+      {
+        "label": "顺势接下，借这层交情把合作做大",
+        "description": "趁着这份旧交情，把合作的盘子尽量做大",
+        "cost": "绑得越深，越难全身而退",
+        "reward": "把一份善意变成一次实打实的机会",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 7,
+          "relationship": 2,
+          "stability": -1,
+          "resources": 3,
+          "wellbeing": 0
+        },
+        "feedback": "你接住了这份回头的善意，把交情变成了机会，盘子大了，牵绊也多了。"
+      },
+      {
+        "label": "接，但只接自己看得清的那部分",
+        "description": "领下能看明白的一块，模糊的部分先不碰",
+        "cost": "吃不到最大那口红利",
+        "reward": "在不欠大人情的前提下稳稳得利",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 4,
+          "relationship": 1,
+          "stability": 4,
+          "resources": 2,
+          "wellbeing": 1
+        },
+        "feedback": "你没被交情冲昏头，只接看得清的那部分，得了实惠又留了余地。"
+      },
+      {
+        "label": "先把交情和生意分开谈，别混在一起",
+        "description": "把\"念旧情\"和\"做生意\"分两件事讲清楚，再决定合不合",
+        "cost": "对方可能觉得你见外",
+        "reward": "不让人情绑架判断，关系生意两不亏",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 2,
+          "relationship": 3,
+          "stability": 3,
+          "resources": 1,
+          "wellbeing": 2
+        },
+        "feedback": "你把人情和生意摆成了两件事，既没辜负旧交情，也没让它绑住自己的判断。"
+      }
+    ],
+    "stages": [
+      "earlyCareer",
+      "establish",
+      "midlife"
+    ]
+  },
+  {
+    "id": "migration-luma-dispatch",
+    "type": "opportunity",
+    "theme": "migration",
+    "title": "公司要派你去外地驻点半年",
+    "tone": "medium",
+    "summary": "一个外地驻点半年的机会，平台更大，但要离开熟悉的城市和人",
+    "dramaticText": "公司给了你一个去外地驻点半年的名额，平台更大、能见的人更多，但也意味着要离开住惯的城市、暂别身边的人，半年都在外面。",
+    "situation": "公司给你一个外地驻点半年的机会，机会大但要离开熟悉的生活",
+    "conflict": "去，是难得的跳板却打乱现有生活；不去，怕这扇门以后不再开",
+    "triggers": [
+      "禄马交驰格",
+      "天马",
+      "太阳"
+    ],
+    "choices": [
+      {
+        "label": "答应下来，把这半年当成换赛道的跳板",
+        "description": "接下名额，铆足劲把这半年用到极致",
+        "cost": "生活被连根打乱，回来要重新衔接",
+        "reward": "一次难得的、能跳出原地的窗口",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 5,
+          "opportunity": 7,
+          "relationship": -2,
+          "stability": -3,
+          "resources": 2,
+          "wellbeing": -2
+        },
+        "feedback": "你把这半年当成跳板接了下来，生活被打乱，但你站到了原地看不到的高度。"
+      },
+      {
+        "label": "答应，但先谈好补贴、归期和回来的位置",
+        "description": "不裸接，先把待遇、什么时候回、回来坐哪谈清楚再走",
+        "cost": "谈条件要花时间，显得不够爽快",
+        "reward": "机会照拿，后路也铺好",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 4,
+          "relationship": 0,
+          "stability": 5,
+          "resources": 3,
+          "wellbeing": 0
+        },
+        "feedback": "你没头脑一热就走，把归期和后路都谈妥了，机会拿到手，心里也有底。"
+      },
+      {
+        "label": "先和家里/伴侣商量好节奏，再给答复",
+        "description": "把家里这半年怎么安排先理顺，再回复公司",
+        "cost": "可能错过最快答复的窗口",
+        "reward": "不让这趟远行单方面压到身边人",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 2,
+          "relationship": 4,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没自己一个人拍板，先把家里的节奏对齐，这趟远行走得才踏实。"
+      }
+    ],
+    "stages": [
+      "earlyCareer",
+      "establish",
+      "midlife"
+    ]
+  },
+  {
+    "id": "migration-ma-kong-stalled",
+    "type": "trial",
+    "theme": "migration",
+    "title": "筹备已久的外派临门一脚被搁置",
+    "tone": "medium",
+    "summary": "为外派（或出国）准备了很久，临到出发却被通知无限期延后",
+    "dramaticText": "你为这次外派（或出国）准备了大半年，行李几乎都收好了，却突然被通知无限期延后。没人说取消，可也没人说什么时候能成。",
+    "situation": "为外派准备已久，临到出发却被通知无限期延后",
+    "conflict": "继续等，怕遥遥无期空耗；转头另谋，又怕前功尽弃",
+    "triggers": [
+      "马落空亡格",
+      "天马",
+      "地空"
+    ],
+    "choices": [
+      {
+        "label": "不等了，立刻去找别的出路",
+        "description": "不再悬着，马上把精力转到别的方向上",
+        "cost": "前期准备可能就此白费",
+        "reward": "从空等里抽身，重新掌握主动",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 5,
+          "opportunity": 5,
+          "relationship": -1,
+          "stability": -3,
+          "resources": 0,
+          "wellbeing": -2
+        },
+        "feedback": "你没耗在原地空等，转身去找了别的路，准备虽白费了一些，人却动了起来。"
+      },
+      {
+        "label": "给自己定个最后期限，到点没动静就转向",
+        "description": "设一条明确的底线时间，期限内等、过了就走",
+        "cost": "这段时间仍要悬着一阵",
+        "reward": "既不轻易放弃，也不无限空耗",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 2,
+          "relationship": 0,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 0
+        },
+        "feedback": "你给空等设了个底线，不再无限期地悬着，到点就有动作，心里有了准头。"
+      },
+      {
+        "label": "先把情绪和沉没成本理清，再决定等不等",
+        "description": "先把\"已经付出这么多\"的不甘按下，冷静算清再做选择",
+        "cost": "一时还是悬而未决",
+        "reward": "不被沉没成本绑架地做下一步",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": 0,
+          "relationship": 1,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你先没急着定，把不甘和算盘理清楚，再决定等不等，至少不是被情绪推着走。"
+      }
+    ],
+    "stages": [
+      "college",
+      "earlyCareer",
+      "establish"
+    ]
+  },
+  {
+    "id": "migration-qisha-uproot",
+    "type": "trial",
+    "theme": "migration",
+    "title": "房租到期被大幅涨价，要不要趁机换城市",
+    "tone": "medium",
+    "summary": "租约到期房东大幅涨租，留下成本陡增，正好有个外地的去处在招手",
+    "dramaticText": "租约到期，房东一开口就是大幅涨租。留下来成本陡增，偏偏这时外地有个去处在招手。续约的字还没签，你盯着合同发愣。",
+    "situation": "租约到期房东大幅涨租，留下成本陡增，外地恰好有个去处",
+    "conflict": "走，是连根拔起重新落脚；留，是咬牙多付成本换稳定",
+    "triggers": [
+      "七杀",
+      "破军",
+      "迁移"
+    ],
+    "choices": [
+      {
+        "label": "借这次被逼，干脆换城市重启",
+        "description": "不续约了，顺势把生活挪到那个外地的去处",
+        "cost": "一切要重新搭，落脚成本不小",
+        "reward": "借外力把想换没换的局一次换掉",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 6,
+          "opportunity": 5,
+          "relationship": -2,
+          "stability": -4,
+          "resources": -1,
+          "wellbeing": -1
+        },
+        "feedback": "你借着这次被逼，干脆把局换了，一切要重搭，但你终于动了那个一直想动的念头。"
+      },
+      {
+        "label": "先在本地找性价比更高的落脚点",
+        "description": "不远走，先在本地换个更划算的地方住下",
+        "cost": "搬家折腾，未必能省很多",
+        "reward": "稳住熟悉的圈子，只换个落脚处",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 1,
+          "relationship": 1,
+          "stability": 5,
+          "resources": 2,
+          "wellbeing": 0
+        },
+        "feedback": "你没被一时的涨租逼到远走，先在本地换了个更划算的地方，圈子还在，盘面也稳。"
+      },
+      {
+        "label": "先把走与留的账算清，给自己留退路",
+        "description": "把两边的成本、机会、舍不得的东西都摆出来再定",
+        "cost": "一时定不下来，要多花心思",
+        "reward": "不在被逼的情绪里仓促决定",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 1,
+          "relationship": 1,
+          "stability": 3,
+          "resources": 1,
+          "wellbeing": 2
+        },
+        "feedback": "你没被涨租推着仓促决定，把走和留的账都算清，留了退路再选，心里更稳。"
+      }
+    ],
+    "stages": [
+      "earlyCareer",
+      "establish"
+    ]
+  },
+  {
+    "id": "health-yangtuo-relapse",
+    "type": "trial",
+    "theme": "health",
+    "title": "老毛病又犯了，偏偏赶上最忙的时候",
+    "tone": "medium",
+    "summary": "一个反复发作的老毛病又犯了，可手头的事正排得满满当当",
+    "dramaticText": "那个隔一阵就犯的老毛病这两天又找上来了，偏偏手头的事正排得密不透风。你一边忍着不适，一边盯着排满的日程。",
+    "situation": "反复发作的老毛病又犯了，手头工作却排得满满当当",
+    "conflict": "停下来调养耽误进度，硬扛着又怕这次拖成大问题",
+    "triggers": [
+      "擎羊",
+      "羊陀夹命格",
+      "疾厄"
+    ],
+    "choices": [
+      {
+        "label": "先把最急的事冲完，再集中处理身体",
+        "description": "咬牙把眼前最要紧的几件事赶完，再回头看病",
+        "cost": "身体多扛几天，风险往上叠",
+        "reward": "关键节点没掉链子",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 6,
+          "opportunity": 3,
+          "relationship": 0,
+          "stability": -2,
+          "resources": 1,
+          "wellbeing": -6
+        },
+        "feedback": "你先把要紧的事冲过去了，身体多扛了几天，事没耽误，人也明显透支。"
+      },
+      {
+        "label": "当天就去看诊，按医嘱把节奏降下来",
+        "description": "不拖，当天挂号看诊，照着医嘱把进度往后让",
+        "cost": "手头的事要重新排、可能延期",
+        "reward": "把小毛病摁在变大之前",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 0,
+          "relationship": 1,
+          "stability": 5,
+          "resources": -1,
+          "wellbeing": 4
+        },
+        "feedback": "你没硬扛，当天就去看了，进度让了一步，但把毛病摁在了变大之前。"
+      },
+      {
+        "label": "先把能推的事推掉，给身体腾出空档",
+        "description": "主动把不那么紧的事往后挪，先腾出恢复的时间",
+        "cost": "会欠下一些人情、留些尾巴",
+        "reward": "给身体一个真正喘息的窗口",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -4,
+          "opportunity": -2,
+          "relationship": 1,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 6
+        },
+        "feedback": "你先给身体腾出了空档，推掉了一些事、欠了点人情，但这口气总算喘上了。"
+      }
+    ],
+    "stages": [
+      "earlyCareer",
+      "establish",
+      "midlife"
+    ]
+  },
+  {
+    "id": "health-zhengyin-regimen",
+    "type": "opportunity",
+    "theme": "health",
+    "title": "有人拉你一起开始一项长期调养",
+    "tone": "light",
+    "summary": "朋友邀你一起规律地做一件养身体的事，要长期坚持",
+    "dramaticText": "朋友拉你一起开始一件养身体的事——慢跑、早睡打卡，或是规律调理。他已经开始了，邀你一起，说有人作伴更容易坚持。",
+    "situation": "朋友邀你一起规律地做一件养身体的事，需要长期坚持",
+    "conflict": "跟着做能借外力养成习惯，但要长期投入、还可能半途而废",
+    "triggers": [
+      "正印",
+      "福德",
+      "天梁"
+    ],
+    "choices": [
+      {
+        "label": "一口气定下长期计划，公开打卡逼自己坚持",
+        "description": "直接定下三个月以上的计划，公开打卡给自己上压力",
+        "cost": "强度大，容易因为一次中断就放弃",
+        "reward": "用外部约束把习惯一次立起来",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 4,
+          "relationship": 1,
+          "stability": 0,
+          "resources": -1,
+          "wellbeing": 3
+        },
+        "feedback": "你给自己上了公开打卡的压力，习惯立得快，就怕一次中断把劲泄了——但你先动起来了。"
+      },
+      {
+        "label": "先从最小的量开始，跟着做满一个月",
+        "description": "把目标压到最小，先稳稳跟着做满一个月再加码",
+        "cost": "见效慢，前期没什么实感",
+        "reward": "不靠意志硬撑，让习惯慢慢长出来",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": -1,
+          "opportunity": 2,
+          "relationship": 2,
+          "stability": 5,
+          "resources": 0,
+          "wellbeing": 4
+        },
+        "feedback": "你没贪多，从最小的量起步，跟满了一个月，习惯一点点扎下了根。"
+      },
+      {
+        "label": "先理清自己最该养的是哪块，再决定跟不跟",
+        "description": "先想清楚身体最该补的是什么，再看这件事对不对路",
+        "cost": "可能错过结伴起步的热乎劲",
+        "reward": "不盲目跟风，养在刀刃上",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 1,
+          "relationship": 1,
+          "stability": 3,
+          "resources": 1,
+          "wellbeing": 3
+        },
+        "feedback": "你没盲目跟着起步，先想清自己最该养哪块，热乎劲虽过了点，方向却对了。"
+      }
+    ]
+  },
+  {
+    "id": "health-taiyin-ignored",
+    "type": "trial",
+    "theme": "health",
+    "title": "家人一直催你去查那个拖了很久的不适",
+    "tone": "medium",
+    "summary": "一个拖了很久的小不适，家人反复催你去检查，你总说没空",
+    "dramaticText": "那个拖了很久的小不适还在，家人又一次催你去医院看看。你照例摆手说\"没空、不要紧\"，可这话连自己都有点不信了。",
+    "situation": "一个拖了很久的小不适，家人反复催你去检查，你总以没空推脱",
+    "conflict": "去查怕真查出点什么、也耽误时间；不查又一直悬着不踏实",
+    "triggers": [
+      "太阴化忌",
+      "疾厄",
+      "父母"
+    ],
+    "choices": [
+      {
+        "label": "请半天假，一次把该查的都查了",
+        "description": "干脆请半天假，把拖着的检查一次做完",
+        "cost": "占掉半天、也要面对结果",
+        "reward": "把悬着的事一次落地",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 1,
+          "relationship": 2,
+          "stability": 1,
+          "resources": -1,
+          "wellbeing": 2
+        },
+        "feedback": "你请了半天假，把拖着的检查一次做完，结果如何先不论，心里那块石头落了地。"
+      },
+      {
+        "label": "挑个近的时间先做基础检查",
+        "description": "不一步到位，先约个近的时间做最基础的排查",
+        "cost": "基础检查未必查得彻底",
+        "reward": "先迈出从不查到查的第一步",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 0,
+          "relationship": 2,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没再拖，先做了基础排查，没查到底，但从\"一直躲\"挪到了\"开始看\"。"
+      },
+      {
+        "label": "先回应家人的担心，约好时间一起去",
+        "description": "先把家人的着急接住，定个时间陪着一起去",
+        "cost": "要协调彼此的时间",
+        "reward": "让这件事不再只是你一个人硬扛",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 0,
+          "relationship": 4,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你先接住了家人的担心，约好一起去，这件一直躲着的事，总算有人陪你面对了。"
+      }
+    ]
+  },
+  {
+    "id": "mindset-kong-emptiness",
+    "type": "trial",
+    "theme": "mindset",
+    "title": "忙了一整年，回头看好像什么都没留下",
+    "tone": "medium",
+    "summary": "事情做了一大堆，却说不出沉淀下了什么，突然提不起劲",
+    "dramaticText": "到了回头看的时候，你发现这一年事情做了一大堆，真要说沉淀下了什么，却又答不上来。一种空落落的感觉冒出来，连往前的劲都提不起。",
+    "situation": "忙碌一整年，回看却说不清沉淀下了什么，突然提不起劲",
+    "conflict": "逼自己继续往前怕是空转，停下来又怕彻底松掉",
+    "triggers": [
+      "命里逢空格",
+      "地空",
+      "福德"
+    ],
+    "choices": [
+      {
+        "label": "立刻挑一件能看见成果的事重新投入",
+        "description": "不纠结意义，先找一件做得出结果的事扎进去",
+        "cost": "可能又是一阵忙、未必解决空感",
+        "reward": "用看得见的成果把人重新拽起来",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 5,
+          "relationship": 0,
+          "stability": -1,
+          "resources": 1,
+          "wellbeing": -2
+        },
+        "feedback": "你没在空落里停太久，挑了件能出成果的事扎进去，先让自己重新动了起来。"
+      },
+      {
+        "label": "把这一年做过的事一条条列出来，找回坐标",
+        "description": "静下来把做过的事、帮过的人、扛过的关都写下来回看",
+        "cost": "要面对\"是不是真没什么\"的忐忑",
+        "reward": "用事实给自己重新定位",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": -1,
+          "opportunity": 1,
+          "relationship": 1,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你把这一年一条条列了出来，原来不是什么都没留下，坐标找回来了，心也定了些。"
+      },
+      {
+        "label": "先允许自己空一阵，把心力养回来",
+        "description": "不急着填满，给自己一段什么都不逼的缓冲",
+        "cost": "短期更没有\"在前进\"的实感",
+        "reward": "先止住内耗，再谈往哪走",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -4,
+          "opportunity": -1,
+          "relationship": 1,
+          "stability": 2,
+          "resources": 0,
+          "wellbeing": 5
+        },
+        "feedback": "你先允许自己空了一阵，没急着填满，心力慢慢回来了，再谈往哪走才有底气。"
+      }
+    ]
+  },
+  {
+    "id": "mindset-shizhong-spotlight",
+    "type": "opportunity",
+    "theme": "mindset",
+    "title": "有人邀你公开分享你最擅长的事",
+    "tone": "light",
+    "summary": "有人邀请你公开讲或写你真正擅长的事，机会难得但要抛头露面",
+    "dramaticText": "有人邀你公开讲一讲（或写一写）你真正擅长的那件事。机会挺难得，可一想到要站到人前、被人打量评判，你心里又想躲又有点动。",
+    "situation": "有人邀请你公开分享你最擅长的事，机会难得但要抛头露面",
+    "conflict": "上，是被看见的好机会但怕讲砸被评判；躲，又错过一次亮相",
+    "triggers": [
+      "石中隐玉",
+      "文昌",
+      "文曲"
+    ],
+    "choices": [
+      {
+        "label": "接下来，认真准备，把它当成立住名声的机会",
+        "description": "答应邀请，下功夫准备，把这次当成被记住的契机",
+        "cost": "万一讲砸，落差和压力都不小",
+        "reward": "把藏着的本事第一次亮到台面上",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 6,
+          "relationship": 1,
+          "stability": -1,
+          "resources": 1,
+          "wellbeing": 0
+        },
+        "feedback": "你接下了这次亮相，认真备了一场，紧张归紧张，藏着的本事头一回被人看见。"
+      },
+      {
+        "label": "先在小范围试讲一次，顺了再上正式场",
+        "description": "先找熟悉的小圈子试一遍，跑顺了再上大场",
+        "cost": "会慢一步，少一点\"一鸣惊人\"",
+        "reward": "在低风险里把怯场磨掉",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 0,
+          "opportunity": 3,
+          "relationship": 2,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没硬着头皮直接上，先在小范围试了一回，怯场磨掉了，正式场也就稳了。"
+      },
+      {
+        "label": "先把\"怕被挑刺\"的紧张安顿好，再决定接不接",
+        "description": "先正视那份怕被评判的不安，把它安顿下来再做决定",
+        "cost": "可能在犹豫里错过这次邀请",
+        "reward": "不带着内耗仓促上场",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": 0,
+          "relationship": 2,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 4
+        },
+        "feedback": "你先没急着应，把\"怕被挑刺\"的紧张安顿好，无论接不接，心里都松了下来。"
+      }
+    ]
+  },
+  {
+    "id": "mindset-shangguan-outspoken",
+    "type": "trial",
+    "theme": "mindset",
+    "title": "会上看出方案有问题，当场点破还是憋着",
+    "tone": "medium",
+    "summary": "会上推进的方案你一眼看出毛病，但提出来会驳了主导者的面子",
+    "dramaticText": "会议室里方案正一路推进，你却一眼看出了一处不小的毛病。提出来，等于当众驳了主导者的面子；不提，你又眼睁睁看着它往坑里走。",
+    "situation": "会上推进的方案你看出明显问题，但点破会驳了主导者的面子",
+    "conflict": "当场点破怕得罪人、显得爱出头；憋着又难受、还可能眼看着出岔",
+    "triggers": [
+      "伤官",
+      "巨门",
+      "命宫"
+    ],
+    "choices": [
+      {
+        "label": "当场把问题摆出来，连改法一起讲",
+        "description": "直接在会上指出问题，并给出可行的改法",
+        "cost": "可能驳了人面子、被嫌爱出头",
+        "reward": "及时止损，也让人看到你的判断",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 5,
+          "opportunity": 4,
+          "relationship": -3,
+          "stability": -1,
+          "resources": 1,
+          "wellbeing": -2
+        },
+        "feedback": "你当场把问题连改法一起摆了出来，驳了点面子，但也让人记住了你的眼力。"
+      },
+      {
+        "label": "会后单独找对方，把问题私下提",
+        "description": "会上先不打断，散会后单独把隐患讲给主导者",
+        "cost": "私下提可能来不及在会上拦住",
+        "reward": "既提了醒，又给对方留了台阶",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 2,
+          "relationship": 3,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没在会上抢话，散会单独提了醒，问题点到了，对方的台阶也留住了。"
+      },
+      {
+        "label": "先肯定可取的部分，再委婉带出隐患",
+        "description": "顺着先认可方案里好的地方，再轻轻把风险带出来",
+        "cost": "话绕了，分量可能被冲淡",
+        "reward": "把意见包进善意里，少树敌",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -1,
+          "opportunity": 1,
+          "relationship": 3,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你把意见包进了肯定里，分量是淡了些，但没树敌，话也递了出去。"
+      }
+    ],
+    "stages": [
+      "earlyCareer",
+      "establish",
+      "midlife"
+    ]
+  },
+  {
+    "id": "college-career-exam-fail",
+    "type": "trial",
+    "theme": "career",
+    "tone": "medium",
+    "stages": [
+      "college"
+    ],
+    "title": "一门必修课期末濒临挂科，会拖累保研",
+    "summary": "必修课快挂了，补考会影响绩点和保研资格",
+    "dramaticText": "期末临近，一门必修课你心里没底，按现在的情况大概率要挂。补考虽能过，但绩点一掉，原本够得着的保研名额就悬了。复习时间只剩这几天。",
+    "situation": "一门必修课期末濒临挂科，补考会拉低绩点、影响保研",
+    "conflict": "熬命突击赌一把怕赔上身体和别的科，认了补考又怕错失保研",
+    "triggers": [
+      "伤官",
+      "正印",
+      "官禄"
+    ],
+    "choices": [
+      {
+        "label": "剩下几天全压这门课，赌一次过线",
+        "description": "砍掉其他安排，集中所有时间猛攻这一门",
+        "cost": "别的科和身体都要让路、风险全压一处",
+        "reward": "赌赢了绩点和保研都保住",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 6,
+          "opportunity": 5,
+          "relationship": 0,
+          "stability": -3,
+          "resources": 0,
+          "wellbeing": -5
+        },
+        "feedback": "你把宝全押在这门课上，几天连轴转，赌的是一次翻盘，身体和别的事都先欠着。"
+      },
+      {
+        "label": "保住其他科，这门按补考稳稳准备",
+        "description": "不硬赌，合理分配，接受这门走补考、把损失控到最小",
+        "cost": "保研可能就此无缘",
+        "reward": "不会因小失大，整体绩点更稳",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 1,
+          "relationship": 0,
+          "stability": 5,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没孤注一掷，认下补考、守住其他科，保研虽悬了，盘面没崩。"
+      },
+      {
+        "label": "找老师和学长问清补救空间再决定",
+        "description": "先去问老师有没有补交、加分的余地，摸清情况再发力",
+        "cost": "拉下脸求助、未必有结果",
+        "reward": "把信息搞清，不在慌里乱赌",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 2,
+          "relationship": 2,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没闷头慌，先把补救的门路问清楚，心里有了底，再决定怎么使劲。"
+      }
+    ]
+  },
+  {
+    "id": "college-career-intern-offer",
+    "type": "opportunity",
+    "theme": "career",
+    "tone": "light",
+    "stages": [
+      "college"
+    ],
+    "title": "拿到大厂实习，但要请假一学期、可能延毕",
+    "summary": "心仪的实习来了，代价是耽误课程甚至延毕",
+    "dramaticText": "你拿到了一个很难得的大厂实习，但它要你脱产去做大半年，意味着这学期的课要落下、严重的话还可能延毕。机会和学业撞在了一起。",
+    "situation": "难得的大厂实习需要请假一学期，可能影响按时毕业",
+    "conflict": "去，是提前踩进行业但打乱学业节奏；不去，怕错过这块敲门砖",
+    "triggers": [
+      "禄马交驰格",
+      "天马",
+      "官禄"
+    ],
+    "choices": [
+      {
+        "label": "请假去实习，把这段经历当敲门砖",
+        "description": "答应实习，课程的事后面再补，先抓住这次机会",
+        "cost": "可能延毕、课程要补回来",
+        "reward": "提前一步攒下别人没有的履历",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 5,
+          "opportunity": 7,
+          "relationship": -1,
+          "stability": -3,
+          "resources": 2,
+          "wellbeing": -2
+        },
+        "feedback": "你抓住了实习，提前踩进了行业，学业的节奏被打乱，但你拿到了同龄人还没有的东西。"
+      },
+      {
+        "label": "只接能兼顾课程的部分实习",
+        "description": "和对方谈远程或缩短时长，尽量不耽误毕业",
+        "cost": "机会含金量会打折",
+        "reward": "经历和学业都不至于崩",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 4,
+          "relationship": 0,
+          "stability": 5,
+          "resources": 1,
+          "wellbeing": 0
+        },
+        "feedback": "你没在机会和学业里二选一，谈了个能兼顾的版本，两头都没耽误太多。"
+      },
+      {
+        "label": "先把延毕的代价和家里、学院问清再定",
+        "description": "把延毕影响、能否补救都问清楚，再决定接不接",
+        "cost": "犹豫之间机会可能被收回",
+        "reward": "不在没算清账时冲动答应",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -1,
+          "opportunity": 2,
+          "relationship": 2,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没头脑一热就应，先把代价问明白，机会有点悬，但你不是糊里糊涂做的决定。"
+      }
+    ]
+  },
+  {
+    "id": "college-wealth-living-cost",
+    "type": "trial",
+    "theme": "wealth",
+    "tone": "medium",
+    "stages": [
+      "college"
+    ],
+    "title": "生活费提前花光，兼职能补但占复习时间",
+    "summary": "这个月钱见底，兼职能补上却要挤掉复习",
+    "dramaticText": "月底还没到，生活费已经见底。有份时薪不高的兼职能补上缺口，可它会占掉你本就紧张的复习时间。开口跟家里要，又有点说不出口。",
+    "situation": "生活费提前花光，兼职能补上但要挤占复习时间",
+    "conflict": "去兼职解了钱紧却耽误学业，硬撑省钱又怕影响状态",
+    "triggers": [
+      "正财",
+      "劫财",
+      "财帛"
+    ],
+    "choices": [
+      {
+        "label": "接下兼职，靠自己把这个月扛过去",
+        "description": "不向家里伸手，用兼职补上缺口",
+        "cost": "复习时间被切走、人更累",
+        "reward": "钱的事自己解决，心里更硬气",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 5,
+          "opportunity": 3,
+          "relationship": 0,
+          "stability": -1,
+          "resources": 3,
+          "wellbeing": -3
+        },
+        "feedback": "你没张口要钱，靠兼职把这个月扛了下来，累是累，但底气是自己挣的。"
+      },
+      {
+        "label": "先把开销砍到最低，撑到月底",
+        "description": "盘一盘必要开支，能省则省，先不打工",
+        "cost": "日子会过得紧巴",
+        "reward": "复习不受影响，也练了规划",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 1,
+          "relationship": 0,
+          "stability": 5,
+          "resources": -1,
+          "wellbeing": 1
+        },
+        "feedback": "你没急着打工，先把开销勒紧撑过去，复习没耽误，也摸清了钱该怎么花。"
+      },
+      {
+        "label": "坦诚跟家里说清楚，临时周转一下",
+        "description": "把情况如实跟家里讲，先借一笔周转，之后再省着还",
+        "cost": "要放下面子开口",
+        "reward": "解了燃眉之急，也没瞒着家里",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 1,
+          "relationship": 3,
+          "stability": 3,
+          "resources": 2,
+          "wellbeing": 2
+        },
+        "feedback": "你没硬撑也没乱借，跟家里把话说开周转了一下，事小，但你学会了好好说钱的事。"
+      }
+    ]
+  },
+  {
+    "id": "college-wealth-loan-temptation",
+    "type": "trial",
+    "theme": "wealth",
+    "tone": "medium",
+    "stages": [
+      "college"
+    ],
+    "gender": "all",
+    "title": "同学都换了新手机，有人教你用分期先买",
+    "summary": "身边人都换新机，有人怂恿你用分期/校园贷",
+    "dramaticText": "宿舍里好几个人都换了新款手机，刷得你也心痒。有人热心地教你：用分期或某个借款 App，零首付先拿到手，\"每月还一点，根本没感觉\"。",
+    "situation": "身边同学都换了新手机，有人怂恿你用分期或借款提前买",
+    "conflict": "分期买上是即刻的满足，但要背上看不见的债和利息",
+    "triggers": [
+      "劫财",
+      "偏财",
+      "地劫"
+    ],
+    "choices": [
+      {
+        "label": "忍住不跟风，旧手机能用就先用",
+        "description": "不被带节奏，钱不到位就不买，旧的接着用",
+        "cost": "当下有点不甘、显得寒酸",
+        "reward": "不背一分不该背的债",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 1,
+          "relationship": -1,
+          "stability": 6,
+          "resources": 1,
+          "wellbeing": 1
+        },
+        "feedback": "你没跟着冲动分期，旧手机继续用，少了点面子，却把一个隐形的坑稳稳避开了。"
+      },
+      {
+        "label": "真想换就攒钱，攒够了再买",
+        "description": "把它列成一个目标，省下来、攒够全款再换",
+        "cost": "要等上一阵、当下买不了",
+        "reward": "想要的东西靠攒得来，不欠债",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 2,
+          "relationship": 0,
+          "stability": 5,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你把冲动改成了目标，慢慢攒，等真换上的时候，是干干净净属于自己的。"
+      },
+      {
+        "label": "先把分期的真实利息算清楚再说",
+        "description": "不急着办，先把手续费、利息、逾期代价一笔笔算明白",
+        "cost": "算账扫兴、可能被说想太多",
+        "reward": "看清\"没感觉\"背后真实的代价",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -1,
+          "opportunity": 1,
+          "relationship": 1,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没被\"每月一点点\"忽悠住，把真实利息算了一遍，那点心痒一下就凉了。"
+      }
+    ]
+  },
+  {
+    "id": "college-relationship-ldr",
+    "type": "trial",
+    "theme": "relationship",
+    "tone": "medium",
+    "stages": [
+      "college"
+    ],
+    "title": "在一起两年的人保研去了外地，要不要异地",
+    "summary": "感情稳定，但对方升学去了外地，面临异地",
+    "dramaticText": "在一起两年的人保研去了另一个城市。你们感情没出问题，可一个在这、一个在那，往后大半时间只能隔着屏幕。异地这道坎，摆在了面前。",
+    "situation": "稳定两年的感情，因对方升学到外地而要面对异地",
+    "conflict": "撑异地是赌一个不确定的将来，分开又舍不得这段感情",
+    "triggers": [
+      "天马",
+      "夫妻",
+      "太阴"
+    ],
+    "choices": [
+      {
+        "label": "一起把异地的规矩和奔头定下来",
+        "description": "坦诚谈清见面频率、未来怎么走，认真撑这段异地",
+        "cost": "要长期忍受分隔和不确定",
+        "reward": "给感情一个郑重的将来",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 3,
+          "relationship": 4,
+          "stability": -1,
+          "resources": -1,
+          "wellbeing": 0
+        },
+        "feedback": "你们没回避，把异地的奔头谈定了，往后要扛分隔的苦，但这段感情有了方向。"
+      },
+      {
+        "label": "先按现状走一段，到假期再看感觉",
+        "description": "不急着下结论，先维持着过一阵，留出观察期",
+        "cost": "悬而未决会有点累",
+        "reward": "不冲动承诺也不仓促放手",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 1,
+          "relationship": 2,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没急着定生死，先走一段看看，给彼此和时间一个机会，心里也松快些。"
+      },
+      {
+        "label": "先把各自的现实和底线摊开聊清",
+        "description": "把学业、未来打算、能接受的底线都坦白讲明，再决定",
+        "cost": "可能聊出难听但真实的分歧",
+        "reward": "不带着幻想硬撑或硬断",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 1,
+          "relationship": 4,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你们把现实和底线都摊开聊了，话不算轻松，但无论走下去还是放手，都更清醒。"
+      }
+    ]
+  },
+  {
+    "id": "college-relationship-confess",
+    "type": "trial",
+    "theme": "relationship",
+    "tone": "light",
+    "stages": [
+      "college"
+    ],
+    "title": "暗恋很久的人最近对你格外热络",
+    "summary": "心动对象释放暧昧信号，要不要冒险表白",
+    "dramaticText": "那个你悄悄喜欢了很久的人，最近对你明显热络起来——多了消息、多了眼神。你心里直打鼓：是该把话说开，还是怕一旦说破，连朋友都做不成。",
+    "situation": "暗恋已久的人释放出暧昧信号，要不要表白",
+    "conflict": "表白是抓住可能的心动，但赌输了连现在的关系都没了",
+    "triggers": [
+      "贪狼",
+      "夫妻",
+      "廉贞"
+    ],
+    "choices": [
+      {
+        "label": "找个合适的时机，把心意说清楚",
+        "description": "不再猜，挑个自然的机会坦白自己的心意",
+        "cost": "万一被拒，关系会变尴尬",
+        "reward": "把悬着的可能变成明确的答案",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 5,
+          "opportunity": 4,
+          "relationship": 2,
+          "stability": -2,
+          "resources": 0,
+          "wellbeing": -1
+        },
+        "feedback": "你没继续憋着猜，把心意说了出口，结果还不知道，但你不用再活在\"如果\"里。"
+      },
+      {
+        "label": "先多创造相处，让感觉再清楚些",
+        "description": "不急着摊牌，先多些自然的接触，看彼此感觉",
+        "cost": "拖久了可能错过、或被别人先一步",
+        "reward": "在更有把握时再开口",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 3,
+          "relationship": 3,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没贸然表白，先让相处把感觉养得更清楚，进退都还留着余地。"
+      },
+      {
+        "label": "先稳住自己的患得患失再说",
+        "description": "先把\"怕失去\"的紧张安顿好，不被情绪推着行动",
+        "cost": "可能在犹豫里错过时机",
+        "reward": "不带着慌乱去赌这段关系",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": 1,
+          "relationship": 2,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你先把患得患失的心安顿下来，没被一时的悸动冲昏，无论说不说，都更稳了。"
+      }
+    ]
+  },
+  {
+    "id": "college-network-roommate",
+    "type": "trial",
+    "theme": "network",
+    "tone": "medium",
+    "stages": [
+      "college"
+    ],
+    "title": "室友常熬夜吵到你，提了几次没用",
+    "summary": "室友作息、卫生长期冲突，关系越闹越僵",
+    "dramaticText": "室友习惯半夜打游戏、外放声音，吵得你睡不好。你委婉提过几次，对方嘴上答应、转头照旧。再说怕撕破脸，不说自己天天受罪。",
+    "situation": "室友长期作息冲突，几次沟通无果，关系趋于僵化",
+    "conflict": "直接摊牌怕同住一年太尴尬，继续忍又熬坏自己",
+    "triggers": [
+      "巨门",
+      "仆役",
+      "陀罗"
+    ],
+    "choices": [
+      {
+        "label": "把话挑明，定一个大家都守的作息约定",
+        "description": "正式坐下来谈一次，白纸黑字立个共同规矩",
+        "cost": "可能一时闹僵、气氛变冷",
+        "reward": "把模糊的忍让变成清楚的边界",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 5,
+          "opportunity": 2,
+          "relationship": -3,
+          "stability": 1,
+          "resources": 0,
+          "wellbeing": -2
+        },
+        "feedback": "你没再憋着，把问题摊开立了规矩，关系一度发冷，但你的觉总算能睡了。"
+      },
+      {
+        "label": "先用耳塞/调换床位等办法自保",
+        "description": "不正面冲突，先用实际办法把对自己的影响降到最低",
+        "cost": "问题根上没解决",
+        "reward": "少受罪，也不必撕破脸",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 1,
+          "relationship": 1,
+          "stability": 4,
+          "resources": -1,
+          "wellbeing": 3
+        },
+        "feedback": "你没硬刚，先想办法保护好自己的休息，矛盾没激化，日子先过得下去。"
+      },
+      {
+        "label": "找几个室友一起心平气和谈一次",
+        "description": "拉上同宿舍的人，把问题当集体的事一起商量",
+        "cost": "可能被当成搞小团体",
+        "reward": "靠集体的分量推动改变，不只你一人对一人",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 1,
+          "relationship": 3,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没把它变成两个人的对峙，拉大家一起谈，话好说了些，改变也更容易落地。"
+      }
+    ]
+  },
+  {
+    "id": "college-network-clique",
+    "type": "trial",
+    "theme": "network",
+    "tone": "medium",
+    "stages": [
+      "college"
+    ],
+    "title": "社团换届，两拨人都拉你站队",
+    "summary": "学生组织换届，两派拉拢你选边，不选怕被边缘",
+    "dramaticText": "社团（或学生会）要换届，平时关系都不错的两拨人突然较上劲，都来拉你表态支持谁。你哪边都不想得罪，可不站队，又怕换届后被晾在一边。",
+    "situation": "组织换届，两派都拉你站队，不选边怕被边缘化",
+    "conflict": "站队能抱团却得罪另一边，中立又怕两头不讨好",
+    "triggers": [
+      "巨门",
+      "仆役",
+      "劫财"
+    ],
+    "choices": [
+      {
+        "label": "选你真正认同的一边，公开表态",
+        "description": "不和稀泥，按谁更靠谱、更对路明确站定",
+        "cost": "会实打实得罪另一拨人",
+        "reward": "立场清楚，也更被自己人信任",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 5,
+          "opportunity": 3,
+          "relationship": -3,
+          "stability": 0,
+          "resources": 1,
+          "wellbeing": -2
+        },
+        "feedback": "你没两头讨好，按认同明确站了队，得罪了一边，但你这个人立得清楚。"
+      },
+      {
+        "label": "只就事论事，不卷进人事斗争",
+        "description": "对事不对人，只参与具体事务、不掺和站队",
+        "cost": "可能两边都觉得你不够铁",
+        "reward": "不被裹进内耗，省心",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 2,
+          "relationship": 1,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没被拖进站队的漩涡，只认事不认派，少了些热闹，也少了一身麻烦。"
+      },
+      {
+        "label": "私下和两边都把话说软，先不表态",
+        "description": "先稳住两边的关系，争取时间看清局势再说",
+        "cost": "可能被催着尽快表态",
+        "reward": "不在没看清时仓促选边",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -1,
+          "opportunity": 1,
+          "relationship": 3,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没急着选边，先把两头都稳住，留出看清局势的余地，没把路走窄。"
+      }
+    ]
+  },
+  {
+    "id": "college-family-hometown",
+    "type": "trial",
+    "theme": "family",
+    "tone": "medium",
+    "stages": [
+      "college"
+    ],
+    "title": "父母铁了心让你回老家考编，你想留大城市",
+    "summary": "父母希望你毕业回乡考编，你想留下闯一闯",
+    "dramaticText": "快毕业了，父母几乎是认定了：回老家、考个编制、稳稳当当。可你想留在这座大城市再闯一闯。每次通电话，这件事都绕不过去，谁也说服不了谁。",
+    "situation": "父母坚持要你回乡考编，你想留在大城市发展",
+    "conflict": "顺着父母图个安稳却压下自己的念头，坚持己见又怕伤了和父母的关系",
+    "triggers": [
+      "正印",
+      "父母",
+      "七杀"
+    ],
+    "choices": [
+      {
+        "label": "坚持留下，给自己定个验证的期限",
+        "description": "先按自己的想法留下闯，约定一个时间向父母证明",
+        "cost": "要顶着家里的压力和不安",
+        "reward": "给自己的选择一个真正的机会",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 6,
+          "opportunity": 5,
+          "relationship": -3,
+          "stability": -2,
+          "resources": 0,
+          "wellbeing": -2
+        },
+        "feedback": "你顶着压力留了下来，和家里的关系一度紧绷，但你没把人生过成别人定好的样子。"
+      },
+      {
+        "label": "先回去试考，同时悄悄准备大城市的路",
+        "description": "不正面硬扛，先顺一步，私下两手准备",
+        "cost": "精力分散、心里拧巴",
+        "reward": "不撕破脸，也不彻底放弃念想",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 2,
+          "relationship": 1,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": -1
+        },
+        "feedback": "你没硬碰，先顺着试一步、暗里留着自己的路，拧巴是拧巴，但没把哪扇门关死。"
+      },
+      {
+        "label": "坐下来跟父母把彼此的怕讲清楚",
+        "description": "不争对错，先听父母在怕什么、也讲清自己的打算",
+        "cost": "一次谈不一定有结果",
+        "reward": "让分歧从对抗变成商量",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 2,
+          "relationship": 4,
+          "stability": 2,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没把它吵成输赢，把彼此的担心摊开讲，分歧还在，但你和父母重新站到了一边。"
+      }
+    ]
+  },
+  {
+    "id": "college-family-quit-grad",
+    "type": "trial",
+    "theme": "family",
+    "tone": "medium",
+    "stages": [
+      "college"
+    ],
+    "title": "家里供你不易，父母希望你别考研早工作",
+    "summary": "家境吃紧，父母盼你尽快工作补贴，你想继续读",
+    "dramaticText": "你本想考研，可家里供你这些年并不轻松。父母没明说反对，话里话外却是希望你早点工作、帮衬家里。你的打算和家里的难处，撞在了一起。",
+    "situation": "家境吃紧，父母希望你尽快工作补贴，你却想考研深造",
+    "conflict": "听家里的早工作压下深造的心，坚持考研又添家里负担、心怀愧疚",
+    "triggers": [
+      "正印",
+      "父母",
+      "正财"
+    ],
+    "choices": [
+      {
+        "label": "坚持考研，靠奖助和兼职自己扛费用",
+        "description": "不放弃读研，想办法用奖学金、兼职把负担揽到自己身上",
+        "cost": "会很辛苦、回报要等几年",
+        "reward": "既圆了深造，也没全压给家里",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 6,
+          "opportunity": 5,
+          "relationship": 1,
+          "stability": -2,
+          "resources": 1,
+          "wellbeing": -3
+        },
+        "feedback": "你没放下深造的念头，靠自己把费用扛起来，路更累了，但你没让梦想和家里二选一。"
+      },
+      {
+        "label": "先工作两年攒钱，再考在职或脱产",
+        "description": "先就业缓解家里，把考研往后放一放",
+        "cost": "错过应届的节奏、可能越来越难回头",
+        "reward": "先尽到责任，深造留作后手",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 2,
+          "relationship": 2,
+          "stability": 4,
+          "resources": 2,
+          "wellbeing": -1
+        },
+        "feedback": "你先扛起了家里的担子，把考研往后排，现实顾上了，那个念头你也没真丢。"
+      },
+      {
+        "label": "跟父母交底，一起算清这笔账再定",
+        "description": "把读研的花费、回报、家里的承受力一起摊开商量",
+        "cost": "可能听到让自己难受的实话",
+        "reward": "让选择建立在事实而非愧疚上",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -1,
+          "opportunity": 2,
+          "relationship": 4,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没自己闷着内疚，把账和家里一起算清，决定不再是赌气或亏欠，而是商量出来的。"
+      }
+    ]
+  },
+  {
+    "id": "college-health-daynight",
+    "type": "trial",
+    "theme": "health",
+    "tone": "medium",
+    "stages": [
+      "college"
+    ],
+    "title": "连续一个月昼夜颠倒，白天完全没精神",
+    "summary": "长期熬夜刷手机/打游戏，作息黑白颠倒",
+    "dramaticText": "不知不觉，你已经连着一个月昼夜颠倒——半夜精神、白天昏沉。上课走神、记不住东西，你也知道这样下去不行，可一到深夜又刷到停不下来。",
+    "situation": "长期昼夜颠倒，白天精神涣散、状态明显下滑",
+    "conflict": "强行改作息要熬过难受的戒断，放任下去又一天天垮",
+    "triggers": [
+      "太阴化忌",
+      "疾厄",
+      "福德"
+    ],
+    "choices": [
+      {
+        "label": "狠下心一次把作息扳回来",
+        "description": "从今晚起强制断网早睡，硬扛过最难受的几天",
+        "cost": "前几天会很煎熬、容易反弹",
+        "reward": "把跑偏的生物钟一次拉回正轨",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 5,
+          "opportunity": 3,
+          "relationship": 0,
+          "stability": 0,
+          "resources": 0,
+          "wellbeing": -2
+        },
+        "feedback": "你狠心给作息来了次硬重启，头几天难熬得很，但你把那条越陷越深的路掐断了。"
+      },
+      {
+        "label": "每天提前半小时睡，慢慢往回调",
+        "description": "不求一步到位，循序渐进地把入睡时间往前挪",
+        "cost": "见效慢、需要耐住性子",
+        "reward": "改得不痛苦，也更不容易反弹",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 0,
+          "opportunity": 2,
+          "relationship": 0,
+          "stability": 5,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没跟自己硬掰，每天往前挪一点，慢是慢，但这回改得稳、没几天又打回原形。"
+      },
+      {
+        "label": "先找出深夜放不下手机的真正原因",
+        "description": "别只怪自律，先看看熬夜背后是焦虑、空虚还是逃避",
+        "cost": "面对内在原因不轻松",
+        "reward": "从根上松动熬夜的动力",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": 1,
+          "relationship": 1,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 4
+        },
+        "feedback": "你没只骂自己没毅力，先去看熬夜背后藏着什么，松动了根，作息才有得救。"
+      }
+    ]
+  },
+  {
+    "id": "college-health-body-image",
+    "type": "trial",
+    "theme": "health",
+    "tone": "medium",
+    "stages": [
+      "college"
+    ],
+    "gender": "all",
+    "title": "社交媒体刷多了，越来越嫌弃自己的外形",
+    "summary": "容貌/身材焦虑加重，冒出极端节食的念头",
+    "dramaticText": "刷着刷着，满屏都是精致的脸和身材，你越看越嫌弃镜子里的自己。最近你开始冒出极端的念头——猛节食、甚至想去做点什么，让自己\"达标\"。",
+    "situation": "受社交媒体影响，容貌身材焦虑加重，想用极端方式改变",
+    "conflict": "用极端方式逼自己变样可能伤身，放任焦虑又一天天消耗自己",
+    "triggers": [
+      "太阴",
+      "疾厄",
+      "福德"
+    ],
+    "choices": [
+      {
+        "label": "用健康的运动和饮食给自己定个计划",
+        "description": "把焦虑导向规律锻炼和合理饮食，而不是极端手段",
+        "cost": "见效慢、需要长期坚持",
+        "reward": "在不伤身的前提下真正变好",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 4,
+          "relationship": 1,
+          "stability": 1,
+          "resources": -1,
+          "wellbeing": 2
+        },
+        "feedback": "你没走极端，把那股劲转成了规律的运动和吃饭，慢慢来，身体和心气一起在好转。"
+      },
+      {
+        "label": "先减少刷那些\"完美\"内容的时间",
+        "description": "主动远离让你焦虑的账号和内容，给眼睛和心降负",
+        "cost": "一时会手痒、怕错过",
+        "reward": "掐掉持续投喂焦虑的源头",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": -1,
+          "opportunity": 2,
+          "relationship": 1,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你先把那些喂焦虑的内容刷得少了，眼前清净下来，对自己的嫌弃也淡了不少。"
+      },
+      {
+        "label": "找人聊聊这种嫌弃自己的感觉",
+        "description": "把\"看不上自己\"的情绪跟信得过的人或老师说出来",
+        "cost": "开口承认这种脆弱不容易",
+        "reward": "把闷着的焦虑卸下一部分",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -4,
+          "opportunity": 0,
+          "relationship": 3,
+          "stability": 2,
+          "resources": 0,
+          "wellbeing": 4
+        },
+        "feedback": "你没把嫌弃自己的话憋成内伤，找人聊了聊，那份焦虑被看见后，反而轻了。"
+      }
+    ]
+  },
+  {
+    "id": "college-mindset-drifting",
+    "type": "trial",
+    "theme": "mindset",
+    "tone": "medium",
+    "stages": [
+      "college"
+    ],
+    "title": "身边人都在卷考研考公，你其实不知道想要什么",
+    "summary": "随大流准备考研考公，内心并不清楚自己想要什么",
+    "dramaticText": "宿舍、班级里，大家都在卷考研、考公、考证。你也跟着报了名、买了书，可夜深人静时你心里清楚：你并不知道自己到底想要什么，只是怕掉队。",
+    "situation": "周围人都在卷考研考公，你随大流跟着，却不清楚自己想要什么",
+    "conflict": "跟着大流走省心却越走越空，停下来找方向又怕被甩在后面",
+    "triggers": [
+      "命无正曜格",
+      "命宫",
+      "偏印"
+    ],
+    "choices": [
+      {
+        "label": "先动起来，用尝试反推自己想要什么",
+        "description": "别空想定位，先去试几件具体的事，在体验里找方向",
+        "cost": "前期会更乱、走些弯路",
+        "reward": "让方向从行动里长出来",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 5,
+          "relationship": 0,
+          "stability": -1,
+          "resources": 0,
+          "wellbeing": -2
+        },
+        "feedback": "你没在原地空想，先去试，在做过的事里一点点摸到了自己想要什么，路在脚下清起来。"
+      },
+      {
+        "label": "继续备考，同时留时间认真了解自己",
+        "description": "不脱离大流，但每周留出时间探索兴趣、查资料",
+        "cost": "两头分心、进度都慢些",
+        "reward": "不掉队，也不放弃找方向",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 3,
+          "relationship": 1,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没在\"随大流\"和\"找自己\"里二选一，一边备考一边探索，稳着把方向往清楚里找。"
+      },
+      {
+        "label": "先承认这份迷茫，找人聊聊理理头绪",
+        "description": "不假装很笃定，把迷茫说出来，借别人帮自己理清",
+        "cost": "要面对\"我也不知道\"的心虚",
+        "reward": "把焦虑理顺，再谈往哪走",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": 1,
+          "relationship": 2,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没硬装笃定，把迷茫摊开找人理了理，方向还没全清，但那股焦虑被捋顺了。"
+      }
+    ]
+  },
+  {
+    "id": "college-mindset-selfdoubt",
+    "type": "trial",
+    "theme": "mindset",
+    "tone": "medium",
+    "stages": [
+      "college"
+    ],
+    "title": "一次重要考试失利，开始怀疑自己是不是不行",
+    "summary": "一次失败后陷入自我否定，怀疑自己的能力",
+    "dramaticText": "一场你很看重的考试（或竞赛、面试）失利了。那之后，你脑子里反复回放，开始怀疑是不是自己根本就不行——这种否定一点点蔓延到别的事上。",
+    "situation": "一次重要的失利后，陷入自我怀疑，否定感蔓延",
+    "conflict": "逼自己赶紧证明怕越急越乱，任由否定蔓延又越陷越深",
+    "triggers": [
+      "命里逢空格",
+      "伤官",
+      "福德"
+    ],
+    "choices": [
+      {
+        "label": "马上找一件能做成的小事重建信心",
+        "description": "不困在反刍里，先做成一件具体的小事把状态拉回来",
+        "cost": "可能一时还静不下心",
+        "reward": "用一个小胜止住下滑",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 4,
+          "relationship": 0,
+          "stability": 0,
+          "resources": 0,
+          "wellbeing": -1
+        },
+        "feedback": "你没泡在自我否定里，先去做成了一件小事，那点找回的信心，把下滑止住了。"
+      },
+      {
+        "label": "把这次失利拆开，看清到底输在哪",
+        "description": "冷静复盘是哪一环出了问题，而不是否定整个自己",
+        "cost": "复盘要直面难堪的细节",
+        "reward": "把\"我不行\"换成\"这步可以改\"",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 0,
+          "opportunity": 3,
+          "relationship": 1,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没把一次失利上升成全盘否定，拆开看清问题出在哪，\"我不行\"变成了\"这里能改\"。"
+      },
+      {
+        "label": "先允许自己难过，把情绪卸下来",
+        "description": "不急着爬起来，先接纳这次的失落，给自己缓冲",
+        "cost": "短期没有\"在变好\"的实感",
+        "reward": "先止住内耗，再谈重来",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -4,
+          "opportunity": 0,
+          "relationship": 2,
+          "stability": 2,
+          "resources": 0,
+          "wellbeing": 4
+        },
+        "feedback": "你先允许自己难过了一阵，没逼着立刻振作，情绪卸下后，人反而慢慢缓了过来。"
+      }
+    ]
+  },
+  {
+    "id": "college-migration-exchange",
+    "type": "opportunity",
+    "theme": "migration",
+    "tone": "light",
+    "stages": [
+      "college"
+    ],
+    "title": "拿到出国交换名额，难得但要自费、离家一年",
+    "summary": "交换/海外读研机会来了，代价是花钱和离家一年",
+    "dramaticText": "你拿到了一个出国交换（或海外读研）的名额，眼界、履历都是难得的加分。但它要自费一笔不小的钱，还要一个人在外漂一年，离开熟悉的一切。",
+    "situation": "难得的出国交换机会，需自费一笔且独自在外一年",
+    "conflict": "去，是开眼界的跳板但要花钱、要承受孤身在外；不去，怕错过",
+    "triggers": [
+      "禄马交驰格",
+      "天马",
+      "迁移"
+    ],
+    "choices": [
+      {
+        "label": "抓住机会，去外面闯一年",
+        "description": "答应下来，把这一年当成打开眼界的跳板",
+        "cost": "花费不小、要扛一年的孤独",
+        "reward": "一段别处换不来的成长",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 5,
+          "opportunity": 7,
+          "relationship": -2,
+          "stability": -3,
+          "resources": -2,
+          "wellbeing": 0
+        },
+        "feedback": "你抓住了这次出去的机会，要花钱、要一个人扛，但你给自己换来了一段别处长不出的见识。"
+      },
+      {
+        "label": "先把钱和归来的衔接安排好再走",
+        "description": "不裸走，先解决经费、回来后的学业怎么接，再成行",
+        "cost": "准备要花时间、可能赶不及",
+        "reward": "机会照拿，后顾之忧先理清",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 4,
+          "relationship": 0,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 0
+        },
+        "feedback": "你没一冲动就走，先把钱和回来的路都铺好，机会拿住了，心里也踏实。"
+      },
+      {
+        "label": "先和家里把负担和牵挂谈开再定",
+        "description": "把花费、离家一年对家里的影响一起商量好再决定",
+        "cost": "可能因家里顾虑而错过",
+        "reward": "不让这趟远行单方面压给家人",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 2,
+          "relationship": 4,
+          "stability": 3,
+          "resources": -1,
+          "wellbeing": 2
+        },
+        "feedback": "你没自己拍板，先和家里把负担和牵挂谈开，这趟远行走得才没有亏欠。"
+      }
+    ]
+  },
+  {
+    "id": "college-migration-intern-city",
+    "type": "trial",
+    "theme": "migration",
+    "tone": "medium",
+    "stages": [
+      "college"
+    ],
+    "title": "一个大城市的实习和本地稳妥的机会二选一",
+    "summary": "远方大城市的实习 vs 留在本地的稳妥选择",
+    "dramaticText": "手上有两个机会：一个在远方的大城市，平台大、见识广，但要自己租房、独自打拼；一个就在学校所在地，稳妥、省心，却也一眼望得到头。",
+    "situation": "大城市实习与本地稳妥机会二选一，去留各有代价",
+    "conflict": "去大城市搏见识要扛漂泊和开销，留本地省心又怕困在舒适区",
+    "triggers": [
+      "天马",
+      "迁移",
+      "七杀"
+    ],
+    "choices": [
+      {
+        "label": "去大城市，趁年轻闯一回",
+        "description": "选远方那个，租房打拼也认了，先把眼界打开",
+        "cost": "开销大、要独自扛漂泊",
+        "reward": "趁还没牵挂，见更大的世界",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 5,
+          "opportunity": 6,
+          "relationship": -2,
+          "stability": -3,
+          "resources": -1,
+          "wellbeing": -1
+        },
+        "feedback": "你选了往大城市闯，要租房、要独自扛，但你趁年轻把眼界这件事先抓在了手里。"
+      },
+      {
+        "label": "留本地稳一手，把机会做扎实",
+        "description": "选省心的那个，把手头的事做深做透",
+        "cost": "少了见世面的冲劲",
+        "reward": "少折腾、根基稳，攒得下东西",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 2,
+          "relationship": 1,
+          "stability": 5,
+          "resources": 1,
+          "wellbeing": 1
+        },
+        "feedback": "你没急着远走，先在本地把机会做扎实，少了点闯劲，却把根基一点点攒了起来。"
+      },
+      {
+        "label": "先把两边真实的成本收益列出来比",
+        "description": "别凭一时热血或畏难，把开销、成长、风险都摆出来权衡",
+        "cost": "理性比较会浇点冷水",
+        "reward": "不在冲动或害怕里做决定",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -1,
+          "opportunity": 2,
+          "relationship": 1,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没凭一股热血或一时胆怯定夺，把两边的账摆开比清楚，这个选择是想明白了的。"
+      }
+    ]
+  },
+  {
+    "id": "teen-career-track-choice",
+    "type": "trial",
+    "theme": "career",
+    "tone": "medium",
+    "stages": [
+      "teen"
+    ],
+    "title": "选科分班，你想选的和父母要的不一样",
+    "summary": "文理/选科分班，自己的兴趣和父母的期望撞上了",
+    "dramaticText": "学校要选科分班了。你心里清楚自己更喜欢、也更擅长哪一科，可父母认定另一条\"更有出路\"。表格明天就要交，家里气氛有点僵。",
+    "situation": "选科分班在即，自己的兴趣方向和父母的期望不一致",
+    "conflict": "听父母的图个稳妥却违心，坚持自己又怕选错、怕家里失望",
+    "triggers": [
+      "正印",
+      "官禄",
+      "七杀"
+    ],
+    "choices": [
+      {
+        "label": "坚持选自己擅长的，跟父母讲清理由",
+        "description": "把自己的成绩和喜欢摆出来，认真说服父母",
+        "cost": "可能被说不懂事、要扛压力",
+        "reward": "走一条自己愿意拼的路",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 5,
+          "opportunity": 5,
+          "relationship": -2,
+          "stability": -1,
+          "resources": 0,
+          "wellbeing": -2
+        },
+        "feedback": "你没违心填表，把理由讲给父母听，家里一度僵着，但你为自己的选择争了一次。"
+      },
+      {
+        "label": "先按父母的来，私下保留自己的兴趣",
+        "description": "这次先顺着填，把喜欢的当成课外慢慢钻",
+        "cost": "心里会有点不甘",
+        "reward": "不撕破脸，也没全丢掉自己",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 2,
+          "relationship": 1,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": -1
+        },
+        "feedback": "你先顺了父母一步，把热爱悄悄留着，避了正面冲突，心里那点火没灭。"
+      },
+      {
+        "label": "找老师帮忙，一起和父母分析",
+        "description": "请了解你的老师给点专业建议，再和父母一起谈",
+        "cost": "要鼓起勇气开口求助",
+        "reward": "让选择有依据，不只是顶嘴",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 2,
+          "relationship": 2,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没自己硬扛，拉老师一起跟父母分析，话好说了，分歧也松动了。"
+      }
+    ]
+  },
+  {
+    "id": "teen-career-rank-drop",
+    "type": "trial",
+    "theme": "career",
+    "tone": "medium",
+    "stages": [
+      "teen"
+    ],
+    "title": "这次大考名次掉了一大截",
+    "summary": "一次重要考试名次大跌，父母急着加补习",
+    "dramaticText": "一次大考成绩出来，你的名次掉了一大截。父母急了，张罗着给你再报几个补习班。你自己也慌，但更累、更不想被排满。",
+    "situation": "重要考试名次大幅下滑，父母要加报补习班",
+    "conflict": "多补课怕被填满压垮，不补又怕一路滑下去",
+    "triggers": [
+      "伤官",
+      "正印",
+      "福德"
+    ],
+    "choices": [
+      {
+        "label": "先自己找出错在哪，对症补一门",
+        "description": "把卷子拿出来分析丢分点，只补最弱的那块",
+        "cost": "要静下心面对难看的卷子",
+        "reward": "把劲使在刀刃上，不瞎补",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 5,
+          "relationship": 0,
+          "stability": 0,
+          "resources": 0,
+          "wellbeing": -2
+        },
+        "feedback": "你没盲目报班，先把丢分的地方找清楚，对着补，慌乱里有了准头。"
+      },
+      {
+        "label": "接受这次波动，按原节奏稳住",
+        "description": "不被一次成绩带乱，维持原来的学习节奏",
+        "cost": "父母可能觉得你不上心",
+        "reward": "不因一次起伏自乱阵脚",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 1,
+          "relationship": 0,
+          "stability": 5,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没被一次掉名次吓乱，稳住自己的节奏，心态没崩，后面才追得回来。"
+      },
+      {
+        "label": "跟父母说清自己的压力，再商量怎么补",
+        "description": "把累和怕都讲给父母，一起定一个不被压垮的方案",
+        "cost": "要坦白自己其实很慌",
+        "reward": "不被排满，也不孤军作战",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": 2,
+          "relationship": 3,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没闷着硬扛，把压力跟父母说开，补习的事一起商量，肩上松了些。"
+      }
+    ]
+  },
+  {
+    "id": "teen-wealth-peer-gadget",
+    "type": "trial",
+    "theme": "wealth",
+    "tone": "light",
+    "stages": [
+      "teen"
+    ],
+    "gender": "all",
+    "title": "班里很多人都有的东西，你也想要",
+    "summary": "同学几乎人手一个的新款，你也想要却开不了口",
+    "dramaticText": "班里好多同学都有那个新款（鞋子、耳机、手机壳…），凑在一起聊得火热，你插不上话。回家想跟父母开口，又怕被说乱花钱、攀比。",
+    "situation": "同学普遍都有的物件，你也想要但怕被说攀比",
+    "conflict": "开口要怕被嫌攀比，憋着不说又觉得被落下",
+    "triggers": [
+      "劫财",
+      "偏财",
+      "财帛"
+    ],
+    "choices": [
+      {
+        "label": "想清楚是真需要还是怕被比，再决定",
+        "description": "先问自己到底是要用还是怕掉队，分清了再说",
+        "cost": "要诚实面对自己的虚荣",
+        "reward": "不被攀比牵着走",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 3,
+          "relationship": 0,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没被\"别人都有\"推着走，想清是需要还是怕被比，心里有了主心骨。"
+      },
+      {
+        "label": "用零花钱攒着买，自己挣这份想要",
+        "description": "不直接伸手，把它当目标慢慢攒钱实现",
+        "cost": "要等、当下买不到",
+        "reward": "想要的东西靠自己攒来",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 2,
+          "relationship": 0,
+          "stability": 4,
+          "resources": 1,
+          "wellbeing": 1
+        },
+        "feedback": "你把\"想要\"变成攒钱的目标，等真买到那天，那份满足是自己挣的。"
+      },
+      {
+        "label": "坦诚跟父母聊想要的原因",
+        "description": "把为什么想要、同学都有的处境如实讲给父母",
+        "cost": "要放下面子开口",
+        "reward": "让父母懂你，而不是猜你乱花钱",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -1,
+          "opportunity": 1,
+          "relationship": 3,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没赌气也没偷偷攀比，把想法跟父母聊开，是不是买，都不别扭了。"
+      }
+    ]
+  },
+  {
+    "id": "teen-wealth-save-up",
+    "type": "opportunity",
+    "theme": "wealth",
+    "tone": "light",
+    "stages": [
+      "teen"
+    ],
+    "title": "想要一个挺贵的东西，攒钱还是直接要",
+    "summary": "盯上一个不便宜的东西，攒零花还是开口找家里",
+    "dramaticText": "你盯上了一个挺贵的东西，盘算了一下：靠零花钱攒得攒好几个月；直接跟家里开口，又未必肯、还得磨。",
+    "situation": "想买一个较贵的东西，在攒钱和直接开口之间犹豫",
+    "conflict": "攒钱要熬很久，直接要又怕被拒、欠人情",
+    "triggers": [
+      "正财",
+      "财帛",
+      "食神"
+    ],
+    "choices": [
+      {
+        "label": "定个攒钱计划，自己一点点攒够",
+        "description": "把零花、压岁钱规划起来，盯着目标攒",
+        "cost": "要忍很久、中途容易动摇",
+        "reward": "靠自己买下，特别有成就感",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 4,
+          "relationship": 0,
+          "stability": 2,
+          "resources": 1,
+          "wellbeing": 0
+        },
+        "feedback": "你给自己定了攒钱计划，熬过几个月，那东西到手时是干干净净属于你的。"
+      },
+      {
+        "label": "跟家里提个\"我出一半\"的方案",
+        "description": "提议自己出一部分、家里补一部分，一起促成",
+        "cost": "要先攒出自己那一半",
+        "reward": "既学会规划，也争取到支持",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 3,
+          "relationship": 2,
+          "stability": 4,
+          "resources": 1,
+          "wellbeing": 1
+        },
+        "feedback": "你没全靠家里也没死扛，提了个一起出的方案，事办成了，也显出你懂事。"
+      },
+      {
+        "label": "先想清楚是不是真的需要它",
+        "description": "别急着买，先放几天看看还想不想要",
+        "cost": "可能错过一时的热乎劲",
+        "reward": "不被一时冲动牵着花钱",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -1,
+          "opportunity": 1,
+          "relationship": 1,
+          "stability": 4,
+          "resources": 1,
+          "wellbeing": 2
+        },
+        "feedback": "你没头脑一热，先放了几天，是真想要还是图新鲜，自己就清楚了。"
+      }
+    ]
+  },
+  {
+    "id": "teen-relationship-crush",
+    "type": "trial",
+    "theme": "relationship",
+    "tone": "light",
+    "stages": [
+      "teen"
+    ],
+    "title": "你好像喜欢上了班里的某个人",
+    "summary": "青春期的心动来了，又怕影响学习、怕被发现",
+    "dramaticText": "不知从哪天起，你的眼睛总不自觉跟着班里的某个人。心里又甜又乱，怕影响成绩、怕被同学起哄、更怕被父母老师发现。",
+    "situation": "青春期对同学产生好感，夹在心动和顾虑之间",
+    "conflict": "顺着心动怕耽误学习惹麻烦，硬压下去又难受分心",
+    "triggers": [
+      "贪狼",
+      "夫妻",
+      "廉贞"
+    ],
+    "choices": [
+      {
+        "label": "把这份心动转成一起进步的动力",
+        "description": "不躲也不张扬，把它变成好好表现、彼此变好的劲",
+        "cost": "要管住自己不越界、不分心",
+        "reward": "让喜欢成为往前的力气",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 4,
+          "relationship": 2,
+          "stability": 0,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没让心动乱了阵脚，把它变成了一起变好的劲，甜归甜，路也没歪。"
+      },
+      {
+        "label": "先放在心里，专心把眼前的事做好",
+        "description": "不急着表达，先把心思收回到学习和生活上",
+        "cost": "要忍住悸动、可能错过",
+        "reward": "不被情绪带乱当下",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 0,
+          "opportunity": 2,
+          "relationship": 1,
+          "stability": 5,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你把心动悄悄收好，先顾眼前，没让它把节奏打乱，这份喜欢也没委屈。"
+      },
+      {
+        "label": "找信得过的人聊聊这种心情",
+        "description": "把这份慌乱跟好朋友或信任的人说说，理理头绪",
+        "cost": "要鼓起勇气说出口",
+        "reward": "把乱糟糟的心情捋顺",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": 1,
+          "relationship": 3,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没一个人闷着乱想，找人聊了聊，那点慌被说出来后，心里清亮了不少。"
+      }
+    ]
+  },
+  {
+    "id": "teen-relationship-confessed-to",
+    "type": "trial",
+    "theme": "relationship",
+    "tone": "light",
+    "stages": [
+      "teen"
+    ],
+    "title": "有人向你表白，你一下慌了",
+    "summary": "收到同学的表白，答应或拒绝都不知道怎么开口",
+    "dramaticText": "一个同学鼓起勇气跟你表白了。你一下子愣住——没那么讨厌对方，可也不确定自己的心意，更不知道怎么回应才不伤人、不尴尬。",
+    "situation": "收到同学表白，对自己的心意和如何回应都没把握",
+    "conflict": "随便答应怕对彼此不负责，直接拒绝又怕伤人、闹尴尬",
+    "triggers": [
+      "廉贞",
+      "夫妻",
+      "太阴"
+    ],
+    "choices": [
+      {
+        "label": "真诚说清自己现在的想法",
+        "description": "不敷衍，把\"我还没想清楚/我们更适合做朋友\"坦白讲",
+        "cost": "当面说清需要勇气、可能尴尬",
+        "reward": "对彼此都诚实，不留糊涂账",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 2,
+          "relationship": 1,
+          "stability": 1,
+          "resources": 0,
+          "wellbeing": -1
+        },
+        "feedback": "你没含糊其辞，真诚地把心里话说了，虽然有点尴尬，但对谁都没耽误。"
+      },
+      {
+        "label": "先谢谢对方，给自己一点想清楚的时间",
+        "description": "不立刻定，礼貌地请对方给你些时间",
+        "cost": "拖着可能让对方悬心",
+        "reward": "不仓促决定一段关系",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 2,
+          "relationship": 2,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没被推着马上回答，谢过对方、留了想的时间，对自己的心也更负责。"
+      },
+      {
+        "label": "照顾对方的勇气，温和地回应",
+        "description": "无论答不答应，先肯定对方的真心，再好好说",
+        "cost": "要顾及很多、有点累心",
+        "reward": "不让一次表白变成伤害",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 1,
+          "relationship": 3,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没冷处理对方的勇气，温和地回应，关系没闹僵，彼此都体面。"
+      }
+    ]
+  },
+  {
+    "id": "teen-network-excluded",
+    "type": "trial",
+    "theme": "network",
+    "tone": "medium",
+    "stages": [
+      "teen"
+    ],
+    "title": "班里的小团体好像在孤立你",
+    "summary": "不知为何被同学的小圈子排挤、晾在一边",
+    "dramaticText": "不知从什么时候起，几个同学组成的小圈子开始有意无意地把你晾在一边——说话不带你、聚会不叫你。你想不通自己哪里错了。",
+    "situation": "被班里的小团体有意孤立，原因不明、心里难受",
+    "conflict": "去讨好融入怕丢了自己，硬扛又一个人很孤单",
+    "triggers": [
+      "巨门",
+      "仆役",
+      "陀罗"
+    ],
+    "choices": [
+      {
+        "label": "找个人问清楚到底怎么回事",
+        "description": "直接但平和地问一个还说得上话的人，弄明白缘由",
+        "cost": "可能听到不好听的真相",
+        "reward": "把猜疑变成清楚的事实",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 5,
+          "opportunity": 2,
+          "relationship": -1,
+          "stability": 0,
+          "resources": 0,
+          "wellbeing": -2
+        },
+        "feedback": "你没在猜疑里耗着，直接问清了缘由，话不好听，但总好过一个人乱想。"
+      },
+      {
+        "label": "先把心思放回自己喜欢的事上",
+        "description": "不围着那个圈子转，去发展自己的兴趣和别的朋友",
+        "cost": "短期还是会孤单",
+        "reward": "重心回到自己，不被一个圈子困住",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 3,
+          "relationship": 0,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没死磕那个圈子，把劲放回自己喜欢的事，慢慢有了新的同伴，心也宽了。"
+      },
+      {
+        "label": "找老师或家人聊聊这份委屈",
+        "description": "把被孤立的难受跟信得过的大人说出来",
+        "cost": "要承认自己被排挤、有点难堪",
+        "reward": "把闷着的情绪卸下来",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -4,
+          "opportunity": 1,
+          "relationship": 2,
+          "stability": 2,
+          "resources": 0,
+          "wellbeing": 4
+        },
+        "feedback": "你没把委屈憋成内伤，跟大人聊了聊，孤立还在，但你不是一个人扛了。"
+      }
+    ]
+  },
+  {
+    "id": "teen-network-friend-fight",
+    "type": "trial",
+    "theme": "network",
+    "tone": "medium",
+    "stages": [
+      "teen"
+    ],
+    "title": "和最好的朋友吵翻了",
+    "summary": "和最铁的朋友闹翻，谁也不肯先低头",
+    "dramaticText": "你和最好的朋友因为一件事吵翻了，好几天没说话。心里其实还惦记着这段交情，可一想到先低头，又拉不下脸。",
+    "situation": "和最好的朋友闹掰，互相冷战、都不肯先开口",
+    "conflict": "先低头怕没面子、怕被拿捏，僵着又一天天疏远",
+    "triggers": [
+      "仆役",
+      "比肩",
+      "巨门"
+    ],
+    "choices": [
+      {
+        "label": "主动找对方把话说开",
+        "description": "放下面子先开口，把误会和心里话讲清",
+        "cost": "可能被冷脸、热脸贴冷屁股",
+        "reward": "有机会把这段交情救回来",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 3,
+          "relationship": 4,
+          "stability": -1,
+          "resources": 0,
+          "wellbeing": 0
+        },
+        "feedback": "你先迈了一步去找对方，面子是搁下了点，但这段交情你没轻易丢。"
+      },
+      {
+        "label": "先各自冷静几天，再看怎么处",
+        "description": "不急着和好也不彻底断，给彼此消气的时间",
+        "cost": "拖久了可能越来越淡",
+        "reward": "不在气头上把话说绝",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 0,
+          "opportunity": 1,
+          "relationship": 2,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没在气头上较劲，给彼此留了几天缓冲，火气下去了，话也好说了。"
+      },
+      {
+        "label": "请共同的朋友帮忙递个台阶",
+        "description": "让都认识的人从中传句话，给彼此一个台阶",
+        "cost": "可能被说不敢直接面对",
+        "reward": "靠一点缓冲化开僵局",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 1,
+          "relationship": 3,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没硬撑也没死耗，借共同朋友递了个台阶，僵局松开了一道缝。"
+      }
+    ]
+  },
+  {
+    "id": "teen-family-phone-control",
+    "type": "trial",
+    "theme": "family",
+    "tone": "medium",
+    "stages": [
+      "teen"
+    ],
+    "title": "父母要查你的手机",
+    "summary": "父母要看你的手机，你觉得隐私被侵犯",
+    "dramaticText": "父母伸手要看你的手机，理由是\"怕你学坏\"。你没干什么见不得人的事，但被这样查，心里特别不舒服，觉得不被信任。",
+    "situation": "父母要检查你的手机，你觉得隐私和信任被侵犯",
+    "conflict": "直接拒绝怕把矛盾闹大，乖乖交出去又憋屈、觉得不被尊重",
+    "triggers": [
+      "正印",
+      "父母",
+      "陀罗"
+    ],
+    "choices": [
+      {
+        "label": "平静说出自己的感受，争取被尊重",
+        "description": "不吵不藏，告诉父母这样让你觉得不被信任",
+        "cost": "可能被当成顶嘴、犯倔",
+        "reward": "把\"被查\"变成一次讲规矩的对话",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 5,
+          "opportunity": 3,
+          "relationship": -1,
+          "stability": 0,
+          "resources": 0,
+          "wellbeing": -1
+        },
+        "feedback": "你没摔门也没闷着，平静讲出感受，争的不是这一次，是往后被当回事。"
+      },
+      {
+        "label": "提议一起定个手机使用的约定",
+        "description": "主动提出用\"约定使用时间/内容\"换来彼此的信任",
+        "cost": "要让出一部分自由",
+        "reward": "把对立换成都能接受的规矩",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 2,
+          "relationship": 2,
+          "stability": 5,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没硬顶，提了个一起定规矩的办法，父母松了手，你也守住了底线。"
+      },
+      {
+        "label": "先理解父母在担心什么，再谈",
+        "description": "先问问父母到底在怕什么，让他们放心，再谈隐私",
+        "cost": "要先压下自己的委屈",
+        "reward": "让信任从互相理解里长出来",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 1,
+          "relationship": 4,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你先去懂父母的怕，再谈自己的界限，这场拉扯没变成吵架，反而近了些。"
+      }
+    ]
+  },
+  {
+    "id": "teen-family-compare",
+    "type": "trial",
+    "theme": "family",
+    "tone": "medium",
+    "stages": [
+      "teen"
+    ],
+    "title": "父母总说\"你看人家谁谁谁\"",
+    "summary": "父母老拿你和别人家孩子比，越比越压抑",
+    "dramaticText": "\"你看人家谁谁谁\"——这句话你听了无数遍。父母大概是想激励你，可每被比一次，你心里就堵一次，越来越提不起劲，也越来越不想跟他们说话。",
+    "situation": "父母习惯拿你和别人家孩子比较，让你压抑、疏远",
+    "conflict": "顶回去怕惹更大的火，忍着又一点点被比到没了自信",
+    "triggers": [
+      "正印",
+      "父母",
+      "伤官"
+    ],
+    "choices": [
+      {
+        "label": "认真告诉父母这种比较伤到了你",
+        "description": "找个平静的时候，把被比较的难受如实说出来",
+        "cost": "可能被说玻璃心、不抗压",
+        "reward": "让父母知道这话的真实代价",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 3,
+          "relationship": 0,
+          "stability": 0,
+          "resources": 0,
+          "wellbeing": -1
+        },
+        "feedback": "你没把委屈咽下去，认真告诉父母这有多伤人，话说重了点，但他们听见了。"
+      },
+      {
+        "label": "用自己的节奏做出一件让他们看见的事",
+        "description": "不争辩，埋头把一件事做好，用结果回应",
+        "cost": "见效慢、过程中仍要受气",
+        "reward": "用事实代替吵架",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 4,
+          "relationship": 0,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 0
+        },
+        "feedback": "你没在嘴上较劲，闷头把一件事做好，结果摆出来，那句比较自己就轻了。"
+      },
+      {
+        "label": "先稳住自己，别拿别人的尺子量自己",
+        "description": "提醒自己别被比较定义，先把自我价值守住",
+        "cost": "一时还是会难过",
+        "reward": "不让外部比较摧毁自信",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": 1,
+          "relationship": 1,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 4
+        },
+        "feedback": "你先稳住自己，没全盘接受那把别人的尺子，难过归难过，根没被比垮。"
+      }
+    ]
+  },
+  {
+    "id": "teen-health-fitness-test",
+    "type": "trial",
+    "theme": "health",
+    "tone": "light",
+    "stages": [
+      "teen"
+    ],
+    "title": "体育考试快到了，你怎么练都不达标",
+    "summary": "体测/体育中考临近，某项怎么练都过不了线",
+    "dramaticText": "体育考试（体测/中考体育）越来越近，可有一项你怎么练都差一截。看着别人轻松达标，你又急又泄气，甚至想干脆放弃这几分。",
+    "situation": "体育考试临近，某一项目反复练习仍不达标",
+    "conflict": "硬逼自己加练怕受伤、更挫败，放弃又白丢分数",
+    "triggers": [
+      "疾厄",
+      "七杀",
+      "福德"
+    ],
+    "choices": [
+      {
+        "label": "找对方法集中突破这一项",
+        "description": "请教老师或会的人，按正确方法针对性地练",
+        "cost": "要花额外的时间和力气",
+        "reward": "把\"练不动\"变成\"练得对\"",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 5,
+          "relationship": 1,
+          "stability": 0,
+          "resources": 0,
+          "wellbeing": -2
+        },
+        "feedback": "你没瞎使劲，找对方法集中突破，进步慢慢看得见，那几分有救了。"
+      },
+      {
+        "label": "循序渐进，别一口气把自己练伤",
+        "description": "定个小步子的计划，每天进步一点，避免受伤",
+        "cost": "见效慢、需要耐心",
+        "reward": "稳稳提升，不半路垮掉",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 0,
+          "opportunity": 3,
+          "relationship": 0,
+          "stability": 5,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没逞强猛练，按小步子一天天加，没受伤也没放弃，身体跟着稳稳长进。"
+      },
+      {
+        "label": "先接受自己的节奏，把心态放平",
+        "description": "不和别人比，先把\"我不行\"的挫败放下",
+        "cost": "短期分数还是没提上来",
+        "reward": "不被一项考试否定自己",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": 1,
+          "relationship": 1,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 4
+        },
+        "feedback": "你先把跟人比的挫败放下，心态平了，再练时反而没那么僵，慢慢有了起色。"
+      }
+    ]
+  },
+  {
+    "id": "teen-health-appearance",
+    "type": "trial",
+    "theme": "health",
+    "tone": "medium",
+    "stages": [
+      "teen"
+    ],
+    "gender": "all",
+    "title": "你开始很在意自己的长相和身材",
+    "summary": "青春期对外形格外敏感，甚至想用极端办法改变",
+    "dramaticText": "不知从什么时候起，你照镜子的次数变多了，越看越不满意——脸、个子、身材。看到别人光鲜的样子，你甚至冒出节食、遮掩、自卑躲人的念头。",
+    "situation": "青春期对外形格外敏感、不满，影响到情绪和社交",
+    "conflict": "用极端方式逼自己变样会伤身，放任自卑又越来越躲",
+    "triggers": [
+      "太阴",
+      "疾厄",
+      "福德"
+    ],
+    "choices": [
+      {
+        "label": "把注意力放到能让自己发光的事上",
+        "description": "与其盯着外形，不如去做一件能找到自信的事",
+        "cost": "一时还是会在意长相",
+        "reward": "从能力里长出底气",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 4,
+          "relationship": 1,
+          "stability": 1,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没死盯着镜子，去做了件让自己发光的事，自信从别处长出来，外形也没那么扎心了。"
+      },
+      {
+        "label": "好好吃饭睡觉运动，健康地变好",
+        "description": "不走极端，靠规律作息和锻炼自然地改善状态",
+        "cost": "见效慢、要坚持",
+        "reward": "在不伤身的前提下真的变好",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": -1,
+          "opportunity": 2,
+          "relationship": 0,
+          "stability": 5,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没节食走极端，把吃睡运动顾好，身体和气色一起在变好，心也踏实。"
+      },
+      {
+        "label": "找人说说这种嫌弃自己的感觉",
+        "description": "把\"看不上自己\"的心情跟信任的人讲出来",
+        "cost": "承认这份脆弱不容易",
+        "reward": "把闷着的自卑卸下一部分",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": 1,
+          "relationship": 3,
+          "stability": 2,
+          "resources": 0,
+          "wellbeing": 4
+        },
+        "feedback": "你没把嫌弃自己憋成心结，找人聊了聊，那份焦虑被看见后，轻了许多。"
+      }
+    ]
+  },
+  {
+    "id": "teen-mindset-exam-anxiety",
+    "type": "trial",
+    "theme": "mindset",
+    "tone": "medium",
+    "stages": [
+      "teen"
+    ],
+    "title": "一到大考就紧张，会的也想不起来",
+    "summary": "平时会做，一上考场就紧张到发挥失常",
+    "dramaticText": "平时题目都会做，可一到大考，你心跳加速、脑子发空，连背熟的东西都想不起来。越怕考砸，越容易考砸，这种循环让你很慌。",
+    "situation": "考试焦虑导致临场发挥失常，陷入越怕越糟的循环",
+    "conflict": "硬逼自己别紧张反而更紧张，放任不管又一次次考砸",
+    "triggers": [
+      "命里逢空格",
+      "福德",
+      "巨门"
+    ],
+    "choices": [
+      {
+        "label": "用模拟练习把\"上场\"练熟",
+        "description": "平时多做限时模拟，让身体习惯考场的感觉",
+        "cost": "要额外花时间逼真练",
+        "reward": "把陌生的紧张变成熟悉",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 5,
+          "relationship": 0,
+          "stability": 1,
+          "resources": 0,
+          "wellbeing": -1
+        },
+        "feedback": "你没光靠\"别紧张\"安慰自己，用模拟把上场练熟，真考时手没那么抖了。"
+      },
+      {
+        "label": "考前做几次深呼吸，给自己定锚",
+        "description": "学一套简单的放松法，考前稳住呼吸和节奏",
+        "cost": "需要平时练成习惯",
+        "reward": "给慌乱一个能抓住的锚",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": -1,
+          "opportunity": 3,
+          "relationship": 0,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你给自己备了套稳住呼吸的办法，临场有了能抓的锚，脑子没再一片空白。"
+      },
+      {
+        "label": "先接受\"紧张很正常\"，别跟它较劲",
+        "description": "不把紧张当敌人，承认它、带着它考",
+        "cost": "一时还是会心跳快",
+        "reward": "松开\"必须不紧张\"的执念",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -4,
+          "opportunity": 1,
+          "relationship": 1,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 4
+        },
+        "feedback": "你不再跟紧张死磕，承认它正常，反而没那么怕了，发挥也稳了些。"
+      }
+    ]
+  },
+  {
+    "id": "teen-mindset-why-study",
+    "type": "trial",
+    "theme": "mindset",
+    "tone": "medium",
+    "stages": [
+      "teen"
+    ],
+    "title": "你突然觉得读书没什么意思",
+    "summary": "提不起劲、看不到读书的意义，开始厌学",
+    "dramaticText": "最近你常冒出一个念头：天天刷题、考试，到底为了什么？提不起劲，上课走神，作业也不想写。你说不清是累了，还是真的不想读了。",
+    "situation": "陷入对读书意义的怀疑，动力低落、有厌学苗头",
+    "conflict": "逼自己继续怕越来越空，放任下去又怕一路滑下去",
+    "triggers": [
+      "命无正曜格",
+      "福德",
+      "偏印"
+    ],
+    "choices": [
+      {
+        "label": "给自己找一个具体、近的小目标",
+        "description": "不空想意义，先定一个够得着的小目标动起来",
+        "cost": "一时还找不回大意义",
+        "reward": "用一个小目标把劲拉回来",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 5,
+          "relationship": 0,
+          "stability": 0,
+          "resources": 0,
+          "wellbeing": -1
+        },
+        "feedback": "你没困在\"为什么读书\"里，先盯一个小目标动起来，劲一点点回来了。"
+      },
+      {
+        "label": "把节奏放缓一点，先别硬撑",
+        "description": "允许自己稍微喘口气，别把弦绷到断",
+        "cost": "可能短期成绩有波动",
+        "reward": "先回血，再谈往前",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 1,
+          "relationship": 1,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没硬撑到崩，把节奏放缓喘了口气，劲缓过来后，没真的厌学下去。"
+      },
+      {
+        "label": "找人聊聊这种没意义的感觉",
+        "description": "把\"读书没意思\"的念头跟信任的大人或朋友说出来",
+        "cost": "要承认自己有点撑不住",
+        "reward": "把闷着的迷茫理顺",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": 1,
+          "relationship": 2,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没一个人钻牛角尖，找人聊了聊，那股\"没意思\"被说开后，没那么压人了。"
+      }
+    ]
+  },
+  {
+    "id": "teen-migration-boarding",
+    "type": "trial",
+    "theme": "migration",
+    "tone": "medium",
+    "stages": [
+      "teen"
+    ],
+    "title": "要去外地住校，离开熟悉的一切",
+    "summary": "升学/转学要去外地住校，舍不得家和朋友",
+    "dramaticText": "因为升学（或转学），你要去外地住校了。新学校更好，可一想到要离开家、离开从小一起长大的朋友，自己一个人面对陌生的一切，心里直发慌。",
+    "situation": "即将去外地住校，面对离家和陌生环境的不安",
+    "conflict": "去是更好的机会但要独自适应，留又怕错过、辜负家里",
+    "triggers": [
+      "天马",
+      "迁移",
+      "太阴"
+    ],
+    "choices": [
+      {
+        "label": "把它当成学独立的机会，主动适应",
+        "description": "不抗拒，提前做准备，把住校当成长的一课",
+        "cost": "前期会想家、要硬扛孤单",
+        "reward": "提早学会照顾自己",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 5,
+          "relationship": -1,
+          "stability": -1,
+          "resources": 0,
+          "wellbeing": -1
+        },
+        "feedback": "你没一味抗拒，把住校当成学独立的机会，头阵子想家，但你长本事了。"
+      },
+      {
+        "label": "和家里约好常联系，给自己缓冲",
+        "description": "走之前和家人约定好通话节奏，留个情感后盾",
+        "cost": "还是要面对分离",
+        "reward": "不至于一下子断了依靠",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 0,
+          "opportunity": 2,
+          "relationship": 3,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没硬扛分离，和家里约好常联系，心里有了后盾，陌生环境也没那么吓人。"
+      },
+      {
+        "label": "先把害怕说出来，别一个人憋着",
+        "description": "把舍不得和害怕跟家人讲清楚，一起想办法",
+        "cost": "要承认自己其实很怕",
+        "reward": "把不安卸给信任的人一半",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": 1,
+          "relationship": 3,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没逞强说\"我没事\"，把怕说了出来，家人陪你一起面对，心里踏实多了。"
+      }
+    ]
+  },
+  {
+    "id": "teen-migration-better-school",
+    "type": "opportunity",
+    "theme": "migration",
+    "tone": "light",
+    "stages": [
+      "teen"
+    ],
+    "title": "考上了更好的学校，但离家很远",
+    "summary": "争取到更好的学校，代价是要去很远的地方",
+    "dramaticText": "你凭努力考上了一所更好的学校，眼界、平台都更高。可它在很远的地方，去了就意味着长期离家、重新认识一圈人。机会和不舍，撞在一起。",
+    "situation": "考上了更好但很远的学校，去留各有得失",
+    "conflict": "去是更大的平台但要远离家人，留是安稳熟悉却平淡",
+    "triggers": [
+      "禄马交驰格",
+      "天马",
+      "迁移"
+    ],
+    "choices": [
+      {
+        "label": "抓住机会去，趁早见更大的世界",
+        "description": "答应下来，把远行当成开眼界的一程",
+        "cost": "要长期离家、独自适应",
+        "reward": "一个别处换不来的平台",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 6,
+          "relationship": -2,
+          "stability": -2,
+          "resources": 0,
+          "wellbeing": 0
+        },
+        "feedback": "你抓住了这所更好的学校，离家的苦要自己咽，但你给自己换来了更大的天地。"
+      },
+      {
+        "label": "先把住宿、回家安排好再去",
+        "description": "把怎么住、多久回一次都和家里安排妥当再走",
+        "cost": "准备要花心思",
+        "reward": "机会拿住，后方也安顿好",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 4,
+          "relationship": 1,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 0
+        },
+        "feedback": "你没一冲动就走，把住和回家的事都安排好，机会拿住了，心里也有底。"
+      },
+      {
+        "label": "和家人一起把得失谈清再决定",
+        "description": "把更好的平台和离家的代价摆出来，全家一起权衡",
+        "cost": "可能因不舍而犹豫",
+        "reward": "不冲动也不留遗憾地选",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 2,
+          "relationship": 3,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没自己一个人定，和家人把得失谈清楚，去还是留，都没有后悔。"
+      }
+    ]
+  },
+  {
+    "id": "senior-career-pushed-out",
+    "type": "trial",
+    "theme": "career",
+    "tone": "medium",
+    "stages": [
+      "senior"
+    ],
+    "title": "还没到退休，单位却开始让你\"让位\"",
+    "summary": "临近退休被边缘化，明里暗里被劝退、靠边站",
+    "dramaticText": "离退休还有几年，单位却开始把重要的事交给年轻人，会也少叫你了，话里话外是让你\"歇一歇、让让位\"。你心里不是滋味，又不甘心就这么被晾着。",
+    "situation": "临近退休却被边缘化，明暗里被劝退、靠边站",
+    "conflict": "争一争怕难看、伤和气，认下来又咽不下这口被弃用的气",
+    "triggers": [
+      "七杀",
+      "官禄",
+      "陀罗"
+    ],
+    "choices": [
+      {
+        "label": "主动找领导谈清楚自己的去留",
+        "description": "不憋着，找领导把待遇、岗位、退法谈明白",
+        "cost": "可能把话挑破、场面尴尬",
+        "reward": "把悬着的处境变成清楚的安排",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 5,
+          "opportunity": 3,
+          "relationship": -1,
+          "stability": 1,
+          "resources": 1,
+          "wellbeing": -2
+        },
+        "feedback": "你没忍气吞声，找领导把去留谈清，话虽难开口，但你给自己争了个明白。"
+      },
+      {
+        "label": "把手上的事站好最后一班岗",
+        "description": "不计较冷落，把本职做到底，体面收尾",
+        "cost": "要咽下被忽视的失落",
+        "reward": "走得干净，不落人话柄",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 1,
+          "relationship": 1,
+          "stability": 5,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没赌气撂挑子，把最后一班岗站好，冷落归冷落，你走得体面。"
+      },
+      {
+        "label": "提前为退休后的生活铺路",
+        "description": "把心思往退休后的安排上挪，提前找新寄托",
+        "cost": "要先放下被弃用的不甘",
+        "reward": "不把价值全押在这个岗位上",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": 2,
+          "relationship": 1,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没困在被晾着的委屈里，提前给退休后铺路，重心一挪，心也宽了。"
+      }
+    ]
+  },
+  {
+    "id": "senior-career-rehire",
+    "type": "opportunity",
+    "theme": "career",
+    "tone": "light",
+    "stages": [
+      "senior"
+    ],
+    "title": "退休在即，有人请你退下来后接着干",
+    "summary": "一份返聘/顾问的邀约找上门，发挥余热还是清闲",
+    "dramaticText": "快退休了，却有人来请你：退下来之后到他们那儿接着干，做顾问、带带人。钱和价值感都有，可你也盼着清闲、歇一歇。",
+    "situation": "临退休收到返聘/顾问邀约，在发挥余热和清闲之间",
+    "conflict": "接着干有价值有收入但难得清闲，歇下来轻松又怕一下子空落",
+    "triggers": [
+      "天梁",
+      "官禄",
+      "正印"
+    ],
+    "choices": [
+      {
+        "label": "接下来，趁还有劲再发挥几年",
+        "description": "答应邀约，把经验用起来、也添份收入",
+        "cost": "清闲要再等几年",
+        "reward": "价值和收入都不断档",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 5,
+          "relationship": 1,
+          "stability": 0,
+          "resources": 3,
+          "wellbeing": -1
+        },
+        "feedback": "你接下了返聘，趁还有劲再干几年，清闲晚来一步，但你没一下子闲空下来。"
+      },
+      {
+        "label": "只接轻松、不绑死的那部分",
+        "description": "谈成顾问/兼职，少操心、留出自己的时间",
+        "cost": "收入和分量打些折扣",
+        "reward": "既不闲废也不被拴住",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 0,
+          "opportunity": 3,
+          "relationship": 1,
+          "stability": 4,
+          "resources": 2,
+          "wellbeing": 2
+        },
+        "feedback": "你没全揽下，只接了轻松不绑死的部分，发挥了余热，也留住了自己的日子。"
+      },
+      {
+        "label": "先想清楚自己退休后到底想怎么过",
+        "description": "别急着应，先盘清楚自己想要的生活，再决定",
+        "cost": "可能错过这次邀约",
+        "reward": "不被惯性推着继续忙",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 2,
+          "relationship": 1,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没顺着惯性就接，先想清退休后想怎么过，这个决定是为自己做的。"
+      }
+    ]
+  },
+  {
+    "id": "senior-wealth-pension-scam",
+    "type": "trial",
+    "theme": "wealth",
+    "tone": "medium",
+    "stages": [
+      "senior"
+    ],
+    "title": "熟人推荐一个\"稳赚的养老理财\"",
+    "summary": "熟人热情拉你买高回报\"养老项目\"，本金有风险",
+    "dramaticText": "一个熟人神秘又热情地拉你：有个\"稳赚不赔、专为养老准备\"的项目，回报比存银行高得多，很多人都投了。你心动，又隐隐觉得哪里不对。",
+    "situation": "熟人推荐高回报\"养老理财\"，承诺稳赚但本金有风险",
+    "conflict": "投进去图个高回报养老，可一旦是坑，养老钱就打水漂",
+    "triggers": [
+      "劫财",
+      "偏财",
+      "地劫"
+    ],
+    "choices": [
+      {
+        "label": "坚决不碰，守住养老的本钱",
+        "description": "不管说得多好，养老钱不投看不懂的东西",
+        "cost": "可能错过\"真机会\"、被说胆小",
+        "reward": "本金稳稳在手",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 0,
+          "relationship": -1,
+          "stability": 6,
+          "resources": 1,
+          "wellbeing": 2
+        },
+        "feedback": "你没被高回报勾住，守住了养老的本钱，错没错过不知道，但你没把命根子押出去。"
+      },
+      {
+        "label": "先找懂行的人和子女一起把它看清",
+        "description": "不急着投，请信得过的人帮你核实清楚再说",
+        "cost": "要花时间、可能被熟人催",
+        "reward": "看清\"稳赚\"背后的真相",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 0,
+          "opportunity": 1,
+          "relationship": 1,
+          "stability": 5,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没自己拍板，拉懂行的人一起看清楚，那层\"稳赚\"的画皮一查就破了。"
+      },
+      {
+        "label": "婉拒熟人，别让人情绑住钱",
+        "description": "把\"投资\"和\"交情\"分开，礼貌但坚定地回绝",
+        "cost": "怕拂了熟人的面子",
+        "reward": "不让人情把养老钱拖下水",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 0,
+          "relationship": 2,
+          "stability": 4,
+          "resources": 1,
+          "wellbeing": 2
+        },
+        "feedback": "你没碍于面子答应，把交情和钱分开婉拒了，人情还在，钱也没冒险。"
+      }
+    ]
+  },
+  {
+    "id": "senior-wealth-help-kids-house",
+    "type": "trial",
+    "theme": "wealth",
+    "tone": "medium",
+    "stages": [
+      "senior"
+    ],
+    "title": "子女买房差一笔，要不要拿出养老钱",
+    "summary": "子女买房差首付，开口想用你的养老积蓄",
+    "dramaticText": "子女看中了房子，首付还差一笔，话说得恳切，希望你把养老的积蓄先拿出来周转。帮，是疼孩子；可那是你后半辈子的底气。",
+    "situation": "子女买房差首付，希望动用你的养老积蓄",
+    "conflict": "掏出来是疼孩子却动了养老的底，不给又怕孩子作难、寒心",
+    "triggers": [
+      "正财",
+      "田宅",
+      "正印"
+    ],
+    "choices": [
+      {
+        "label": "量力出一部分，把养老底线留住",
+        "description": "帮一把，但只拿出不影响自己晚年的那部分",
+        "cost": "帮的数目可能不够孩子期待",
+        "reward": "既疼了孩子，也没掏空自己",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 2,
+          "relationship": 2,
+          "stability": 2,
+          "resources": -2,
+          "wellbeing": 0
+        },
+        "feedback": "你没倾囊也没拒绝，量力帮了一部分，孩子的事顾上了，自己的底也守住了。"
+      },
+      {
+        "label": "先把往后的养老开销算清再决定",
+        "description": "坐下来把医疗、养老的花销算明白，量入为出",
+        "cost": "算账时孩子可能等不及",
+        "reward": "不在心软里赔上晚年",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 1,
+          "relationship": 1,
+          "stability": 5,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没一时心软就掏，先把往后的开销算清，帮多少心里有了准数。"
+      },
+      {
+        "label": "跟子女把\"这是养老钱\"摊开讲",
+        "description": "坦诚告诉孩子这笔钱的分量和你的顾虑，一起想办法",
+        "cost": "可能让孩子觉得没面子",
+        "reward": "把界限讲明，亲情账不糊涂",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 1,
+          "relationship": 3,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没默默委屈也没硬拒，把养老钱的分量讲明白，孩子懂了，办法也一起想了。"
+      }
+    ]
+  },
+  {
+    "id": "senior-relationship-empty-nest",
+    "type": "trial",
+    "theme": "relationship",
+    "tone": "medium",
+    "stages": [
+      "senior"
+    ],
+    "title": "孩子走了，家里只剩你和老伴，却没话说",
+    "summary": "空巢之后，和老伴相对无言、各过各的",
+    "dramaticText": "孩子成家立业搬出去了，家里一下子空了。你和老伴守着这套房子，一天到晚说不上几句话，各看各的手机电视，熟悉又陌生。",
+    "situation": "子女离家后进入空巢，和老伴相对无言、日渐疏离",
+    "conflict": "将就着各过各的图省事，可这样下去日子越来越冷",
+    "triggers": [
+      "太阴",
+      "夫妻",
+      "日月反背"
+    ],
+    "choices": [
+      {
+        "label": "主动张罗一件两个人一起做的事",
+        "description": "提议一起去旅行、学点东西、培养个共同爱好",
+        "cost": "对方未必立刻响应、要磨合",
+        "reward": "给冷掉的日子重新生点火",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 4,
+          "relationship": 4,
+          "stability": -1,
+          "resources": -1,
+          "wellbeing": 1
+        },
+        "feedback": "你没等日子自己暖起来，主动张罗了件一起做的事，两个人的话又多了起来。"
+      },
+      {
+        "label": "从每天好好吃顿饭、聊几句开始",
+        "description": "不求大动作，先把日常的陪伴和交流捡回来",
+        "cost": "见效慢、需要耐心",
+        "reward": "让温度在小事里一点点回来",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": -1,
+          "opportunity": 2,
+          "relationship": 3,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没急着大改，从一顿饭、几句话做起，日子慢慢有了人气，没那么冷了。"
+      },
+      {
+        "label": "先把心里的疏远和老伴说开",
+        "description": "坦诚聊聊这种没话说的状态，别各自憋着",
+        "cost": "要鼓起勇气掀开尴尬",
+        "reward": "把疏离从回避变成面对",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 1,
+          "relationship": 4,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没装作没事，把那份疏远跟老伴说开，话一掀开，心反而近了。"
+      }
+    ]
+  },
+  {
+    "id": "senior-relationship-spouse-ill",
+    "type": "trial",
+    "theme": "relationship",
+    "tone": "heavy",
+    "stages": [
+      "senior"
+    ],
+    "title": "老伴病了，往后要你长期照顾",
+    "summary": "老伴生了需要长期照料的病，担子落到你肩上",
+    "dramaticText": "老伴查出了需要长期照料的病。往后的日子，吃药、复查、起居，很多都要靠你。你心疼，也清楚自己年纪也不轻了，一个人扛得有点怕。",
+    "situation": "老伴患需长期照料的病，照护重担落到你身上",
+    "conflict": "一个人硬扛怕把自己也累垮，找人帮手又怕花钱、怕生分",
+    "triggers": [
+      "太阴化忌",
+      "夫妻",
+      "疾厄"
+    ],
+    "choices": [
+      {
+        "label": "把照护安排成可持续的章法",
+        "description": "理清用药复查的节奏，分工、借助外力，别全压一人",
+        "cost": "要花心思安排、也要花钱",
+        "reward": "照顾得长久，自己不垮",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 3,
+          "relationship": 3,
+          "stability": 1,
+          "resources": -2,
+          "wellbeing": -2
+        },
+        "feedback": "你没硬扛到底，把照护安排出章法、借了外力，路还长，但你不会先倒下。"
+      },
+      {
+        "label": "一天天稳稳来，先顾好眼前",
+        "description": "不想太远，把每天的起居复查稳稳做好",
+        "cost": "长期下来身心都累",
+        "reward": "把日子过踏实，不被吓垮",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 1,
+          "relationship": 3,
+          "stability": 4,
+          "resources": -1,
+          "wellbeing": 0
+        },
+        "feedback": "你没被往后的难吓住，一天天稳稳照顾，眼前过好了，路也就一步步走了。"
+      },
+      {
+        "label": "发动子女和亲友一起搭把手",
+        "description": "不一个人扛，把情况跟孩子亲友讲清，分担照护",
+        "cost": "要放下\"不想麻烦人\"的顾虑",
+        "reward": "让担子有人一起抬",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": 2,
+          "relationship": 4,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没逞强一个人扛，把家人发动起来一起照顾，肩上轻了，老伴也被照看得更好。"
+      }
+    ]
+  },
+  {
+    "id": "senior-network-fading-ties",
+    "type": "trial",
+    "theme": "network",
+    "tone": "light",
+    "stages": [
+      "senior"
+    ],
+    "title": "退休后，老同事的群越来越冷清",
+    "summary": "离开岗位后，曾经热络的人脉一点点淡了",
+    "dramaticText": "退休没多久，曾经天天打交道的老同事群，慢慢就没人说话了。约人吃饭也总凑不齐。你忽然发现，离开了岗位，很多关系也跟着淡了。",
+    "situation": "退休后原有的同事人脉迅速冷却、联系变少",
+    "conflict": "主动张罗怕热脸贴冷屁股，随它去又越来越孤单",
+    "triggers": [
+      "仆役",
+      "巨门",
+      "天马"
+    ],
+    "choices": [
+      {
+        "label": "主动张罗一次聚会，把老交情续上",
+        "description": "不等别人,自己出面组个局，把还想见的人聚起来",
+        "cost": "可能来的人不多、有点失落",
+        "reward": "把值得的关系主动留住",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 3,
+          "relationship": 4,
+          "stability": 0,
+          "resources": -1,
+          "wellbeing": 0
+        },
+        "feedback": "你没坐等关系自己淡掉，主动攒了个局，来的人不多，但真朋友续上了。"
+      },
+      {
+        "label": "顺其自然，把心思放到新圈子",
+        "description": "不强留旧关系，去发展兴趣、结识新朋友",
+        "cost": "旧交情会慢慢淡去",
+        "reward": "把社交重心换到当下",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 0,
+          "opportunity": 4,
+          "relationship": 1,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没死守旧人脉，把心思放到新圈子，旧的淡了，新的也热闹起来。"
+      },
+      {
+        "label": "挑几个真朋友，单独走动起来",
+        "description": "不追求人多，把几段真交情一对一维系好",
+        "cost": "圈子会变小",
+        "reward": "少而真，比热闹更暖",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -1,
+          "opportunity": 2,
+          "relationship": 4,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没在意群冷不冷，把几个真朋友单独走动起来，圈子小了，情分却厚了。"
+      }
+    ]
+  },
+  {
+    "id": "senior-network-reunion",
+    "type": "opportunity",
+    "theme": "network",
+    "tone": "light",
+    "stages": [
+      "senior"
+    ],
+    "title": "老友们张罗着一起组个团聚一聚",
+    "summary": "老友招呼一起出游/组活动，去还是嫌折腾",
+    "dramaticText": "几个老友兴致勃勃，张罗着组个团一起出去走走、聚一聚。你心里也想去，又嫌折腾、怕花钱、怕身体跟不上，一时拿不定主意。",
+    "situation": "老友邀约一起组团出游或办活动，心动又顾虑重重",
+    "conflict": "去，是难得的相聚和热闹；不去，省心省钱却又怕错过、显得疏远",
+    "triggers": [
+      "左辅",
+      "右弼",
+      "仆役"
+    ],
+    "choices": [
+      {
+        "label": "爽快答应，趁还走得动多聚聚",
+        "description": "不犹豫，报名参加，把相聚的机会抓住",
+        "cost": "要花钱花精力、身体得跟上",
+        "reward": "趁还硬朗，多攒些一起的回忆",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 5,
+          "relationship": 4,
+          "stability": -1,
+          "resources": -2,
+          "wellbeing": 2
+        },
+        "feedback": "你没被顾虑拦住，爽快去了，钱和力气是花了，但那份热闹和情分换不来。"
+      },
+      {
+        "label": "挑个轻松的项目参加，量力而行",
+        "description": "选不太累、花费合适的那种聚法，去而不勉强",
+        "cost": "玩得没那么尽兴",
+        "reward": "既不缺席也不硬撑",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 0,
+          "opportunity": 3,
+          "relationship": 3,
+          "stability": 4,
+          "resources": -1,
+          "wellbeing": 2
+        },
+        "feedback": "你没硬充也没缺席，挑了个轻松的一起去，身体扛得住，情分也续上了。"
+      },
+      {
+        "label": "先把身体和家里安排好再说",
+        "description": "把自己的身体状况和家里的事先理顺，再决定去不去",
+        "cost": "可能因顾虑而错过这次",
+        "reward": "不带着牵挂勉强出门",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 2,
+          "relationship": 2,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没冲动也没一口回绝，先把身体和家里安顿好，去不去都踏实。"
+      }
+    ]
+  },
+  {
+    "id": "senior-family-grandkids",
+    "type": "trial",
+    "theme": "family",
+    "tone": "medium",
+    "stages": [
+      "senior"
+    ],
+    "title": "子女希望你帮忙带孙辈",
+    "summary": "子女盼你帮带孩子，要搭上自己的时间和精力",
+    "dramaticText": "子女工作忙，盼着你帮忙带孙辈。带，是疼孩子、也享天伦；可这一带就是好几年，你刚松快下来的退休生活，又要全搭进去。",
+    "situation": "子女希望你长期帮忙带孙辈，要牺牲自己的退休生活",
+    "conflict": "帮带享天伦却没了自己的日子，不带又怕孩子作难、被说不近人情",
+    "triggers": [
+      "正印",
+      "田宅",
+      "天梁"
+    ],
+    "choices": [
+      {
+        "label": "帮，但和子女把分工和界限讲清",
+        "description": "答应带，同时讲明自己的精力上限和带法",
+        "cost": "可能被嫌讲条件、不够无私",
+        "reward": "帮得长久，也不被掏空",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 2,
+          "relationship": 3,
+          "stability": 1,
+          "resources": -1,
+          "wellbeing": -2
+        },
+        "feedback": "你没无条件全揽，帮带的同时把界限讲清，含饴弄孙之外，自己的日子也留了一块。"
+      },
+      {
+        "label": "搭把手但不全包，留出自己的生活",
+        "description": "帮忙搭手而非全天候，给自己留出喘息和爱好",
+        "cost": "子女可能觉得不够给力",
+        "reward": "天伦和自我两头都顾",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 2,
+          "relationship": 2,
+          "stability": 4,
+          "resources": -1,
+          "wellbeing": 2
+        },
+        "feedback": "你没把自己全搭进去，搭把手又留住了自己的生活，孩子帮了，人没累垮。"
+      },
+      {
+        "label": "先听子女的难处，再一起想办法",
+        "description": "先了解子女到底卡在哪，看看是否有别的解法",
+        "cost": "要先压下\"该不该带\"的纠结",
+        "reward": "让带不带变成一起商量",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 2,
+          "relationship": 4,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没急着应承或拒绝，先听子女的难处一起想办法，亲情没被一句\"帮不帮\"绑架。"
+      }
+    ]
+  },
+  {
+    "id": "senior-family-marriage-push",
+    "type": "trial",
+    "theme": "family",
+    "tone": "medium",
+    "stages": [
+      "senior"
+    ],
+    "title": "你着急子女的终身大事，他们却嫌你烦",
+    "summary": "催子女成家，越催越僵，孩子嫌你逼得紧",
+    "dramaticText": "子女年纪不小了还单着，你看在眼里急在心里，张罗相亲、旁敲侧击。可你越上心，孩子越烦，话越说越冲，回家都少了。",
+    "situation": "为子女的婚事着急，催促反而把关系越搞越僵",
+    "conflict": "继续催怕把孩子推得更远，不管又实在放不下心",
+    "triggers": [
+      "父母",
+      "夫妻",
+      "巨门"
+    ],
+    "choices": [
+      {
+        "label": "坦诚说出担心，然后把决定权还给孩子",
+        "description": "把你的着急讲一次清楚，之后尊重孩子自己的节奏",
+        "cost": "要忍住不再反复念叨",
+        "reward": "关心到位，又不越界",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 3,
+          "relationship": 2,
+          "stability": 2,
+          "resources": 0,
+          "wellbeing": 0
+        },
+        "feedback": "你把担心认真说了一次，然后把选择权还给孩子，催的劲收了，心反而近了。"
+      },
+      {
+        "label": "少念叨，多在生活上关心",
+        "description": "把催婚的话放下，转成日常的陪伴和支持",
+        "cost": "你心里还是会惦记",
+        "reward": "不靠施压维系亲情",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": -1,
+          "opportunity": 2,
+          "relationship": 3,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没再天天念，把上心换成日常的关怀，孩子愿意回家了，话也愿意说了。"
+      },
+      {
+        "label": "先想清自己急的到底是什么",
+        "description": "问问自己是真为孩子，还是怕别人议论、怕没人养老",
+        "cost": "要面对自己的私心",
+        "reward": "把焦虑理顺，不转嫁给孩子",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": 1,
+          "relationship": 2,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你先想清自己急的是什么，那股要催的劲松了，孩子的事也就不那么揪着你了。"
+      }
+    ]
+  },
+  {
+    "id": "senior-health-chronic",
+    "type": "trial",
+    "theme": "health",
+    "tone": "medium",
+    "stages": [
+      "senior"
+    ],
+    "title": "体检查出慢性病，得长期吃药忌口",
+    "summary": "查出慢性病，往后要长期服药、改掉旧习惯",
+    "dramaticText": "体检报告上几个指标亮了红灯，医生说是慢性病，往后得长期吃药、忌口、改作息。你一向觉得自己身体没问题，这下心里咯噔一下。",
+    "situation": "体检查出慢性病，需长期服药并改变生活习惯",
+    "conflict": "认真管理要改掉几十年的习惯很难受，不当回事又怕越拖越重",
+    "triggers": [
+      "太阴化忌",
+      "疾厄",
+      "羊陀夹命格"
+    ],
+    "choices": [
+      {
+        "label": "正视它，把生活照医嘱整个调过来",
+        "description": "认真吃药、忌口、规律作息，把病管在前头",
+        "cost": "要改掉几十年的老习惯",
+        "reward": "把慢性病摁在可控范围",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 3,
+          "relationship": 0,
+          "stability": 1,
+          "resources": -1,
+          "wellbeing": 1
+        },
+        "feedback": "你没讳疾忌医，照医嘱把生活调了过来，习惯难改，但你把病摁在了前头。"
+      },
+      {
+        "label": "从一两个最关键的习惯先改起",
+        "description": "不求一步到位，先抓住最伤身的那一两样改",
+        "cost": "改得慢、其他还没动",
+        "reward": "不被\"全要改\"吓退，先动起来",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 2,
+          "relationship": 0,
+          "stability": 5,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没被\"全得改\"吓住，先抓最关键的改起，迈出第一步，身体慢慢有回应。"
+      },
+      {
+        "label": "先把恐慌放下，找医生问清怎么管",
+        "description": "别自己吓自己，把疑问一次问清楚，按指导来",
+        "cost": "要先承认自己其实怕",
+        "reward": "用清楚的信息代替慌张",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": 1,
+          "relationship": 1,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没在吓自己里打转，把问题问清楚，慌劲下去了，管理也有了头绪。"
+      }
+    ]
+  },
+  {
+    "id": "senior-health-prevention",
+    "type": "opportunity",
+    "theme": "health",
+    "tone": "light",
+    "stages": [
+      "senior"
+    ],
+    "title": "这次体检后，你想认真把身体养起来",
+    "summary": "体检敲了警钟，动了认真养生防衰的念头",
+    "dramaticText": "这次体检虽没大事，几个临界的指标却敲了警钟。你忽然意识到不年轻了，动了认真养身体的念头——散步、调饮食、规律作息，趁还来得及。",
+    "situation": "体检敲响警钟，想趁早认真养护身体、预防衰老",
+    "conflict": "认真养生要改掉舒服的旧习惯，懒散下去又怕将来吃亏",
+    "triggers": [
+      "正印",
+      "福德",
+      "天梁"
+    ],
+    "choices": [
+      {
+        "label": "定个长期的养护计划，认真坚持",
+        "description": "把散步、饮食、作息排成计划，长期执行",
+        "cost": "要放弃一些口腹和懒散",
+        "reward": "趁早把底子养厚",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 4,
+          "relationship": 1,
+          "stability": 2,
+          "resources": -1,
+          "wellbeing": 3
+        },
+        "feedback": "你没把警钟当耳旁风，定了养护计划认真做，舍了点舒服，换来后劲更足的身体。"
+      },
+      {
+        "label": "从每天散步、早睡这种小事做起",
+        "description": "不求大改，先把最容易的好习惯捡起来",
+        "cost": "见效慢、要耐心",
+        "reward": "让养生变成顺手的日常",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": -1,
+          "opportunity": 2,
+          "relationship": 1,
+          "stability": 5,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没好高骛远，从散步早睡做起，小习惯一点点攒，身体也一点点回稳。"
+      },
+      {
+        "label": "约上老伴或老友一起养，互相督促",
+        "description": "把养生变成结伴的事，彼此打气坚持",
+        "cost": "要迁就别人的节奏",
+        "reward": "有人陪着更容易坚持",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 2,
+          "relationship": 3,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没一个人单打独斗，拉上伴一起养，互相督促，坚持下来也多了份热闹。"
+      }
+    ]
+  },
+  {
+    "id": "senior-mindset-uselessness",
+    "type": "trial",
+    "theme": "mindset",
+    "tone": "medium",
+    "stages": [
+      "senior"
+    ],
+    "title": "退下来后，你忽然觉得自己没用了",
+    "summary": "离开岗位后失去价值感，空落落提不起劲",
+    "dramaticText": "退休本该轻松，可真闲下来，你反而空落落的——没人需要你拿主意了，一天天不知道干嘛。那种\"我是不是没用了\"的念头，时不时冒出来。",
+    "situation": "退休后骤然失去价值感，陷入空虚和自我怀疑",
+    "conflict": "逼自己赶紧找事填满怕是瞎忙，放任空着又越来越没劲",
+    "triggers": [
+      "命里逢空格",
+      "福德",
+      "地空"
+    ],
+    "choices": [
+      {
+        "label": "给自己找一件有意义的新事做",
+        "description": "去做点能帮到人、用得上经验的事，重建价值感",
+        "cost": "前期要走出舒适区、试错",
+        "reward": "让\"被需要\"重新回到生活",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 5,
+          "relationship": 1,
+          "stability": 0,
+          "resources": 0,
+          "wellbeing": 0
+        },
+        "feedback": "你没困在\"没用了\"里，去找了件有意义的新事，被需要的感觉，一点点回来了。"
+      },
+      {
+        "label": "把生活重心慢慢挪到兴趣和家人上",
+        "description": "不急着证明什么，先把日子过出滋味",
+        "cost": "价值感回得慢些",
+        "reward": "从忙碌之外找到新的依托",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": -1,
+          "opportunity": 2,
+          "relationship": 2,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没硬找事填满，把心思挪到兴趣和家人上，日子有了滋味，空落感淡了。"
+      },
+      {
+        "label": "先接纳这份失落，别急着否定自己",
+        "description": "承认离岗后的空是正常的，给自己适应的时间",
+        "cost": "短期还是会没着没落",
+        "reward": "不被一时的空虚定义价值",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": 1,
+          "relationship": 1,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 4
+        },
+        "feedback": "你先接住了这份失落，没急着否定自己，缓过来后，反而看清了想过的日子。"
+      }
+    ]
+  },
+  {
+    "id": "senior-mindset-fear-burden",
+    "type": "trial",
+    "theme": "mindset",
+    "tone": "medium",
+    "stages": [
+      "senior"
+    ],
+    "title": "你开始怕老、怕给孩子添麻烦",
+    "summary": "对衰老和\"将来拖累子女\"的担忧越来越重",
+    "dramaticText": "夜深人静，你越来越常想到\"老了以后\"——怕生病、怕动不了、怕成了孩子的负担。这份担忧像块石头压着，让你白天也提不起精神。",
+    "situation": "对衰老和将来拖累子女的担忧日渐沉重，影响心情",
+    "conflict": "一味担忧把当下也愁没了，不去想又怕真到那天措手不及",
+    "triggers": [
+      "太阴",
+      "福德",
+      "偏印"
+    ],
+    "choices": [
+      {
+        "label": "趁现在能做主，把往后的事安排好",
+        "description": "把养老、医疗、积蓄这些提前做点准备",
+        "cost": "要直面不愿想的话题",
+        "reward": "把怕变成能掌控的安排",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 4,
+          "relationship": 1,
+          "stability": 2,
+          "resources": -1,
+          "wellbeing": 1
+        },
+        "feedback": "你没光在那儿怕，趁能做主把往后安排起来，那块石头被拆成了一件件能办的事。"
+      },
+      {
+        "label": "先把每一天过好，别透支当下",
+        "description": "把心思拉回眼前，把能享的日子先享了",
+        "cost": "担忧还会时不时回来",
+        "reward": "不被未来的怕偷走现在",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 2,
+          "relationship": 2,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没让\"以后\"吃掉\"现在\"，先把每天过好，怕归怕，日子没被愁废。"
+      },
+      {
+        "label": "把这份怕跟家人坦诚说出来",
+        "description": "别一个人扛着，把对衰老的担忧跟子女聊聊",
+        "cost": "要放下\"不想让孩子担心\"",
+        "reward": "让怕被听见、被分担",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -4,
+          "opportunity": 1,
+          "relationship": 4,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没把怕憋成心病，跟家人说开了，孩子的回应让你知道，这条路不是你一个人走。"
+      }
+    ]
+  },
+  {
+    "id": "senior-migration-move-to-kids",
+    "type": "trial",
+    "theme": "migration",
+    "tone": "medium",
+    "stages": [
+      "senior"
+    ],
+    "title": "子女让你搬去他们的城市，离开住惯的地方",
+    "summary": "子女盼你搬去同住或就近，要离开熟悉的家",
+    "dramaticText": "子女在外地安了家，盼着你搬过去，好就近照应。去了能离孩子近些，可也意味着离开住了大半辈子的地方、熟悉的老邻居和生活。",
+    "situation": "子女希望你搬去他们所在的城市，要离开住惯的家",
+    "conflict": "搬过去离孩子近却人生地不熟，留下来熟悉自在又怕孤单无人照应",
+    "triggers": [
+      "天马",
+      "迁移",
+      "太阴"
+    ],
+    "choices": [
+      {
+        "label": "搬过去，主动适应新地方的生活",
+        "description": "答应搬，去了之后主动认识环境、结识新人",
+        "cost": "要从头适应、可能憋闷一阵",
+        "reward": "离孩子近，晚年有照应",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 4,
+          "relationship": 3,
+          "stability": -2,
+          "resources": -1,
+          "wellbeing": 0
+        },
+        "feedback": "你没守着旧地方不动，搬过去主动适应，憋闷过一阵，但孩子近了、心也近了。"
+      },
+      {
+        "label": "先去住一段试试，合适再长留",
+        "description": "不急着彻底搬，先过去住些日子看习不习惯",
+        "cost": "要两头折腾一阵",
+        "reward": "不把话说死，留有退路",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 3,
+          "relationship": 2,
+          "stability": 4,
+          "resources": -1,
+          "wellbeing": 1
+        },
+        "feedback": "你没一步到位，先过去住一段试试，合不合适心里有了数，不至于将就。"
+      },
+      {
+        "label": "和子女把彼此的顾虑都摊开谈",
+        "description": "把你的不舍、孩子的牵挂都讲清，再一起定",
+        "cost": "可能谈出难取舍的分歧",
+        "reward": "让去留是商量出来的，不勉强",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 2,
+          "relationship": 4,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没自己憋着也没被催着搬，和孩子把顾虑谈开，去还是留，都没有委屈。"
+      }
+    ]
+  },
+  {
+    "id": "senior-migration-hometown-return",
+    "type": "trial",
+    "theme": "migration",
+    "tone": "light",
+    "stages": [
+      "senior"
+    ],
+    "title": "退休了，回老家养老还是留在大城市",
+    "summary": "退休后面临落叶归根还是留城养老的选择",
+    "dramaticText": "退休了，时间一下子多了起来。一个念头冒出来：回老家吧，那里有根、有老房子、空气也好；可大城市住惯了，医疗方便、孩子也在这边。",
+    "situation": "退休后在回老家养老和留在大城市之间权衡",
+    "conflict": "回老家清静有根但医疗不便、离孩子远，留城方便却拥挤、少了归属",
+    "triggers": [
+      "禄马交驰格",
+      "迁移",
+      "田宅"
+    ],
+    "choices": [
+      {
+        "label": "回老家养老，把根重新落回去",
+        "description": "选择回乡，把晚年安放在熟悉的土地上",
+        "cost": "医疗、和孩子的距离要让步",
+        "reward": "落叶归根，过得自在",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 4,
+          "relationship": 0,
+          "stability": 1,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你选了回老家，把根落回熟悉的地方，远了点孩子，却换回了那份久违的自在。"
+      },
+      {
+        "label": "留在大城市，图个方便和照应",
+        "description": "留下来，靠近医疗和孩子，稳妥过晚年",
+        "cost": "少了归属感和清静",
+        "reward": "看病、照应都方便",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 0,
+          "opportunity": 2,
+          "relationship": 2,
+          "stability": 5,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没图一时的乡愁，留在大城市图方便，看病有保障、孩子在身边，过得踏实。"
+      },
+      {
+        "label": "先两边都住住，看身体和心更安在哪",
+        "description": "不急着定，两头各住一段，凭真实感受再选",
+        "cost": "要折腾、一时定不下",
+        "reward": "让选择跟着身体和心走",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 2,
+          "relationship": 2,
+          "stability": 4,
+          "resources": -1,
+          "wellbeing": 2
+        },
+        "feedback": "你没凭一时冲动定，两边都住了住，身体和心更安在哪，自己就有了答案。"
+      }
+    ]
+  },
+  {
+    "id": "elder-career-stay-active",
+    "type": "opportunity",
+    "theme": "career",
+    "tone": "light",
+    "stages": [
+      "elder"
+    ],
+    "title": "闲下来反而不踏实，想再找点事做",
+    "summary": "彻底清闲后心里发空，想找点能发挥的事",
+    "dramaticText": "日子彻底清闲下来，你反倒不踏实——总觉得手该有点事干。想找点轻省的事做做、发挥点余热，又怕家人念叨\"都这岁数了还折腾\"。",
+    "situation": "完全清闲后心里发空，想找点轻省的事做又怕被劝",
+    "conflict": "找点事做找回精气神却怕累着、被家人拦，安心歇着又一天天空落",
+    "triggers": [
+      "天梁",
+      "官禄",
+      "正印"
+    ],
+    "choices": [
+      {
+        "label": "去做一件力所能及、有意思的事",
+        "description": "找个不累又喜欢的事（手艺、志愿、看摊）做起来",
+        "cost": "要花点精力、家人可能担心",
+        "reward": "重新找回手上有事的踏实",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 5,
+          "relationship": 1,
+          "stability": 0,
+          "resources": 1,
+          "wellbeing": 2
+        },
+        "feedback": "你没硬把自己闲住，找了件喜欢的事做起来，精气神回来了，日子也有了奔头。"
+      },
+      {
+        "label": "从一个小爱好慢慢培养起",
+        "description": "不急着干事，先把一个能消磨时光的爱好养起来",
+        "cost": "没有\"被需要\"的实感",
+        "reward": "让日子充实又不操劳",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": -1,
+          "opportunity": 3,
+          "relationship": 1,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没勉强找事，先把一个爱好养起来，日子被填得有滋味，人也松快。"
+      },
+      {
+        "label": "先跟家人说清自己闲不住的心",
+        "description": "把\"想找点事\"的心情跟家人讲明白，求个支持",
+        "cost": "要先打消家人的顾虑",
+        "reward": "不偷着折腾，让家人放心",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 2,
+          "relationship": 3,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没自己闷着折腾，把闲不住的心跟家人说开，他们懂了，你做起事也安心。"
+      }
+    ]
+  },
+  {
+    "id": "elder-wealth-inheritance",
+    "type": "trial",
+    "theme": "wealth",
+    "tone": "medium",
+    "stages": [
+      "elder"
+    ],
+    "title": "该不该趁早把财产的事跟子女讲清",
+    "summary": "想提前安排身后财产，又怕说早了伤和气",
+    "dramaticText": "人到这个岁数，财产怎么安排的事，你心里盘算过不止一次。趁早讲清能少日后纷争，可一开口又怕子女多想、伤了和气，话到嘴边总咽回去。",
+    "situation": "考虑是否趁早把财产安排跟子女交代清楚",
+    "conflict": "早讲清能免去日后争执，可说早了又怕引猜忌、伤感情",
+    "triggers": [
+      "田宅",
+      "正财",
+      "正印"
+    ],
+    "choices": [
+      {
+        "label": "趁头脑清楚，正式把安排立下来",
+        "description": "找个合适的方式（遗嘱/当面）把安排定清楚",
+        "cost": "要面对忌讳的话题、可能有人不满",
+        "reward": "免去日后的纷争",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 3,
+          "relationship": -1,
+          "stability": 3,
+          "resources": 1,
+          "wellbeing": 0
+        },
+        "feedback": "你没把这事一直拖着，趁清醒把安排立清楚，话虽不好开口，但日后省了多少争执。"
+      },
+      {
+        "label": "先把大原则跟子女通个气",
+        "description": "不急着全定，先把\"怎么个公平法\"的想法说一说",
+        "cost": "细节没定，仍留悬念",
+        "reward": "先消掉猜疑，再慢慢落定",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 2,
+          "relationship": 2,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没一下子全摊开，先把原则通了气，子女心里有了数，气氛也没僵。"
+      },
+      {
+        "label": "先听听子女各自的想法和难处",
+        "description": "开口前先了解孩子们的处境，再做更妥帖的安排",
+        "cost": "可能听到难平衡的诉求",
+        "reward": "让安排既清楚又顾及人情",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 2,
+          "relationship": 3,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没自己拍板，先听了孩子们的想法，安排起来既明白又顾着情分，没落埋怨。"
+      }
+    ]
+  },
+  {
+    "id": "elder-wealth-health-product-scam",
+    "type": "trial",
+    "theme": "wealth",
+    "tone": "medium",
+    "stages": [
+      "elder"
+    ],
+    "title": "有人热情推销\"包治百病\"的保健品",
+    "summary": "推销员嘘寒问暖，劝你买高价\"神效\"保健品",
+    "dramaticText": "一个推销员对你格外热情，天天嘘寒问暖，末了拿出一款\"包治百病、专家推荐\"的保健品，价格不菲，催着你趁优惠赶紧买。",
+    "situation": "推销员以关怀套近乎，高价推销夸大功效的保健品",
+    "conflict": "买了图个心安和那份热情，可多半是被掏钱、还耽误正经治病",
+    "triggers": [
+      "劫财",
+      "地劫",
+      "偏财"
+    ],
+    "choices": [
+      {
+        "label": "坚决不买，认准正规医院",
+        "description": "不管对方多热情，看病认医院、不信\"神药\"",
+        "cost": "可能拉不下面子、被纠缠",
+        "reward": "钱不冤花，病不耽误",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 0,
+          "relationship": -1,
+          "stability": 6,
+          "resources": 1,
+          "wellbeing": 1
+        },
+        "feedback": "你没被那份热情套牢，认准正规医院，钱没冤花，也没耽误真该看的病。"
+      },
+      {
+        "label": "买前先问子女或医生一句",
+        "description": "不当场掏钱，先打个电话问问懂的人再说",
+        "cost": "要顶住\"过了这村没这店\"的催促",
+        "reward": "让冲动消费多一道关",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 0,
+          "opportunity": 1,
+          "relationship": 1,
+          "stability": 5,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没被催着当场买，先问了句懂行的人，那\"神效\"一问就露了馅。"
+      },
+      {
+        "label": "看穿那份热情，礼貌地拒绝",
+        "description": "明白嘘寒问暖是为了卖货，客气但坚定地谢绝",
+        "cost": "会觉得有点辜负\"好意\"",
+        "reward": "不让套路化的关心掏空钱包",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -1,
+          "opportunity": 0,
+          "relationship": 1,
+          "stability": 5,
+          "resources": 1,
+          "wellbeing": 2
+        },
+        "feedback": "你没把推销的热情当真情，礼貌回绝了，钱袋守住，也没欠谁的人情。"
+      }
+    ]
+  },
+  {
+    "id": "elder-relationship-widowed",
+    "type": "trial",
+    "theme": "relationship",
+    "tone": "heavy",
+    "stages": [
+      "elder"
+    ],
+    "title": "老伴走了，要学着一个人过",
+    "summary": "失去相伴多年的老伴，独自面对空荡的日子",
+    "dramaticText": "相伴几十年的老伴走了。屋子还是那间屋子，却空得让人发慌。一日三餐、夜里的灯，都得自己一个人面对。那份孤单，没人替得了。",
+    "situation": "老伴离世后独自生活，被孤单和空荡笼罩",
+    "conflict": "沉在思念里走不出来，可一个人的日子又总得往下过",
+    "triggers": [
+      "太阴化忌",
+      "夫妻",
+      "日月反背"
+    ],
+    "choices": [
+      {
+        "label": "慢慢把日子重新安排起来",
+        "description": "给自己定些日常的节律——吃饭、走动、见人",
+        "cost": "思念还在，重启很难",
+        "reward": "让生活的轨道一点点转回来",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 3,
+          "relationship": 1,
+          "stability": 2,
+          "resources": 0,
+          "wellbeing": -1
+        },
+        "feedback": "你没让自己彻底停摆，慢慢把日子重新安排起来，思念没走，但日子又转动了。"
+      },
+      {
+        "label": "多和子女、老友走动，别把自己关起来",
+        "description": "主动多见见人，不让孤单把自己困在屋里",
+        "cost": "要打起精神出门",
+        "reward": "在人来人往里慢慢回暖",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": -1,
+          "opportunity": 2,
+          "relationship": 4,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没把自己关起来，多和亲友走动，孤单还在，但身边总算有了热气。"
+      },
+      {
+        "label": "允许自己好好难过一场",
+        "description": "不逼自己马上坚强，让思念和眼泪有地方去",
+        "cost": "短期更沉、走得慢",
+        "reward": "让悲伤被好好安放",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": 0,
+          "relationship": 2,
+          "stability": 2,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没硬撑着说没事，允许自己好好哭了一场，悲伤被安放后，心才慢慢缓过来。"
+      }
+    ]
+  },
+  {
+    "id": "elder-relationship-late-love",
+    "type": "trial",
+    "theme": "relationship",
+    "tone": "medium",
+    "stages": [
+      "elder"
+    ],
+    "title": "你想再找个老伴，子女却不同意",
+    "summary": "晚年想找个伴互相照应，子女有顾虑、反对",
+    "dramaticText": "一个人过久了，你遇到个谈得来的人，动了再找个伴、互相照应的心思。可一跟子女提，他们就皱眉——怕财产、怕外人议论、怕你被骗。",
+    "situation": "晚年想再找个伴，子女出于种种顾虑而反对",
+    "conflict": "顺着子女压下自己的需要，坚持又怕和孩子闹僵、被指指点点",
+    "triggers": [
+      "夫妻",
+      "贪狼",
+      "父母"
+    ],
+    "choices": [
+      {
+        "label": "坦然追求自己的晚年幸福",
+        "description": "把心意讲清，按自己的意愿去经营这段感情",
+        "cost": "要顶着子女和闲话的压力",
+        "reward": "不亏待自己的晚年",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 4,
+          "relationship": -1,
+          "stability": 0,
+          "resources": -1,
+          "wellbeing": 2
+        },
+        "feedback": "你没为旁人的眼光委屈自己，坦然追求晚年的伴，压力是有，但你给自己的日子添了暖。"
+      },
+      {
+        "label": "先慢慢相处，让子女看到对方的好",
+        "description": "不急着确定，让时间和相处打消子女的顾虑",
+        "cost": "要忍着不被理解的委屈",
+        "reward": "不硬碰，给关系和家人都留余地",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 0,
+          "opportunity": 3,
+          "relationship": 2,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没和子女硬顶，先慢慢相处让他们看见对方的好，反对的声音也就软了。"
+      },
+      {
+        "label": "把子女的担心一条条聊开、打消",
+        "description": "坐下来听清孩子怕什么（财产/被骗），一一说明白",
+        "cost": "要耐心面对反复的疑虑",
+        "reward": "让感情和亲情都不留疙瘩",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 2,
+          "relationship": 4,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没把反对当成阻拦，把孩子的担心一条条聊开，疙瘩解了，路也宽了。"
+      }
+    ]
+  },
+  {
+    "id": "elder-network-loneliness",
+    "type": "trial",
+    "theme": "network",
+    "tone": "medium",
+    "stages": [
+      "elder"
+    ],
+    "title": "一个人在家久了，越来越不爱出门",
+    "summary": "独处太久变得懒得social，孤独感悄悄加重",
+    "dramaticText": "不知不觉，你越来越不爱出门了——懒得换衣服、懒得说话，一个人在家一待就是一整天。日子是清静，可那份孤独，也一点点压上来。",
+    "situation": "长期独处后变得不愿社交，孤独感悄然加重",
+    "conflict": "逼自己出门社交嫌累怕麻烦，缩在家里又越来越孤僻消沉",
+    "triggers": [
+      "仆役",
+      "巨门",
+      "天梁"
+    ],
+    "choices": [
+      {
+        "label": "给自己定个\"每天出门一次\"的小规矩",
+        "description": "哪怕只是下楼走走、买个菜，强制和外界接触",
+        "cost": "起初会觉得麻烦、提不起劲",
+        "reward": "把自己从屋里拽出来",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 4,
+          "relationship": 2,
+          "stability": 0,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没由着自己缩在家，定了每天出门的小规矩，见了人、晒了太阳，闷劲散了。"
+      },
+      {
+        "label": "找一个固定的去处或活动融进去",
+        "description": "加入个老年活动、晨练队，有个常去的地方",
+        "cost": "要迈出融入新圈子的第一步",
+        "reward": "让生活有固定的人和盼头",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 0,
+          "opportunity": 4,
+          "relationship": 3,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没硬靠意志出门，找了个常去的活动融进去，有了盼头，自然就愿意动了。"
+      },
+      {
+        "label": "先跟家人说说这种孤单",
+        "description": "把越来越不想出门的状态跟子女讲，别一个人扛",
+        "cost": "要承认自己其实孤独",
+        "reward": "让家人帮你拉一把",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": 1,
+          "relationship": 4,
+          "stability": 2,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没把孤单藏着，跟家人说了，他们常来常电，那扇关上的门慢慢又开了。"
+      }
+    ]
+  },
+  {
+    "id": "elder-network-community",
+    "type": "opportunity",
+    "theme": "network",
+    "tone": "light",
+    "stages": [
+      "elder"
+    ],
+    "title": "社区的老年活动队来邀你加入",
+    "summary": "社区文艺/晨练队邀你参加，心动又怕融不进",
+    "dramaticText": "社区的老年活动队（合唱、太极、书法…）来邀你加入，说就缺你这么个人。你心里有点动，又怕自己融不进去、跟不上、被人笑。",
+    "situation": "社区老年活动队邀你加入，心动又怕融不进、跟不上",
+    "conflict": "加入能添个圈子和乐子，可又怕生疏、怕笨拙被人议论",
+    "triggers": [
+      "左辅",
+      "右弼",
+      "仆役"
+    ],
+    "choices": [
+      {
+        "label": "大方加入，从零学起也不怕",
+        "description": "答应下来，抱着学的心态融进去",
+        "cost": "起步会笨拙、要适应",
+        "reward": "给晚年添一个热闹的圈子",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 5,
+          "relationship": 4,
+          "stability": -1,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没怕生怯场，大方加入从头学，笨拙了几回，却换来一群说得上话的人。"
+      },
+      {
+        "label": "先去旁观几次，熟了再正式参加",
+        "description": "不急着上，先去看看、混个脸熟再融入",
+        "cost": "会慢一步、放不开",
+        "reward": "在熟悉里慢慢放下拘谨",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 0,
+          "opportunity": 3,
+          "relationship": 3,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没一上来就硬融，先去看了几回混熟了再加入，拘谨没了，玩得也自在。"
+      },
+      {
+        "label": "拉个老邻居一起去，有伴不怯场",
+        "description": "约上相熟的人结伴参加，互相有照应",
+        "cost": "要先约动别人",
+        "reward": "有伴撑着，更敢迈出去",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -1,
+          "opportunity": 3,
+          "relationship": 4,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没一个人硬上，拉了老邻居作伴，有人一起就不怯了，圈子也热闹起来。"
+      }
+    ]
+  },
+  {
+    "id": "elder-family-grandparenting-strain",
+    "type": "trial",
+    "theme": "family",
+    "tone": "medium",
+    "stages": [
+      "elder"
+    ],
+    "title": "帮忙带孙辈，累还跟子女观念不合",
+    "summary": "帮带孙辈身体吃不消，又和子女育儿观念冲突",
+    "dramaticText": "你帮子女带着孙辈，身体早有点吃不消。偏偏怎么喂、怎么管，你和子女的想法又总对不上，说多了惹嫌，不说又憋屈，里外不是人。",
+    "situation": "帮带孙辈体力吃不消，又与子女育儿观念屡屡冲突",
+    "conflict": "继续硬撑怕累垮、还添堵，撂手不管又怕子女作难、被说不帮衬",
+    "triggers": [
+      "正印",
+      "父母",
+      "巨门"
+    ],
+    "choices": [
+      {
+        "label": "把自己的体力和带法跟子女讲清",
+        "description": "坦白说出累和分歧，重新划一下怎么帮、帮多少",
+        "cost": "可能被嫌多事、不省心",
+        "reward": "帮得长久，也不憋屈",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 2,
+          "relationship": 1,
+          "stability": 1,
+          "resources": 0,
+          "wellbeing": -1
+        },
+        "feedback": "你没硬撑着憋屈，把体力和带法跟子女讲清，帮的界限明了，里外不是人的劲消了。"
+      },
+      {
+        "label": "大事听子女的，小事按自己的来",
+        "description": "在原则上尊重父母的决定，琐事上不较真",
+        "cost": "要忍住\"我吃过的盐比你多\"",
+        "reward": "减少摩擦，两头都消停",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 1,
+          "relationship": 2,
+          "stability": 5,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没事事争对错，大事让子女做主、小事不计较，摩擦少了，家里也清净了。"
+      },
+      {
+        "label": "先理解子女的育儿观，再求共识",
+        "description": "试着听懂他们那套新带法的道理，再找折中",
+        "cost": "要放下老经验、有点不甘",
+        "reward": "把观念之争变成一起带好孩子",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 1,
+          "relationship": 4,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没把分歧当对错，先去懂子女的新带法，再找共识，孩子带好了，气也顺了。"
+      }
+    ]
+  },
+  {
+    "id": "elder-family-live-with-kids",
+    "type": "trial",
+    "theme": "family",
+    "tone": "medium",
+    "stages": [
+      "elder"
+    ],
+    "title": "跟子女一起住，处处怕碍着他们",
+    "summary": "和子女同住，小心翼翼、怕添麻烦反而别扭",
+    "dramaticText": "为了互相照应，你和子女住到了一起。可同一个屋檐下，作息、习惯都不一样，你处处小心，生怕碍着他们、惹嫌，活得反倒拘谨憋屈。",
+    "situation": "和子女同住后处处拘谨、怕添麻烦，关系微妙别扭",
+    "conflict": "一味迁就忍让活得憋屈，按自己来又怕惹子女嫌、生嫌隙",
+    "triggers": [
+      "父母",
+      "田宅",
+      "太阴"
+    ],
+    "choices": [
+      {
+        "label": "和子女把同住的规矩商量明白",
+        "description": "坐下来把作息、家务、花销这些讲清，各自舒坦",
+        "cost": "掀开\"不好意思\"有点尴尬",
+        "reward": "把别扭变成清楚的相处之道",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 2,
+          "relationship": 2,
+          "stability": 2,
+          "resources": 0,
+          "wellbeing": 0
+        },
+        "feedback": "你没憋着小心翼翼，把同住的规矩跟子女商量明白，各自舒坦，反倒处得更近。"
+      },
+      {
+        "label": "给自己留一块独立的小天地",
+        "description": "在家里辟出自己的作息和空间，不全围着他们转",
+        "cost": "要克服\"寄人篱下\"的别扭",
+        "reward": "同住也不丢自己的节奏",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 0,
+          "opportunity": 2,
+          "relationship": 1,
+          "stability": 5,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没把自己缩成影子，留出了一块自己的小天地，同住也活得有里有面。"
+      },
+      {
+        "label": "把\"怕添麻烦\"的心结跟子女说开",
+        "description": "告诉孩子你的拘谨从何而来，别各自憋着猜",
+        "cost": "要承认自己的小心思",
+        "reward": "让同住建立在互相体谅上",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": 1,
+          "relationship": 4,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没一个人憋着怕，把心结跟子女说开，他们的一句\"这就是你家\"，让你松了下来。"
+      }
+    ]
+  },
+  {
+    "id": "elder-health-surgery-decision",
+    "type": "trial",
+    "theme": "health",
+    "tone": "heavy",
+    "stages": [
+      "elder"
+    ],
+    "title": "医生建议做个手术，你怕折腾也怕拖累家人",
+    "summary": "面对一个有风险的手术，做与不做都难抉择",
+    "dramaticText": "医生建议你做个手术，说拖着不好，可这岁数上手术台，多少有风险，恢复也折腾。你怕遭这份罪，更怕万一有个好歹、拖累一家人。",
+    "situation": "医生建议做有一定风险的手术，做与不做都难下决心",
+    "conflict": "做，要冒风险遭罪、怕拖累家人；不做，又怕病情拖重",
+    "triggers": [
+      "太阴化忌",
+      "疾厄",
+      "七杀"
+    ],
+    "choices": [
+      {
+        "label": "听医生的，把该治的治了",
+        "description": "相信专业判断，配合手术、积极康复",
+        "cost": "要冒风险、扛过恢复的苦",
+        "reward": "把病趁早除了，不留隐患",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 3,
+          "relationship": 1,
+          "stability": 1,
+          "resources": -1,
+          "wellbeing": -1
+        },
+        "feedback": "你没讳疾忌医，听医生的把该治的治了，遭了点罪，但隐患除了，往后心也安。"
+      },
+      {
+        "label": "多问一两位医生，再慎重决定",
+        "description": "不急着定，找别的专家再评估，把利弊问透",
+        "cost": "要多跑、决定来得慢",
+        "reward": "在充分了解后再下决心",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 2,
+          "relationship": 1,
+          "stability": 4,
+          "resources": -1,
+          "wellbeing": 1
+        },
+        "feedback": "你没盲目也没逃避，多问了几位医生把利弊弄清，这个决定下得踏实。"
+      },
+      {
+        "label": "和家人一起商量，别一个人扛",
+        "description": "把医生的建议和自己的怕讲给家人，一起拿主意",
+        "cost": "要放下\"不想麻烦孩子\"",
+        "reward": "让重大决定有人一起担",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": 2,
+          "relationship": 4,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没自己一个人扛着怕，和家人一起商量，主意有人一起拿，这关也有人陪你过。"
+      }
+    ]
+  },
+  {
+    "id": "elder-health-decline",
+    "type": "trial",
+    "theme": "health",
+    "tone": "medium",
+    "stages": [
+      "elder"
+    ],
+    "title": "腿脚和记性都不如前，你不想承认",
+    "summary": "身体机能下滑明显，却嘴硬不肯服老、不肯求助",
+    "dramaticText": "腿脚没以前利索了，东西常常转身就忘。家人劝你拄个拐、记事写下来、有些事别逞强，你嘴上总说\"没事，我行\"，心里却也发慌。",
+    "situation": "身体机能明显下滑，却嘴硬不服老、抗拒求助",
+    "conflict": "承认衰老、用上辅助怕显得没用，逞强不认又容易出事",
+    "triggers": [
+      "疾厄",
+      "羊陀夹命格",
+      "福德"
+    ],
+    "choices": [
+      {
+        "label": "坦然接受变化，该用的辅助都用上",
+        "description": "不嘴硬，拐杖、备忘、扶手该用就用，安全第一",
+        "cost": "要放下\"我还行\"的好强",
+        "reward": "把风险挡在前头",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 2,
+          "opportunity": 2,
+          "relationship": 1,
+          "stability": 3,
+          "resources": -1,
+          "wellbeing": 1
+        },
+        "feedback": "你没再逞强，该用的辅助都用上了，服个软，换来的是少摔一跤、少出一回险。"
+      },
+      {
+        "label": "量力而行，危险的事不再硬来",
+        "description": "能做的照做，爬高、负重这类危险事交给别人",
+        "cost": "要承认有些事干不动了",
+        "reward": "不和身体硬碰",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 0,
+          "opportunity": 1,
+          "relationship": 2,
+          "stability": 5,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没事事逞强，把危险的活交了出去，量力而行，日子过得稳当多了。"
+      },
+      {
+        "label": "把力不从心跟家人坦白，一起应对",
+        "description": "别硬撑着报喜不报忧，把真实状况讲给家人",
+        "cost": "要放下面子认老",
+        "reward": "让家人能搭手、能放心",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 1,
+          "relationship": 4,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没死扛着不认，把力不从心跟家人说了，他们能搭手了，你也不必一个人硬撑。"
+      }
+    ]
+  },
+  {
+    "id": "elder-mindset-mortality",
+    "type": "trial",
+    "theme": "mindset",
+    "tone": "heavy",
+    "stages": [
+      "elder"
+    ],
+    "title": "夜里，你开始想\"以后\"的事",
+    "summary": "对生死和身后事的思虑在夜深时袭来",
+    "dramaticText": "夜深睡不着的时候，那些\"以后\"的念头会冒出来——身体、生死、身后的安排。这种思绪压上来，让你心里空落落、有点怕，又没处说。",
+    "situation": "夜深时被生死和身后事的思虑笼罩，心生恐惧又无处诉说",
+    "conflict": "一味回避念头反复来扰，去直面又怕越想越沉、越怕",
+    "triggers": [
+      "命里逢空格",
+      "福德",
+      "地空"
+    ],
+    "choices": [
+      {
+        "label": "趁清醒把想交代的事安排妥当",
+        "description": "把心愿、安排、想说的话趁早处理好",
+        "cost": "要直面忌讳、心里发沉",
+        "reward": "把怕变成踏实的安顿",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 3,
+          "relationship": 1,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 0
+        },
+        "feedback": "你没一味躲着这念头，趁清醒把该安排的安顿好，心里反倒落了地、没那么慌。"
+      },
+      {
+        "label": "把心思拉回当下，把每天过好",
+        "description": "不在\"以后\"里打转，先把眼前的日子过出滋味",
+        "cost": "念头还会回来",
+        "reward": "不让对未来的怕偷走现在",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 2,
+          "relationship": 1,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没让\"以后\"吃掉\"现在\"，把心思拉回当下，每天过好，夜里的怕也淡了。"
+      },
+      {
+        "label": "找人把心里的怕说出来",
+        "description": "跟老伴、子女或谈得来的人聊聊这份思虑",
+        "cost": "要掀开最私密的脆弱",
+        "reward": "让恐惧被听见、被陪伴",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -4,
+          "opportunity": 1,
+          "relationship": 3,
+          "stability": 2,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没一个人在夜里硬扛，把那份怕说了出来，被人听见、有人陪，心就没那么空了。"
+      }
+    ]
+  },
+  {
+    "id": "elder-mindset-left-behind",
+    "type": "trial",
+    "theme": "mindset",
+    "tone": "medium",
+    "stages": [
+      "elder"
+    ],
+    "title": "手机、付款都变了样，你觉得被时代落下了",
+    "summary": "新事物层出不穷，学不会让你感到被时代抛下",
+    "dramaticText": "出门付款、挂号、打车，样样都得用手机，你学了几遍还是手生。看着别人点几下就办妥，你心里发憷，觉得自己跟不上、被时代落在了后头。",
+    "situation": "智能时代的新工具学不会，产生被时代抛下的失落",
+    "conflict": "低头去学嫌难、怕麻烦人，干脆不学又处处受限、更觉无用",
+    "triggers": [
+      "偏印",
+      "福德",
+      "巨门"
+    ],
+    "choices": [
+      {
+        "label": "放下面子，一样一样耐心学会",
+        "description": "挑最常用的几样，让人教、自己练，慢慢学会",
+        "cost": "学起来慢、要反复问",
+        "reward": "把\"被落下\"一点点追回来",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 4,
+          "relationship": 1,
+          "stability": 1,
+          "resources": 0,
+          "wellbeing": 0
+        },
+        "feedback": "你没认输，放下面子一样样学，慢是慢，但能自己办事的那份踏实，又回来了。"
+      },
+      {
+        "label": "先学最要紧的一两样就够",
+        "description": "不贪多，先把付款、挂号这种最常用的弄会",
+        "cost": "别的还是不会、要靠人",
+        "reward": "抓住关键，不被全部难住",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 0,
+          "opportunity": 3,
+          "relationship": 1,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 2
+        },
+        "feedback": "你没被一堆新玩意吓退，先把最要紧的一两样学会，日子顺了大半。"
+      },
+      {
+        "label": "坦然承认不会，需要时大方求助",
+        "description": "不硬撑，办不了的事就大方请人帮忙",
+        "cost": "要放下好强、肯开口",
+        "reward": "不让\"不会\"困住自己",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 1,
+          "relationship": 3,
+          "stability": 3,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没因为学不会就闷闷不乐，坦然求助、能办的自己办，心宽了，事也不耽误。"
+      }
+    ]
+  },
+  {
+    "id": "elder-migration-nursing-home",
+    "type": "trial",
+    "theme": "migration",
+    "tone": "medium",
+    "stages": [
+      "elder"
+    ],
+    "title": "家人提起养老院，你心里不是滋味",
+    "summary": "家人提议去养老院，你既怕被嫌弃又怕拖累",
+    "dramaticText": "家人小心翼翼地提起养老院，说那里有人照应、更专业。你嘴上没说什么，心里却翻江倒海——是不是被嫌弃了？可留在家，又怕真拖累了孩子。",
+    "situation": "家人提议去养老院，你内心抵触又怕拖累子女",
+    "conflict": "去养老院怕被当成累赘、心里委屈，留在家又怕真成子女的负担",
+    "triggers": [
+      "天马",
+      "迁移",
+      "太阴"
+    ],
+    "choices": [
+      {
+        "label": "放下成见，去实地看看再说",
+        "description": "不急着抵触，先和家人去几家看看真实情况",
+        "cost": "要克服\"被送走\"的心结",
+        "reward": "用真实见闻代替想象的委屈",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 3,
+          "opportunity": 3,
+          "relationship": 2,
+          "stability": 1,
+          "resources": -1,
+          "wellbeing": 1
+        },
+        "feedback": "你没被成见堵着，跟家人实地看了看，原来不是被嫌弃，心里那道坎松了。"
+      },
+      {
+        "label": "先试试日托/短住，不一步到位",
+        "description": "提议先短住或白天去、晚上回，慢慢适应",
+        "cost": "要两头折腾一阵",
+        "reward": "不把话说死，留有余地",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 0,
+          "opportunity": 3,
+          "relationship": 2,
+          "stability": 4,
+          "resources": -1,
+          "wellbeing": 1
+        },
+        "feedback": "你没一口回绝也没委屈接受，先试了短住，合不合适心里有了数，没将就。"
+      },
+      {
+        "label": "把心里的委屈跟家人说开",
+        "description": "别闷着误会，把\"是不是被嫌弃\"的心结讲出来",
+        "cost": "要掀开最怕被证实的担心",
+        "reward": "让决定建立在理解而非误会上",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -3,
+          "opportunity": 1,
+          "relationship": 4,
+          "stability": 2,
+          "resources": 0,
+          "wellbeing": 3
+        },
+        "feedback": "你没把误会闷成委屈，把心结跟家人说开，他们的解释让你知道，这不是被丢下。"
+      }
+    ]
+  },
+  {
+    "id": "elder-migration-back-home",
+    "type": "trial",
+    "theme": "migration",
+    "tone": "medium",
+    "stages": [
+      "elder"
+    ],
+    "title": "跟子女去了外地，住不惯，想回老家",
+    "summary": "为团聚搬去外地却处处不适应，动了回乡的念头",
+    "dramaticText": "为了和子女团聚，你搬到了外地。可话听不太懂、朋友一个没有、出门处处生疏，住了一阵越来越憋闷。回老家的念头，一天比一天强。",
+    "situation": "为团聚搬去外地却始终不适应，萌生回老家的念头",
+    "conflict": "回老家自在却离孩子远、没人照应，留下团聚又活得憋闷孤单",
+    "triggers": [
+      "迁移",
+      "田宅",
+      "太阴"
+    ],
+    "choices": [
+      {
+        "label": "跟子女说清想回老家的心",
+        "description": "坦白自己的不适应和想回去的念头，认真商量",
+        "cost": "怕让孩子觉得不领情、伤心",
+        "reward": "不为团聚硬憋着自己",
+        "style": "bold",
+        "stateEffects": {
+          "pressure": 4,
+          "opportunity": 3,
+          "relationship": 1,
+          "stability": 1,
+          "resources": 0,
+          "wellbeing": 1
+        },
+        "feedback": "你没硬憋着难受，把想回老家的心跟孩子说清，团聚虽要换个法子，你不再憋闷。"
+      },
+      {
+        "label": "再给自己一点时间慢慢适应",
+        "description": "不急着走，主动出去走动、认识人，再试一阵",
+        "cost": "要熬过这段憋闷",
+        "reward": "别因一时不惯放弃团聚",
+        "style": "steady",
+        "stateEffects": {
+          "pressure": 1,
+          "opportunity": 3,
+          "relationship": 2,
+          "stability": 4,
+          "resources": 0,
+          "wellbeing": 0
+        },
+        "feedback": "你没一不顺心就走，主动出去结识人再试了一阵，慢慢有了熟人，也没那么想逃了。"
+      },
+      {
+        "label": "和子女一起找个两全的法子",
+        "description": "一起商量——比如两地轮着住，团聚和自在都顾上",
+        "cost": "要反复协调、麻烦些",
+        "reward": "不在团聚和自在间二选一",
+        "style": "repair",
+        "stateEffects": {
+          "pressure": -2,
+          "opportunity": 2,
+          "relationship": 4,
+          "stability": 3,
+          "resources": -1,
+          "wellbeing": 2
+        },
+        "feedback": "你没在\"走还是留\"里硬选，和孩子商量出轮着住的法子，团聚和自在都顾上了。"
       }
     ]
   }

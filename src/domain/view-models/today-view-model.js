@@ -1,5 +1,5 @@
 import { effectList, firstOf, outcomeTags, topDeltaPills } from './helpers.js';
-import { pickTodayCard } from './today-focus.js';
+import { pickTodayCard, dayIndexFromDate } from './today-focus.js';
 
 const WEEKDAY_LABELS = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 
@@ -22,7 +22,11 @@ export const createTodayViewModel = (state) => {
   }
 
   const dayScope = data.reading.lifeGame?.scopes?.day || {};
-  const todaySelection = pickTodayCard(dayScope, state.gameSession.todayFocusTheme);
+  const todaySelection = pickTodayCard(
+    dayScope,
+    state.gameSession.todayFocusTheme,
+    dayIndexFromDate(data.input?.target),
+  );
   const card = todaySelection.card;
 
   // 「答没答过」以持久记录(gameSession.choices, scope=day)为准：临时态（刚答完这一屏）
@@ -62,11 +66,11 @@ export const createTodayViewModel = (state) => {
     helpOpen: Boolean(state.ui.todayHelpOpen),
     help: {
       title: '这一页是怎么来的',
-      intro: '今天的题不是随机抽的：它由你的命盘主线、当前流日和你刚才点选的关注主题一起决定。',
+      intro: '今天的题不是随机抽的：它由你的命盘主线、你点选的关注主题，再配合当天日期一起决定。',
       sections: [
         {
           title: '题目怎么来',
-          body: '系统综合你的命盘主题权重、命中的格局、当前大运和流日，挑出今天最先浮出来的一类课题。你点选关注的主题只是告诉系统更想先看哪块；命盘当天信号更强时，仍会优先显示更强的那题。',
+          body: '系统先按你的命盘主题权重、命中的格局，给每个主题备好一组最贴合你的题；再按当天日期，从中轮出今天这一张。所以你点同一个主题，隔天看到的题会不一样，不会天天重复。',
         },
         {
           title: '选项怎么读',
@@ -74,7 +78,7 @@ export const createTodayViewModel = (state) => {
         },
         {
           title: '做完之后',
-          body: '今天的选择会算进你的生活状态里，影响后面"最近一月""人生主线"出现的题目语气。明天回来会按新的流日重新出一题。',
+          body: '今天的选择会算进你的生活状态里，影响后面"最近一月""人生主线"出现的题目语气。明天回来会换一道新的题。',
         },
       ],
     },
@@ -96,7 +100,7 @@ export const createTodayViewModel = (state) => {
       deltaPills: lifeChange ? topDeltaPills(lifeChange.delta) : [],
       body: feedback.body,
       effects: effectList(feedback.effects),
-      tomorrowHint: '明天再来，会按新的流日重新出一题。',
+      tomorrowHint: '明天再来，会换一道新的题。',
     } : null,
     nextActions: [
       { label: '看最近一月', page: 'game', scope: 'month' },
