@@ -77,9 +77,12 @@ const readCookie = (req, name) => {
   return null;
 };
 
-// 会话 Cookie：HttpOnly 防 XSS 读取；上线走 HTTPS 后应再加 Secure。
-const sessionCookie = (token) => `mingli_sess=${token}; HttpOnly; Path=/; Max-Age=${Math.floor(auth.SESSION_TTL_MS / 1000)}; SameSite=Lax`;
-const clearSessionCookie = () => 'mingli_sess=; HttpOnly; Path=/; Max-Age=0; SameSite=Lax';
+// 会话 Cookie：HttpOnly 防 XSS 读取；生产（HTTPS）设 COOKIE_SECURE=1 再加 Secure，
+// 让 Cookie 只走加密通道；本地 HTTP 开发不加，便于调试登录。
+const COOKIE_SECURE = process.env.COOKIE_SECURE === '1';
+const secureFlag = COOKIE_SECURE ? '; Secure' : '';
+const sessionCookie = (token) => `mingli_sess=${token}; HttpOnly; Path=/; Max-Age=${Math.floor(auth.SESSION_TTL_MS / 1000)}; SameSite=Lax${secureFlag}`;
+const clearSessionCookie = () => `mingli_sess=; HttpOnly; Path=/; Max-Age=0; SameSite=Lax${secureFlag}`;
 const publicUser = (user) => ({ id: user.id, email: user.email });
 
 // user:<id> 存档只能本人读写；匿名 key（随机 UUID）放行。
