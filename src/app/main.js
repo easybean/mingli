@@ -1,6 +1,6 @@
 import { bindEvents, bindNavEvents, bindThemeToggle } from './events.js';
 import { renderActivePage } from './router.js';
-import { state, subscribe, refreshAstrolabeData } from './store.js';
+import { state, subscribe, refreshAstrolabeData, bootstrapCloudSync } from './store.js';
 import { fetchAstrolabe } from '../api/mingli-api.js';
 import { todayInputValue } from '../adapters/web-time.js';
 import { renderBottomNav } from '../components/bottom-nav.js';
@@ -50,3 +50,6 @@ const ensureFreshToday = async () => {
   }
 };
 ensureFreshToday();
+
+// 云同步引导：新设备从云端找回存档，老设备把本地回灌/刷新到云端。
+bootstrapCloudSync();

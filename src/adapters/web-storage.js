@@ -2,6 +2,23 @@ const KEY = 'mingli.birthInput.v1';
 const THEME_KEY = 'mingli.theme.v1';
 const CHART_KEY = 'mingli.chart.v1';
 const PROGRESS_KEY = 'mingli.progress.v1';
+const ANON_KEY = 'mingli.anonId.v1';
+
+// 设备级匿名 ID：首次访问生成并固化，云存档按它归属（登录后再迁到账号）。
+export const getAnonId = () => {
+  try {
+    let id = window.localStorage.getItem(ANON_KEY);
+    if (!id) {
+      id = (window.crypto && window.crypto.randomUUID)
+        ? window.crypto.randomUUID()
+        : `anon-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      window.localStorage.setItem(ANON_KEY, id);
+    }
+    return id;
+  } catch {
+    return null;
+  }
+};
 
 // 命盘较大，只在生成时写一次：{ astrolabeData, generatedAt }
 export const loadChart = () => {

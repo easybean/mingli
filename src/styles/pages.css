@@ -1907,3 +1907,55 @@
   font-size: 11.5px;
   line-height: 1.6;
 }
+
+/* ============================ 我的·账号 ============================ */
+
+.account-card {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-soft, var(--surface));
+}
+
+.account-form {
+  display: grid;
+  gap: 10px;
+}
+
+.account-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.account-input::placeholder {
+  color: var(--muted);
+}
+
+.account-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.account-actions .button {
+  flex: 1;
+}
+
+.account-email {
+  margin: 0;
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.account-error {
+  margin: 0;
+  color: var(--danger, #c0553b);
+  font-size: 12.5px;
+  line-height: 1.6;
+}

@@ -3,6 +3,10 @@ node_modules/
 .env
 npm-debug.log*
 
+# 运行时云存档（JSON 文件存储），不入库
+data/app-store.json
+data/app-store.json.tmp
+
 # 紫灵牌原始卡牌照片（大文件，不入库；提取后的文字见 紫星牌图片/卡牌文字提取.json）
 紫星牌图片/**/*.jpg
 紫星牌图片/**/*.jpeg

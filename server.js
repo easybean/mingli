@@ -7,6 +7,8 @@ const { LunarUtil, Solar } = require('lunar-typescript');
 const { tenGod } = require('./bazi-utils');
 const { buildKnowledgeProfile } = require('./knowledge');
 const { buildLifeGame } = require('./life-game');
+const store = require('./db/store');
+const auth = require('./db/auth');
 const {
   evaluateZiweiPatterns,
   PATTERN_GROUP_STAGE1,
@@ -31,10 +33,11 @@ const CHINA_DAYLIGHT_SAVING_RANGES = [
   ['1991-4-14', '1991-9-15'],
 ];
 
-const json = (res, statusCode, payload) => {
+const json = (res, statusCode, payload, extraHeaders = {}) => {
   res.writeHead(statusCode, {
     'Content-Type': 'application/json; charset=utf-8',
     'Cache-Control': 'no-store',
+    ...extraHeaders,
   });
   res.end(JSON.stringify(payload, null, 2));
 };
@@ -43,6 +46,77 @@ const text = (res, statusCode, payload) => {
   res.writeHead(statusCode, { 'Content-Type': 'text/plain; charset=utf-8' });
   res.end(payload);
 };
+
+// 单 IP 速率限制（固定窗口）。限流表本身也封顶，防止它被随机 IP 撑大。
+const RATE_LIMIT = 120;             // 每窗口每 IP 最多请求数
+const RATE_WINDOW_MS = 60 * 1000;
+const rateBuckets = new Map();      // ip -> { count, resetAt }
+const isRateLimited = (ip) => {
+  const now = Date.now();
+  if (rateBuckets.size > 10000) {
+    for (const [key, bucket] of rateBuckets) {
+      if (now > bucket.resetAt) rateBuckets.delete(key);
+    }
+  }
+  let bucket = rateBuckets.get(ip);
+  if (!bucket || now > bucket.resetAt) {
+    bucket = { count: 0, resetAt: now + RATE_WINDOW_MS };
+    rateBuckets.set(ip, bucket);
+  }
+  bucket.count += 1;
+  return bucket.count > RATE_LIMIT;
+};
+
+// 从 Cookie 头取指定 cookie 值。
+const readCookie = (req, name) => {
+  const header = req.headers.cookie || '';
+  for (const part of header.split(';')) {
+    const [key, ...rest] = part.trim().split('=');
+    if (key === name) return decodeURIComponent(rest.join('='));
+  }
+  return null;
+};
+
+// 会话 Cookie：HttpOnly 防 XSS 读取；上线走 HTTPS 后应再加 Secure。
+const sessionCookie = (token) => `mingli_sess=${token}; HttpOnly; Path=/; Max-Age=${Math.floor(auth.SESSION_TTL_MS / 1000)}; SameSite=Lax`;
+const clearSessionCookie = () => 'mingli_sess=; HttpOnly; Path=/; Max-Age=0; SameSite=Lax';
+const publicUser = (user) => ({ id: user.id, email: user.email });
+
+// user:<id> 存档只能本人读写；匿名 key（随机 UUID）放行。
+const syncAuthorized = (req, id) => {
+  if (!id.startsWith('user:')) return true;
+  const session = auth.verifyToken(readCookie(req, 'mingli_sess'));
+  return Boolean(session && `user:${session.uid}` === id);
+};
+
+// 静态文件目录边界硬校验：解析后的真实路径必须落在 baseDir 之内，否则 404。
+const serveWithin = (res, baseDir, relPath) => {
+  const resolvedBase = path.resolve(baseDir);
+  // 去掉前导分隔符，避免 '/index.html' 被 path.resolve 当成绝对路径而丢掉 baseDir。
+  const cleaned = String(relPath).replace(/^[/\\]+/, '');
+  const target = path.resolve(resolvedBase, cleaned);
+  if (target !== resolvedBase && !target.startsWith(resolvedBase + path.sep)) {
+    text(res, 404, 'Not found');
+    return;
+  }
+  sendFile(res, target);
+};
+
+// 读取并解析 POST 的 JSON body；超限或非法返回 null，空 body 返回 {}。
+const readJsonBody = (req, limit = 4 * 1024 * 1024) => new Promise((resolve) => {
+  let raw = '';
+  let done = false;
+  const finish = (value) => { if (!done) { done = true; resolve(value); } };
+  req.on('data', (chunk) => {
+    raw += chunk;
+    if (raw.length > limit) { req.destroy(); finish(null); }
+  });
+  req.on('end', () => {
+    if (raw === '') { finish({}); return; }
+    try { finish(JSON.parse(raw)); } catch { finish(null); }
+  });
+  req.on('error', () => finish(null));
+});
 
 const sendFile = (res, filePath) => {
   fs.readFile(filePath, (error, data) => {
@@ -926,15 +1000,117 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // 账号：注册 / 登录。POST { email, password, anonId? }，成功下发会话 Cookie。
+  if (url.pathname === '/api/auth/register' || url.pathname === '/api/auth/login') {
+    const clientIp = req.socket.remoteAddress || 'unknown';
+    if (isRateLimited(clientIp)) {
+      json(res, 429, { error: 'too many requests' });
+      return;
+    }
+    if (req.method !== 'POST') {
+      json(res, 405, { error: 'method not allowed' });
+      return;
+    }
+    const isRegister = url.pathname.endsWith('register');
+    readJsonBody(req).then((body) => {
+      const email = body && typeof body.email === 'string' ? body.email.trim() : '';
+      const password = body && typeof body.password === 'string' ? body.password : '';
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || email.length > 254) {
+        json(res, 400, { error: '邮箱格式不正确' });
+        return;
+      }
+      if (password.length < 6 || password.length > 200) {
+        json(res, 400, { error: '密码至少 6 位' });
+        return;
+      }
+      let user;
+      if (isRegister) {
+        user = store.createUser(email, auth.hashPassword(password));
+        if (!user) {
+          json(res, 409, { error: '该邮箱已注册' });
+          return;
+        }
+      } else {
+        user = store.findUserByEmail(email);
+        if (!user || !auth.verifyPassword(password, user.passHash)) {
+          json(res, 401, { error: '邮箱或密码不正确' });
+          return;
+        }
+      }
+      // 匿名数据并入账号：账号尚无存档且带了 anonId 时把匿名存档迁过来。
+      const ownerKey = `user:${user.id}`;
+      if (body && typeof body.anonId === 'string' && body.anonId && !store.getSave(ownerKey)) {
+        store.reassignSave(body.anonId, ownerKey);
+      }
+      const token = auth.signToken(user.id);
+      json(res, 200, { user: publicUser(user), saveKey: ownerKey }, { 'Set-Cookie': sessionCookie(token) });
+    });
+    return;
+  }
+
+  if (url.pathname === '/api/auth/logout') {
+    json(res, 200, { ok: true }, { 'Set-Cookie': clearSessionCookie() });
+    return;
+  }
+
+  if (url.pathname === '/api/auth/me') {
+    const session = auth.verifyToken(readCookie(req, 'mingli_sess'));
+    const user = session ? store.getUserById(session.uid) : null;
+    json(res, 200, {
+      user: user ? publicUser(user) : null,
+      saveKey: user ? `user:${user.id}` : null,
+    });
+    return;
+  }
+
+  // 云存档：按 key（匿名 UUID 或 user:<id>）存取答题记录 + 命盘。GET 取、POST 存。
+  if (url.pathname === '/api/sync') {
+    const clientIp = req.socket.remoteAddress || 'unknown';
+    if (isRateLimited(clientIp)) {
+      json(res, 429, { error: 'too many requests' });
+      return;
+    }
+    if (req.method === 'POST') {
+      readJsonBody(req).then((body) => {
+        if (!body || typeof body.id !== 'string' || !body.id || body.id.length > 128) {
+          json(res, 400, { error: 'missing or invalid id' });
+          return;
+        }
+        if (!syncAuthorized(req, body.id)) {
+          json(res, 401, { error: 'unauthorized' });
+          return;
+        }
+        const record = store.putSave(body.id, body.payload || {});
+        if (!record) {
+          json(res, 507, { error: 'storage full' });
+          return;
+        }
+        json(res, 200, { ok: true, updatedAt: record.updatedAt });
+      });
+      return;
+    }
+    const id = url.searchParams.get('id');
+    if (!id || id.length > 128) {
+      json(res, 400, { error: 'missing or invalid id' });
+      return;
+    }
+    if (!syncAuthorized(req, id)) {
+      json(res, 401, { error: 'unauthorized' });
+      return;
+    }
+    json(res, 200, { save: store.getSave(id) });
+    return;
+  }
+
   if (url.pathname.startsWith('/src/')) {
     const safeSrcPath = path.normalize(url.pathname.replace(/^\/src\//, '')).replace(/^(\.\.[/\\])+/, '');
-    sendFile(res, path.join(SRC_DIR, safeSrcPath));
+    serveWithin(res, SRC_DIR, safeSrcPath);
     return;
   }
 
   const requestedPath = url.pathname === '/' ? '/index.html' : url.pathname;
   const safePath = path.normalize(requestedPath).replace(/^(\.\.[/\\])+/, '');
-  sendFile(res, path.join(PUBLIC_DIR, safePath));
+  serveWithin(res, PUBLIC_DIR, safePath);
 });
 
 if (require.main === module) {

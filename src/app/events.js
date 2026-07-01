@@ -21,6 +21,9 @@ import {
   nextGameChallenge,
   selectGameChoice,
   selectTodayChoice,
+  registerAccount,
+  loginAccount,
+  logoutAccount,
 } from './store.js';
 import { createGameViewModel } from '../domain/view-models/game-view-model.js';
 import { createTodayViewModel } from '../domain/view-models/today-view-model.js';
@@ -42,6 +45,23 @@ const formDataToInput = (form) => {
 
 export const bindEvents = (root) => {
   root.addEventListener('submit', async (event) => {
+    const authForm = event.target.closest('[data-auth-form]');
+    if (authForm) {
+      event.preventDefault();
+      const formData = new FormData(authForm);
+      const credentials = {
+        email: String(formData.get('email') || '').trim(),
+        password: String(formData.get('password') || ''),
+      };
+      const action = event.submitter?.dataset.authAction;
+      if (action === 'register') {
+        registerAccount(credentials);
+      } else {
+        loginAccount(credentials);
+      }
+      return;
+    }
+
     const form = event.target.closest('[data-birth-form]');
     if (!form) return;
     event.preventDefault();
@@ -111,6 +131,12 @@ export const bindEvents = (root) => {
     const resetChartButton = event.target.closest('[data-reset-chart]');
     if (resetChartButton) {
       clearAstrolabe();
+      return;
+    }
+
+    const logoutButton = event.target.closest('[data-logout]');
+    if (logoutButton) {
+      logoutAccount();
       return;
     }
 
