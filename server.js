@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { URL } = require('url');
 const { astro } = require('iztro');
-const { LunarUtil, Solar } = require('lunar-typescript');
+const { Lunar, LunarUtil, Solar } = require('lunar-typescript');
 const { tenGod } = require('./bazi-utils');
 const { buildKnowledgeProfile } = require('./knowledge');
 const { buildLifeGame } = require('./life-game');
@@ -253,6 +253,20 @@ const datePartsFromSerial = (serial) => {
 
 const solarToYmd = (solar) => `${solar.getYear()}-${solar.getMonth()}-${solar.getDay()}`;
 
+// 真太阳时的计算必须落在公历日期上：均时差、夏令时范围与跨日都以公历为准。
+// 农历输入先在这里转换；闰月在 lunar-typescript 中以负月份表达。
+const lunarDateToSolarDate = (date, isLeapMonth) => {
+  const { year, month, day } = parseDateParts(date);
+
+  try {
+    return solarToYmd(Lunar.fromYmd(year, isLeapMonth ? -month : month, day).getSolar());
+  } catch (error) {
+    const err = new Error(`invalid lunar date${isLeapMonth ? ' (leap month)' : ''}: ${error.message}`);
+    err.statusCode = 400;
+    throw err;
+  }
+};
+
 const dayOfYear = (date) => {
   const { year } = parseDateParts(date);
   return Math.floor((dateSerial(date) - Date.UTC(year, 0, 0)) / 86400000);
@@ -380,27 +394,22 @@ const resolveBirthLongitude = (birthPlace, explicitLongitude, trueSolarTime) => 
   return CHINA_STANDARD_LONGITUDE;
 };
 
-const normalizeBirthTime = ({ calendar, date, timeIndex, birthTime, daylightSaving, birthLongitude, trueSolarTime }) => {
+const normalizeBirthTime = ({ solarDate, timeIndex, birthTime, daylightSaving, birthLongitude, trueSolarTime }) => {
   const inputMinutes = parseBirthMinutes(birthTime, timeIndex);
   const standardMinutesRaw = inputMinutes - (daylightSaving.enabled ? 60 : 0);
   const standardDayOffset = Math.floor(standardMinutesRaw / MINUTES_PER_DAY);
   const standardMinutes = ((standardMinutesRaw % MINUTES_PER_DAY) + MINUTES_PER_DAY) % MINUTES_PER_DAY;
-  const standardDate = calendar === 'solar' ? shiftSolarDate(date, standardDayOffset) : date;
+  const standardDate = shiftSolarDate(solarDate, standardDayOffset);
   const longitudeOffset = trueSolarTime ? (birthLongitude - CHINA_STANDARD_LONGITUDE) * 4 : 0;
-  const equationOffset = trueSolarTime && calendar === 'solar' ? equationOfTimeMinutes(standardDate) : 0;
+  const equationOffset = trueSolarTime ? equationOfTimeMinutes(standardDate) : 0;
   const solarMinutesRaw = standardMinutes + longitudeOffset + equationOffset;
   const solarDayOffset = Math.floor(solarMinutesRaw / MINUTES_PER_DAY);
   const solarMinutes = ((solarMinutesRaw % MINUTES_PER_DAY) + MINUTES_PER_DAY) % MINUTES_PER_DAY;
   const totalDayOffset = standardDayOffset + solarDayOffset;
 
-  if (calendar === 'lunar' && totalDayOffset !== 0) {
-    const err = new Error('lunar time adjustment crosses date boundary; use solar date input for this case.');
-    err.statusCode = 400;
-    throw err;
-  }
-
   return {
-    date: calendar === 'solar' ? shiftSolarDate(date, totalDayOffset) : date,
+    date: shiftSolarDate(solarDate, totalDayOffset),
+    sourceSolarDate: solarDate,
     timeIndex: timeIndexFromMinutes(solarMinutes),
     birthTime: birthTime || null,
     daylightSaving: daylightSaving.enabled,
@@ -880,6 +889,7 @@ const buildAstrolabe = (query) => {
   const gender = query.get('gender') || '女';
   const language = query.get('language') || 'zh-CN';
   const target = query.get('target') || formatTargetDateTime();
+  const isLeapMonth = parseBool(query.get('isLeapMonth'));
 
   if (!Number.isInteger(timeIndex) || timeIndex < 0 || timeIndex > 12) {
     const err = new Error('timeIndex must be an integer from 0 to 12.');
@@ -887,17 +897,14 @@ const buildAstrolabe = (query) => {
     throw err;
   }
 
-  const daylightSaving = resolveDaylightSaving(query.get('daylightSaving') || 'false', date, calendar);
-
-  if (calendar === 'lunar' && trueSolarTime) {
-    const err = new Error('trueSolarTime requires solar calendar input.');
-    err.statusCode = 400;
-    throw err;
-  }
+  const sourceSolarDate = calendar === 'lunar'
+    ? lunarDateToSolarDate(date, isLeapMonth)
+    : date;
+  // 即使原始输入是农历，夏令时是否生效也取决于其转换后的实际公历日。
+  const daylightSaving = resolveDaylightSaving(query.get('daylightSaving') || 'false', sourceSolarDate, 'solar');
 
   const normalizedBirth = normalizeBirthTime({
-    calendar,
-    date,
+    solarDate: sourceSolarDate,
     timeIndex,
     birthTime,
     daylightSaving,
@@ -913,9 +920,8 @@ const buildAstrolabe = (query) => {
     dayDivide: query.get('dayDivide') || 'forward',
   });
 
-  const astrolabe = calendar === 'lunar'
-    ? astro.byLunar(normalizedBirth.date, normalizedBirth.timeIndex, gender, parseBool(query.get('isLeapMonth')), true, language)
-    : astro.bySolar(normalizedBirth.date, normalizedBirth.timeIndex, gender, true, language);
+  // 日期已统一成真太阳时校正后的公历日；用 bySolar 才能让跨日实际影响命盘。
+  const astrolabe = astro.bySolar(normalizedBirth.date, normalizedBirth.timeIndex, gender, true, language);
 
   const horoscope = astrolabe.horoscope(target);
   const summary = {
@@ -952,6 +958,7 @@ const buildAstrolabe = (query) => {
     input: {
       calendar,
       date,
+      isLeapMonth,
       timeIndex,
       birthTime: birthTime || null,
       birthPlace: birthPlace || null,

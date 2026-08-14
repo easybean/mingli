@@ -308,6 +308,89 @@ const results = sampleFile.samples.map(validateSample);
 const failed = results.filter((item) => !item.ok);
 
 const globalErrors = [];
+const buildParamsFromObject = (input) => buildParams(input);
+const lunarTrueSolarRegressions = [
+  {
+    id: 'lunar-xuzhou-1986-true-solar',
+    query: {
+      gender: '男',
+      calendar: 'lunar',
+      date: '1986-07-29',
+      birthTime: '07:30',
+      birthPlace: '徐州',
+      trueSolarTime: 'true',
+      daylightSaving: 'false',
+      language: 'zh-CN',
+      algorithm: 'default',
+      target: '2026-08-14 12:00',
+    },
+    verify: (result) => {
+      const normalized = result.input.normalizedBirth;
+      return result.input.calendar === 'lunar'
+        && result.input.date === '1986-07-29'
+        && result.summary.solarDate === '1986-9-3'
+        && normalized.sourceSolarDate === '1986-9-3'
+        && normalized.date === '1986-9-3'
+        && normalized.equationOfTimeMinutes !== 0
+        && normalized.trueSolarClockTime !== result.input.birthTime
+        && result.reading.workStoryProfile?.available === true;
+    },
+  },
+  {
+    id: 'lunar-true-solar-crosses-previous-solar-day',
+    query: {
+      gender: '男',
+      calendar: 'lunar',
+      date: '1986-07-29',
+      birthTime: '00:05',
+      birthPlace: '徐州',
+      trueSolarTime: 'true',
+      daylightSaving: 'false',
+      language: 'zh-CN',
+      algorithm: 'default',
+      target: '2026-08-14 12:00',
+    },
+    verify: (result) => (
+      result.input.normalizedBirth.sourceSolarDate === '1986-9-3'
+      && result.input.normalizedBirth.date === '1986-9-2'
+      && result.input.normalizedBirth.dayOffset === -1
+      && result.summary.solarDate === '1986-9-2'
+      && result.reading.workStoryProfile?.available === true
+    ),
+  },
+  {
+    id: 'lunar-leap-month-converts-before-correction',
+    query: {
+      gender: '女',
+      calendar: 'lunar',
+      date: '2020-04-01',
+      isLeapMonth: 'true',
+      birthTime: '12:00',
+      birthPlace: '北京',
+      trueSolarTime: 'true',
+      daylightSaving: 'false',
+      language: 'zh-CN',
+      algorithm: 'default',
+      target: '2026-08-14 12:00',
+    },
+    verify: (result) => (
+      result.input.isLeapMonth === true
+      && result.input.normalizedBirth.sourceSolarDate === '2020-5-23'
+      && result.summary.solarDate === result.input.normalizedBirth.date
+    ),
+  },
+];
+
+lunarTrueSolarRegressions.forEach(({ id, query, verify }) => {
+  try {
+    if (!verify(buildAstrolabe(buildParamsFromObject(query)))) {
+      globalErrors.push(`lunar true-solar regression failed: ${id}`);
+    }
+  } catch (error) {
+    globalErrors.push(`lunar true-solar regression threw: ${id} (${error.message})`);
+  }
+});
+
 const passedLifeGames = results.filter((item) => item.ok);
 const archetypes = Array.from(new Set(passedLifeGames.map((item) => item.snapshot.archetype).filter(Boolean)));
 if (passedLifeGames.length && archetypes.length < 3) {
