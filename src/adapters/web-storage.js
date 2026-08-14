@@ -82,6 +82,14 @@ export const saveBirthInput = (value) => {
   }
 };
 
+export const clearBirthInput = () => {
+  try {
+    window.localStorage.removeItem(KEY);
+  } catch {
+    // Storage is optional.
+  }
+};
+
 export const loadTheme = () => {
   try {
     return window.localStorage.getItem(THEME_KEY) || null;

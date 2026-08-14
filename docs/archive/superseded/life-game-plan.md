@@ -1,5 +1,7 @@
 # 人生游戏计划
 
+> 状态：已废止归档。未勾选项目不再视为待办，当前方向见 `docs/active/product-roadmap-choice-sandbox.md`。
+
 最后更新：2026-06-02
 
 ## 目标

@@ -1,11 +1,7 @@
 import {
-  loadBirthInput, saveBirthInput, loadTheme, saveTheme,
+  saveBirthInput, clearBirthInput, loadTheme, saveTheme,
   loadChart, saveChart, loadProgress, saveProgress, clearSavedChart,
-  getAnonId,
 } from '../adapters/web-storage.js';
-import {
-  cloudLoad, cloudSave, authMe, authRegister, authLogin, authLogout,
-} from '../api/mingli-api.js';
 import { targetDateTimeValue, todayInputValue } from '../adapters/web-time.js';
 import {
   applyLifeStateDelta,
@@ -13,19 +9,23 @@ import {
   deltaForChoice,
   summarizeLifeStateChange,
 } from '../domain/life-state.js';
+import {
+  advanceStory,
+  chooseStoryOption,
+  createWorkStorySession,
+} from '../domain/work-story/story-engine.js';
+import { UNEMPLOYED_MONTH_FIVE } from '../content/work-stories/unemployed-month-five.js';
 
 const defaultBirthInput = () => ({
   gender: '女',
   calendar: 'solar',
-  date: '1992-08-18',
-  birthTime: '08:30',
-  birthPlace: '徐州',
+  date: '',
+  birthTime: '',
+  birthPlace: '',
   trueSolarTime: true,
   daylightSaving: false,
   target: targetDateTimeValue(),
 });
-
-const savedInput = loadBirthInput();
 
 export const THEMES = ['star', 'star-day'];
 const DEFAULT_THEME = 'star';
@@ -34,17 +34,19 @@ const savedTheme = loadTheme();
 // 从 localStorage 恢复命盘与进度：刷新不丢，落到今日主页。
 const savedChart = loadChart();
 const savedProgress = loadProgress();
-const restoredData = savedChart?.astrolabeData || null;
+const restoredData = null;
 
 export const state = {
-  activePage: restoredData ? 'today' : 'home',
+  // 0.1.0 总是从“选择困境”开始；旧本地命盘不再自动进入旧今日页。
+  activePage: 'home',
   birthInput: {
     ...defaultBirthInput(),
-    ...(savedInput || {}),
-    // "当前时间"永远取本次进入页面的此刻，其余出生信息仍从缓存恢复。
+    // 0.1.0 每次从处境进入都要求确认出生信息；不自动回填旧的敏感数据。
     target: targetDateTimeValue(),
   },
   astrolabeData: restoredData,
+  selectedWorkEntry: null,
+  workStorySession: null,
   user: null,
   gameSession: {
     lifeState: (restoredData && savedProgress?.lifeState) || createInitialLifeState(),
@@ -101,128 +103,9 @@ const persistProgress = () => {
   });
 };
 
-// —— 云同步：把整盘快照（出生信息 + 命盘 + 答题进度）按匿名 ID 推到服务器，
-//    既保证换设备/清缓存不丢，又让后台看得见真实使用。失败静默兜底（保留本地）。——
-let cloudId = null;
-let cloudTimer = null;
-
-const buildSnapshot = () => ({
-  birthInput: state.birthInput,
-  chart: state.astrolabeData
-    ? { astrolabeData: state.astrolabeData, generatedAt: state.ui.generatedAt }
-    : null,
-  progress: {
-    choices: state.gameSession.choices,
-    lifeState: state.gameSession.lifeState,
-    routeScores: state.gameSession.routeScores,
-    portraitOpen: state.ui.portraitOpen,
-    reveal: state.ui.reveal,
-  },
-  updatedAt: new Date().toISOString(),
-});
-
-const pushCloud = () => {
-  if (!cloudId || !state.astrolabeData) return;
-  if (cloudTimer) clearTimeout(cloudTimer);
-  cloudTimer = setTimeout(() => {
-    cloudTimer = null;
-    cloudSave(cloudId, buildSnapshot()).catch(() => {});
-  }, 800);
-};
-
-// 新设备（本地无命盘）登场时把云端快照灌进 state，等同一次"换机找回"。
-const applyCloudSnapshot = (payload) => {
-  if (!payload) return;
-  if (payload.birthInput) {
-    state.birthInput = {
-      ...state.birthInput,
-      ...payload.birthInput,
-      target: targetDateTimeValue(),
-    };
-  }
-  if (payload.chart && payload.chart.astrolabeData) {
-    state.astrolabeData = payload.chart.astrolabeData;
-    state.ui.generatedAt = payload.chart.generatedAt || '';
-    saveChart({ astrolabeData: state.astrolabeData, generatedAt: state.ui.generatedAt });
-    state.activePage = 'today';
-  }
-  const p = payload.progress || {};
-  if (Array.isArray(p.choices)) state.gameSession.choices = p.choices;
-  if (p.lifeState) state.gameSession.lifeState = p.lifeState;
-  if (p.routeScores) state.gameSession.routeScores = p.routeScores;
-  if (typeof p.portraitOpen === 'boolean') state.ui.portraitOpen = p.portraitOpen;
-  if (p.reveal) state.ui.reveal = p.reveal;
-  notify();
-};
-
-// 对某个云端 key 做一次对账：本地无命盘且云端有 → 采用云端；否则以本地为准回灌。
-const reconcileCloud = async (key) => {
-  cloudId = key;
-  try {
-    const { save } = await cloudLoad(key);
-    if (save && save.payload && !state.astrolabeData) {
-      applyCloudSnapshot(save.payload);
-      return;
-    }
-  } catch {
-    // 离线或服务不可用：保留本地，稍后由 notify 再尝试推送。
-  }
-  pushCloud();
-};
-
-// 启动引导：先看 Cookie 是否已登录 → 用账号 key；否则回到设备匿名 id。
-export const bootstrapCloudSync = async () => {
-  try {
-    const { user, saveKey } = await authMe();
-    if (user && saveKey) {
-      state.user = user;
-      notify();
-      await reconcileCloud(saveKey);
-      return;
-    }
-  } catch {
-    // /me 失败当作未登录，走匿名。
-  }
-  const anon = getAnonId();
-  if (anon) await reconcileCloud(anon);
-};
-
 export const notify = () => {
   persistProgress();
-  pushCloud();
   listeners.forEach((listener) => listener(state));
-};
-
-// —— 账号：注册 / 登录 / 退出。成功后切换云端 key 为账号 key 并对账。 ——
-const runAuth = async (apiCall, { email, password }) => {
-  state.ui.authError = '';
-  state.ui.authPending = true;
-  notify();
-  try {
-    const { user, saveKey } = await apiCall({ email, password, anonId: getAnonId() });
-    state.user = user;
-    state.ui.authPending = false;
-    notify();
-    await reconcileCloud(saveKey);
-  } catch (error) {
-    state.ui.authError = error.message || '操作失败，请稍后再试。';
-    state.ui.authPending = false;
-    notify();
-  }
-};
-
-export const registerAccount = (credentials) => runAuth(authRegister, credentials);
-export const loginAccount = (credentials) => runAuth(authLogin, credentials);
-
-export const logoutAccount = async () => {
-  try {
-    await authLogout();
-  } catch {
-    // 即便请求失败也在前端清掉登录态，Cookie 过期后自然失效。
-  }
-  state.user = null;
-  cloudId = getAnonId(); // 回到设备匿名 id；本地数据保留（还在这台设备上）。
-  notify();
 };
 
 export const setActivePage = (page) => {
@@ -254,8 +137,7 @@ export const setError = (error) => {
 
 export const setAstrolabeData = (data) => {
   state.astrolabeData = data;
-  // 今日 = 主页：生成后落到今日主页（画像/运势/今日一题都在这屏），画像默认展开。
-  state.activePage = 'today';
+  state.activePage = 'story';
   state.ui.portraitOpen = true;
   state.ui.generatedAt = todayInputValue();
   state.gameSession.todayChoiceIndex = null;
@@ -275,6 +157,16 @@ export const setAstrolabeData = (data) => {
   state.ui.chartThemeFilter = 'all';
   state.ui.gameView = 'play';
   state.ui.reveal = { date: '', phase: 'sealed' };
+  try {
+    state.workStorySession = createWorkStorySession({
+      definition: UNEMPLOYED_MONTH_FIVE,
+      profile: data.reading?.workStoryProfile,
+    });
+  } catch (error) {
+    state.workStorySession = null;
+    state.ui.error = error.message || '命盘信息不足，暂时无法生成这次工作推演。';
+    state.activePage = 'birth';
+  }
   saveBirthInput(state.birthInput);
   saveChart({ astrolabeData: data, generatedAt: state.ui.generatedAt });
   notify();
@@ -322,13 +214,69 @@ export const pickRevealTheme = (theme) => {
 export const clearAstrolabe = () => {
   state.astrolabeData = null;
   state.activePage = 'home';
+  state.selectedWorkEntry = null;
+  state.workStorySession = null;
   state.gameSession.choices = [];
   state.gameSession.lifeState = createInitialLifeState();
   state.gameSession.routeScores = { bold: 0, steady: 0, repair: 0 };
   state.gameSession.todayChoiceIndex = null;
   state.gameSession.todayFeedback = null;
   state.gameSession.todayLifeChange = null;
+  state.birthInput = defaultBirthInput();
+  clearBirthInput();
   clearSavedChart();
+  notify();
+};
+
+export const selectWorkEntry = (entry) => {
+  // 0.1.0 只有“失业后的第五个月”可进入，其他入口以明确的即将推出状态展示。
+  state.selectedWorkEntry = entry || null;
+  if (entry === 'job_lost') state.activePage = 'birth';
+  notify();
+};
+
+export const chooseWorkStoryChoice = (choiceId) => {
+  if (!state.workStorySession || !state.astrolabeData) return;
+  try {
+    state.workStorySession = chooseStoryOption({
+      definition: UNEMPLOYED_MONTH_FIVE,
+      profile: state.astrolabeData.reading?.workStoryProfile,
+      session: state.workStorySession,
+      choiceId,
+    });
+  } catch (error) {
+    state.ui.error = error.message || '这一步暂时无法完成。';
+  }
+  notify();
+};
+
+export const advanceWorkStory = () => {
+  if (!state.workStorySession || !state.astrolabeData) return;
+  try {
+    state.workStorySession = advanceStory({
+      definition: UNEMPLOYED_MONTH_FIVE,
+      profile: state.astrolabeData.reading?.workStoryProfile,
+      session: state.workStorySession,
+    });
+    if (state.workStorySession.completed) state.activePage = 'result';
+  } catch (error) {
+    state.ui.error = error.message || '请先完成当前选择。';
+  }
+  notify();
+};
+
+export const restartWorkStory = () => {
+  if (!state.astrolabeData) return;
+  try {
+    state.workStorySession = createWorkStorySession({
+      definition: UNEMPLOYED_MONTH_FIVE,
+      profile: state.astrolabeData.reading?.workStoryProfile,
+    });
+    state.activePage = 'story';
+    state.ui.error = '';
+  } catch (error) {
+    state.ui.error = error.message || '暂时无法重走。';
+  }
   notify();
 };
 
@@ -454,4 +402,3 @@ export const nextGameChallenge = (total) => {
   state.gameSession.gameLifeChange = null;
   notify();
 };
-

@@ -21,9 +21,10 @@ import {
   nextGameChallenge,
   selectGameChoice,
   selectTodayChoice,
-  registerAccount,
-  loginAccount,
-  logoutAccount,
+  selectWorkEntry,
+  chooseWorkStoryChoice,
+  advanceWorkStory,
+  restartWorkStory,
 } from './store.js';
 import { createGameViewModel } from '../domain/view-models/game-view-model.js';
 import { createTodayViewModel } from '../domain/view-models/today-view-model.js';
@@ -45,23 +46,6 @@ const formDataToInput = (form) => {
 
 export const bindEvents = (root) => {
   root.addEventListener('submit', async (event) => {
-    const authForm = event.target.closest('[data-auth-form]');
-    if (authForm) {
-      event.preventDefault();
-      const formData = new FormData(authForm);
-      const credentials = {
-        email: String(formData.get('email') || '').trim(),
-        password: String(formData.get('password') || ''),
-      };
-      const action = event.submitter?.dataset.authAction;
-      if (action === 'register') {
-        registerAccount(credentials);
-      } else {
-        loginAccount(credentials);
-      }
-      return;
-    }
-
     const form = event.target.closest('[data-birth-form]');
     if (!form) return;
     event.preventDefault();
@@ -83,6 +67,33 @@ export const bindEvents = (root) => {
     const themeButton = event.target.closest('[data-theme-set]');
     if (themeButton) {
       setTheme(themeButton.dataset.themeSet);
+      return;
+    }
+
+    const workEntry = event.target.closest('[data-work-entry]');
+    if (workEntry) {
+      selectWorkEntry(workEntry.dataset.workEntry);
+      return;
+    }
+
+    const storyChoice = event.target.closest('[data-story-choice]');
+    if (storyChoice) {
+      chooseWorkStoryChoice(storyChoice.dataset.storyChoice);
+      return;
+    }
+
+    if (event.target.closest('[data-story-advance]')) {
+      advanceWorkStory();
+      return;
+    }
+
+    if (event.target.closest('[data-story-restart]')) {
+      restartWorkStory();
+      return;
+    }
+
+    if (event.target.closest('[data-clear-local]')) {
+      clearAstrolabe();
       return;
     }
 
@@ -131,12 +142,6 @@ export const bindEvents = (root) => {
     const resetChartButton = event.target.closest('[data-reset-chart]');
     if (resetChartButton) {
       clearAstrolabe();
-      return;
-    }
-
-    const logoutButton = event.target.closest('[data-logout]');
-    if (logoutButton) {
-      logoutAccount();
       return;
     }
 

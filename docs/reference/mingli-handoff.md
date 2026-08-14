@@ -1,5 +1,7 @@
 # Mingli 项目交接说明
 
+> 状态：技术现状参考。本文记录 2026-06 阶段的实现；当前产品方向以 `docs/active/product-roadmap-choice-sandbox.md` 为准。
+
 最后更新：2026-06-16
 
 ## 1. 项目是什么
@@ -136,7 +138,7 @@ npm run verify
 - 资源
 - 身心
 
-这部分的设计说明在 [`docs/life-state-system.md`](/Users/douw/codex/mingli/docs/life-state-system.md)。
+这部分的设计说明在 [`life-state-system.md`](/Users/douw/codex/mingli/docs/reference/life-state-system.md)。
 
 ## 8. 已知约定
 
@@ -155,18 +157,16 @@ npm run verify
 
 如果接手人要继续做，建议先看这几个文件：
 
-1. [`mingli-refactor-plan.md`](/Users/douw/codex/mingli/mingli-refactor-plan.md)
-2. [`work-plan.md`](/Users/douw/codex/mingli/work-plan.md)
-3. [`docs/frontend-architecture.md`](/Users/douw/codex/mingli/docs/frontend-architecture.md)
-4. [`docs/life-state-system.md`](/Users/douw/codex/mingli/docs/life-state-system.md)
+1. [`docs/README.md`](/Users/douw/codex/mingli/docs/README.md)
+2. [`product-roadmap-choice-sandbox.md`](/Users/douw/codex/mingli/docs/active/product-roadmap-choice-sandbox.md)
+3. [`frontend-architecture.md`](/Users/douw/codex/mingli/docs/reference/frontend-architecture.md)
+4. [`life-state-system.md`](/Users/douw/codex/mingli/docs/reference/life-state-system.md)
 5. [`README.md`](/Users/douw/codex/mingli/README.md)
 
-## 10. 当前主要未完成项
+## 10. 当时记录的未完成项（已非当前任务板）
 
-- 继续拉开不同命盘在今日 / 月度 / 长线题库上的差异。
-- 继续丰富选项类型，减少固定三分法的重复感。
-- 继续打磨今日关卡和人生游戏的文案，让它更像产品，不像资料页。
-- 继续优化手机端密度、按钮层级和说明浮层。
+- 以下内容只描述 2026-06 的技术缺口，不可直接作为待办执行。
+- 当前任务请以 `docs/active/product-roadmap-choice-sandbox.md` 为准。
 
 ## 11. 一句话总结
 

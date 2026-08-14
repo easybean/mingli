@@ -12,19 +12,15 @@ export const renderBirthForm = ({ input, loading, error }) => `
       </div>
       <div class="field">
         <label for="date">出生日期</label>
-        <input id="date" name="date" type="date" value="${escapeHtml(input.date)}">
+        <input id="date" name="date" type="date" value="${escapeHtml(input.date)}" required>
       </div>
       <div class="field">
         <label for="birthTime">出生时间</label>
-        <input id="birthTime" name="birthTime" type="time" value="${escapeHtml(input.birthTime)}">
+        <input id="birthTime" name="birthTime" type="time" value="${escapeHtml(input.birthTime)}" required>
       </div>
       <div class="field">
         <label for="birthPlace">出生地点</label>
-        <input id="birthPlace" name="birthPlace" value="${escapeHtml(input.birthPlace)}" placeholder="输入城市名">
-      </div>
-      <div class="field">
-        <label for="target">当前时间</label>
-        <input id="target" name="target" value="${escapeHtml(input.target)}" placeholder="YYYY-MM-DD HH:mm">
+        <input id="birthPlace" name="birthPlace" value="${escapeHtml(input.birthPlace)}" placeholder="例如：徐州" required>
       </div>
       <div class="field">
         <label for="calendar">历法</label>
@@ -42,6 +38,6 @@ export const renderBirthForm = ({ input, loading, error }) => `
       ${loading ? '生成中...' : '生成我的关卡'}
     </button>
     ${error ? `<p class="page-subtitle">${escapeHtml(error)}</p>` : ''}
-    <p class="page-subtitle">这是倾向与选择模拟，不是绝对预言。</p>
+    <p class="page-subtitle">出生信息会发送至本项目服务端用于即时排盘；不做账号同步或云端存档。推演结果保存在本机浏览器，可随时一键清除；这是选择模拟，不是现实预测或职业建议。</p>
   </form>
 `;

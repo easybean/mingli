@@ -2,7 +2,7 @@
 
 > 本文记录"今日/最近一月/最近一年/最近十年/一生主线"五个尺度的关卡是**怎么从命盘生成出来的**。
 > 反映的是 2026-06-18 审计 + 修复（流命宫叠本命）后的真实代码。改动出题逻辑后请同步更新本文。
-> 相关原则见 `mingli-handoff.md`、记忆 `project-foundation-correctness`。
+> 现有技术状态见同目录 `mingli-handoff.md`；当前产品方向见 `docs/active/product-roadmap-choice-sandbox.md`。
 
 ## 0. 一句话
 

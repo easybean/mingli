@@ -1,5 +1,7 @@
 # 关卡命题设计指南（可直接交给大模型出题）
 
+> 状态：现有题库结构参考。新版「工作岔路」内容规范形成后，将按新内容圣经修订；本文不是当前任务板。
+
 > 用途：让人或大模型（豆包等）按本指南批量编写 Mingli 的关卡题，产出能被引擎正确匹配、
 > 文案合规、且"因人而异"的卡片 JSON。把本文整篇贴给大模型即可，末尾附有现成 prompt。
 
@@ -22,7 +24,7 @@
 | **事件级 event** | 今日 / 最近一月 | `data/guanqia.json`（数组，引擎自动按 day 处理） | **必须**具体到某天某事的场景（situation/conflict 必填） |
 | **命题级 arc** | 一年 / 十年 / 一生 | `data/life-game-templates.json` 的 `templates[]` | 命题级、有画面但更概括（dramaticText 为主，situation/conflict 可选） |
 
-> 注意：两个文件目前各自独立（后端阶段会合并，见 `docs/backend-scope-cadence.md`）。现在加题：
+> 注意：两个文件目前各自独立。旧合并设想已归档在 `docs/archive/superseded/backend-scope-cadence.md`。现在维护旧题库时：
 > 今日/月的题加进 `guanqia.json`；年/十年/一生的题加进 `life-game-templates.json` 的 `templates`。
 
 ---

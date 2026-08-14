@@ -1,5 +1,7 @@
 # Mingli UI Design
 
+> 状态：上一版 UI 设计已完成。本文保留为历史视觉参考，不包含当前待办。
+
 本文件是 Mingli 重构的 UI 设计稿。它承接 `mingli-product-design-detail.md` 和 `mingli-mobile-ux-design.md`，用于指导后续前端实现。
 
 本阶段不写代码。确认本文件后，才进入实现。

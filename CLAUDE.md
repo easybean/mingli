@@ -4,9 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 当前阶段与改动优先级
 
-Mingli 是紫微+八字结合的命理产品原型。当前阶段是**纯前端打磨**：用户对前一版（Codex 写的）的 UI、UX、用户体验、文案均不满意，目标是把前端体验做到满意之后，才进入后台改造和小程序迁移。
+Mingli 是紫微+八字结合的命理产品原型。当前阶段是**新版内容与产品路径设计**：产品已重新定位为“命盘驱动的人生选择沙盘”，第一季只做「工作岔路」。当前先完成内容圣经、命理触发矩阵和《失业后的第五个月》纵向切片，再进入 H5 代码改版。
 
-改动优先级：**UI / UX / 文案 > 任何"加功能"**。下列事项在本阶段明确不做（见 `mingli-refactor-plan.md` 第一轮排除项）：
+当前唯一有效的产品任务板是 `docs/active/product-roadmap-choice-sandbox.md`。`docs/archive/superseded/` 中的未勾选项全部失效，不得当作当前待办继续执行。
+
+改动优先级：**命盘驱动正确性 > 连续剧情与选择后果 > H5 UX / UI > 其他功能**。本阶段明确不做：
 
 - 不接真实大模型调用
 - 不做账号系统、进度存档、真实付费
@@ -44,7 +46,7 @@ npm run verify             # node --check server.js + validate:samples，每轮�
 
 ### 前端架构（`src/` 模块化，无框架）
 
-设计原则在 `docs/frontend-architecture.md`，关键是 **View Model 跨端**：领域逻辑不依赖 DOM，未来迁移小程序复用 view model。
+设计原则在 `docs/reference/frontend-architecture.md`，关键是 **View Model 跨端**：领域逻辑不依赖 DOM，未来迁移小程序复用 view model。
 
 ```
 src/
@@ -84,7 +86,7 @@ src/
 
 ## 文案约束（重要）
 
-详细规则见 `mingli-product-design-detail.md §11` 和 `mingli-ui-design.md`。要点：
+当前产品和文案原则以 `docs/active/product-roadmap-choice-sandbox.md` 为准；上一版细节可参考 `docs/completed/design/mingli-product-design-detail.md §11`。要点：
 
 - **禁止绝对预言**：不写"一定会发生 / 必有大灾 / 注定失败 / 投资必赚 / 身体必有疾病"。
 - **推荐表达**："更容易遇到 / 可能反复出现 / 适合提前处理 / 如果选择主动推进，代价是……"
@@ -98,7 +100,7 @@ src/
 
 ## 视觉与移动端基线
 
-`mingli-ui-design.md` 和 `mingli-mobile-ux-design.md` 是**用户已确认的设计基准**，不是参考稿。改 UI 前先对照：
+`docs/completed/design/` 保存上一版已经完成的 UI / UX 交付，只用于理解当前实现，不再作为新版产品主路径。新版改 UI 前应先根据工作岔路重新确认线框。当前实现特征：
 
 - 视觉关键词：沉静 / 微光 / 选择感 / 阶段感 / 个人化。不要后台风、玄学广告页、大面积渐变。
 - **主题系统**：`src/styles/tokens.css` 是色彩单一真相源；`:root` 为基底，主题用 `:root[data-theme="..."]` 覆盖 CSS 变量。当前两套外观（旧的「深暖墨金」「水墨禅意」已按用户要求删除）：**星象·夜**（默认，深空近黑 `#0B0913`）/ **星象·昼**（晨纸浅底 `#F4EFE4`），共用 `#cosmos` 星图/北斗/八卦氛围层（`src/components/cosmos.js`，配色用 `--cosmos-*` 变量按主题切换；北斗为已按真实图样修正的版本）。切换在「我的」页、localStorage 持久化（`web-storage.js` + `store.ui.theme`，`main.js` 在 `<html>` 上切 `data-theme`）。
@@ -111,16 +113,15 @@ src/
 
 ## 关键参考文档（按重要性）
 
-1. `mingli-handoff.md` — 项目交接说明，先读这个
-2. `mingli-refactor-plan.md` / `work-plan.md` — 当前 roadmap，含每阶段完成状态
-3. `mingli-product-design-detail.md` — 产品路径、页面职责、文案语气
-4. `mingli-mobile-ux-design.md` — 手机端布局基准
-5. `mingli-ui-design.md` — 视觉/色彩/字号/卡片样式基准
-6. `docs/frontend-architecture.md` — 前端架构决策
-7. `docs/life-state-system.md` — lifeState v1 设计
-8. `docs/life-game-algorithm.md` — 人生游戏出题算法（信号/打分/选卡、流命宫叠本命、五尺度怎么随运限变）
-9. `docs/backend-scope-cadence.md` — 后端阶段：多尺度关卡的持久化/刷新机制（周期键+自定节奏+跨期解锁，长尺度做总结而非 grind）
-10. `docs/card-authoring-guide.md` — 关卡命题设计指南（可整篇交给大模型出题）：卡片 schema、触发词词表、主题↔信号、分类矩阵、示范题、现成 prompt
+1. `docs/README.md` — 文档状态和目录规则
+2. `docs/active/product-roadmap-choice-sandbox.md` — 当前唯一产品总规划与任务板
+3. `docs/reference/mingli-handoff.md` — 现有技术实现快照
+4. `docs/reference/frontend-architecture.md` — 前端架构决策
+5. `docs/reference/life-state-system.md` — lifeState v1 设计
+6. `docs/reference/life-game-algorithm.md` — 现有出题算法
+7. `docs/reference/card-authoring-guide.md` — 现有题库结构和写卡规范
+8. `docs/completed/design/` — 上一版已完成的设计交付，仅作历史参考
+9. `docs/archive/superseded/` — 已废止规划，任何未勾选项都不是当前待办
 
 ## 不要做的事
 

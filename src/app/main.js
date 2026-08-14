@@ -1,6 +1,6 @@
 import { bindEvents, bindNavEvents, bindThemeToggle } from './events.js';
 import { renderActivePage } from './router.js';
-import { state, subscribe, refreshAstrolabeData, bootstrapCloudSync } from './store.js';
+import { state, subscribe, refreshAstrolabeData } from './store.js';
 import { fetchAstrolabe } from '../api/mingli-api.js';
 import { todayInputValue } from '../adapters/web-time.js';
 import { renderBottomNav } from '../components/bottom-nav.js';
@@ -26,7 +26,8 @@ const render = () => {
   renderBottomNav({
     root: navRoot,
     activePage: state.activePage,
-    hasData: Boolean(state.astrolabeData),
+    // 0.1.0 是一条封闭的移动端推演流程，不暴露旧游戏、图表和账号导航。
+    hasData: false,
   });
 };
 
@@ -51,5 +52,4 @@ const ensureFreshToday = async () => {
 };
 ensureFreshToday();
 
-// 云同步引导：新设备从云端找回存档，老设备把本地回灌/刷新到云端。
-bootstrapCloudSync();
+// 0.1.0 只把出生信息发给服务端即时排盘；不启动账号同步或云端存档，推演结果仅保存在本机浏览器。
