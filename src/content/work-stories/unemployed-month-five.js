@@ -108,10 +108,15 @@ const FACT_REQUIREMENTS = {
     ],
   },
 };
+// 职业阶段是当前状态，不是命理偏好。节点若声明该字段，降级排序也不能跨过。
+const CAREER_STAGE_REQUIREMENTS = {
+  // 背调能问过去的空窗经历，但不应在已签约或试用期间把主角写成“仍在空窗”。
+  JL10: ['unemployed', 'offer_pending'],
+};
 const node = (id, stage, anyTags, title, situation, conflict, roles, choices, evidenceRule = 'M01_cash_anchor') => ({
   id, stage, match: {
     anyTags, allTags: ['entry:job_lost'], excludeTags: EXCLUDE_TAGS[id] || [],
-    ...(FACT_REQUIREMENTS[id] || {}), minScore: 0,
+    ...(FACT_REQUIREMENTS[id] || {}), careerStages: CAREER_STAGE_REQUIREMENTS[id], minScore: 0,
   }, roles,
   copy: { transition: TRANSITIONS[id], title, situation, conflict }, variants: CRITICAL_VARIANTS[id] || [],
   evidenceSlots: [{ id: 'node_why_this', requiredLayers: ['bazi', 'ziwei', 'period'], ruleIds: evidenceRulesFor(anyTags, evidenceRule), fallbackTemplateId: 'evidence_partial_work' }],
@@ -168,8 +173,8 @@ NODES.push(
   ], 'M07_rest_then_decide'),
 );
 NODES.push(
-  node('JL10', 'cost_returns', ['flag:targeted_search', 'flag:portfolio_proof_1', 'astro:fusion:M09'], '背调问到了那段空白', '一家面试公司的招聘人员联系你，要求说明空窗期做过什么，并提供可核实的联系人。说清项目可换来下一轮机会，但你要交出材料并让行业前辈程岚参与背书。', '坦诚与证据，还是把空白藏过去。', ['cheng'], [
-    choice('JL10_C1', '说明空窗期做过的具体项目，并给出可核实联系人', '对方没有追问情绪，而是要求补一份项目材料。', [['gap_explained', ['JL13', 'JL19']], ['credible_gap', ['JL13', 'JL19']]], { cheng: 1 }, { employment: 2, conditional_entry: 1 }, { runway: 0, optionality: 6, load: 2 }, { JL13: 5, JL19: 4 }),
+  node('JL10', 'cost_returns', ['flag:targeted_search', 'flag:portfolio_proof_1', 'astro:fusion:M09'], '背调问到了此前的空窗经历', '一家面试公司的招聘人员联系你，要求说明此前空窗期做过什么，并提供可核实的联系人。说清项目可换来下一轮机会，但你要交出材料并让行业前辈程岚参与背书。', '坦诚与证据，还是把过去的空窗经历藏过去。', ['cheng'], [
+    choice('JL10_C1', '说明此前空窗期做过的具体项目，并给出可核实联系人', '对方没有追问情绪，而是要求补一份项目材料。', [['gap_explained', ['JL13', 'JL19']], ['credible_gap', ['JL13', 'JL19']]], { cheng: 1 }, { employment: 2, conditional_entry: 1 }, { runway: 0, optionality: 6, load: 2 }, { JL13: 5, JL19: 4 }),
     choice('JL10_C2', '只强调个人调整，不提供项目细节', '对方礼貌接受，但背景信息没有变强。', [['gap_private', ['JL19']], ['reference_doubt', ['JL19']]], {}, { reset: 1 }, { runway: 0, optionality: -1, load: -1 }, { JL19: 2 }),
     choice('JL10_C3', '先请程岚确认能否作为参考人，再回复对方', '程岚愿意支持，但要你先把材料发全。', [['reference_prepared', ['JL13', 'JL19']]], { cheng: 1 }, { conditional_entry: 1 }, { runway: -1, optionality: 4, load: 1 }, { JL13: 3 }),
   ], 'M09_output_vs_rules'),
@@ -200,7 +205,7 @@ NODES.push(
   ], 'M05_external_move'),
 );
 NODES.push(
-  node('JL04', 'terms', ['flag:offer_alive', 'astro:fusion:M02'], '试用期考核只有一句话', '招聘负责人顾言发来合同，请你确认是否签约：合同只写“达到岗位要求即可转正”，却要求你接手前任遗留项目。签下能恢复固定收入，但项目资源、验收人和转正标准都不明确。', '尽快签约，还是把模糊责任写成边界。', ['gu'], [
+  node('JL04', 'terms', ['flag:offer_alive', 'astro:fusion:M02'], '签约前，合同里的转正标准只有一句话', '招聘负责人顾言发来合同，请你确认是否签约：合同只写“达到岗位要求即可转正”，却要求你入职后接手前任遗留项目。你此刻还没有进入试用期；签下能恢复固定收入，但项目资源、验收人和转正标准都不明确。', '尽快签约，还是把模糊责任写成边界。', ['gu'], [
     choice('JL04_C1', '直接签约，把遗留项目当作重新证明自己的机会', '入职日期确定，遗留项目也正式算在你头上。', [['signed_offer', ['JL12', 'JL16', 'JL19']], ['legacy_project_risk', ['JL12', 'ending_stabilize']]], { gu: 1 }, { employment: 4 }, { runway: 9, optionality: 2, load: 5 }, { JL16: 7 }),
     choice('JL04_C2', '发前 60 天交付清单，请书面确认资源和验收人', '对方删掉一项不现实目标，也明确了一位协作人。', [['bounded_offer', ['JL16', 'JL19', 'ending_conditional_entry']], ['signed_offer', ['JL16', 'JL19']]], { gu: 2 }, { employment: 3, conditional_entry: 3 }, { runway: 7, optionality: 4, load: 2 }, { JL16: 6 }),
     choice('JL04_C3', '先与未来同事聊 20 分钟，再决定是否签', '同事透露前任离开与跨部门扯皮有关。', [['team_truth', ['JL19']], ['decision_delay', ['JL06', 'JL11']]], {}, { conditional_entry: 1 }, { runway: -1, optionality: 4, load: 1 }, { JL06: 3 }),

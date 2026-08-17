@@ -1,6 +1,7 @@
 import { applyLifeStateDelta, createInitialLifeState } from '../life-state.js';
 
 const REQUIRED_CHOICE_KEYS = ['id', 'label', 'immediate', 'delayedFlags', 'routeSignals', 'stateEffects', 'relationEffects', 'nextWeights'];
+const CAREER_STAGES = new Set(['unemployed', 'offer_pending', 'preboarding', 'probation', 'employed']);
 const hasOwn = (value, key) => Object.prototype.hasOwnProperty.call(value || {}, key);
 const clone = (value) => JSON.parse(JSON.stringify(value));
 const characterForRole = (characters, roleId) => (Array.isArray(characters)
@@ -35,10 +36,12 @@ export const validateStoryDefinition = (definition) => {
       if (!node.copy?.title || !node.copy?.situation || !node.copy?.conflict || !node.copy?.transition || !Array.isArray(node.roles) || !Array.isArray(node.evidenceSlots)) errors.push(`node ${node.id} missing visible fields or transition`);
       if ((node.roles || []).some((roleId) => !characterForRole(definition?.characters, roleId))) errors.push(`node ${node.id} references a role without metadata`);
       const flagGroups = node.match?.requiresFlagGroups;
+      const careerStages = node.match?.careerStages;
       if (!node.match || !Array.isArray(node.match.anyTags) || !Array.isArray(node.match.allTags)
         || (node.match.requiresAnyFlags !== undefined && !Array.isArray(node.match.requiresAnyFlags))
         || (node.match.requiresAllFlags !== undefined && !Array.isArray(node.match.requiresAllFlags))
         || (flagGroups !== undefined && (!Array.isArray(flagGroups) || flagGroups.some((group) => !Array.isArray(group) || !group.length)))
+        || (careerStages !== undefined && (!Array.isArray(careerStages) || !careerStages.length || careerStages.some((stage) => !CAREER_STAGES.has(stage))))
         || [...(node.match.requiresAnyFlags || []), ...(node.match.requiresAllFlags || []), ...(flagGroups || []).flat()].some((flag) => typeof flag !== 'string' || !flag.trim())) errors.push(`node ${node.id} has no valid contract match`);
       if (!Array.isArray(node.choices) || node.choices.length !== 3) errors.push(`node ${node.id} must have 3 choices`);
       (node.choices || []).forEach((item) => {
@@ -75,6 +78,15 @@ const isExcludedCandidate = (node, profile, session) => (node?.match?.excludeTag
 
 const factFlagId = (flag) => String(flag || '').replace(/^flag:/, '');
 
+export const careerStageFor = (session) => {
+  const flags = session?.flags || {};
+  if (flags.employment_started) return 'employed';
+  if (flags.remote_trial) return 'probation';
+  if (flags.signed_offer || flags.bounded_offer) return 'preboarding';
+  if (['offer_alive', 'negotiation_open', 'review_in_writing', 'relocation_open', 'remote_trial_requested', 'extra_interview'].some((flag) => flags[flag])) return 'offer_pending';
+  return 'unemployed';
+};
+
 // 事实门槛不参与命理加权：它决定一个节点在当前历史里能否发生。
 const meetsFactRequirements = (node, session) => {
   const flags = session?.flags || {};
@@ -88,7 +100,8 @@ const meetsFactRequirements = (node, session) => {
 };
 
 const isEligibleCandidate = (node, profile, session) => !isExcludedCandidate(node, profile, session)
-  && meetsFactRequirements(node, session);
+  && meetsFactRequirements(node, session)
+  && (!(node?.match?.careerStages || []).length || node.match.careerStages.includes(careerStageFor(session)));
 
 const profileScore = (node, profile, session) => {
   const match = node.match || {};
@@ -208,7 +221,9 @@ export const advanceStory = ({ definition, profile, session }) => {
   const consumed = new Set(next.consumedDelayed || []);
   const newConsequences = next.choices.flatMap((record) => (record.delayedFlags || [])
     .filter((flag) => flag.consumeBy.includes(targetId))
-    .map((flag) => ({ key: `${record.nodeId}:${flag.id}:${targetId}`, flagId: flag.id, targetId, sourceChoice: record.choiceLabel, text: `此前你选择“${record.choiceLabel}”后留下的影响回来了：${record.immediate}` }))
+    // 同一个选择在同一幕只回响一次；多个 flag 只是同一行动留下的不同事实。
+    .slice(0, 1)
+    .map((flag) => ({ key: `${record.nodeId}:${record.choiceId}:${targetId}`, flagId: flag.id, targetId, sourceChoice: record.choiceLabel, text: `此前你选择“${record.choiceLabel}”后留下的影响回来了：${record.immediate}` }))
   ).filter((item) => !consumed.has(item.key));
   return {
     ...next,

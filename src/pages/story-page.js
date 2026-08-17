@@ -16,7 +16,7 @@ export const renderStoryPage = (state) => {
   return `
     <section class="page story-page">
       <header class="story-header">
-        <div><p class="page-kicker">工作岔路 · ${model.progress.current} / ${model.progress.total}</p><h1>${escapeHtml(model.title)}</h1></div>
+        <div><p class="page-kicker">工作岔路 · ${escapeHtml(model.careerStageLabel)} · ${model.progress.current} / ${model.progress.total}</p><h1>${escapeHtml(model.displayTitle)}</h1></div>
       </header>
       <div class="story-progress"><span style="width:${Math.round(((model.progress.current - 1) / model.progress.total) * 100)}%"></span></div>
       <p class="story-context">${escapeHtml(model.contextLine)}</p>

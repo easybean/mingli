@@ -43,6 +43,19 @@ const main = async () => {
   if (!zhouInvitation || !/前同事/.test(zhouInvitation.copy?.situation || '') || !/邀请你/.test(zhouInvitation.copy?.situation || '') || !/(项目|试点|交付)/.test(zhouInvitation.copy?.situation || '')) {
     errors.push('JL07 must explicitly say that former colleague 周屿 invites the protagonist to join the project');
   }
+  const currentGapNodes = definition.nodes.filter((node) => /空窗期/.test(`${node.copy?.title || ''}${node.copy?.situation || ''}${node.copy?.conflict || ''}`)
+    && !/此前|过去/.test(`${node.copy?.title || ''}${node.copy?.situation || ''}${node.copy?.conflict || ''}`));
+  const limitsToGapStages = (node) => node.match?.careerStages?.length
+    && node.match.careerStages.every((stage) => ['unemployed', 'offer_pending'].includes(stage));
+  if (currentGapNodes.some((node) => !limitsToGapStages(node))) {
+    errors.push('a current unemployment scene must be limited to unemployed or offer_pending career stages');
+  }
+  const signedOfferChoices = definition.nodes.flatMap((node) => node.choices
+    .filter((choice) => choice.delayedFlags.some((flag) => flag.id === 'signed_offer'))
+    .map((choice) => `${node.id}/${choice.id}`));
+  if (!signedOfferChoices.length || signedOfferChoices.some((id) => !/^JL0[45]\//.test(id))) {
+    errors.push('signed_offer flags must only come from explicit pre-signing contract choices');
+  }
   const delayed = definition.nodes.flatMap((node) => node.choices.flatMap((choice) => choice.delayedFlags));
   if (!delayed.length || delayed.some((item) => !item.id || !Array.isArray(item.consumeBy) || !item.consumeBy.length)) errors.push('every delayed flag must carry consumeBy');
   const consumed = new Set(delayed.flatMap((item) => item.consumeBy));
@@ -62,10 +75,41 @@ const main = async () => {
   const opening = engine.resolveCurrentNode({ definition, profile: testProfile, session: first });
   const pathA = engine.chooseStoryOption({ definition, profile: testProfile, session: first, choiceId: opening.choices[0].id });
   const pathC = engine.chooseStoryOption({ definition, profile: testProfile, session: first, choiceId: opening.choices[2].id });
-  const secondA = engine.resolveCurrentNode({ definition, profile: testProfile, session: engine.advanceStory({ definition, profile: testProfile, session: pathA }) });
+  const advancedPathA = engine.advanceStory({ definition, profile: testProfile, session: pathA });
+  const secondA = engine.resolveCurrentNode({ definition, profile: testProfile, session: advancedPathA });
   const secondC = engine.resolveCurrentNode({ definition, profile: testProfile, session: engine.advanceStory({ definition, profile: testProfile, session: pathC }) });
   if (!secondA || !secondC || secondA.id === secondC.id) errors.push('different opening choices must change the second act');
-  if (!engine.advanceStory({ definition, profile: testProfile, session: pathA }).delayedConsequences.length) errors.push('delayed flags must be consumed at their target node');
+  if (!advancedPathA.delayedConsequences.length) errors.push('delayed flags must be consumed at their target node');
+  if (advancedPathA.delayedConsequences.length !== 1 || new Set(advancedPathA.delayedConsequences.map((item) => item.key)).size !== advancedPathA.delayedConsequences.length) {
+    errors.push('a choice with multiple delayed flags targeting one node must create one delayed echo');
+  }
+  const signedProfile = {
+    available: true, tags: ['astro:fusion:M01', 'astro:fusion:M02', 'astro:fusion:M04', 'astro:fusion:M10'],
+    rankedFocuses: ['safety'], initialState: {}, evidence: {},
+  };
+  let signedSession = engine.createWorkStorySession({ definition, profile: signedProfile });
+  const signedOpening = engine.resolveCurrentNode({ definition, profile: signedProfile, session: signedSession });
+  if (signedOpening?.id !== 'JL01') errors.push('signed-path profile must start at JL01');
+  signedSession = engine.advanceStory({
+    definition, profile: signedProfile,
+    session: engine.chooseStoryOption({ definition, profile: signedProfile, session: signedSession, choiceId: 'JL01_C1' }),
+  });
+  const contractNode = engine.resolveCurrentNode({ definition, profile: signedProfile, session: signedSession });
+  if (contractNode?.id !== 'JL04' || /试用期考核只有一句话/.test(contractNode?.title || '')) errors.push('JL04 must remain a pre-signing contract decision');
+  signedSession = engine.advanceStory({
+    definition, profile: signedProfile,
+    session: engine.chooseStoryOption({ definition, profile: signedProfile, session: signedSession, choiceId: 'JL04_C1' }),
+  });
+  const signedThirdAct = engine.resolveCurrentNode({ definition, profile: signedProfile, session: signedSession });
+  if (engine.careerStageFor(signedSession) !== 'preboarding' || !signedThirdAct) errors.push('signing a contract must move the session to preboarding');
+  signedSession = engine.advanceStory({
+    definition, profile: signedProfile,
+    session: engine.chooseStoryOption({ definition, profile: signedProfile, session: signedSession, choiceId: 'JL07_C1' }),
+  });
+  const afterSignedProject = engine.resolveCurrentNode({ definition, profile: signedProfile, session: signedSession });
+  if (afterSignedProject?.id === 'JL10' || /(?<!此前)空窗期/.test(afterSignedProject?.scene || '')) {
+    errors.push('preboarding path must not render a current unemployment scene after accepting the contract');
+  }
   const offerProjectProfile = {
     available: true,
     tags: ['astro:fusion:M03', 'astro:fusion:M04', 'astro:fusion:M09', 'astro:fusion:M10'],
@@ -173,6 +217,10 @@ if (new Set(datedProfiles.map((profile) => `${JSON.stringify(profile.weights)}:$
   }
   if (!femaleModel.node?.transition || femaleModel.node.characters?.some((character) => !character.name || !character.identity || !character.relationship || character.name === character.id)) {
     errors.push('story view model must expose named characters with identity and relationship plus a transition');
+  }
+  const signedModel = viewModel.createWorkStoryViewModel({ definition, profile: signedProfile, session: signedSession });
+  if (signedModel.careerStage !== 'preboarding' || signedModel.displayTitle === '工作空窗期') {
+    errors.push('signed path must use a preboarding display title instead of 工作空窗期');
   }
 
 if (errors.length) {

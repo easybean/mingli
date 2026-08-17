@@ -1,4 +1,4 @@
-import { resolveCurrentNode, resolveEnding, workChips } from './story-engine.js';
+import { careerStageFor, resolveCurrentNode, resolveEnding, workChips } from './story-engine.js';
 
 const evidenceTitle = { bazi: '八字底色', ziwei: '紫微结构', transit: '当前运限' };
 const fallbackCharacters = {
@@ -26,12 +26,24 @@ const transitionFallback = (session) => (session?.sceneIndex || 0) === 0
   ? '故事从你确认这段工作空窗期开始。'
   : '上一幕的选择已经落地；几天后，新的局面出现。';
 
+const careerStageLabel = {
+  unemployed: '工作空窗期', offer_pending: 'Offer 沟通中', preboarding: '入职准备期', probation: '试用期', employed: '已入职',
+};
+
+const careerStageTitle = {
+  unemployed: '工作空窗期', offer_pending: '工作空窗期', preboarding: '入职准备期', probation: '试用期选择', employed: '入职后的选择',
+};
+
 export const createWorkStoryViewModel = ({ definition, profile, session }) => {
   const ending = session?.completed ? resolveEnding({ definition, profile, session }) : null;
   const node = session?.completed ? null : resolveCurrentNode({ definition, profile, session });
+  const careerStage = careerStageFor(session);
   return {
     ready: Boolean(profile?.available && session && (node || ending)),
     title: definition?.title || '工作岔路',
+    displayTitle: careerStageTitle[careerStage] || definition?.title || '工作岔路',
+    careerStage,
+    careerStageLabel: careerStageLabel[careerStage] || '当前职业阶段',
     progress: { current: Math.min((session?.sceneIndex || 0) + 1, definition?.stages?.length || 7), total: definition?.stages?.length || 7 },
     contextLine: profile?.contextLine || '',
     chips: workChips(session?.workState),
