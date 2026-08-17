@@ -43,36 +43,6 @@ const renderAccessoryBody = (model) => {
   `;
 };
 
-const renderAccountCard = (state) => {
-  const { user } = state;
-  const { authError, authPending } = state.ui;
-  if (user) {
-    return `
-      <section class="account-card">
-        <div class="page-kicker page-kicker--muted">账号</div>
-        <p class="account-email">已登录：${escapeHtml(user.email)}</p>
-        <p class="focus-hint">命盘和答题记录已同步到账号，换设备登录即可找回。</p>
-        <button class="button button-secondary" type="button" data-logout>退出登录</button>
-      </section>
-    `;
-  }
-  return `
-    <section class="account-card">
-      <div class="page-kicker page-kicker--muted">账号</div>
-      <form class="account-form" data-auth-form>
-        <input class="account-input" type="email" name="email" placeholder="邮箱" autocomplete="email" required />
-        <input class="account-input" type="password" name="password" placeholder="密码（至少 6 位）" autocomplete="current-password" minlength="6" required />
-        ${authError ? `<p class="account-error">${escapeHtml(authError)}</p>` : ''}
-        <div class="account-actions">
-          <button class="button button-primary" type="submit" data-auth-action="login" ${authPending ? 'disabled' : ''}>登录</button>
-          <button class="button button-secondary" type="submit" data-auth-action="register" ${authPending ? 'disabled' : ''}>注册</button>
-        </div>
-        <p class="focus-hint">登录后命盘和答题记录会同步到账号，换设备也能找回；不登录也能用，数据先存在这台设备。</p>
-      </form>
-    </section>
-  `;
-};
-
 export const renderProfilePage = (state) => {
   const accessoryOpen = state.ui.accessoryOpen;
   const accessoryModel = createAccessoryViewModel(state);
@@ -80,10 +50,13 @@ export const renderProfilePage = (state) => {
     <section class="page placeholder-page">
       <header class="page-header">
         <h1 class="page-title">我的</h1>
-        <p class="page-subtitle">这里后续承载出生信息、当前路线、设置和说明，避免首页堆太多内容。</p>
+        <p class="page-subtitle">你的出生信息、推演进度和主题设置只保存在这台设备的浏览器中。</p>
       </header>
 
-      ${renderAccountCard(state)}
+      <section class="account-card">
+        <div class="page-kicker page-kicker--muted">本机数据</div>
+        <p class="focus-hint">这里不提供登录、注册或云端同步入口；你可以随时清除本机保存的命盘与推演进度。</p>
+      </section>
 
       <section class="accessory-card ${accessoryOpen ? 'is-open' : ''}">
         <button
@@ -120,7 +93,7 @@ export const renderProfilePage = (state) => {
         </section>
       ` : ''}
 
-      <button class="button button-primary" type="button" data-page="today">返回今日</button>
+      <button class="button button-primary" type="button" data-page="work">返回工作岔路</button>
     </section>
   `;
 };

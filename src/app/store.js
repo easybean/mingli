@@ -15,6 +15,7 @@ import {
   createWorkStorySession,
 } from '../domain/work-story/story-engine.js';
 import { UNEMPLOYED_MONTH_FIVE } from '../content/work-stories/unemployed-month-five.js';
+import { resolvedAppPage } from './work-navigation.js';
 
 const defaultBirthInput = () => ({
   gender: '女',
@@ -109,10 +110,8 @@ export const notify = () => {
 };
 
 export const setActivePage = (page) => {
-  state.activePage = page;
-  if (page !== 'today') {
-    state.ui.todayHelpOpen = false;
-  }
+  state.activePage = resolvedAppPage({ requestedPage: page, astrolabeData: state.astrolabeData, workStorySession: state.workStorySession });
+  state.ui.todayHelpOpen = false;
   notify();
 };
 

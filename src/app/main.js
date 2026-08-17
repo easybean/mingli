@@ -6,6 +6,7 @@ import { todayInputValue } from '../adapters/web-time.js';
 import { renderBottomNav } from '../components/bottom-nav.js';
 import { renderCosmos } from '../components/cosmos.js';
 import { renderThemeToggle } from '../components/theme-toggle.js';
+import { navItemForPage } from './work-navigation.js';
 
 const appRoot = document.querySelector('#app');
 const navRoot = document.querySelector('#bottom-nav');
@@ -25,9 +26,8 @@ const render = () => {
   appRoot.innerHTML = renderActivePage();
   renderBottomNav({
     root: navRoot,
-    activePage: state.activePage,
-    // 0.1.0 是一条封闭的移动端推演流程，不暴露旧游戏、图表和账号导航。
-    hasData: false,
+    activeItem: navItemForPage(state.activePage),
+    visible: true,
   });
 };
 
