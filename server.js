@@ -225,6 +225,47 @@ const parseDateParts = (date) => {
   };
 };
 
+// HTTP 输入与内部日期工具分开：内部换日仍可使用非补零格式，外部出生日期必须固定 YYYY-MM-DD。
+const validateIncomingBirthDate = (date, calendar) => {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(date || ''));
+  if (!match) {
+    const err = new Error('出生日期必须为 YYYY-MM-DD 格式，年份须为 4 位。');
+    err.statusCode = 400;
+    throw err;
+  }
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  if (calendar === 'lunar') {
+    if (month < 1 || month > 12 || day < 1 || day > 30) {
+      const err = new Error('请输入有效的农历日期（月为 01–12，日为 01–30）。');
+      err.statusCode = 400;
+      throw err;
+    }
+    return;
+  }
+  const normalized = new Date(Date.UTC(year, month - 1, day));
+  if (calendar !== 'solar' || normalized.getUTCFullYear() !== year || normalized.getUTCMonth() !== month - 1 || normalized.getUTCDate() !== day) {
+    const err = new Error('请输入有效的公历日期。');
+    err.statusCode = 400;
+    throw err;
+  }
+};
+
+const compareDateParts = (left, right) => (left.year - right.year) || (left.month - right.month) || (left.day - right.day);
+
+const validateBirthDateRange = (solarDate) => {
+  const birth = parseDateParts(solarDate);
+  const minimum = { year: 1900, month: 1, day: 1 };
+  const now = new Date();
+  const maximum = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
+  if (compareDateParts(birth, minimum) < 0 || compareDateParts(birth, maximum) > 0) {
+    const err = new Error('仅支持 1900 年至当前日期出生的用户。');
+    err.statusCode = 400;
+    throw err;
+  }
+};
+
 const shiftSolarDate = (date, dayOffset) => {
   if (dayOffset === 0) {
     return date;
@@ -878,7 +919,7 @@ const buildReading = ({ summary, palaces, bazi, horoscope }) => {
 
 const buildAstrolabe = (query) => {
   const calendar = query.get('calendar') || 'solar';
-  const date = query.get('date') || '2000-8-16';
+  const date = query.get('date') || '2000-08-16';
   const birthTime = query.get('birthTime') || '03:30';
   const timeIndex = query.has('timeIndex')
     ? Number(query.get('timeIndex'))
@@ -891,6 +932,8 @@ const buildAstrolabe = (query) => {
   const target = query.get('target') || formatTargetDateTime();
   const isLeapMonth = parseBool(query.get('isLeapMonth'));
 
+  validateIncomingBirthDate(date, calendar);
+
   if (!Number.isInteger(timeIndex) || timeIndex < 0 || timeIndex > 12) {
     const err = new Error('timeIndex must be an integer from 0 to 12.');
     err.statusCode = 400;
@@ -900,6 +943,7 @@ const buildAstrolabe = (query) => {
   const sourceSolarDate = calendar === 'lunar'
     ? lunarDateToSolarDate(date, isLeapMonth)
     : date;
+  validateBirthDateRange(sourceSolarDate);
   // 即使原始输入是农历，夏令时是否生效也取决于其转换后的实际公历日。
   const daylightSaving = resolveDaylightSaving(query.get('daylightSaving') || 'false', sourceSolarDate, 'solar');
 

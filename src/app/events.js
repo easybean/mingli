@@ -29,8 +29,9 @@ import {
 import { createGameViewModel } from '../domain/view-models/game-view-model.js';
 import { createTodayViewModel } from '../domain/view-models/today-view-model.js';
 import { openZiling } from '../tools/ziling-pai/ziling-controller.js';
+import { validateBirthInput } from '../domain/birth-date.js';
 
-const formDataToInput = (form) => {
+export const formDataToInput = (form) => {
   const formData = new FormData(form);
   return {
     gender: formData.get('gender'),
@@ -44,12 +45,25 @@ const formDataToInput = (form) => {
   };
 };
 
+const validateDateField = (field, calendar) => {
+  const message = validateBirthInput({ date: field.value, calendar });
+  field.setCustomValidity(message || '');
+  return message;
+};
+
 export const bindEvents = (root) => {
   root.addEventListener('submit', async (event) => {
     const form = event.target.closest('[data-birth-form]');
     if (!form) return;
     event.preventDefault();
     const input = formDataToInput(form);
+    const dateField = form.elements.date;
+    const dateError = dateField ? validateDateField(dateField, input.calendar) : validateBirthInput(input);
+    if (dateError) {
+      setError(dateError);
+      dateField?.reportValidity();
+      return;
+    }
     setBirthInput(input);
     setError('');
     setLoading(true);
@@ -223,6 +237,20 @@ export const bindEvents = (root) => {
       if (!model.card || !choice) return;
       selectTodayChoice({ card: model.card, choice, index });
     }
+  });
+
+  root.addEventListener('input', (event) => {
+    const dateField = event.target.closest('[data-birth-date]');
+    if (!dateField) return;
+    const form = dateField.closest('[data-birth-form]');
+    validateDateField(dateField, form?.elements.calendar?.value || 'solar');
+  });
+
+  root.addEventListener('change', (event) => {
+    const calendarField = event.target.closest('[data-birth-form] [name="calendar"]');
+    if (!calendarField) return;
+    const dateField = calendarField.form?.elements.date;
+    if (dateField) validateDateField(dateField, calendarField.value);
   });
 };
 

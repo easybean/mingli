@@ -1,6 +1,9 @@
 import { escapeHtml } from './html.js';
+import { todayBirthDateMax, MIN_BIRTH_DATE } from '../domain/birth-date.js';
 
-export const renderBirthForm = ({ input, loading, error }) => `
+export const renderBirthForm = ({ input, loading, error }) => {
+  const maxBirthDate = todayBirthDateMax();
+  return `
   <form class="card card-main home-form" data-birth-form>
     <div class="field-grid">
       <div class="field">
@@ -12,7 +15,7 @@ export const renderBirthForm = ({ input, loading, error }) => `
       </div>
       <div class="field">
         <label for="date">出生日期</label>
-        <input id="date" name="date" type="date" value="${escapeHtml(input.date)}" required>
+        <input id="date" name="date" type="date" value="${escapeHtml(input.date)}" min="${MIN_BIRTH_DATE}" max="${maxBirthDate}" pattern="\\d{4}-\\d{2}-\\d{2}" inputmode="numeric" data-birth-date required>
       </div>
       <div class="field">
         <label for="birthTime">出生时间</label>
@@ -41,3 +44,4 @@ export const renderBirthForm = ({ input, loading, error }) => `
     <p class="page-subtitle">出生信息会发送至本项目服务端用于即时排盘；不做账号同步或云端存档。推演结果保存在本机浏览器，可随时一键清除；这是选择模拟，不是现实预测或职业建议。</p>
   </form>
 `;
+};
