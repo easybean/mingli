@@ -218,6 +218,17 @@ if (new Set(datedProfiles.map((profile) => `${JSON.stringify(profile.weights)}:$
   if (!femaleModel.node?.transition || femaleModel.node.characters?.some((character) => !character.name || !character.identity || !character.relationship || character.name === character.id)) {
     errors.push('story view model must expose named characters with identity and relationship plus a transition');
   }
+  const legacyDuplicateSession = {
+    ...femaleSession,
+    delayedConsequences: [
+      { targetId: femaleOpening.id, sourceChoice: '旧版选择', text: '旧版会话里重复保存的回响。' },
+      { targetId: femaleOpening.id, sourceChoice: '旧版选择', text: '旧版会话里重复保存的回响。' },
+    ],
+  };
+  const legacyDuplicateModel = viewModel.createWorkStoryViewModel({ definition, profile: female1995, session: legacyDuplicateSession });
+  if (legacyDuplicateModel.delayedEchoes.length !== 1) {
+    errors.push('legacy saved sessions with duplicate delayed echoes must render one echo');
+  }
   const signedModel = viewModel.createWorkStoryViewModel({ definition, profile: signedProfile, session: signedSession });
   if (signedModel.careerStage !== 'preboarding' || signedModel.displayTitle === '工作空窗期') {
     errors.push('signed path must use a preboarding display title instead of 工作空窗期');

@@ -34,6 +34,19 @@ const careerStageTitle = {
   unemployed: '工作空窗期', offer_pending: '工作空窗期', preboarding: '入职准备期', probation: '试用期选择', employed: '入职后的选择',
 };
 
+const latestUniqueDelayedEchoes = (items, targetId) => {
+  const seen = new Set();
+  return (items || []).filter((item) => item.targetId === targetId).slice().reverse()
+    .filter((item) => {
+      const key = `${item.targetId || ''}:${item.sourceChoice || item.sourceChoiceId || item.nodeId || ''}:${item.text || ''}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .reverse()
+    .slice(-2);
+};
+
 export const createWorkStoryViewModel = ({ definition, profile, session }) => {
   const ending = session?.completed ? resolveEnding({ definition, profile, session }) : null;
   const node = session?.completed ? null : resolveCurrentNode({ definition, profile, session });
@@ -57,7 +70,7 @@ export const createWorkStoryViewModel = ({ definition, profile, session }) => {
       }),
     } : null,
     feedback: session?.currentFeedback || null,
-    delayedEchoes: (session?.delayedConsequences || []).filter((item) => item.targetId === node?.id || item.targetId === ending?.id).slice(-2),
+    delayedEchoes: latestUniqueDelayedEchoes(session?.delayedConsequences, node?.id || ending?.id),
     ending,
     log: session?.choices || [],
   };
