@@ -3,6 +3,11 @@ import { createWorkStoryViewModel } from '../domain/work-story/work-story-view-m
 import { UNEMPLOYED_MONTH_FIVE } from '../content/work-stories/unemployed-month-five.js';
 
 const renderChips = (chips) => `<div class="story-chips">${chips.map((chip) => `<span class="story-chip story-chip--${chip.tone}">${escapeHtml(chip.label)} <b>${chip.value}</b></span>`).join('')}</div>`;
+const renderCharacters = (characters) => `
+  <div class="story-characters" aria-label="本幕人物">
+    ${characters.map((character) => `<p class="story-character"><b>${escapeHtml(character.name)}｜${escapeHtml(character.identity)}</b><span>${escapeHtml(character.relationship)}</span></p>`).join('')}
+  </div>
+`;
 
 export const renderStoryPage = (state) => {
   const model = createWorkStoryViewModel({ definition: UNEMPLOYED_MONTH_FIVE, profile: state.astrolabeData?.reading?.workStoryProfile, session: state.workStorySession });
@@ -17,7 +22,8 @@ export const renderStoryPage = (state) => {
       <p class="story-context">${escapeHtml(model.contextLine)}</p>
       ${renderChips(model.chips)}
       <article class="story-scene">
-        <p class="story-roles">${escapeHtml(node.rolesLabel)}</p>
+        <p class="story-transition">${escapeHtml(node.transition)}</p>
+        ${renderCharacters(node.characters)}
         <h2>${escapeHtml(node.title)}</h2>
         <p>${escapeHtml(node.scene)}</p>
         <p class="story-conflict"><b>这一幕的冲突</b>${escapeHtml(node.conflict)}</p>

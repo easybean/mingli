@@ -2,15 +2,15 @@
 
 最后更新：2026-08-14
 状态：0.1.0 纵向切片内容基线
-适用范围：《失业后的第五个月》内容、命理触发、数据建模与 H5 编码
+适用范围：《工作空窗期》内容、命理触发、数据建模与 H5 编码
 
-> 本文是 `product-roadmap-choice-sandbox.md` 的第一份内容落地稿。0.1.0 只实现 `job_lost` 入口与《失业后的第五个月》，其他七个入口暂不扩写。
+> 本文是 `product-roadmap-choice-sandbox.md` 的第一份内容落地稿。0.1.2 对外主题名统一为《工作空窗期》，内部仍保留 `unemployed_month_five` ID 兼容已有存档；其他七个入口暂不扩写。
 
 ## 1. 内容总纲
 
 ### 1.1 一句话体验
 
-失业进入第五个月，用户只剩约三个月安全余量，同时遇到一份降薪 Offer、一个旧同事带来的试做机会，以及生活里必须面对的支出。七次决定之后，系统不判输赢，而是呈现：用户保住了什么、押上了什么，以及这轮走法是在顺着还是偏离自己的命盘惯性。
+用户处在工作空窗期，只剩约三个月安全余量，同时遇到一份降薪 Offer、一个前同事带来的付费试做机会，以及生活里必须面对的支出。七次决定之后，系统不判输赢，而是呈现：用户保住了什么、押上了什么，以及这轮走法是在顺着还是偏离自己的命盘惯性。
 
 ### 1.2 不可退让的创作原则
 
@@ -41,8 +41,8 @@
 
 以下事实对所有玩家一致，便于分支汇流：
 
-- 用户离开上一份工作已进入第五个月；
-- 过去四个月投过简历，也做过零散准备，并非什么都没做；
+- 用户正处在工作空窗期，具体时长不由命盘或系统替用户推断；
+- 空窗期间投过简历，也做过零散准备，并非什么都没做；
 - 当前可支配资金约等于三个月必要开支；
 - 一家公司给出书面 Offer，固定薪资约为上一份工作的 82%，答复期限 48 小时；
 - Offer 没有明显违法或骗局信息，但岗位、城市或权责至少有一项不理想；
@@ -165,7 +165,7 @@
 
 每个节点的“命盘优先”只决定更容易出现什么，不意味着该信号的人必然遭遇该事件。
 
-## 6. 《失业后的第五个月》完整节点
+## 6. 《工作空窗期》完整节点
 
 ### 第一幕｜局面落地
 
@@ -670,8 +670,16 @@ nodeAstrologyScore =
 ```ts
 type StoryDefinition = {
   id: 'unemployed_month_five';
+  title: '工作空窗期';
   entry: 'job_lost';
   version: '0.1.0';
+  characters: Record<'gu' | 'zhou' | 'cheng' | 'liang', {
+    name: string;
+    title: string;
+    identity: string;
+    relationship: string;
+    introduction: string;
+  }>;
   stages: Array<{
     id: 'setup' | 'terms' | 'second_path' | 'cost_returns' |
       'external_window' | 'collision' | 'landing';
@@ -690,10 +698,14 @@ type StoryNodeContract = {
     anyTags: string[];          // 命中任一可加分：astro:* / flag:* / state:*
     allTags: string[];          // 全部满足才合法，常放入口和硬连续性
     excludeTags?: string[];     // 事实互斥，例如已签排他时排除未报备付费线
+    requiresAnyFlags?: string[]; // 事实硬门槛：至少已有其中一个历史 flag
+    requiresAllFlags?: string[]; // 事实硬门槛：必须已有全部历史 flag
+    requiresFlagGroups?: string[][]; // 每组命中任一 flag，且所有组都必须命中
     minScore: number;
   };
   roles: Array<'gu' | 'zhou' | 'cheng' | 'liang'>;
   copy: {
+    transition: string;        // 时间或前序选择的因果承接，不能为空
     title: string;
     situation: string;
     conflict: string;

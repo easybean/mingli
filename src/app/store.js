@@ -229,7 +229,7 @@ export const clearAstrolabe = () => {
 };
 
 export const selectWorkEntry = (entry) => {
-  // 0.1.0 只有“失业后的第五个月”可进入，其他入口以明确的即将推出状态展示。
+  // 当前只有“工作空窗期”可进入，其他入口以明确的筹备中状态展示。
   state.selectedWorkEntry = entry || null;
   if (entry === 'job_lost') state.activePage = 'birth';
   notify();

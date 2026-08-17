@@ -3,6 +3,9 @@ import { applyLifeStateDelta, createInitialLifeState } from '../life-state.js';
 const REQUIRED_CHOICE_KEYS = ['id', 'label', 'immediate', 'delayedFlags', 'routeSignals', 'stateEffects', 'relationEffects', 'nextWeights'];
 const hasOwn = (value, key) => Object.prototype.hasOwnProperty.call(value || {}, key);
 const clone = (value) => JSON.parse(JSON.stringify(value));
+const characterForRole = (characters, roleId) => (Array.isArray(characters)
+  ? characters.find((item) => item?.id === roleId || item?.roleId === roleId)
+  : characters?.[roleId]);
 const workStateFromProfile = (initialState = {}) => ({
   runway: Math.round(((initialState.resources || 50) + (initialState.stability || 50) + (100 - (initialState.pressure || 50))) / 3),
   optionality: Math.round(((initialState.opportunity || 50) + (initialState.resources || 50) + (initialState.relationship || 50)) / 3),
@@ -13,14 +16,30 @@ export const validateStoryDefinition = (definition) => {
   const errors = [];
   if (!definition || definition.version !== '0.1.0') errors.push('version must be 0.1.0');
   if (!definition?.id || !definition?.entry || !Array.isArray(definition?.stages) || !Array.isArray(definition?.nodes)) errors.push('story requires id, entry, stages and nodes');
+  if (definition?.title !== '工作空窗期') errors.push('public story title must be 工作空窗期');
   if (definition?.stages?.length !== 7) errors.push('0.1.0 requires exactly 7 stages');
   if (definition?.nodes?.length !== 21) errors.push('0.1.0 requires exactly 21 nodes');
   const ids = new Set();
+  const roleIds = new Set((definition?.nodes || []).flatMap((node) => node.roles || []));
+  if (!definition?.characters || (Array.isArray(definition.characters) && !definition.characters.length)) errors.push('story requires character metadata');
+  roleIds.forEach((roleId) => {
+    const character = characterForRole(definition?.characters, roleId);
+    if (!character?.name || !character?.identity && !character?.title && !character?.role || !character?.relationship && !character?.relation) {
+      errors.push(`role ${roleId || '?'} requires name, identity and relationship metadata`);
+    }
+    if (character?.name === roleId) errors.push(`role ${roleId || '?'} cannot use a bare ID as its visible label`);
+  });
   (definition?.nodes || []).forEach((node) => {
       if (!node.id || ids.has(node.id)) errors.push(`node id missing or duplicated: ${node.id || '?'}`);
       ids.add(node.id);
-      if (!node.copy?.title || !node.copy?.situation || !node.copy?.conflict || !Array.isArray(node.roles) || !Array.isArray(node.evidenceSlots)) errors.push(`node ${node.id} missing visible fields`);
-      if (!node.match || !Array.isArray(node.match.anyTags) || !Array.isArray(node.match.allTags)) errors.push(`node ${node.id} has no contract match`);
+      if (!node.copy?.title || !node.copy?.situation || !node.copy?.conflict || !node.copy?.transition || !Array.isArray(node.roles) || !Array.isArray(node.evidenceSlots)) errors.push(`node ${node.id} missing visible fields or transition`);
+      if ((node.roles || []).some((roleId) => !characterForRole(definition?.characters, roleId))) errors.push(`node ${node.id} references a role without metadata`);
+      const flagGroups = node.match?.requiresFlagGroups;
+      if (!node.match || !Array.isArray(node.match.anyTags) || !Array.isArray(node.match.allTags)
+        || (node.match.requiresAnyFlags !== undefined && !Array.isArray(node.match.requiresAnyFlags))
+        || (node.match.requiresAllFlags !== undefined && !Array.isArray(node.match.requiresAllFlags))
+        || (flagGroups !== undefined && (!Array.isArray(flagGroups) || flagGroups.some((group) => !Array.isArray(group) || !group.length)))
+        || [...(node.match.requiresAnyFlags || []), ...(node.match.requiresAllFlags || []), ...(flagGroups || []).flat()].some((flag) => typeof flag !== 'string' || !flag.trim())) errors.push(`node ${node.id} has no valid contract match`);
       if (!Array.isArray(node.choices) || node.choices.length !== 3) errors.push(`node ${node.id} must have 3 choices`);
       (node.choices || []).forEach((item) => {
         REQUIRED_CHOICE_KEYS.forEach((key) => { if (!hasOwn(item, key)) errors.push(`choice ${node.id}/${item?.id || '?'} lacks ${key}`); });
@@ -34,18 +53,47 @@ export const validateStoryDefinition = (definition) => {
   (definition?.endings || []).forEach((ending) => {
     if (!ending.id || !ending.summary?.title || !ending.summary?.core || !ending.action?.instruction || typeof ending.routeWeights !== 'object') errors.push(`invalid ending ${ending.id || '?'}`);
   });
+  const zhouInvite = (definition?.nodes || []).find((node) => node.id === 'JL07');
+  if (!zhouInvite || !zhouInvite.roles?.includes('zhou') || !/前同事/.test(zhouInvite.copy?.situation || '') || !/邀请你/.test(zhouInvite.copy?.situation || '') || !/(项目|试点|交付)/.test(zhouInvite.copy?.situation || '')) {
+    errors.push('JL07 must state that former colleague 周屿 invites the protagonist to join the project');
+  }
   return errors;
 };
 
-const profileScore = (node, profile, session) => {
-  const match = node.match || {};
+const candidateTags = (profile, session) => {
   const tags = new Set(profile?.tags || []);
   tags.add(`entry:${session?.entry || 'job_lost'}`);
-  const flags = session?.flags || {};
-  Object.keys(flags).forEach((key) => tags.add(`flag:${key}`));
+  Object.keys(session?.flags || {}).forEach((key) => tags.add(`flag:${key}`));
   const workState = session?.workState || {};
   if ((workState.load || 0) >= 60) tags.add('state:load:high');
   if ((workState.runway || 0) <= 30) tags.add('state:runway:low');
+  return tags;
+};
+
+const isExcludedCandidate = (node, profile, session) => (node?.match?.excludeTags || [])
+  .some((tag) => candidateTags(profile, session).has(tag));
+
+const factFlagId = (flag) => String(flag || '').replace(/^flag:/, '');
+
+// 事实门槛不参与命理加权：它决定一个节点在当前历史里能否发生。
+const meetsFactRequirements = (node, session) => {
+  const flags = session?.flags || {};
+  const match = node?.match || {};
+  const all = (match.requiresAllFlags || []).map(factFlagId);
+  const any = (match.requiresAnyFlags || []).map(factFlagId);
+  const groups = (match.requiresFlagGroups || []).map((group) => group.map(factFlagId));
+  return all.every((flag) => flags[flag])
+    && (!any.length || any.some((flag) => flags[flag]))
+    && groups.every((group) => group.some((flag) => flags[flag]));
+};
+
+const isEligibleCandidate = (node, profile, session) => !isExcludedCandidate(node, profile, session)
+  && meetsFactRequirements(node, session);
+
+const profileScore = (node, profile, session) => {
+  const match = node.match || {};
+  const tags = candidateTags(profile, session);
+  if (!isEligibleCandidate(node, profile, session)) return Number.NEGATIVE_INFINITY;
   if ((match.allTags || []).some((tag) => !tags.has(tag))) return Number.NEGATIVE_INFINITY;
   if ((match.excludeTags || []).some((tag) => tags.has(tag))) return Number.NEGATIVE_INFINITY;
   if (match.anyTags?.length && !match.anyTags.some((tag) => tags.has(tag))) return Number.NEGATIVE_INFINITY;
@@ -67,7 +115,8 @@ const chooseCandidate = (definition, stage, profile, session) => (stage.candidat
   .sort((left, right) => right.score - left.score || left.index - right.index)[0]?.node
   // 没有满分三层组合时，按可验证的降级分择优，不能固定回退到第一节点。
   || (stage.candidates || []).map((id, index) => ({ node: definition.nodes.find((node) => node.id === id), index }))
-    .filter((item) => item.node)
+    // excludeTags 是硬约束；即使走降级排序也不能把被排除的节点重新选回来。
+    .filter((item) => item.node && isEligibleCandidate(item.node, profile, session))
     .map((item) => ({ ...item, score: Number(session?.nextWeights?.[item.node.id] || 0)
       + (/JL03|JL15/.test(item.node.id) ? focusRankBonus(profile, 'transition') : 0)
       + (/JL12|JL18|JL21/.test(item.node.id) ? focusRankBonus(profile, 'recovery') : 0)

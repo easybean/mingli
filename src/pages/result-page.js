@@ -6,7 +6,7 @@ export const renderResultPage = (state) => {
   const model = createWorkStoryViewModel({ definition: UNEMPLOYED_MONTH_FIVE, profile: state.astrolabeData?.reading?.workStoryProfile, session: state.workStorySession });
   const ending = model.ending;
   if (!ending) return '<section class="page"><div class="empty-state">结果仍在生成。</div></section>';
-  const shareText = `我在“失业后的第五个月”走成了「${ending.title}」。如果是你，会怎么选？`;
+  const shareText = `我在“工作空窗期”走成了「${ending.title}」。如果是你，会怎么选？`;
   return `
     <section class="page result-page">
       <p class="page-kicker">你的职业路线</p>

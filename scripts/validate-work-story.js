@@ -18,6 +18,31 @@ const main = async () => {
   const encoded = Buffer.from(source).toString('base64');
   const content = await import(`data:text/javascript;base64,${encoded}`);
   const definition = content.UNEMPLOYED_MONTH_FIVE;
+  const catalogPath = path.join(__dirname, '../src/domain/work-story/story-catalog.js');
+  const catalogSource = fs.readFileSync(catalogPath, 'utf8');
+  const catalog = await import(`data:text/javascript;base64,${Buffer.from(catalogSource).toString('base64')}`);
+  const entries = catalog.WORK_STORY_ENTRIES || [];
+  const availableEntries = entries.filter((entry) => entry.status === 'available');
+  const upcomingEntries = entries.filter((entry) => entry.status === 'upcoming');
+  if (entries.length !== 8 || availableEntries.length !== 1 || upcomingEntries.length !== 7 || availableEntries[0]?.id !== 'job_lost') {
+    errors.push('work-story catalog must contain 1 available job_lost entry and 7 upcoming entries');
+  }
+  if (definition.title !== '工作空窗期') errors.push('public definition title must be 工作空窗期');
+  if (definition.nodes.some((node) => !node.copy?.transition?.trim())) errors.push('every node must contain a non-empty transition');
+  const roleIds = new Set(definition.nodes.flatMap((node) => node.roles || []));
+  const characterFor = (roleId) => Array.isArray(definition.characters)
+    ? definition.characters.find((item) => item?.id === roleId || item?.roleId === roleId)
+    : definition.characters?.[roleId];
+  [...roleIds].forEach((roleId) => {
+    const character = characterFor(roleId);
+    if (!character?.name || (!character?.identity && !character?.title && !character?.role) || (!character?.relationship && !character?.relation) || character?.name === roleId) {
+      errors.push(`role ${roleId} must have a non-ID name, identity, and relationship`);
+    }
+  });
+  const zhouInvitation = definition.nodes.find((node) => node.id === 'JL07');
+  if (!zhouInvitation || !/前同事/.test(zhouInvitation.copy?.situation || '') || !/邀请你/.test(zhouInvitation.copy?.situation || '') || !/(项目|试点|交付)/.test(zhouInvitation.copy?.situation || '')) {
+    errors.push('JL07 must explicitly say that former colleague 周屿 invites the protagonist to join the project');
+  }
   const delayed = definition.nodes.flatMap((node) => node.choices.flatMap((choice) => choice.delayedFlags));
   if (!delayed.length || delayed.some((item) => !item.id || !Array.isArray(item.consumeBy) || !item.consumeBy.length)) errors.push('every delayed flag must carry consumeBy');
   const consumed = new Set(delayed.flatMap((item) => item.consumeBy));
@@ -30,6 +55,8 @@ const main = async () => {
   const engineSource = fs.readFileSync(enginePath, 'utf8').replace("from '../life-state.js'", `from '${lifeUrl}'`);
   const engineUrl = `data:text/javascript;base64,${Buffer.from(engineSource).toString('base64')}`;
   const engine = await import(engineUrl);
+  const contractErrors = engine.validateStoryDefinition(definition);
+  if (contractErrors.length) errors.push(...contractErrors.map((error) => `definition contract: ${error}`));
   const testProfile = { available: true, tags: Array.from({ length: 12 }, (_, index) => `astro:fusion:M${index + 1}`), rankedFocuses: ['safety'], initialState: {}, evidence: {} };
   const first = engine.createWorkStorySession({ definition, profile: testProfile });
   const opening = engine.resolveCurrentNode({ definition, profile: testProfile, session: first });
@@ -39,6 +66,57 @@ const main = async () => {
   const secondC = engine.resolveCurrentNode({ definition, profile: testProfile, session: engine.advanceStory({ definition, profile: testProfile, session: pathC }) });
   if (!secondA || !secondC || secondA.id === secondC.id) errors.push('different opening choices must change the second act');
   if (!engine.advanceStory({ definition, profile: testProfile, session: pathA }).delayedConsequences.length) errors.push('delayed flags must be consumed at their target node');
+  const offerProjectProfile = {
+    available: true,
+    tags: ['astro:fusion:M03', 'astro:fusion:M04', 'astro:fusion:M09', 'astro:fusion:M10'],
+    rankedFocuses: ['safety'], initialState: {}, evidence: {},
+  };
+  const stepToProjectChoice = (storyDefinition, jl05ChoiceId) => {
+    let session = engine.createWorkStorySession({ definition: storyDefinition, profile: offerProjectProfile });
+    const openingNode = engine.resolveCurrentNode({ definition: storyDefinition, profile: offerProjectProfile, session });
+    if (openingNode?.id !== 'JL02') errors.push('offer/project test profile must start at JL02');
+    session = engine.advanceStory({
+      definition: storyDefinition, profile: offerProjectProfile,
+      session: engine.chooseStoryOption({ definition: storyDefinition, profile: offerProjectProfile, session, choiceId: 'JL02_C1' }),
+    });
+    const termsNode = engine.resolveCurrentNode({ definition: storyDefinition, profile: offerProjectProfile, session });
+    if (termsNode?.id !== 'JL05') errors.push('JL02_C1 must lead the offer/project test profile to JL05');
+    session = engine.advanceStory({
+      definition: storyDefinition, profile: offerProjectProfile,
+      session: engine.chooseStoryOption({ definition: storyDefinition, profile: offerProjectProfile, session, choiceId: jl05ChoiceId }),
+    });
+    return { session, node: engine.resolveCurrentNode({ definition: storyDefinition, profile: offerProjectProfile, session }) };
+  };
+  const exclusiveRoute = stepToProjectChoice(definition, 'JL05_C1');
+  if (!exclusiveRoute.session.flags?.exclusive_6m || exclusiveRoute.node?.id === 'JL07') {
+    errors.push('exclusive_6m must exclude JL07 even when stage selection uses fallback ranking');
+  }
+  const reportableRoute = stepToProjectChoice(definition, 'JL05_C2');
+  if (!reportableRoute.session.flags?.sidework_reportable || reportableRoute.session.flags?.exclusive_6m || reportableRoute.node?.id !== 'JL07') {
+    errors.push('reportable non-compete side work must remain eligible for JL07');
+  }
+  const factGateDefinition = JSON.parse(JSON.stringify(definition));
+  const factGateNode = factGateDefinition.nodes.find((node) => node.id === 'JL07');
+  factGateNode.match.excludeTags = [];
+  factGateNode.match.requiresAllFlags = ['flag:signed_offer'];
+  factGateNode.match.requiresAnyFlags = ['sidework_reportable'];
+  const factBlockedRoute = stepToProjectChoice(factGateDefinition, 'JL05_C1');
+  const factAllowedRoute = stepToProjectChoice(factGateDefinition, 'JL05_C2');
+  if (factBlockedRoute.node?.id === 'JL07' || factAllowedRoute.node?.id !== 'JL07') {
+    errors.push('requiresAllFlags/requiresAnyFlags must be hard eligibility gates before both ranking and fallback');
+  }
+  const groupedFactGateDefinition = JSON.parse(JSON.stringify(definition));
+  const groupedFactGateNode = groupedFactGateDefinition.nodes.find((node) => node.id === 'JL07');
+  groupedFactGateNode.match.excludeTags = [];
+  groupedFactGateNode.match.requiresFlagGroups = [
+    ['signed_offer', 'offer_alive'],
+    ['sidework_reportable', 'pilot_lead'],
+  ];
+  const groupBlockedRoute = stepToProjectChoice(groupedFactGateDefinition, 'JL05_C1');
+  const groupAllowedRoute = stepToProjectChoice(groupedFactGateDefinition, 'JL05_C2');
+  if (groupBlockedRoute.node?.id === 'JL07' || groupAllowedRoute.node?.id !== 'JL07') {
+    errors.push('requiresFlagGroups must require one fact from every group before both ranking and fallback');
+  }
   const play = (choiceIndexes) => {
     let session = engine.createWorkStorySession({ definition, profile: testProfile });
     const nodes = [];
@@ -93,12 +171,15 @@ if (new Set(datedProfiles.map((profile) => `${JSON.stringify(profile.weights)}:$
   if (femaleOpening?.id !== 'JL03' || femaleModel.node?.id !== 'JL03' || femaleModel.node.evidence?.length < 3 || femaleModel.node.evidence?.some((item) => item.title === '命理依据（部分匹配）')) {
     errors.push('female-1995 JL03 must render matched three-layer evidence instead of partial fallback');
   }
+  if (!femaleModel.node?.transition || femaleModel.node.characters?.some((character) => !character.name || !character.identity || !character.relationship || character.name === character.id)) {
+    errors.push('story view model must expose named characters with identity and relationship plus a transition');
+  }
 
 if (errors.length) {
   errors.forEach((error) => console.error(`FAIL ${error}`));
   process.exit(1);
 }
-console.log('PASS work story: 21 nodes, 63 choices, 6 endings, profile evidence and variance');
+console.log('PASS work story: 1 available + 7 upcoming entries, 21 nodes, 63 choices, 6 endings, profile evidence and variance');
 };
 
 main().catch((error) => {

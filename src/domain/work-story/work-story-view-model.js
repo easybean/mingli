@@ -1,7 +1,30 @@
 import { resolveCurrentNode, resolveEnding, workChips } from './story-engine.js';
 
 const evidenceTitle = { bazi: '八字底色', ziwei: '紫微结构', transit: '当前运限' };
-const roleLabel = { gu: '顾言 · 招聘负责人', zhou: '周屿 · 前同事', cheng: '程岚 · 行业前辈', liang: '梁澄 · 共同承担生活的人' };
+const fallbackCharacters = {
+  gu: { name: '顾言', identity: '招聘负责人', relationship: '负责这次正式岗位 Offer' },
+  zhou: { name: '周屿', identity: '前同事', relationship: '邀请你参与企业客户试点项目' },
+  cheng: { name: '程岚', identity: '行业前辈', relationship: '帮你看作品并介绍机会' },
+  liang: { name: '梁澄', identity: '共同承担生活的人', relationship: '和你一起面对预算与生活安排' },
+};
+
+const characterFor = (definition, roleId) => {
+  const roster = definition?.characters || {};
+  const character = Array.isArray(roster)
+    ? roster.find((item) => item?.id === roleId || item?.roleId === roleId)
+    : roster[roleId];
+  const fallback = fallbackCharacters[roleId] || {};
+  return {
+    id: roleId,
+    name: character?.name || fallback.name || '相关人物',
+    identity: character?.title || character?.identity || character?.role || fallback.identity || '剧情人物',
+    relationship: character?.relationship || character?.relation || fallback.relationship || '与主角有关的人',
+  };
+};
+
+const transitionFallback = (session) => (session?.sceneIndex || 0) === 0
+  ? '故事从你确认这段工作空窗期开始。'
+  : '上一幕的选择已经落地；几天后，新的局面出现。';
 
 export const createWorkStoryViewModel = ({ definition, profile, session }) => {
   const ending = session?.completed ? resolveEnding({ definition, profile, session }) : null;
@@ -14,7 +37,8 @@ export const createWorkStoryViewModel = ({ definition, profile, session }) => {
     chips: workChips(session?.workState),
     node: node ? {
       ...node,
-      rolesLabel: node.roles.map((role) => roleLabel[role] || role).join(' · '),
+      characters: node.roles.map((role) => characterFor(definition, role)),
+      transition: node.copy?.transition || transitionFallback(session),
       evidence: node.evidenceSlots.flatMap((slot) => {
         const matched = (slot.ruleIds || []).flatMap((ruleId) => profile?.evidenceByRuleId?.[ruleId] || []);
         return matched.length ? matched : [{ title: '命理依据（部分匹配）', body: '这幕由当前工作主题与阶段信号共同排序；完整三层组合依据不足，因此不把它写成确定结论。' }];
