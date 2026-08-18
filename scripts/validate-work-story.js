@@ -22,10 +22,30 @@ const main = async () => {
   const catalogSource = fs.readFileSync(catalogPath, 'utf8');
   const catalog = await import(`data:text/javascript;base64,${Buffer.from(catalogSource).toString('base64')}`);
   const entries = catalog.WORK_STORY_ENTRIES || [];
+  const themes = catalog.STORY_THEMES || [];
   const availableEntries = entries.filter((entry) => entry.status === 'available');
   const upcomingEntries = entries.filter((entry) => entry.status === 'upcoming');
-  if (entries.length !== 6 || availableEntries.length !== 2 || upcomingEntries.length !== 4 || availableEntries[0]?.id !== 'job_lost' || availableEntries[1]?.id !== 'job_exit') {
-    errors.push('work-story catalog must contain available job_lost and job_exit entries plus 4 non-overlapping upcoming entries');
+  const requiredThemeIds = ['work', 'relationship', 'family', 'finance', 'migration'];
+  if (themes.length !== requiredThemeIds.length || themes.some((theme, index) => theme.id !== requiredThemeIds[index])
+    || themes.some((theme) => !theme.label || !theme.description || !Array.isArray(theme.entries) || !theme.entries.length)
+    || new Set(entries.map((entry) => entry.id)).size !== entries.length) {
+    errors.push('catalog must expose five structured, non-overlapping primary themes with secondary entries');
+  }
+  if (availableEntries.length !== 2 || availableEntries[0]?.id !== 'job_lost' || availableEntries[1]?.id !== 'job_exit'
+    || availableEntries.some((entry) => entry.themeId !== 'work') || upcomingEntries.length !== entries.length - 2
+    || entries.some((entry) => entry.status !== 'available' && entry.status !== 'upcoming')) {
+    errors.push('only work job_lost and job_exit may be available; every other catalog entry must remain upcoming');
+  }
+  const eventsSource = fs.readFileSync(path.join(__dirname, '../src/app/events.js'), 'utf8');
+  const homeSource = fs.readFileSync(path.join(__dirname, '../src/pages/home-page.js'), 'utf8');
+  const storeSource = fs.readFileSync(path.join(__dirname, '../src/app/store.js'), 'utf8');
+  if (!/keydown/.test(eventsSource) || !/ArrowRight/.test(eventsSource) || !/ArrowLeft/.test(eventsSource) || !/Home/.test(eventsSource) || !/End/.test(eventsSource)
+    || !/setStoryCatalogTheme\(nextThemeId\)/.test(eventsSource) || !/\.focus\(\)/.test(eventsSource)) {
+    errors.push('story theme tabs must support ArrowLeft/ArrowRight/Home/End activation and focus');
+  }
+  if (!/entry\.status === 'available' \? `data-work-entry/.test(homeSource)
+    || !/catalogEntry\.status !== 'available'/.test(storeSource)) {
+    errors.push('upcoming catalog entries must be disabled in the page and rejected by the store');
   }
   if (definition.title !== '工作空窗期') errors.push('public definition title must be 工作空窗期');
   if (definition.nodes.some((node) => !node.copy?.transition?.trim())) errors.push('every node must contain a non-empty transition');

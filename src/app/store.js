@@ -15,7 +15,7 @@ import {
   createWorkStorySession,
 } from '../domain/work-story/story-engine.js';
 import { getWorkStoryDefinitionForEntry, getWorkStoryDefinitionForSession, normalizeWorkStorySession } from '../domain/work-story/story-registry.js';
-import { WORK_STORY_ENTRIES } from '../domain/work-story/story-catalog.js';
+import { getStoryTheme, WORK_STORY_ENTRIES } from '../domain/work-story/story-catalog.js';
 import { resolvedAppPage } from './work-navigation.js';
 
 const defaultBirthInput = () => ({
@@ -76,6 +76,7 @@ export const state = {
     todayHelpOpen: false,
     theme: THEMES.includes(savedTheme) ? savedTheme : DEFAULT_THEME,
     chartThemeFilter: 'all',
+    storyCatalogTheme: 'work',
     gameView: 'play',
     accessoryOpen: false,
     portraitOpen: restoredData ? (savedProgress?.portraitOpen ?? true) : true,
@@ -256,6 +257,11 @@ export const selectWorkEntry = (entry) => {
   } else {
     state.activePage = 'birth';
   }
+  notify();
+};
+
+export const setStoryCatalogTheme = (themeId) => {
+  state.ui.storyCatalogTheme = getStoryTheme(themeId).id;
   notify();
 };
 

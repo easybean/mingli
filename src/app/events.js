@@ -25,6 +25,7 @@ import {
   chooseWorkStoryChoice,
   advanceWorkStory,
   restartWorkStory,
+  setStoryCatalogTheme,
 } from './store.js';
 import { createGameViewModel } from '../domain/view-models/game-view-model.js';
 import { createTodayViewModel } from '../domain/view-models/today-view-model.js';
@@ -91,6 +92,12 @@ export const bindEvents = (root) => {
     const workEntry = event.target.closest('[data-work-entry]');
     if (workEntry) {
       selectWorkEntry(workEntry.dataset.workEntry);
+      return;
+    }
+
+    const storyTheme = event.target.closest('[data-story-theme]');
+    if (storyTheme) {
+      setStoryCatalogTheme(storyTheme.dataset.storyTheme);
       return;
     }
 
@@ -284,6 +291,27 @@ export const bindEvents = (root) => {
     if (!calendarField) return;
     const dateField = calendarField.form?.elements.date;
     if (dateField) validateDateField(dateField, calendarField.value);
+  });
+
+  root.addEventListener('keydown', (event) => {
+    const tab = event.target.closest('[data-story-theme][role="tab"]');
+    if (!tab || !root.contains(tab)) return;
+    const tabs = [...root.querySelectorAll('[data-story-theme][role="tab"]')];
+    const currentIndex = tabs.indexOf(tab);
+    if (currentIndex < 0) return;
+    const key = event.key;
+    let nextIndex = currentIndex;
+    if (key === 'ArrowRight') nextIndex = (currentIndex + 1) % tabs.length;
+    else if (key === 'ArrowLeft') nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+    else if (key === 'Home') nextIndex = 0;
+    else if (key === 'End') nextIndex = tabs.length - 1;
+    else return;
+    event.preventDefault();
+    const nextThemeId = tabs[nextIndex]?.dataset.storyTheme;
+    setStoryCatalogTheme(nextThemeId);
+    // notify() renders synchronously; lookup after the update so focus lands
+    // on the newly active button rather than a detached DOM node.
+    root.querySelector(`[data-story-theme="${nextThemeId}"]`)?.focus();
   });
 };
 
