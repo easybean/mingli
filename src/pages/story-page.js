@@ -1,6 +1,6 @@
 import { escapeHtml } from '../components/html.js';
 import { createWorkStoryViewModel } from '../domain/work-story/work-story-view-model.js';
-import { UNEMPLOYED_MONTH_FIVE } from '../content/work-stories/unemployed-month-five.js';
+import { getWorkStoryDefinitionForSession } from '../domain/work-story/story-registry.js';
 
 const renderChips = (chips) => `<div class="story-chips">${chips.map((chip) => `<span class="story-chip story-chip--${chip.tone}">${escapeHtml(chip.label)} <b>${chip.value}</b></span>`).join('')}</div>`;
 const renderCharacters = (characters) => `
@@ -10,13 +10,15 @@ const renderCharacters = (characters) => `
 `;
 
 export const renderStoryPage = (state) => {
-  const model = createWorkStoryViewModel({ definition: UNEMPLOYED_MONTH_FIVE, profile: state.astrolabeData?.reading?.workStoryProfile, session: state.workStorySession });
+  const definition = getWorkStoryDefinitionForSession(state.workStorySession);
+  const model = createWorkStoryViewModel({ definition, profile: state.astrolabeData?.reading?.workStoryProfile, session: state.workStorySession });
   if (!model.ready || !model.node) return `<section class="page"><div class="empty-state"><p>${escapeHtml(state.ui.error || '正在生成这一次工作推演。')}</p><button class="button button-primary" data-page="birth">重新填写出生信息</button></div></section>`;
   const { node, feedback } = model;
   return `
     <section class="page story-page">
       <header class="story-header">
         <div><p class="page-kicker">工作岔路 · ${escapeHtml(model.careerStageLabel)} · ${model.progress.current} / ${model.progress.total}</p><h1>${escapeHtml(model.displayTitle)}</h1></div>
+        <button class="button button-ghost" type="button" data-page="home">换一种处境</button>
       </header>
       <div class="story-progress"><span style="width:${Math.round(((model.progress.current - 1) / model.progress.total) * 100)}%"></span></div>
       <p class="story-context">${escapeHtml(model.contextLine)}</p>

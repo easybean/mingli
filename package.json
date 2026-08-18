@@ -1,6 +1,6 @@
 {
   "name": "mingli",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "private": true,
   "description": "紫微斗数排盘 API 与可视化页面 Demo",
   "main": "server.js",
@@ -9,9 +9,10 @@
     "check:server": "node --check server.js",
     "validate:samples": "node scripts/validate-samples.js",
     "validate:work-story": "node scripts/validate-work-story.js",
+    "validate:work-story-multi": "node scripts/validate-work-story-multi.js",
     "validate:navigation": "node scripts/validate-navigation.js",
     "validate:birth-date": "node scripts/validate-birth-date.js",
-    "verify": "npm run check:server && npm run validate:samples && npm run validate:work-story && npm run validate:navigation && npm run validate:birth-date"
+    "verify": "npm run check:server && npm run validate:samples && npm run validate:work-story && npm run validate:work-story-multi && npm run validate:navigation && npm run validate:birth-date"
   },
   "dependencies": {
     "iztro": "^2.5.8",

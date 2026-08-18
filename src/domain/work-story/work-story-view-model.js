@@ -23,7 +23,7 @@ const characterFor = (definition, roleId) => {
 };
 
 const transitionFallback = (session) => (session?.sceneIndex || 0) === 0
-  ? '故事从你确认这段工作空窗期开始。'
+  ? '故事从你确认眼前这段工作处境开始。'
   : '上一幕的选择已经落地；几天后，新的局面出现。';
 
 const careerStageLabel = {
@@ -54,7 +54,7 @@ export const createWorkStoryViewModel = ({ definition, profile, session }) => {
   return {
     ready: Boolean(profile?.available && session && (node || ending)),
     title: definition?.title || '工作岔路',
-    displayTitle: careerStageTitle[careerStage] || definition?.title || '工作岔路',
+    displayTitle: definition?.careerStageTitles?.[careerStage] || careerStageTitle[careerStage] || definition?.title || '工作岔路',
     careerStage,
     careerStageLabel: careerStageLabel[careerStage] || '当前职业阶段',
     progress: { current: Math.min((session?.sceneIndex || 0) + 1, definition?.stages?.length || 7), total: definition?.stages?.length || 7 },

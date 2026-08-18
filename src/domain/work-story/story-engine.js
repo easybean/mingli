@@ -15,11 +15,13 @@ const workStateFromProfile = (initialState = {}) => ({
 
 export const validateStoryDefinition = (definition) => {
   const errors = [];
-  if (!definition || definition.version !== '0.1.0') errors.push('version must be 0.1.0');
+  if (!definition || !/^\d+\.\d+\.\d+$/.test(definition.version || '')) errors.push('version must be a semantic version');
   if (!definition?.id || !definition?.entry || !Array.isArray(definition?.stages) || !Array.isArray(definition?.nodes)) errors.push('story requires id, entry, stages and nodes');
-  if (definition?.title !== '工作空窗期') errors.push('public story title must be 工作空窗期');
-  if (definition?.stages?.length !== 7) errors.push('0.1.0 requires exactly 7 stages');
-  if (definition?.nodes?.length !== 21) errors.push('0.1.0 requires exactly 21 nodes');
+  if (!definition?.title?.trim()) errors.push('story requires a public title');
+  if (!definition?.stages?.length) errors.push('story requires at least one stage');
+  if (!definition?.nodes?.length) errors.push('story requires at least one node');
+  if (definition?.initialCareerStage && !CAREER_STAGES.has(definition.initialCareerStage)) errors.push('initialCareerStage is invalid');
+  if (definition?.initialFlags !== undefined && (typeof definition.initialFlags !== 'object' || Array.isArray(definition.initialFlags))) errors.push('initialFlags must be an object');
   const ids = new Set();
   const roleIds = new Set((definition?.nodes || []).flatMap((node) => node.roles || []));
   if (!definition?.characters || (Array.isArray(definition.characters) && !definition.characters.length)) errors.push('story requires character metadata');
@@ -46,19 +48,21 @@ export const validateStoryDefinition = (definition) => {
       if (!Array.isArray(node.choices) || node.choices.length !== 3) errors.push(`node ${node.id} must have 3 choices`);
       (node.choices || []).forEach((item) => {
         REQUIRED_CHOICE_KEYS.forEach((key) => { if (!hasOwn(item, key)) errors.push(`choice ${node.id}/${item?.id || '?'} lacks ${key}`); });
-          if (!item?.id || !item?.label || !Array.isArray(item?.delayedFlags) || item.delayedFlags.some((flag) => !flag.id || !Array.isArray(flag.consumeBy) || !flag.consumeBy.length) || typeof item?.routeSignals !== 'object' || typeof item?.stateEffects?.work !== 'object') errors.push(`choice ${node.id}/${item?.id || '?'} invalid`);
+          if (!item?.id || !item?.label || !Array.isArray(item?.delayedFlags) || item.delayedFlags.some((flag) => !flag.id || !Array.isArray(flag.consumeBy) || !flag.consumeBy.length) || typeof item?.routeSignals !== 'object' || typeof item?.stateEffects?.work !== 'object' || (item.careerStageEffect && !CAREER_STAGES.has(item.careerStageEffect))) errors.push(`choice ${node.id}/${item?.id || '?'} invalid`);
       });
   });
   (definition?.stages || []).forEach((stage, stageIndex) => {
-    if (!stage.id || !Array.isArray(stage.candidates) || stage.candidates.length !== 3 || stage.candidates.some((id) => !ids.has(id))) errors.push(`stage ${stage.id || stageIndex} must reference 3 valid nodes`);
+    if (!stage.id || !Array.isArray(stage.candidates) || !stage.candidates.length || stage.candidates.some((id) => !ids.has(id))) errors.push(`stage ${stage.id || stageIndex} must reference valid nodes`);
   });
-  if (!Array.isArray(definition?.endings) || definition.endings.length !== 6) errors.push('0.1.0 requires 6 endings');
+  if (!Array.isArray(definition?.endings) || !definition.endings.length) errors.push('story requires endings');
   (definition?.endings || []).forEach((ending) => {
     if (!ending.id || !ending.summary?.title || !ending.summary?.core || !ending.action?.instruction || typeof ending.routeWeights !== 'object') errors.push(`invalid ending ${ending.id || '?'}`);
   });
-  const zhouInvite = (definition?.nodes || []).find((node) => node.id === 'JL07');
-  if (!zhouInvite || !zhouInvite.roles?.includes('zhou') || !/前同事/.test(zhouInvite.copy?.situation || '') || !/邀请你/.test(zhouInvite.copy?.situation || '') || !/(项目|试点|交付)/.test(zhouInvite.copy?.situation || '')) {
-    errors.push('JL07 must state that former colleague 周屿 invites the protagonist to join the project');
+  if (definition?.id === 'unemployed_month_five') {
+    const zhouInvite = (definition?.nodes || []).find((node) => node.id === 'JL07');
+    if (!zhouInvite || !zhouInvite.roles?.includes('zhou') || !/前同事/.test(zhouInvite.copy?.situation || '') || !/邀请你/.test(zhouInvite.copy?.situation || '') || !/(项目|试点|交付)/.test(zhouInvite.copy?.situation || '')) {
+      errors.push('JL07 must state that former colleague 周屿 invites the protagonist to join the project');
+    }
   }
   return errors;
 };
@@ -79,6 +83,7 @@ const isExcludedCandidate = (node, profile, session) => (node?.match?.excludeTag
 const factFlagId = (flag) => String(flag || '').replace(/^flag:/, '');
 
 export const careerStageFor = (session) => {
+  if (CAREER_STAGES.has(session?.careerStage)) return session.careerStage;
   const flags = session?.flags || {};
   if (flags.employment_started) return 'employed';
   if (flags.remote_trial) return 'probation';
@@ -111,7 +116,10 @@ const profileScore = (node, profile, session) => {
   if ((match.excludeTags || []).some((tag) => tags.has(tag))) return Number.NEGATIVE_INFINITY;
   if (match.anyTags?.length && !match.anyTags.some((tag) => tags.has(tag))) return Number.NEGATIVE_INFINITY;
   const tagScore = (match.anyTags || []).filter((tag) => tags.has(tag)).length * 10;
-  const focusScore = (match.focus || []).reduce((total, focus) => total + Math.max(0, 4 - (profile?.rankedFocuses || []).indexOf(focus)), 0);
+  const focusScore = (match.focus || []).reduce((total, focus) => {
+    const rank = (profile?.rankedFocuses || []).indexOf(focus);
+    return total + (rank < 0 ? 0 : Math.max(0, 4 - rank));
+  }, 0);
   return tagScore + focusScore + Number(session?.nextWeights?.[node.id] || 0) + 2;
 };
 
@@ -143,7 +151,7 @@ export const createWorkStorySession = ({ definition, profile }) => {
   if (errors.length) throw new Error(`工作剧本 contract 无效：${errors.join('；')}`);
   if (!profile?.available) throw new Error('命盘信息不足，无法生成这次工作推演。请核对出生日期、时间和地点。');
   return {
-    storyId: definition.id, entry: definition.entry, sceneIndex: 0, resolvedNodes: [], choices: [], flags: {}, relations: {}, routeSignals: {}, nextWeights: {},
+    storyId: definition.id, entry: definition.entry, sceneIndex: 0, resolvedNodes: [], choices: [], flags: { ...(definition.initialFlags || {}) }, careerStage: definition.initialCareerStage || null, relations: {}, routeSignals: {}, nextWeights: {},
     workState: workStateFromProfile(profile.initialState),
     lifeState: { ...createInitialLifeState(), ...(profile.initialState || {}) }, currentFeedback: null, completed: false,
     delayedConsequences: [], consumedDelayed: [],
@@ -178,11 +186,11 @@ export const chooseStoryOption = ({ definition, profile, session, choiceId }) =>
   const after = applyLifeStateDelta(before, choice.stateEffects.life || {});
   const nextWorkState = Object.entries(choice.stateEffects.work || {}).reduce((next, [key, value]) => ({ ...next, [key]: Math.max(0, Math.min(100, (next[key] || 0) + Number(value || 0))) }), { ...session.workState });
   const setFlags = choice.delayedFlags.reduce((next, item) => ({ ...next, [item.id]: item.value }), { ...session.flags });
-  const choiceRecord = { sceneIndex: session.sceneIndex, stageId: node.stageId, nodeId: node.id, choiceId: choice.id, choiceLabel: choice.label, immediate: choice.immediate, delayedFlags: choice.delayedFlags, stateEffects: choice.stateEffects };
+  const choiceRecord = { sceneIndex: session.sceneIndex, stageId: node.stageId, nodeId: node.id, choiceId: choice.id, choiceLabel: choice.label, immediate: choice.immediate, delayedFlags: choice.delayedFlags, careerStageEffect: choice.careerStageEffect || null, stateEffects: choice.stateEffects };
   return {
     ...session,
     resolvedNodes: session.resolvedNodes.concat({ sceneIndex: session.sceneIndex, nodeId: node.id }), choices: session.choices.concat(choiceRecord),
-    flags: setFlags, relations: addScores(session.relations, choice.relationEffects), workState: nextWorkState,
+    flags: setFlags, careerStage: choice.careerStageEffect || session.careerStage || null, relations: addScores(session.relations, choice.relationEffects), workState: nextWorkState,
     routeSignals: addScores(session.routeSignals, choice.routeSignals), nextWeights: addScores(session.nextWeights, choice.nextWeights), lifeState: after,
     currentFeedback: { nodeId: node.id, choiceId: choice.id, immediate: choice.immediate, delayedHint: choice.delayedFlags.length ? '这件事的后续影响，会在之后的局面里慢慢显出来。' : '', before, after, delta: choice.stateEffects.work },
   };

@@ -14,7 +14,8 @@ import {
   chooseStoryOption,
   createWorkStorySession,
 } from '../domain/work-story/story-engine.js';
-import { UNEMPLOYED_MONTH_FIVE } from '../content/work-stories/unemployed-month-five.js';
+import { getWorkStoryDefinitionForEntry, getWorkStoryDefinitionForSession, normalizeWorkStorySession } from '../domain/work-story/story-registry.js';
+import { WORK_STORY_ENTRIES } from '../domain/work-story/story-catalog.js';
 import { resolvedAppPage } from './work-navigation.js';
 
 const defaultBirthInput = () => ({
@@ -101,6 +102,11 @@ const persistProgress = () => {
     routeScores: state.gameSession.routeScores,
     portraitOpen: state.ui.portraitOpen,
     reveal: state.ui.reveal,
+    // Deliberately only narrative state: the chart and birth input keep their
+    // existing local-storage policy. This permits a compatible in-memory
+    // resume once a chart is generated without widening the privacy surface.
+    workStorySession: state.workStorySession,
+    selectedWorkEntry: state.selectedWorkEntry,
   });
 };
 
@@ -157,8 +163,10 @@ export const setAstrolabeData = (data) => {
   state.ui.gameView = 'play';
   state.ui.reveal = { date: '', phase: 'sealed' };
   try {
+    const definition = getWorkStoryDefinitionForEntry(state.selectedWorkEntry || 'job_lost');
+    if (!definition) throw new Error('这个工作处境还在准备中。');
     state.workStorySession = createWorkStorySession({
-      definition: UNEMPLOYED_MONTH_FIVE,
+      definition,
       profile: data.reading?.workStoryProfile,
     });
   } catch (error) {
@@ -228,17 +236,37 @@ export const clearAstrolabe = () => {
 };
 
 export const selectWorkEntry = (entry) => {
-  // 当前只有“工作空窗期”可进入，其他入口以明确的筹备中状态展示。
-  state.selectedWorkEntry = entry || null;
-  if (entry === 'job_lost') state.activePage = 'birth';
+  const catalogEntry = WORK_STORY_ENTRIES.find((item) => item.id === entry);
+  const definition = getWorkStoryDefinitionForEntry(entry);
+  if (!catalogEntry || catalogEntry.status !== 'available' || !definition) return;
+  state.selectedWorkEntry = entry;
+  // A chart already exists when the user changes entry from another tab. Do
+  // not request their birth data again; construct an isolated session instead.
+  if (state.astrolabeData) {
+    try {
+      state.workStorySession = createWorkStorySession({
+        definition,
+        profile: state.astrolabeData.reading?.workStoryProfile,
+      });
+      state.activePage = 'story';
+      state.ui.error = '';
+    } catch (error) {
+      state.ui.error = error.message || '命盘信息不足，暂时无法生成这次工作推演。';
+    }
+  } else {
+    state.activePage = 'birth';
+  }
   notify();
 };
 
 export const chooseWorkStoryChoice = (choiceId) => {
   if (!state.workStorySession || !state.astrolabeData) return;
   try {
+    state.workStorySession = normalizeWorkStorySession(state.workStorySession);
+    const definition = getWorkStoryDefinitionForSession(state.workStorySession);
+    if (!definition) throw new Error('这段推演和当前剧本不一致，请重新开始。');
     state.workStorySession = chooseStoryOption({
-      definition: UNEMPLOYED_MONTH_FIVE,
+      definition,
       profile: state.astrolabeData.reading?.workStoryProfile,
       session: state.workStorySession,
       choiceId,
@@ -252,8 +280,11 @@ export const chooseWorkStoryChoice = (choiceId) => {
 export const advanceWorkStory = () => {
   if (!state.workStorySession || !state.astrolabeData) return;
   try {
+    state.workStorySession = normalizeWorkStorySession(state.workStorySession);
+    const definition = getWorkStoryDefinitionForSession(state.workStorySession);
+    if (!definition) throw new Error('这段推演和当前剧本不一致，请重新开始。');
     state.workStorySession = advanceStory({
-      definition: UNEMPLOYED_MONTH_FIVE,
+      definition,
       profile: state.astrolabeData.reading?.workStoryProfile,
       session: state.workStorySession,
     });
@@ -267,8 +298,11 @@ export const advanceWorkStory = () => {
 export const restartWorkStory = () => {
   if (!state.astrolabeData) return;
   try {
+    const definition = getWorkStoryDefinitionForSession(state.workStorySession)
+      || getWorkStoryDefinitionForEntry(state.selectedWorkEntry || 'job_lost');
+    if (!definition) throw new Error('这个工作处境还在准备中。');
     state.workStorySession = createWorkStorySession({
-      definition: UNEMPLOYED_MONTH_FIVE,
+      definition,
       profile: state.astrolabeData.reading?.workStoryProfile,
     });
     state.activePage = 'story';

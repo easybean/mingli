@@ -30,6 +30,10 @@ import { createGameViewModel } from '../domain/view-models/game-view-model.js';
 import { createTodayViewModel } from '../domain/view-models/today-view-model.js';
 import { openZiling } from '../tools/ziling-pai/ziling-controller.js';
 import { validateBirthInput } from '../domain/birth-date.js';
+import { getWorkStoryDefinitionForSession } from '../domain/work-story/story-registry.js';
+import { createWorkStoryViewModel } from '../domain/work-story/work-story-view-model.js';
+import { createWorkStoryShareModel } from '../domain/work-story/share-model.js';
+import { downloadWorkStorySharePng, shareWorkStoryCard } from '../components/work-story-share-card.js';
 
 export const formDataToInput = (form) => {
   const formData = new FormData(form);
@@ -186,6 +190,35 @@ export const bindEvents = (root) => {
     const gameViewButton = event.target.closest('[data-game-view]');
     if (gameViewButton) {
       setGameView(gameViewButton.dataset.gameView);
+      return;
+    }
+
+    const shareModel = () => {
+      const definition = getWorkStoryDefinitionForSession(state.workStorySession);
+      const model = createWorkStoryViewModel({ definition, profile: state.astrolabeData?.reading?.workStoryProfile, session: state.workStorySession });
+      return createWorkStoryShareModel({ definition, profile: state.astrolabeData?.reading?.workStoryProfile, session: state.workStorySession, ending: model.ending });
+    };
+
+    const shareCardButton = event.target.closest('[data-share-card]');
+    if (shareCardButton) {
+      const model = shareModel();
+      if (!model) return;
+      shareWorkStoryCard(model)
+        .then((result) => { shareCardButton.textContent = result.method === 'download' ? '已保存 PNG ✓' : '已打开分享 ✓'; })
+        .catch(() => { shareCardButton.textContent = '分享取消或失败'; });
+      return;
+    }
+
+    const saveShareCardButton = event.target.closest('[data-save-share-card]');
+    if (saveShareCardButton) {
+      const model = shareModel();
+      if (!model) return;
+      try {
+        downloadWorkStorySharePng(model);
+        saveShareCardButton.textContent = '已保存 PNG ✓';
+      } catch {
+        saveShareCardButton.textContent = '保存失败';
+      }
       return;
     }
 

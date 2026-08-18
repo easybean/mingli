@@ -1,12 +1,28 @@
 import { escapeHtml } from '../components/html.js';
 import { createWorkStoryViewModel } from '../domain/work-story/work-story-view-model.js';
-import { UNEMPLOYED_MONTH_FIVE } from '../content/work-stories/unemployed-month-five.js';
+import { createWorkStoryShareModel, shareTextForWorkStory } from '../domain/work-story/share-model.js';
+import { getWorkStoryDefinitionForSession } from '../domain/work-story/story-registry.js';
+
+const renderSharePreview = (shareModel) => {
+  if (!shareModel) return '';
+  return `<section class="work-story-share-preview" aria-label="分享结果卡预览">
+    <p class="work-story-share-preview__brand">MINGLI · 工作岔路</p>
+    <h2>《${escapeHtml(shareModel.storyTitle)}》</h2>
+    <p class="work-story-share-preview__tone">命盘底色：${escapeHtml(shareModel.chartTone)}</p>
+    <div><b>我的 3 个关键选择</b><ol>${shareModel.keyChoices.map((choice) => `<li>${escapeHtml(choice)}</li>`).join('')}</ol></div>
+    <div><b>路线结局：${escapeHtml(shareModel.routeEnding)}</b><p>${escapeHtml(shareModel.routeSummary)}</p></div>
+    <div><b>另一种可能</b><p>${escapeHtml(shareModel.alternative)}</p></div>
+    <small>${escapeHtml(shareModel.siteUrl)}</small>
+  </section>`;
+};
 
 export const renderResultPage = (state) => {
-  const model = createWorkStoryViewModel({ definition: UNEMPLOYED_MONTH_FIVE, profile: state.astrolabeData?.reading?.workStoryProfile, session: state.workStorySession });
+  const definition = getWorkStoryDefinitionForSession(state.workStorySession);
+  const model = createWorkStoryViewModel({ definition, profile: state.astrolabeData?.reading?.workStoryProfile, session: state.workStorySession });
   const ending = model.ending;
   if (!ending) return '<section class="page"><div class="empty-state">结果仍在生成。</div></section>';
-  const shareText = `我在“工作空窗期”走成了「${ending.title}」。如果是你，会怎么选？`;
+  const shareModel = createWorkStoryShareModel({ definition, profile: state.astrolabeData?.reading?.workStoryProfile, session: state.workStorySession, ending });
+  const shareText = shareTextForWorkStory(shareModel);
   return `
     <section class="page result-page">
       <p class="page-kicker">你的职业路线</p>
@@ -19,7 +35,8 @@ export const renderResultPage = (state) => {
       <section class="result-block"><h2>现实中的下一步</h2><p>${escapeHtml(ending.action)}</p></section>
       ${model.delayedEchoes.length ? `<section class="result-block"><h2>一路带来的回响</h2><p>${escapeHtml(model.delayedEchoes.map((item) => item.text).join(' '))}</p></section>` : ''}
       ${renderChips(model.chips)}
-      <div class="result-actions"><button class="button button-primary" type="button" data-story-restart>重走另一条路</button><button class="button button-secondary" type="button" data-copy-share data-share-text="${escapeHtml(shareText)}">复制同题挑战</button><button class="button button-ghost" type="button" data-clear-local>清除本机数据</button></div>
+      ${renderSharePreview(shareModel)}
+      <div class="result-actions"><button class="button button-primary" type="button" data-story-restart>重走另一条路</button><button class="button button-secondary" type="button" data-page="home">换一种处境</button><button class="button button-secondary" type="button" data-share-card>分享结果卡</button><button class="button button-secondary" type="button" data-save-share-card>保存 PNG</button><button class="button button-ghost" type="button" data-copy-share data-share-text="${escapeHtml(shareText)}">复制分享文案</button><button class="button button-ghost" type="button" data-clear-local>清除本机数据</button></div>
       <p class="choice-disclaimer">出生信息会发送至本项目服务端用于即时排盘；不做账号同步或云端存档。推演结果保存在本机浏览器，可随时一键清除。分享不会包含出生时间、地点或命盘细节。</p>
     </section>
   `;

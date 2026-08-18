@@ -28,7 +28,7 @@ export const renderHomePage = () => `
     <aside class="sample-route-card">
       <span>这一局不是测验</span>
       <strong>同一张命盘，不同选择，会走向不同路线。</strong>
-      <p>当前可体验：《工作空窗期》 · 约 7 个关键选择</p>
+      <p>每条可体验路线约有 7 个关键选择；同一张命盘，也会因处境而进入不同故事。</p>
     </aside>
     <p class="choice-disclaimer">仅供互动娱乐与选择预演参考；不替代职业、医疗、法律或财务建议。</p>
   </section>

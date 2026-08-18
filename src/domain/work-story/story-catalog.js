@@ -1,6 +1,6 @@
 export const WORK_STORY_ENTRIES = [
-  { id: 'job_lost', title: '刚失业或空窗较久', conflict: '现金流与方向', status: 'available' },
-  { id: 'job_exit', title: '在职，但越来越想离开', conflict: '稳定与成长', status: 'upcoming' },
+  { id: 'job_lost', storyId: 'unemployed_month_five', title: '刚失业或空窗较久', conflict: '现金流与方向', status: 'available' },
+  { id: 'job_exit', storyId: 'employed_want_leave', title: '在职，但越来越想离开', conflict: '稳定与成长', status: 'available' },
   { id: 'offer_choice', title: '手里有 Offer，拿不定主意', conflict: '确定性与潜力', status: 'upcoming' },
   { id: 'career_switch', title: '想转行，但担心从头开始', conflict: '旧积累与新起点', status: 'upcoming' },
   { id: 'career_stuck', title: '工作稳定但长期停滞', conflict: '安全感与机会成本', status: 'upcoming' },

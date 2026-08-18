@@ -24,6 +24,7 @@
 
 - [`active/product-roadmap-choice-sandbox.md`](active/product-roadmap-choice-sandbox.md)：当前唯一产品总规划。下一交付是「工作岔路」内容圣经、八字 × 紫微 × 运限触发矩阵，以及《失业后的第五个月》纵向切片。
 - [`active/work-crossroads-content-bible.md`](active/work-crossroads-content-bible.md)：0.1.0「工作岔路」内容基线，包含《失业后的第五个月》21 个事件节点、六结局、命理触发矩阵和编码数据 contract；随纵向切片实现继续校验。
+- [`active/employed-want-leave-content-map.md`](active/employed-want-leave-content-map.md)：0.2.0《在职，但越来越想离开》内容地图，说明第二套职业剧情的七幕、人物、结局与事实边界。
 
 ## 已完成
 
