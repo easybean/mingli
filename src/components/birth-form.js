@@ -41,7 +41,7 @@ export const renderBirthForm = ({ input, loading, error }) => {
       ${loading ? '生成中...' : '生成我的关卡'}
     </button>
     ${error ? `<p class="page-subtitle">${escapeHtml(error)}</p>` : ''}
-    <p class="page-subtitle">出生信息会发送至本项目服务端用于即时排盘；不做账号同步或云端存档。推演结果保存在本机浏览器，可随时一键清除；这是选择模拟，不是现实预测或职业建议。</p>
+    <p class="page-subtitle">出生信息会发送至本项目服务端用于即时排盘；不做账号同步或云端存档。推演结果保存在本机浏览器，可随时一键清除。我们只记录不含出生信息、命盘内容或填写文案的匿名使用步骤；这是选择模拟，不是现实预测或职业建议。</p>
   </form>
 `;
 };

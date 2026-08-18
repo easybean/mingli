@@ -7,6 +7,7 @@ import { renderBottomNav } from '../components/bottom-nav.js';
 import { renderCosmos } from '../components/cosmos.js';
 import { renderThemeToggle } from '../components/theme-toggle.js';
 import { navItemForPage } from './work-navigation.js';
+import { track } from './analytics.js';
 
 const appRoot = document.querySelector('#app');
 const navRoot = document.querySelector('#bottom-nav');
@@ -36,6 +37,7 @@ bindNavEvents(navRoot);
 if (themeToggleRoot) bindThemeToggle(themeToggleRoot);
 subscribe(render);
 render();
+track('theme_view', { themeId: state.ui.storyCatalogTheme });
 
 // 跨天刷新：恢复的命盘若是别的日子生成的，悄悄重新拉一次（流日变了），
 // 保留闯关进度。失败就沿用已有命盘，不打断使用。

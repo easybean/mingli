@@ -31,10 +31,11 @@ import { createGameViewModel } from '../domain/view-models/game-view-model.js';
 import { createTodayViewModel } from '../domain/view-models/today-view-model.js';
 import { openZiling } from '../tools/ziling-pai/ziling-controller.js';
 import { validateBirthInput } from '../domain/birth-date.js';
-import { getWorkStoryDefinitionForSession } from '../domain/work-story/story-registry.js';
+import { getWorkStoryDefinitionForEntry, getWorkStoryDefinitionForSession } from '../domain/work-story/story-registry.js';
 import { createWorkStoryViewModel } from '../domain/work-story/work-story-view-model.js';
 import { createWorkStoryShareModel } from '../domain/work-story/share-model.js';
 import { downloadWorkStorySharePng, shareWorkStoryCard } from '../components/work-story-share-card.js';
+import { track } from './analytics.js';
 
 export const formDataToInput = (form) => {
   const formData = new FormData(form);
@@ -70,11 +71,19 @@ export const bindEvents = (root) => {
       return;
     }
     setBirthInput(input);
+    const selectedDefinition = getWorkStoryDefinitionForEntry(state.selectedWorkEntry || 'job_lost');
+    track('birth_submit', { entryId: selectedDefinition?.entry, storyId: selectedDefinition?.id });
     setError('');
     setLoading(true);
     try {
       const data = await fetchAstrolabe(input);
       setAstrolabeData(data);
+      const session = state.workStorySession;
+      if (session) {
+        track('chart_success', { entryId: session.entry, storyId: session.storyId });
+        track('story_start', { entryId: session.entry, storyId: session.storyId });
+        track('story_stage', { entryId: session.entry, storyId: session.storyId, stage: 1 });
+      }
     } catch (error) {
       setError(error.message);
     } finally {
@@ -92,12 +101,22 @@ export const bindEvents = (root) => {
     const workEntry = event.target.closest('[data-work-entry]');
     if (workEntry) {
       selectWorkEntry(workEntry.dataset.workEntry);
+      const session = state.workStorySession;
+      if (session && state.astrolabeData) {
+        track('entry_select', { entryId: session.entry });
+        track('story_start', { entryId: session.entry, storyId: session.storyId });
+        track('story_stage', { entryId: session.entry, storyId: session.storyId, stage: 1 });
+      } else {
+        track('entry_select', { entryId: workEntry.dataset.workEntry });
+      }
       return;
     }
 
     const storyTheme = event.target.closest('[data-story-theme]');
     if (storyTheme) {
       setStoryCatalogTheme(storyTheme.dataset.storyTheme);
+      track('theme_select', { themeId: state.ui.storyCatalogTheme });
+      track('theme_view', { themeId: state.ui.storyCatalogTheme });
       return;
     }
 
@@ -109,11 +128,18 @@ export const bindEvents = (root) => {
 
     if (event.target.closest('[data-story-advance]')) {
       advanceWorkStory();
+      const session = state.workStorySession;
+      if (session?.completed) track('story_complete', { entryId: session.entry, storyId: session.storyId });
+      else if (session) track('story_stage', { entryId: session.entry, storyId: session.storyId, stage: session.sceneIndex + 1 });
       return;
     }
 
     if (event.target.closest('[data-story-restart]')) {
+      const previousStoryId = state.workStorySession?.storyId;
       restartWorkStory();
+      const session = state.workStorySession;
+      if (previousStoryId) track('story_restart', { entryId: state.workStorySession?.entry, storyId: previousStoryId });
+      if (session) track('story_stage', { entryId: session.entry, storyId: session.storyId, stage: 1 });
       return;
     }
 
@@ -211,7 +237,10 @@ export const bindEvents = (root) => {
       const model = shareModel();
       if (!model) return;
       shareWorkStoryCard(model)
-        .then((result) => { shareCardButton.textContent = result.method === 'download' ? '已保存 PNG ✓' : '已打开分享 ✓'; })
+        .then((result) => {
+          track(result.method === 'download' ? 'save' : 'share', { entryId: state.workStorySession?.entry, storyId: state.workStorySession?.storyId });
+          shareCardButton.textContent = result.method === 'download' ? '已保存 PNG ✓' : '已打开分享 ✓';
+        })
         .catch(() => { shareCardButton.textContent = '分享取消或失败'; });
       return;
     }
@@ -222,6 +251,7 @@ export const bindEvents = (root) => {
       if (!model) return;
       try {
         downloadWorkStorySharePng(model);
+        track('save', { entryId: state.workStorySession?.entry, storyId: state.workStorySession?.storyId });
         saveShareCardButton.textContent = '已保存 PNG ✓';
       } catch {
         saveShareCardButton.textContent = '保存失败';
@@ -234,7 +264,7 @@ export const bindEvents = (root) => {
       const text = copyShareButton.dataset.shareText || '';
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text)
-          .then(() => { copyShareButton.textContent = '已复制 ✓'; })
+          .then(() => { track('copy', { entryId: state.workStorySession?.entry, storyId: state.workStorySession?.storyId }); copyShareButton.textContent = '已复制 ✓'; })
           .catch(() => { copyShareButton.textContent = '复制失败，长按上面选中'; });
       } else {
         copyShareButton.textContent = '请长按上面文字复制';

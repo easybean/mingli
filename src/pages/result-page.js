@@ -37,7 +37,7 @@ export const renderResultPage = (state) => {
       ${renderChips(model.chips)}
       ${renderSharePreview(shareModel)}
       <div class="result-actions"><button class="button button-primary" type="button" data-story-restart>重走另一条路</button><button class="button button-secondary" type="button" data-page="home">换一种处境</button><button class="button button-secondary" type="button" data-share-card>分享结果卡</button><button class="button button-secondary" type="button" data-save-share-card>保存 PNG</button><button class="button button-ghost" type="button" data-copy-share data-share-text="${escapeHtml(shareText)}">复制分享文案</button><button class="button button-ghost" type="button" data-clear-local>清除本机数据</button></div>
-      <p class="choice-disclaimer">出生信息会发送至本项目服务端用于即时排盘；不做账号同步或云端存档。推演结果保存在本机浏览器，可随时一键清除。分享不会包含出生时间、地点或命盘细节。</p>
+      <p class="choice-disclaimer">出生信息会发送至本项目服务端用于即时排盘；不做账号同步或云端存档。推演结果保存在本机浏览器，可随时一键清除。我们会记录不含出生信息、命盘内容或你填写文案的匿名使用步骤，用于改进体验。分享不会包含出生时间、地点或命盘细节。</p>
     </section>
   `;
 };

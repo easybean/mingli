@@ -31,10 +31,10 @@ const main = async () => {
     || new Set(entries.map((entry) => entry.id)).size !== entries.length) {
     errors.push('catalog must expose five structured, non-overlapping primary themes with secondary entries');
   }
-  if (availableEntries.length !== 2 || availableEntries[0]?.id !== 'job_lost' || availableEntries[1]?.id !== 'job_exit'
-    || availableEntries.some((entry) => entry.themeId !== 'work') || upcomingEntries.length !== entries.length - 2
+  if (availableEntries.length !== 3 || availableEntries[0]?.id !== 'job_lost' || availableEntries[1]?.id !== 'job_exit' || availableEntries[2]?.id !== 'offer_choice'
+    || availableEntries.some((entry) => entry.themeId !== 'work') || upcomingEntries.length !== entries.length - 3
     || entries.some((entry) => entry.status !== 'available' && entry.status !== 'upcoming')) {
-    errors.push('only work job_lost and job_exit may be available; every other catalog entry must remain upcoming');
+    errors.push('only the three shipped work stories may be available; every other catalog entry must remain upcoming');
   }
   const eventsSource = fs.readFileSync(path.join(__dirname, '../src/app/events.js'), 'utf8');
   const homeSource = fs.readFileSync(path.join(__dirname, '../src/pages/home-page.js'), 'utf8');

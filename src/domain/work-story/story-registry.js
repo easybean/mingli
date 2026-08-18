@@ -1,5 +1,6 @@
 import { UNEMPLOYED_MONTH_FIVE } from '../../content/work-stories/unemployed-month-five.js';
 import { EMPLOYED_WANT_LEAVE } from '../../content/work-stories/employed-want-leave.js';
+import { OFFER_CHOICE } from '../../content/work-stories/offer-choice.js';
 
 // A story is resolved once at the boundary. Pages and the engine must never
 // guess from the entry again: doing so is how two stories can leak into one
@@ -17,6 +18,7 @@ export const registerWorkStoryDefinition = (definition) => {
 
 registerWorkStoryDefinition(UNEMPLOYED_MONTH_FIVE);
 registerWorkStoryDefinition(EMPLOYED_WANT_LEAVE);
+registerWorkStoryDefinition(OFFER_CHOICE);
 
 export const getWorkStoryDefinition = (storyId) => definitions.get(storyId) || null;
 

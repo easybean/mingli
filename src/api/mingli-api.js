@@ -42,6 +42,8 @@ const postJson = async (url, payload) => {
 
 export const cloudSave = (id, payload) => postJson('/api/sync', { id, payload });
 
+export const postAnalyticsEvent = (payload) => postJson('/api/analytics', payload);
+
 // 账号：会话走 HttpOnly Cookie，同源 fetch 自动带上，无需手动传 token。
 export const authMe = () => requestJson('/api/auth/me');
 export const authRegister = (payload) => postJson('/api/auth/register', payload);

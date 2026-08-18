@@ -10,6 +10,7 @@ const { buildLifeGame } = require('./life-game');
 const { buildWorkStoryProfile } = require('./work-story-profile');
 const store = require('./db/store');
 const auth = require('./db/auth');
+const analytics = require('./analytics');
 const {
   evaluateZiweiPatterns,
   PATTERN_GROUP_STAGE1,
@@ -1067,6 +1068,31 @@ const server = http.createServer((req, res) => {
         error: error.message,
       });
     }
+    return;
+  }
+
+  // First-party anonymous funnel events only. Schema validation reconstructs an
+  // allowlisted record and rejects any birth/chart/copy fields before disk I/O.
+  if (url.pathname === '/api/analytics') {
+    if (req.method !== 'POST') {
+      json(res, 405, { error: 'method not allowed' });
+      return;
+    }
+    const clientIp = req.socket.remoteAddress || 'unknown';
+    if (isRateLimited(clientIp)) {
+      json(res, 429, { error: 'too many requests' });
+      return;
+    }
+    readJsonBody(req, 2048).then((body) => {
+      const event = analytics.validateAnalyticsEvent(body);
+      if (!event) {
+        json(res, 400, { error: 'invalid analytics event' });
+        return;
+      }
+      analytics.appendAnalyticsEvent(event)
+        .then(() => json(res, 202, { ok: true }))
+        .catch((error) => json(res, error.code === 'ANALYTICS_FULL' ? 507 : 503, { error: 'analytics unavailable' }));
+    });
     return;
   }
 

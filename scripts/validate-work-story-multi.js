@@ -12,25 +12,29 @@ const errors = [];
 const main = async () => {
   const oldUrl = dataUrl(read('src/content/work-stories/unemployed-month-five.js'));
   const employedUrl = dataUrl(read('src/content/work-stories/employed-want-leave.js'));
+  const offerUrl = dataUrl(read('src/content/work-stories/offer-choice.js'));
   const lifeUrl = dataUrl("export const createInitialLifeState=()=>({pressure:50,opportunity:50,relationship:50,stability:50,resources:50,wellbeing:50}); export const applyLifeStateDelta=(state,delta)=>Object.fromEntries(Object.keys(state).map((key)=>[key,Math.max(0,Math.min(100,(state[key]||50)+(delta[key]||0)))]));");
   const engineUrl = dataUrl(read('src/domain/work-story/story-engine.js').replace("from '../life-state.js'", `from '${lifeUrl}'`));
   const registryUrl = dataUrl(read('src/domain/work-story/story-registry.js')
     .replace("from '../../content/work-stories/unemployed-month-five.js'", `from '${oldUrl}'`)
-    .replace("from '../../content/work-stories/employed-want-leave.js'", `from '${employedUrl}'`));
+    .replace("from '../../content/work-stories/employed-want-leave.js'", `from '${employedUrl}'`)
+    .replace("from '../../content/work-stories/offer-choice.js'", `from '${offerUrl}'`));
   const shareModelUrl = dataUrl(read('src/domain/work-story/share-model.js'));
   const shareCardUrl = dataUrl(read('src/components/work-story-share-card.js')
     .replace("from '../domain/work-story/share-model.js'", `from '${shareModelUrl}'`));
-  const [oldContent, employedContent, engine, registry, shareModel, shareCard] = await Promise.all([
-    import(oldUrl), import(employedUrl), import(engineUrl), import(registryUrl), import(shareModelUrl), import(shareCardUrl),
+  const [oldContent, employedContent, offerContent, engine, registry, shareModel, shareCard] = await Promise.all([
+    import(oldUrl), import(employedUrl), import(offerUrl), import(engineUrl), import(registryUrl), import(shareModelUrl), import(shareCardUrl),
   ]);
   const oldDefinition = oldContent.UNEMPLOYED_MONTH_FIVE;
   const employedDefinition = employedContent.EMPLOYED_WANT_LEAVE;
-  [oldDefinition, employedDefinition].forEach((definition) => {
+  const offerDefinition = offerContent.OFFER_CHOICE;
+  [oldDefinition, employedDefinition, offerDefinition].forEach((definition) => {
     const contractErrors = engine.validateStoryDefinition(definition);
     if (contractErrors.length) errors.push(`${definition?.id || 'unknown'} contract: ${contractErrors.join('；')}`);
   });
   if (registry.getWorkStoryDefinitionForEntry('job_lost')?.id !== oldDefinition.id
-    || registry.getWorkStoryDefinitionForEntry('job_exit')?.id !== employedDefinition.id) {
+    || registry.getWorkStoryDefinitionForEntry('job_exit')?.id !== employedDefinition.id
+    || registry.getWorkStoryDefinitionForEntry('offer_choice')?.id !== offerDefinition.id) {
     errors.push('each available catalog entry must resolve its own definition');
   }
   const profile = {
