@@ -21,7 +21,7 @@ export const renderHomePage = () => `
       <p class="choice-availability">目前 ${WORK_STORY_CATALOG_SUMMARY.available} 套可体验，其余 ${WORK_STORY_CATALOG_SUMMARY.upcoming} 套筹备中。</p>
       <div class="work-entry-grid">${WORK_STORY_ENTRIES.slice(0, 3).map(renderEntry).join('')}</div>
       <details class="more-entries">
-        <summary>再看另外 5 种工作处境</summary>
+        <summary>再看另外 ${Math.max(0, WORK_STORY_ENTRIES.length - 3)} 种工作处境</summary>
         <div class="work-entry-grid">${WORK_STORY_ENTRIES.slice(3).map(renderEntry).join('')}</div>
       </details>
     </section>

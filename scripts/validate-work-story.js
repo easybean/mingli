@@ -24,8 +24,8 @@ const main = async () => {
   const entries = catalog.WORK_STORY_ENTRIES || [];
   const availableEntries = entries.filter((entry) => entry.status === 'available');
   const upcomingEntries = entries.filter((entry) => entry.status === 'upcoming');
-  if (entries.length !== 8 || availableEntries.length !== 2 || upcomingEntries.length !== 6 || availableEntries[0]?.id !== 'job_lost' || availableEntries[1]?.id !== 'job_exit') {
-    errors.push('work-story catalog must contain available job_lost and job_exit entries plus 6 upcoming entries');
+  if (entries.length !== 6 || availableEntries.length !== 2 || upcomingEntries.length !== 4 || availableEntries[0]?.id !== 'job_lost' || availableEntries[1]?.id !== 'job_exit') {
+    errors.push('work-story catalog must contain available job_lost and job_exit entries plus 4 non-overlapping upcoming entries');
   }
   if (definition.title !== '工作空窗期') errors.push('public definition title must be 工作空窗期');
   if (definition.nodes.some((node) => !node.copy?.transition?.trim())) errors.push('every node must contain a non-empty transition');
