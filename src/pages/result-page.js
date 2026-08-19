@@ -7,12 +7,14 @@ const renderSharePreview = (shareModel) => {
   if (!shareModel) return '';
   return `<section class="work-story-share-preview" aria-label="分享结果卡预览">
     <p class="work-story-share-preview__brand">MINGLI · 工作岔路</p>
-    <h2>《${escapeHtml(shareModel.storyTitle)}》</h2>
-    <p class="work-story-share-preview__tone">命盘底色：${escapeHtml(shareModel.chartTone)}</p>
-    <div><b>我的 3 个关键选择</b><ol>${shareModel.keyChoices.map((choice) => `<li>${escapeHtml(choice)}</li>`).join('')}</ol></div>
-    <div><b>路线结局：${escapeHtml(shareModel.routeEnding)}</b><p>${escapeHtml(shareModel.routeSummary)}</p></div>
-    <div><b>另一种可能</b><p>${escapeHtml(shareModel.alternative)}</p></div>
-    <small>${escapeHtml(shareModel.siteUrl)}</small>
+    <h2>${escapeHtml(shareModel.hook)}</h2>
+    <p><b>我的结果：${escapeHtml(shareModel.routeEnding)}</b></p>
+    <p>${escapeHtml(shareModel.insight)}</p>
+    <p class="work-story-share-preview__tone"><b>命盘提醒</b><br>${escapeHtml(shareModel.chartPrompt)}</p>
+    <div><b>我得到</b><p>${escapeHtml(shareModel.gain)}</p></div>
+    <div><b>我也放弃</b><p>${escapeHtml(shareModel.cost)}</p></div>
+    <p><b>${escapeHtml(shareModel.question)}</b></p>
+    <small>来走一遍你的工作岔路 · ${escapeHtml(shareModel.siteUrl)}</small>
   </section>`;
 };
 

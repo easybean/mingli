@@ -162,6 +162,14 @@ export const OFFER_CHOICE = {
     gu: { id: 'gu', name: '顾言', identity: '招聘负责人', relationship: '外部窗口人：确认书面条件与流程' },
     cheng: { id: 'cheng', name: '程岚', identity: '行业前辈', relationship: '复盘人：依据材料指出判断盲点' },
   },
+  shareCopy: {
+    ending_a_clear: { hook: '两份 Offer 都能接，我最后选了那个把话说清楚的。', insight: '我选的不是“最稳”，而是能看见前三个月会发生什么。', question: '如果是你，会选条件更清楚的 A，还是空间更大的 B？' },
+    ending_a_conditional: { hook: '我没有等到完美 Offer，但把最怕失控的条件谈清了。', insight: '真正让我敢选 A 的，不是承诺，而是一条可以复盘的书面边界。', question: '如果只能谈下一项条件，你最想先写清什么？' },
+    ending_b_growth: { hook: '我放弃了更稳的 A，选择了变化更大的 B。', insight: '我想要的不是冒险本身，而是一段能够留下新能力的增长。', question: '稳定和成长不能兼得时，你会把哪一个放在前面？' },
+    ending_b_conditional: { hook: '我选了更有变化的 B，但没有把风险一起照单全收。', insight: '机会可以大胆接，边界必须在开始之前说清楚。', question: '换成你，会先谈合同、工作强度，还是团队变化？' },
+    ending_research_reset: { hook: '手里有两份 Offer，我最后一份都没接。', insight: '拒绝不是因为不敢选，而是现有证据还不足以交换未来几年。', question: '两份都不合适时，你敢不敢暂时一个都不选？' },
+    ending_safe_reset: { hook: '两份 Offer 摆在面前，我却决定先停下来。', insight: '这次我没有拿一份不匹配的工作，去换短暂的安心。', question: '机会和自己的状态冲突时，你会先保住哪一边？' },
+  },
   nodes: N,
   stages: [
     { id: 'facts', order: 1, candidates: ['OC01', 'OC02', 'OC03'], profileDriven: true },

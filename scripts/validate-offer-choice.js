@@ -71,6 +71,8 @@ const main = async () => {
   if (!trace('2026-08-14 12:00') || trace('2026-08-14 12:00') === trace('2028-05-14 12:00')) errors.push('representative date must change a node/evidence/weight at act 1, 4, or 6');
   const privateModel = share.createWorkStoryShareModel({ definition, profile: { ...profile, source: { date: '1995-03-12', birthTime: '07:30', birthPlace: '徐州', pillars: '甲子' } }, session: engine.createWorkStorySession({ definition, profile }), ending: { ...definition.endings[0], title: 'x', summaryText: 'x' } });
   if (['1995-03-12', '07:30', '徐州', '甲子'].some((secret) => JSON.stringify(privateModel).includes(secret))) errors.push('share model leaks private source data');
+  const socialText = share.shareTextForWorkStory(privateModel);
+  if (!socialText.includes('两份 Offer') || !socialText.includes('如果是你') || ['我的3个关键选择', '命盘底色', '另一种可能'].some((phrase) => socialText.includes(phrase))) errors.push('offer share copy must be a contextual social hook, not an internal result transcript');
   if (errors.length) { errors.forEach((error) => console.error(`FAIL ${error}`)); process.exit(1); }
   console.log('PASS offer_choice: contract, 15,309 paths, full reachability, facts, echoes, chart/date variation and share privacy');
 };
