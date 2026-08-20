@@ -18,6 +18,14 @@ export const validateStoryDefinition = (definition) => {
   if (!definition || !/^\d+\.\d+\.\d+$/.test(definition.version || '')) errors.push('version must be a semantic version');
   if (!definition?.id || !definition?.entry || !Array.isArray(definition?.stages) || !Array.isArray(definition?.nodes)) errors.push('story requires id, entry, stages and nodes');
   if (!definition?.title?.trim()) errors.push('story requires a public title');
+  // Theme metadata is optional for legacy source modules; the registry supplies
+  // work defaults. A cross-theme definition that declares themeId must declare
+  // the complete presentation contract rather than relying on work copy.
+  if (definition?.themeId !== undefined) {
+    if (!/^[a-z][a-z0-9_]{0,63}$/.test(definition.themeId) || !definition.themeLabel?.trim() || !definition.resultLabel?.trim()) errors.push('story theme metadata requires themeId, themeLabel and resultLabel');
+    if (!definition.shareBrand?.trim() || !definition.journeyLabel?.trim()) errors.push('story theme metadata requires shareBrand and journeyLabel');
+    if (!definition.chipLabels || ['safety', 'opportunity', 'load'].some((key) => !definition.chipLabels[key]?.trim())) errors.push('story theme metadata requires safety/opportunity/load chipLabels');
+  }
   if (!definition?.stages?.length) errors.push('story requires at least one stage');
   if (!definition?.nodes?.length) errors.push('story requires at least one node');
   if (definition?.initialCareerStage && !CAREER_STAGES.has(definition.initialCareerStage)) errors.push('initialCareerStage is invalid');
@@ -148,11 +156,11 @@ const chooseCandidate = (definition, stage, profile, session) => (stage.candidat
 
 export const createWorkStorySession = ({ definition, profile }) => {
   const errors = validateStoryDefinition(definition);
-  if (errors.length) throw new Error(`工作剧本 contract 无效：${errors.join('；')}`);
-  if (!profile?.available) throw new Error('命盘信息不足，无法生成这次工作推演。请核对出生日期、时间和地点。');
+  if (errors.length) throw new Error(`人生剧本 contract 无效：${errors.join('；')}`);
+  if (!profile?.available) throw new Error('命盘信息不足，无法生成这次人生推演。请核对出生日期、时间和地点。');
   return {
     storyId: definition.id, entry: definition.entry, sceneIndex: 0, resolvedNodes: [], choices: [], flags: { ...(definition.initialFlags || {}) }, careerStage: definition.initialCareerStage || null, relations: {}, routeSignals: {}, nextWeights: {},
-    workState: workStateFromProfile(profile.initialState),
+    workState: { ...workStateFromProfile(profile.initialState), ...(profile.initialWorkState || {}), ...(definition.initialWorkState || {}) },
     lifeState: { ...createInitialLifeState(), ...(profile.initialState || {}) }, currentFeedback: null, completed: false,
     delayedConsequences: [], consumedDelayed: [],
   };
@@ -211,7 +219,9 @@ export const resolveEnding = ({ definition, profile, session }) => {
     .sort((left, right) => right.score - left.score || left.index - right.index)[0]?.item;
   if (!ending) return null;
   const highestFocus = profile.rankedFocuses?.[0] || 'safety';
-  const focusLabel = { safety: '安全余量', opportunity: '机会窗口', recovery: '身心负荷', transition: '外部变化', negotiation: '权责边界' }[highestFocus] || '当前局面';
+  const focusLabel = definition?.themeId === 'relationship'
+    ? ({ clarity: '把期待说清', waiting: '等待带来的消耗', peer: '把猜测交回事实', time: '时间边界', boundary: '投入边界', slow: '可观察的节奏' }[highestFocus] || '当前关系节奏')
+    : ({ safety: '安全余量', opportunity: '机会窗口', recovery: '身心负荷', transition: '外部变化', negotiation: '权责边界' }[highestFocus] || '当前局面');
   const qualityVariant = (ending.summary.qualityVariants || []).find((item) => (item.when?.flags || []).every((flag) => session.flags?.[flag]));
   return { ...clone(ending), title: ending.summary.title, summaryText: ending.summary.core, qualityText: qualityVariant?.text || '', action: ending.action.instruction, choicesSummary: session.choices.slice(-3).map((item) => item.choiceLabel), chartContrast: `命盘底色这一轮更容易牵动${focusLabel}；而你实际连续选择的是${session.choices.slice(-3).map((item) => item.choiceLabel).join('、')}。` };
 };
@@ -240,8 +250,8 @@ export const advanceStory = ({ definition, profile, session }) => {
   };
 };
 
-export const workChips = (workState = {}) => [
-  { id: 'safety', label: '安全余量', value: Math.round(workState.runway || 50), tone: 'steady' },
-  { id: 'opportunity', label: '机会窗口', value: Math.round(workState.optionality || 50), tone: 'opportunity' },
-  { id: 'load', label: '身心负荷', value: Math.round(workState.load || 50), tone: 'load' },
+export const workChips = (workState = {}, labels = {}) => [
+  { id: 'safety', label: labels.safety || '安全余量', value: Math.round(workState.runway || 50), tone: 'steady' },
+  { id: 'opportunity', label: labels.opportunity || '机会窗口', value: Math.round(workState.optionality || 50), tone: 'opportunity' },
+  { id: 'load', label: labels.load || '身心负荷', value: Math.round(workState.load || 50), tone: 'load' },
 ];

@@ -13,36 +13,69 @@ const main = async () => {
   const oldUrl = dataUrl(read('src/content/work-stories/unemployed-month-five.js'));
   const employedUrl = dataUrl(read('src/content/work-stories/employed-want-leave.js'));
   const offerUrl = dataUrl(read('src/content/work-stories/offer-choice.js'));
+  const careerSwitchUrl = dataUrl(read('src/content/work-stories/career-switch.js'));
+  const relationshipUrl = dataUrl(read('src/content/work-stories/relationship-unclear.js'));
   const lifeUrl = dataUrl("export const createInitialLifeState=()=>({pressure:50,opportunity:50,relationship:50,stability:50,resources:50,wellbeing:50}); export const applyLifeStateDelta=(state,delta)=>Object.fromEntries(Object.keys(state).map((key)=>[key,Math.max(0,Math.min(100,(state[key]||50)+(delta[key]||0)))]));");
   const engineUrl = dataUrl(read('src/domain/work-story/story-engine.js').replace("from '../life-state.js'", `from '${lifeUrl}'`));
   const registryUrl = dataUrl(read('src/domain/work-story/story-registry.js')
     .replace("from '../../content/work-stories/unemployed-month-five.js'", `from '${oldUrl}'`)
     .replace("from '../../content/work-stories/employed-want-leave.js'", `from '${employedUrl}'`)
-    .replace("from '../../content/work-stories/offer-choice.js'", `from '${offerUrl}'`));
+    .replace("from '../../content/work-stories/offer-choice.js'", `from '${offerUrl}'`)
+    .replace("from '../../content/work-stories/career-switch.js'", `from '${careerSwitchUrl}'`)
+    .replace("from '../../content/work-stories/relationship-unclear.js'", `from '${relationshipUrl}'`));
   const shareModelUrl = dataUrl(read('src/domain/work-story/share-model.js'));
   const shareCardUrl = dataUrl(read('src/components/work-story-share-card.js')
     .replace("from '../domain/work-story/share-model.js'", `from '${shareModelUrl}'`));
-  const [oldContent, employedContent, offerContent, engine, registry, shareModel, shareCard] = await Promise.all([
-    import(oldUrl), import(employedUrl), import(offerUrl), import(engineUrl), import(registryUrl), import(shareModelUrl), import(shareCardUrl),
+  const [oldContent, employedContent, offerContent, careerSwitchContent, relationshipContent, engine, registry, shareModel, shareCard] = await Promise.all([
+    import(oldUrl), import(employedUrl), import(offerUrl), import(careerSwitchUrl), import(relationshipUrl), import(engineUrl), import(registryUrl), import(shareModelUrl), import(shareCardUrl),
   ]);
   const oldDefinition = oldContent.UNEMPLOYED_MONTH_FIVE;
   const employedDefinition = employedContent.EMPLOYED_WANT_LEAVE;
   const offerDefinition = offerContent.OFFER_CHOICE;
-  [oldDefinition, employedDefinition, offerDefinition].forEach((definition) => {
+  const careerSwitchDefinition = careerSwitchContent.CAREER_SWITCH;
+  const relationshipDefinition = relationshipContent.RELATIONSHIP_UNCLEAR;
+  [oldDefinition, employedDefinition, offerDefinition, careerSwitchDefinition, relationshipDefinition].forEach((definition) => {
     const contractErrors = engine.validateStoryDefinition(definition);
     if (contractErrors.length) errors.push(`${definition?.id || 'unknown'} contract: ${contractErrors.join('；')}`);
   });
   if (registry.getWorkStoryDefinitionForEntry('job_lost')?.id !== oldDefinition.id
     || registry.getWorkStoryDefinitionForEntry('job_exit')?.id !== employedDefinition.id
-    || registry.getWorkStoryDefinitionForEntry('offer_choice')?.id !== offerDefinition.id) {
+    || registry.getWorkStoryDefinitionForEntry('offer_choice')?.id !== offerDefinition.id
+    || registry.getWorkStoryDefinitionForEntry('career_switch')?.id !== careerSwitchDefinition.id
+    || registry.getWorkStoryDefinitionForEntry('relationship_unclear')?.id !== relationshipDefinition.id) {
     errors.push('each available catalog entry must resolve its own definition');
   }
+  const registeredWorkStories = [oldDefinition.id, employedDefinition.id, offerDefinition.id, careerSwitchDefinition.id]
+    .map((id) => registry.getWorkStoryDefinition(id));
+  if (registeredWorkStories.some((definition) => !definition?.themeId || !definition?.themeLabel || !definition?.resultLabel
+    || !definition?.shareBrand || !definition?.journeyLabel || ['safety', 'opportunity', 'load'].some((key) => !definition.chipLabels?.[key]))) {
+    errors.push('registry must supply complete presentation metadata to legacy work stories');
+  }
+  const relationshipFixture = {
+    ...oldDefinition, id: 'relationship_fixture', entry: 'relationship_unclear',
+    themeId: 'relationship', themeLabel: '关系岔路', resultLabel: '关系路线',
+    shareBrand: 'MINGLI · 关系岔路', journeyLabel: '来走一遍你的关系岔路',
+    chipLabels: { safety: '边界清晰度', opportunity: '沟通空间', load: '情绪负荷' },
+    stageLabels: { unemployed: '关系未明' },
+  };
+  if (engine.validateStoryDefinition(relationshipFixture).length || engine.validateStoryDefinition({ ...relationshipFixture, themeLabel: '' }).length === 0) {
+    errors.push('cross-theme metadata contract must accept complete metadata and reject incomplete metadata');
+  }
+  const relationshipChipLabels = engine.workChips({ runway: 40, optionality: 60, load: 70 }, relationshipFixture.chipLabels).map((chip) => chip.label);
+  if (relationshipChipLabels.join('|') !== '边界清晰度|沟通空间|情绪负荷') errors.push('cross-theme chip labels must override work labels');
   const profile = {
     available: true,
     tags: Array.from({ length: 12 }, (_, index) => `astro:fusion:M${String(index + 1).padStart(2, '0')}`),
     rankedFocuses: ['opportunity'],
     initialState: {},
   };
+  const relationshipShare = shareModel.createWorkStoryShareModel({
+    definition: relationshipFixture, profile, session: { choices: [{ choiceLabel: '先把边界说清' }] },
+    ending: { title: '关系有了新的确认方式', summaryText: '先把下一步说清。', summary: { core: '先把下一步说清。' } },
+  });
+  if (relationshipShare?.shareBrand !== 'MINGLI · 关系岔路' || relationshipShare?.resultLabel !== '关系路线' || /工作岔路|职业路线/.test(shareModel.shareTextForWorkStory(relationshipShare))) {
+    errors.push('cross-theme share copy must use definition metadata instead of work labels');
+  }
   const oldSession = engine.createWorkStorySession({ definition: oldDefinition, profile });
   const employedSession = engine.createWorkStorySession({ definition: employedDefinition, profile });
   if (oldSession.storyId === employedSession.storyId || oldSession.entry === employedSession.entry

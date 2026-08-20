@@ -2,32 +2,34 @@ import { escapeHtml } from '../components/html.js';
 import { createWorkStoryViewModel } from '../domain/work-story/work-story-view-model.js';
 import { createWorkStoryShareModel, shareTextForWorkStory } from '../domain/work-story/share-model.js';
 import { getWorkStoryDefinitionForSession } from '../domain/work-story/story-registry.js';
+import { profileForStoryDefinition } from '../domain/work-story/profile-for-definition.js';
 
 const renderSharePreview = (shareModel) => {
   if (!shareModel) return '';
   return `<section class="work-story-share-preview" aria-label="分享结果卡预览">
-    <p class="work-story-share-preview__brand">MINGLI · 工作岔路</p>
+    <p class="work-story-share-preview__brand">${escapeHtml(shareModel.shareBrand)}</p>
     <h2>${escapeHtml(shareModel.hook)}</h2>
-    <p><b>我的结果：${escapeHtml(shareModel.routeEnding)}</b></p>
+    <p><b>我的${escapeHtml(shareModel.resultLabel)}：${escapeHtml(shareModel.routeEnding)}</b></p>
     <p>${escapeHtml(shareModel.insight)}</p>
     <p class="work-story-share-preview__tone"><b>命盘提醒</b><br>${escapeHtml(shareModel.chartPrompt)}</p>
     <div><b>我得到</b><p>${escapeHtml(shareModel.gain)}</p></div>
     <div><b>我也放弃</b><p>${escapeHtml(shareModel.cost)}</p></div>
     <p><b>${escapeHtml(shareModel.question)}</b></p>
-    <small>来走一遍你的工作岔路 · ${escapeHtml(shareModel.siteUrl)}</small>
+    <small>${escapeHtml(shareModel.journeyLabel)} · ${escapeHtml(shareModel.siteUrl)}</small>
   </section>`;
 };
 
 export const renderResultPage = (state) => {
   const definition = getWorkStoryDefinitionForSession(state.workStorySession);
-  const model = createWorkStoryViewModel({ definition, profile: state.astrolabeData?.reading?.workStoryProfile, session: state.workStorySession });
+  const profile = profileForStoryDefinition(definition, state.astrolabeData);
+  const model = createWorkStoryViewModel({ definition, profile, session: state.workStorySession });
   const ending = model.ending;
   if (!ending) return '<section class="page"><div class="empty-state">结果仍在生成。</div></section>';
-  const shareModel = createWorkStoryShareModel({ definition, profile: state.astrolabeData?.reading?.workStoryProfile, session: state.workStorySession, ending });
+  const shareModel = createWorkStoryShareModel({ definition, profile, session: state.workStorySession, ending });
   const shareText = shareTextForWorkStory(shareModel);
   return `
     <section class="page result-page">
-      <p class="page-kicker">你的职业路线</p>
+      <p class="page-kicker">你的${escapeHtml(model.resultLabel)}</p>
       <h1>${escapeHtml(ending.title)}</h1>
       <p class="result-summary">${escapeHtml(ending.summaryText)}</p>
       <section class="result-block"><h2>这一轮你换来了什么</h2><p>${escapeHtml(ending.summary.gain)}</p></section>

@@ -30,6 +30,7 @@ export const renderHomePage = (state) => {
           <div class="story-theme-panel__head"><div><h2>${escapeHtml(activeTheme.label)}</h2><p>${escapeHtml(activeTheme.description)}</p></div><span>${summary.available ? `${summary.available} 套可体验` : '筹备中'}</span></div>
           <p class="choice-availability">本主题共 ${summary.total} 种处境；${summary.available ? `当前 ${summary.available} 套可体验，其余 ${summary.upcoming} 套筹备中。` : `当前 ${summary.upcoming} 套正在筹备。`}</p>
           <div class="work-entry-grid">${activeTheme.entries.map(renderEntry).join('')}</div>
+          ${activeTheme.id === 'relationship' ? '<p class="choice-disclaimer">若存在威胁、控制、暴力、被跟踪或人身安全风险，请优先联系可信的现实支持；本体验不处理安全危机。</p>' : ''}
         </section>
       </section>
       <aside class="sample-route-card">

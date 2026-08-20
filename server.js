@@ -7,7 +7,7 @@ const { Lunar, LunarUtil, Solar } = require('lunar-typescript');
 const { tenGod } = require('./bazi-utils');
 const { buildKnowledgeProfile } = require('./knowledge');
 const { buildLifeGame } = require('./life-game');
-const { buildWorkStoryProfile } = require('./work-story-profile');
+const { buildWorkStoryProfile, buildRelationshipStoryProfile } = require('./work-story-profile');
 const store = require('./db/store');
 const auth = require('./db/auth');
 const analytics = require('./analytics');
@@ -854,6 +854,7 @@ const buildReading = ({ summary, palaces, bazi, horoscope }) => {
     horoscope,
     patterns,
   });
+  const relationshipStoryProfile = buildRelationshipStoryProfile({ summary, bazi, palaces, horoscope });
   const currentMutagens = [
     ['大限', horoscope.decadal],
     ['流年', horoscope.yearly],
@@ -900,6 +901,7 @@ const buildReading = ({ summary, palaces, bazi, horoscope }) => {
     topics: topicsWithPatterns,
     lifeGame,
     workStoryProfile,
+    relationshipStoryProfile,
     retrieval: knowledge.retrieval,
     aiPromptSeed: [
       `请基于紫微斗数和八字资料生成克制、具体、非宿命论的人生手册。`,

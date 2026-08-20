@@ -1,6 +1,6 @@
 # Mingli 文档目录
 
-最后整理：2026-08-14
+最后整理：2026-08-20
 
 本目录按文档状态分类。判断项目下一步时，只查看 `active/`；不要从已完成文档或旧规划中捡未勾选事项继续做。
 
@@ -26,6 +26,8 @@
 - [`active/work-crossroads-content-bible.md`](active/work-crossroads-content-bible.md)：0.1.0「工作岔路」内容基线，包含《失业后的第五个月》21 个事件节点、六结局、命理触发矩阵和编码数据 contract；随纵向切片实现继续校验。
 - [`active/employed-want-leave-content-map.md`](active/employed-want-leave-content-map.md)：0.2.0《在职，但越来越想离开》内容地图，说明第二套职业剧情的七幕、人物、结局与事实边界。
 - [`active/future-situations-content-maps.md`](active/future-situations-content-maps.md)：其余 24 个二级处境的内容地图；0.4.0 已落地《手里有两个机会，怎么选》，其余 23 项继续筹备。
+- [`active/career-switch-content-map.md`](active/career-switch-content-map.md)：0.5.0《想转行，但担心从头开始》七幕剧情、人物、事实门槛与六结局内容地图。
+- [`active/relationship-unclear-content-map.md`](active/relationship-unclear-content-map.md)：0.5.0 第一条「关系岔路」《关系没有说清，该不该继续等》，包含口语化七幕剧情、安全边界与六结局。
 
 ## 已完成
 

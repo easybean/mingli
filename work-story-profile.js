@@ -258,4 +258,102 @@ const buildWorkStoryProfile = ({ summary = {}, bazi = {}, palaces = [], horoscop
   };
 };
 
-module.exports = { buildWorkStoryProfile };
+// Relationship profile deliberately has its own three-layer matrix. A fusion
+// tag exists only when one concrete 八字 signal、one named 紫微宫位星群、and
+// one current 大限/流年/流月落宫星群 or 四化 activation are all present.
+const RELATIONSHIP_RULES = [
+  { id: 'R01', ruleId: 'R01_clarity_first', focus: 'clarity', weight: 4, bazi: 'authorityOrWealth', palace: '夫妻', stars: ['紫微', '天府', '天相', '天梁', '武曲', '天机', '巨门', '文昌', '文曲'], flows: ['decadal', 'yearly', 'monthly'], baziCopy: '官杀或财星在这一段更显眼，你会更在意关系里有没有说清规则和投入。', ziweiCopy: '夫妻宫的沟通与结构星群被点亮，适合把期待落到能确认的话和安排上。' },
+  { id: 'R02', ruleId: 'R02_emotional_wait', focus: 'waiting', weight: 4, bazi: 'support', palace: '福德', stars: ['太阴', '天同', '天梁', '天府', '巨门', '文昌', '文曲', '地空', '地劫', '火星', '铃星'], flows: ['decadal', 'yearly', 'monthly'], baziCopy: '印星在这一段更显眼，容易先在心里反复想；把感受和事实分开看会更稳。', ziweiCopy: '福德宫的情绪与内耗星群被点亮，等待带来的消耗值得单独看见。' },
+  { id: 'R03', ruleId: 'R03_peer_grounding', focus: 'peer', weight: 4, bazi: 'peer', palace: '交友', stars: ['左辅', '右弼', '天魁', '天钺', '文昌', '文曲', '巨门', '天机', '贪狼'], flows: ['decadal', 'yearly', 'monthly'], baziCopy: '比劫信号在这一段更显眼，同侪意见会影响判断；更适合请朋友只帮你看事实。', ziweiCopy: '交友宫的同侪与沟通星群被点亮，外部视角可以帮你分清记录和猜测。' },
+  { id: 'R04', ruleId: 'R04_time_boundary', focus: 'time', weight: 4, bazi: 'outputOrPeer', palace: '迁移', stars: ['天马', '七杀', '破军', '贪狼', '天机', '太阳', '武曲', '火星', '铃星'], flows: ['decadal', 'yearly', 'monthly'], baziCopy: '食伤或比劫信号更显眼，生活节奏、邀约和外部安排更容易成为关系里的现实问题。', ziweiCopy: '迁移宫的变化与行程星群被点亮，提前确认时间比靠感觉等更重要。' },
+  { id: 'R05', ruleId: 'R05_over_give_risk', focus: 'boundary', weight: 4, bazi: 'wealthOrSupport', palace: '夫妻', stars: ['巨门', '擎羊', '陀罗', '火星', '铃星', '地空', '地劫', '破军'], flows: ['decadal', 'yearly', 'monthly'], baziCopy: '财星或印星更显眼，投入、照顾和安全感会被放大；别用更多付出换一个答案。', ziweiCopy: '夫妻宫的压力星群被点亮，边界要靠说清和行动，不靠不断加码。' },
+  { id: 'R06', ruleId: 'R06_slow_but_real', focus: 'slow', weight: 4, bazi: 'supportOrAuthority', palace: '夫妻', stars: ['天相', '天府', '天梁', '太阴', '天同', '右弼', '左辅'], flows: ['decadal', 'yearly', 'monthly'], baziCopy: '印星或官杀更显眼，慢一点未必是坏事，但需要有能复盘的行动和时间点。', ziweiCopy: '夫妻宫的稳定与辅助星群被点亮，适合把“慢慢来”改成一段可观察的周期。' },
+];
+
+const buildRelationshipStoryProfile = ({ summary = {}, bazi = {}, palaces = [], horoscope = {} }) => {
+  const gods = countGods(bazi);
+  const palaceMap = new Map(palaces.map((palace) => [palace.name, palace]));
+  const requiredPalaces = ['夫妻', '福德', '交友', '迁移'];
+  // iztro's twelve-palace label is “仆役”; product copy uses the more familiar
+  // “交友宫”. They are the same input slot here, never a missing-data fallback.
+  const actualPalaceName = (name) => (palaceMap.has(name) ? name : (name === '交友' && palaceMap.has('仆役') ? '仆役' : name));
+  const currentGods = [deriveCurrentLuckGod(bazi, horoscope), deriveCurrentDaYunGod(bazi, horoscope)].filter(Boolean);
+  const hasGod = (names) => names.some((name) => (gods[name] || 0) > 0 || currentGods.includes(name));
+  const baziMatches = {
+    authorityOrWealth: () => hasGod(['正官', '七杀', '正财', '偏财']),
+    support: () => hasGod(['正印', '偏印']),
+    peer: () => hasGod(['比肩', '劫财']),
+    outputOrPeer: () => hasGod(['食神', '伤官', '比肩', '劫财']),
+    wealthOrSupport: () => hasGod(['正财', '偏财', '正印', '偏印']),
+    supportOrAuthority: () => hasGod(['正印', '偏印', '正官', '七杀']),
+  };
+  const flowFor = (rule) => rule.flows.map((level) => activeFlowEvidence({ palaces, horoscope, level, flowingPalaceName: actualPalaceName(rule.palace) }))
+    .filter(Boolean)
+    // 四化本身不是“万能激活器”：只有它落到这个规则自己的星群上，
+    // 才能作为该 R 规则的第三层命中。
+    .map((flow) => ({
+      ...flow,
+      matchedStars: flow.stars.filter((star) => rule.stars.includes(star)),
+      activated: flow.mutagen.filter((star) => rule.stars.includes(star)),
+    }))
+    .find((flow) => flow.matchedStars.length || flow.activated.length);
+  const tags = new Set(['relationship-story']);
+  const weights = { clarity: 0, waiting: 0, peer: 0, time: 0, boundary: 0, slow: 0 };
+  // The natal structure decides which R rules are possible; the active
+  // 流年/大运十神 changes their emphasis across dates, so the same person is
+  // not shown an effectively frozen relationship profile every year.
+  [...new Set(currentGods)].forEach((god) => {
+    if (/正官|七杀|正财|偏财/.test(god)) weights.clarity += 2;
+    if (/正印|偏印/.test(god)) { weights.waiting += 2; weights.slow += 1; }
+    if (/比肩|劫财/.test(god)) weights.peer += 2;
+    if (/食神|伤官/.test(god)) { weights.time += 2; weights.boundary += 1; }
+  });
+  const evidenceByRuleId = {};
+  const fusionMatrix = {};
+  RELATIONSHIP_RULES.forEach((rule) => {
+    const palace = palaceMap.get(actualPalaceName(rule.palace));
+    const ziweiStars = starsOf(palace).filter((star) => rule.stars.includes(star));
+    const period = flowFor(rule);
+    const baziHit = Boolean(baziMatches[rule.bazi]?.());
+    const ziweiHit = ziweiStars.length > 0;
+    const periodHit = Boolean(period);
+    const complete = baziHit && ziweiHit && periodHit;
+    fusionMatrix[rule.id] = {
+      bazi: { hit: baziHit, signal: rule.bazi },
+      ziwei: { hit: ziweiHit, palace: rule.palace, stars: ziweiStars },
+      period: period ? { hit: true, level: period.level, flowingPalace: rule.palace, natalPalace: period.natalPalace, stars: period.matchedStars, mutagenActivation: period.activated } : { hit: false },
+      complete,
+    };
+    if (!complete) return;
+    tags.add(`astro:fusion:${rule.id}`);
+    weights[rule.focus] += rule.weight;
+    const activated = period.activated.length ? `；四化会照${period.activated.join('、')}` : '';
+    evidenceByRuleId[rule.ruleId] = [
+      { title: '八字底色', body: rule.baziCopy },
+      { title: '紫微结构', body: `${rule.ziweiCopy}（${rule.palace}宫见${ziweiStars.slice(0, 3).join('、')}）` },
+      { title: '当前运限', body: `${period.label}${activated}。` },
+    ];
+  });
+  const fallback = { title: '命理依据（部分匹配）', body: '这张命盘在这一条上只出现了部分信号，所以这里只把它当作排序参考，不把它写成确定结论。' };
+  RELATIONSHIP_RULES.forEach((rule) => { if (!evidenceByRuleId[rule.ruleId]) evidenceByRuleId[rule.ruleId] = [fallback]; });
+  const rankedFocuses = Object.entries(weights).sort((a, b) => b[1] - a[1]).map(([key]) => key);
+  const initialWorkState = {
+    // Reuse the generic storage shape, but these are the relationship page's
+    // three visible chips: clear enough / reciprocal enough / tiring enough.
+    runway: clamp(38 + weights.clarity + weights.boundary - weights.waiting),
+    optionality: clamp(42 + weights.peer + weights.slow - weights.boundary),
+    load: clamp(48 + weights.waiting + weights.boundary - weights.slow),
+  };
+  return {
+    version: '0.5.0',
+    available: Boolean(bazi.dayMaster?.stem && requiredPalaces.every((name) => palaceMap.get(actualPalaceName(name))) && horoscope?.yearly && horoscope?.monthly),
+    tags: [...tags], weights, rankedFocuses,
+    initialState: {}, initialWorkState,
+    contextLine: `这段时间，关系里更容易被推到台前的是${({ clarity: '把期待说清', waiting: '别让等待占满生活', peer: '把猜测交回事实', time: '把时间边界讲明白', boundary: '别用付出换答案', slow: '给慢一点一个观察期' }[rankedFocuses[0]] || '把期待和边界说清')}。`,
+    evidenceByRuleId, fusionMatrix,
+    relationshipSignals: Object.fromEntries(requiredPalaces.map((name) => [name, formatStars(palaceMap.get(actualPalaceName(name)))])),
+    source: { gender: summary.gender || '' },
+  };
+};
+
+module.exports = { buildWorkStoryProfile, buildRelationshipStoryProfile };

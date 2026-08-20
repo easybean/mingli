@@ -36,6 +36,7 @@ import { createWorkStoryViewModel } from '../domain/work-story/work-story-view-m
 import { createWorkStoryShareModel } from '../domain/work-story/share-model.js';
 import { downloadWorkStorySharePng, shareWorkStoryCard } from '../components/work-story-share-card.js';
 import { track } from './analytics.js';
+import { profileForStoryDefinition } from '../domain/work-story/profile-for-definition.js';
 
 export const formDataToInput = (form) => {
   const formData = new FormData(form);
@@ -228,8 +229,9 @@ export const bindEvents = (root) => {
 
     const shareModel = () => {
       const definition = getWorkStoryDefinitionForSession(state.workStorySession);
-      const model = createWorkStoryViewModel({ definition, profile: state.astrolabeData?.reading?.workStoryProfile, session: state.workStorySession });
-      return createWorkStoryShareModel({ definition, profile: state.astrolabeData?.reading?.workStoryProfile, session: state.workStorySession, ending: model.ending });
+      const profile = profileForStoryDefinition(definition, state.astrolabeData);
+      const model = createWorkStoryViewModel({ definition, profile, session: state.workStorySession });
+      return createWorkStoryShareModel({ definition, profile, session: state.workStorySession, ending: model.ending });
     };
 
     const shareCardButton = event.target.closest('[data-share-card]');

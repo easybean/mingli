@@ -31,10 +31,14 @@ const main = async () => {
     || new Set(entries.map((entry) => entry.id)).size !== entries.length) {
     errors.push('catalog must expose five structured, non-overlapping primary themes with secondary entries');
   }
-  if (availableEntries.length !== 3 || availableEntries[0]?.id !== 'job_lost' || availableEntries[1]?.id !== 'job_exit' || availableEntries[2]?.id !== 'offer_choice'
-    || availableEntries.some((entry) => entry.themeId !== 'work') || upcomingEntries.length !== entries.length - 3
+  const workAvailable = availableEntries.filter((entry) => entry.themeId === 'work');
+  const relationshipAvailable = availableEntries.filter((entry) => entry.themeId === 'relationship');
+  if (availableEntries.length !== 5 || workAvailable.length !== 4 || relationshipAvailable.length !== 1
+    || workAvailable.map((entry) => entry.id).join(',') !== 'job_lost,job_exit,offer_choice,career_switch'
+    || relationshipAvailable[0]?.id !== 'relationship_unclear' || relationshipAvailable[0]?.storyId !== 'relationship_unclear'
+    || upcomingEntries.length !== entries.length - 5
     || entries.some((entry) => entry.status !== 'available' && entry.status !== 'upcoming')) {
-    errors.push('only the three shipped work stories may be available; every other catalog entry must remain upcoming');
+    errors.push('exactly four work stories and relationship_unclear may be available; every other catalog entry must remain upcoming');
   }
   const eventsSource = fs.readFileSync(path.join(__dirname, '../src/app/events.js'), 'utf8');
   const homeSource = fs.readFileSync(path.join(__dirname, '../src/pages/home-page.js'), 'utf8');

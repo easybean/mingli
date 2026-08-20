@@ -16,6 +16,7 @@ import {
 } from '../domain/work-story/story-engine.js';
 import { getWorkStoryDefinitionForEntry, getWorkStoryDefinitionForSession, normalizeWorkStorySession } from '../domain/work-story/story-registry.js';
 import { getStoryTheme, WORK_STORY_ENTRIES } from '../domain/work-story/story-catalog.js';
+import { profileForStoryDefinition } from '../domain/work-story/profile-for-definition.js';
 import { resolvedAppPage } from './work-navigation.js';
 
 const defaultBirthInput = () => ({
@@ -31,6 +32,7 @@ const defaultBirthInput = () => ({
 
 export const THEMES = ['star', 'star-day'];
 const DEFAULT_THEME = 'star';
+const activeStoryProfile = () => profileForStoryDefinition(getWorkStoryDefinitionForSession(state.workStorySession), state.astrolabeData);
 const savedTheme = loadTheme();
 
 // 从 localStorage 恢复命盘与进度：刷新不丢，落到今日主页。
@@ -165,14 +167,14 @@ export const setAstrolabeData = (data) => {
   state.ui.reveal = { date: '', phase: 'sealed' };
   try {
     const definition = getWorkStoryDefinitionForEntry(state.selectedWorkEntry || 'job_lost');
-    if (!definition) throw new Error('这个工作处境还在准备中。');
+    if (!definition) throw new Error('这个人生岔路还在准备中。');
     state.workStorySession = createWorkStorySession({
       definition,
-      profile: data.reading?.workStoryProfile,
+      profile: profileForStoryDefinition(definition, data),
     });
   } catch (error) {
     state.workStorySession = null;
-    state.ui.error = error.message || '命盘信息不足，暂时无法生成这次工作推演。';
+    state.ui.error = error.message || '命盘信息不足，暂时无法生成这次人生岔路。';
     state.activePage = 'birth';
   }
   saveBirthInput(state.birthInput);
@@ -247,12 +249,12 @@ export const selectWorkEntry = (entry) => {
     try {
       state.workStorySession = createWorkStorySession({
         definition,
-        profile: state.astrolabeData.reading?.workStoryProfile,
+        profile: profileForStoryDefinition(definition, state.astrolabeData),
       });
       state.activePage = 'story';
       state.ui.error = '';
     } catch (error) {
-      state.ui.error = error.message || '命盘信息不足，暂时无法生成这次工作推演。';
+      state.ui.error = error.message || '命盘信息不足，暂时无法生成这次人生岔路。';
     }
   } else {
     state.activePage = 'birth';
@@ -273,7 +275,7 @@ export const chooseWorkStoryChoice = (choiceId) => {
     if (!definition) throw new Error('这段推演和当前剧本不一致，请重新开始。');
     state.workStorySession = chooseStoryOption({
       definition,
-      profile: state.astrolabeData.reading?.workStoryProfile,
+      profile: activeStoryProfile(),
       session: state.workStorySession,
       choiceId,
     });
@@ -291,7 +293,7 @@ export const advanceWorkStory = () => {
     if (!definition) throw new Error('这段推演和当前剧本不一致，请重新开始。');
     state.workStorySession = advanceStory({
       definition,
-      profile: state.astrolabeData.reading?.workStoryProfile,
+      profile: activeStoryProfile(),
       session: state.workStorySession,
     });
     if (state.workStorySession.completed) state.activePage = 'result';
@@ -306,10 +308,10 @@ export const restartWorkStory = () => {
   try {
     const definition = getWorkStoryDefinitionForSession(state.workStorySession)
       || getWorkStoryDefinitionForEntry(state.selectedWorkEntry || 'job_lost');
-    if (!definition) throw new Error('这个工作处境还在准备中。');
+    if (!definition) throw new Error('这个人生岔路还在准备中。');
     state.workStorySession = createWorkStorySession({
       definition,
-      profile: state.astrolabeData.reading?.workStoryProfile,
+      profile: profileForStoryDefinition(definition, state.astrolabeData),
     });
     state.activePage = 'story';
     state.ui.error = '';

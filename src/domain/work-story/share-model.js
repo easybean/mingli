@@ -25,8 +25,12 @@ export const createWorkStoryShareModel = ({ definition, profile, session, ending
   const routeEnding = String(ending.title);
   const routeSummary = String(ending.summaryText || ending.summary?.core || '');
   return {
+    themeLabel: String(definition.themeLabel || '人生岔路'),
+    resultLabel: String(definition.resultLabel || '路线结果'),
+    shareBrand: String(definition.shareBrand || 'MINGLI · 人生岔路'),
+    journeyLabel: String(definition.journeyLabel || '来走一遍你的选择岔路'),
     storyTitle: String(definition.title),
-    hook: String(shareCopy.hook || `这道职业题，我最后走到了「${routeEnding}」。`),
+    hook: String(shareCopy.hook || `这道选择题，我最后走到了「${routeEnding}」。`),
     insight: String(shareCopy.insight || routeSummary),
     question: String(shareCopy.question || '同样的处境，你会走出同一个结局吗？'),
     chartPrompt: String(focusPrompts[focus] || focusPrompts.safety),
@@ -43,5 +47,5 @@ export const createWorkStoryShareModel = ({ definition, profile, session, ending
 export const shareTextForWorkStory = (model) => {
   if (!model) return '';
   const tradeoff = [model.gain && `我得到：${model.gain}`, model.cost && `我也放弃：${model.cost}`].filter(Boolean).join('\n');
-  return `${model.hook}\n\n我的结果：${model.routeEnding}\n${model.insight}\n\n命盘提醒：${model.chartPrompt}${tradeoff ? `\n\n${tradeoff}` : ''}\n\n${model.question}\n来走一遍你的工作岔路：${model.siteUrl}`;
+  return `${model.hook}\n\n我的${model.resultLabel}：${model.routeEnding}\n${model.insight}\n\n命盘提醒：${model.chartPrompt}${tradeoff ? `\n\n${tradeoff}` : ''}\n\n${model.question}\n${model.journeyLabel}：${model.siteUrl}`;
 };

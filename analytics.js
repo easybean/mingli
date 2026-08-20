@@ -17,8 +17,8 @@ const ENTRY_IDS = new Set([
   'finance_runway', 'finance_commitment', 'finance_risk', 'finance_income_volatility', 'finance_debt_order',
   'migration_city', 'migration_home', 'migration_return', 'migration_long_distance_relationship', 'migration_settle_decision',
 ]);
-const STORY_IDS = new Set(['unemployed_month_five', 'employed_want_leave', 'offer_choice']);
-const ENTRY_FOR_STORY = { unemployed_month_five: 'job_lost', employed_want_leave: 'job_exit', offer_choice: 'offer_choice' };
+const STORY_IDS = new Set(['unemployed_month_five', 'employed_want_leave', 'offer_choice', 'career_switch', 'relationship_unclear']);
+const ENTRY_FOR_STORY = { unemployed_month_five: 'job_lost', employed_want_leave: 'job_exit', offer_choice: 'offer_choice', career_switch: 'career_switch', relationship_unclear: 'relationship_unclear' };
 const configuredMaxBytes = Number(process.env.ANALYTICS_MAX_FILE_BYTES);
 const MAX_FILE_BYTES = Number.isFinite(configuredMaxBytes) && configuredMaxBytes >= 1024 ? Math.min(configuredMaxBytes, 100 * 1024 * 1024) : 10 * 1024 * 1024;
 const configuredRetentionDays = Number(process.env.ANALYTICS_RETENTION_DAYS);

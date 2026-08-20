@@ -33,13 +33,13 @@ export const renderWorkStoryShareCard = (canvas, model) => {
   context.fillRect(0, 0, width, 220);
   context.fillStyle = '#a6c8ff';
   context.font = '34px sans-serif';
-  context.fillText('MINGLI · 工作岔路', 80, 108);
+  context.fillText(singleLine(context, model.shareBrand, 900), 80, 108);
   context.fillStyle = '#f5f2e9';
   context.font = 'bold 64px sans-serif';
   textBlock(context, model.hook, 80, 205, 900, 72, 3);
   context.fillStyle = '#a6c8ff';
   context.font = 'bold 32px sans-serif';
-  context.fillText(singleLine(context, `我的结果｜${model.routeEnding}`, 900), 80, 440);
+  context.fillText(singleLine(context, `我的${model.resultLabel}｜${model.routeEnding}`, 900), 80, 440);
   context.font = '34px sans-serif';
   context.fillStyle = '#f5f2e9';
   textBlock(context, model.insight, 80, 505, 900, 49, 2);
@@ -59,7 +59,7 @@ export const renderWorkStoryShareCard = (canvas, model) => {
   textBlock(context, model.question, 80, 1010, 900, 54, 3);
   context.fillStyle = '#91a9d5';
   context.font = '26px sans-serif';
-  context.fillText('来走一遍你的工作岔路', 80, 1225);
+  context.fillText(singleLine(context, model.journeyLabel, 900), 80, 1225);
   context.fillText(model.siteUrl, 80, 1270);
   return canvas;
 };
@@ -74,7 +74,7 @@ export const downloadWorkStorySharePng = (model, documentRef = document) => {
   const { dataUrl } = createWorkStorySharePng(model, documentRef);
   const anchor = documentRef.createElement('a');
   anchor.href = dataUrl;
-  anchor.download = 'mingli-work-story.png';
+  anchor.download = 'mingli-story.png';
   anchor.click();
   return dataUrl;
 };
@@ -86,7 +86,7 @@ export const shareWorkStoryCard = async (model, { navigatorRef = navigator, docu
   if (!navigatorRef?.share) return { method: 'download', dataUrl: downloadWorkStorySharePng(model, documentRef) };
   const { canvas } = createWorkStorySharePng(model, documentRef);
   const blob = await canvasBlob(canvas);
-  const file = typeof File === 'function' && blob ? new File([blob], 'mingli-work-story.png', { type: 'image/png' }) : null;
+  const file = typeof File === 'function' && blob ? new File([blob], 'mingli-story.png', { type: 'image/png' }) : null;
   const payload = file && (!navigatorRef.canShare || navigatorRef.canShare({ files: [file] }))
     ? { title: model.routeEnding, text, url: model.siteUrl, files: [file] }
     : { title: model.routeEnding, text, url: model.siteUrl };

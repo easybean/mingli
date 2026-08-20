@@ -23,7 +23,7 @@ const characterFor = (definition, roleId) => {
 };
 
 const transitionFallback = (session) => (session?.sceneIndex || 0) === 0
-  ? '故事从你确认眼前这段工作处境开始。'
+  ? '故事从你确认眼前这段处境开始。'
   : '上一幕的选择已经落地；几天后，新的局面出现。';
 
 const careerStageLabel = {
@@ -53,20 +53,26 @@ export const createWorkStoryViewModel = ({ definition, profile, session }) => {
   const careerStage = careerStageFor(session);
   return {
     ready: Boolean(profile?.available && session && (node || ending)),
-    title: definition?.title || '工作岔路',
-    displayTitle: definition?.careerStageTitles?.[careerStage] || careerStageTitle[careerStage] || definition?.title || '工作岔路',
+    title: definition?.title || '人生岔路',
+    themeLabel: definition?.themeLabel || '人生岔路',
+    resultLabel: definition?.resultLabel || '路线结果',
+    displayTitle: definition?.careerStageTitles?.[careerStage] || definition?.stageLabels?.[careerStage] || careerStageTitle[careerStage] || definition?.title || '人生岔路',
     careerStage,
-    careerStageLabel: careerStageLabel[careerStage] || '当前职业阶段',
+    careerStageLabel: definition?.stageLabels?.[careerStage] || careerStageLabel[careerStage] || '',
     progress: { current: Math.min((session?.sceneIndex || 0) + 1, definition?.stages?.length || 7), total: definition?.stages?.length || 7 },
     contextLine: profile?.contextLine || '',
-    chips: workChips(session?.workState),
+    chips: workChips(session?.workState, definition?.chipLabels),
     node: node ? {
       ...node,
       characters: node.roles.map((role) => characterFor(definition, role)),
       transition: node.copy?.transition || transitionFallback(session),
       evidence: node.evidenceSlots.flatMap((slot) => {
-        const matched = (slot.ruleIds || []).flatMap((ruleId) => profile?.evidenceByRuleId?.[ruleId] || []);
-        return matched.length ? matched : [{ title: '命理依据（部分匹配）', body: '这幕由当前工作主题与阶段信号共同排序；完整三层组合依据不足，因此不把它写成确定结论。' }];
+        const byRule = (slot.ruleIds || []).map((ruleId) => profile?.evidenceByRuleId?.[ruleId] || []);
+        const relationshipChain = definition?.themeId === 'relationship'
+          ? byRule.find((items) => items.length >= 3 && items.every((item) => !/部分匹配/.test(item.title || '')))
+          : null;
+        const matched = relationshipChain || byRule.flat();
+        return matched.length ? matched : [{ title: '命理依据（部分匹配）', body: `这幕由当前${definition?.themeLabel || '人生'}主题与阶段信号共同排序；完整三层组合依据不足，因此不把它写成确定结论。` }];
       }),
     } : null,
     feedback: session?.currentFeedback || null,
