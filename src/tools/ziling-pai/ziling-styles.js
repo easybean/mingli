@@ -91,6 +91,20 @@ const CSS = `
 .zl-qinput::placeholder{ color:var(--zl-muted); }
 .zl-qinput:focus{ outline:none; border-color:var(--zl-gold-line); }
 
+/* ---- question prompt ---- */
+.zl-question-backdrop{ position:fixed; inset:0; z-index:80; display:flex; align-items:center; justify-content:center;
+  padding:24px; background:rgba(5,4,9,.64); backdrop-filter:blur(5px); animation:zl-fade .18s ease both; }
+.zl-question-modal{ position:relative; width:min(100%,360px); box-sizing:border-box; border:1px solid var(--zl-gold-line); border-radius:22px;
+  padding:27px 21px 20px; background:var(--zl-card-surface); box-shadow:0 28px 70px -24px var(--zl-card-shadow); }
+.zl-question-modal h2{ margin:7px 26px 8px 0; font-family:'Noto Serif SC',serif; font-size:22px; line-height:1.35; color:var(--zl-ink); }
+.zl-question-modal p{ margin:0; color:var(--zl-ink-muted); font-size:13px; line-height:1.7; }
+.zl-question-kicker{ color:var(--zl-gold); font-family:'Inter',sans-serif; font-size:10px; font-weight:700; letter-spacing:2px; }
+.zl-question-close{ position:absolute; top:12px; right:12px; border:none; background:none; color:var(--zl-muted); font-size:19px; padding:7px; cursor:pointer; }
+.zl-qinput-modal{ min-height:84px; margin-top:16px; background:var(--zl-surface-2); }
+.zl-question-actions{ display:flex; gap:10px; align-items:center; margin-top:14px; }
+.zl-question-skip{ flex:1; padding:12px 4px; border:none; background:none; color:var(--zl-ink-muted); font:inherit; font-size:13px; cursor:pointer; }
+.zl-question-continue{ flex:1.1; height:46px; font-size:14px; }
+
 /* ---- shuffle stage ---- */
 .zl-stage{ position:relative; width:100%; height:400px; margin-top:14px; display:flex; align-items:center; justify-content:center; }
 .zl-pile{ position:relative; width:120px; height:168px; }

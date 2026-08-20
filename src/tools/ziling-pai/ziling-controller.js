@@ -87,14 +87,31 @@ const typesScreen = () => {
           <div class="zl-type-en">${x.en}</div>
         </div>`).join('')}
     </div>
-    <textarea class="zl-qinput" data-zl-question rows="2" maxlength="40"
-      placeholder="想问的具体一句（可留空，如：该不该接这个 offer）">${esc(model.question)}</textarea>
     <button class="zl-btn" data-zl-to-shuffle ${model.type ? '' : 'disabled'}
       style="margin-top:14px;width:100%;height:52px;font-size:15px">
-      ${model.type ? `就问「${t.name}」 →` : '请先择一类'}
+      ${model.type ? `继续问「${t.name}」 →` : '请先择一类'}
     </button>
+    ${model.questionPromptOpen ? questionPrompt(t) : ''}
   </div>`;
 };
+
+// 不把问题输入藏在分类按钮上方。用户先选大类，再决定要不要补一句具体情境；
+// 关闭弹窗不会清掉已选分类，仍可以直接继续抽牌。
+const questionPrompt = (type) => `
+  <div class="zl-question-backdrop" data-zl-question-close>
+    <section class="zl-question-modal" role="dialog" aria-modal="true" aria-labelledby="zl-question-title">
+      <button class="zl-question-close" type="button" data-zl-question-close aria-label="暂不填写">✕</button>
+      <div class="zl-question-kicker">${esc(type?.name || '这一类事')}</div>
+      <h2 id="zl-question-title">这一次，你具体想问什么？</h2>
+      <p>写一句就好，比如“该不该接这个 offer”。不写也没关系，牌会按你选的类别来解。</p>
+      <textarea class="zl-qinput zl-qinput-modal" data-zl-question rows="3" maxlength="40" autofocus
+        placeholder="可留空，写下此刻最想问的一句">${esc(model.question)}</textarea>
+      <div class="zl-question-actions">
+        <button class="zl-question-skip" type="button" data-zl-question-skip>不填，直接继续</button>
+        <button class="zl-btn zl-question-continue" type="button" data-zl-question-continue>继续 →</button>
+      </div>
+    </section>
+  </div>`;
 
 const shuffleScreen = () => {
   const done = model.phase === 'done' && model.spread;
@@ -212,6 +229,12 @@ const render = () => {
 // ---- 动作 ----
 const go = (screen) => { clearTimers(); closeZoom(); model.screen = screen; render(); };
 const goBack = () => { const i = SCREENS.indexOf(model.screen); if (i > 0) go(SCREENS[i - 1]); };
+const beginQuestion = () => {
+  if (!model.type) return;
+  model.questionPromptOpen = false;
+  model.phase = 'idle'; model.revealCount = 0; model.spread = null;
+  go('shuffle');
+};
 
 // 放大大卡：点牌 → 占大半屏读释义；再点任意处复原
 const openZoom = (idx) => {
@@ -289,16 +312,18 @@ const bind = () => {
     if (themeTab) return setTheme(themeTab.dataset.zlTheme);
     if (event.target.closest('[data-zl-to-types]')) return go('types');
     const typeEl = event.target.closest('[data-zl-type]');
-    if (typeEl) { model.type = typeEl.dataset.zlType; return render(); }
+    if (typeEl) { model.type = typeEl.dataset.zlType; model.questionPromptOpen = true; return render(); }
+    if (event.target.closest('[data-zl-question-continue]') || event.target.closest('[data-zl-question-skip]')) return beginQuestion();
+    if (event.target.closest('[data-zl-question-close]')) { model.questionPromptOpen = false; return render(); }
     if (event.target.closest('[data-zl-to-shuffle]')) {
-      if (model.type) { model.phase = 'idle'; model.revealCount = 0; model.spread = null; go('shuffle'); }
+      beginQuestion();
       return;
     }
     if (event.target.closest('[data-zl-shuffle]')) return startRitual();
     if (event.target.closest('[data-zl-to-spread]')) return go('spread');
     if (event.target.closest('[data-zl-to-reading]')) return go('reading');
     if (event.target.closest('[data-zl-restart]')) {
-      model.type = null; model.question = ''; model.phase = 'idle'; model.revealCount = 0; model.spread = null;
+      model.type = null; model.question = ''; model.questionPromptOpen = false; model.phase = 'idle'; model.revealCount = 0; model.spread = null;
       return go('cover');
     }
     // 大卡已开：点任意处（含背景与大卡本身）关闭
@@ -319,7 +344,7 @@ export const openZiling = ({ astrolabeData = null, onTheme = null } = {}) => {
   ensureZilingStyles();
   chart = createChartAdapter(astrolabeData);
   onThemeChange = onTheme;
-  model = { screen: 'cover', type: null, question: '', phase: 'idle', revealCount: 0, spread: null, timers: [] };
+  model = { screen: 'cover', type: null, question: '', questionPromptOpen: false, phase: 'idle', revealCount: 0, spread: null, timers: [] };
   if (!root) {
     root = document.createElement('div');
     root.className = 'zl-overlay';
