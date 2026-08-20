@@ -87,16 +87,12 @@ const typesScreen = () => {
           <div class="zl-type-en">${x.en}</div>
         </div>`).join('')}
     </div>
-    <button class="zl-btn" data-zl-to-shuffle ${model.type ? '' : 'disabled'}
-      style="margin-top:14px;width:100%;height:52px;font-size:15px">
-      ${model.type ? `继续问「${t.name}」 →` : '请先择一类'}
-    </button>
     ${model.questionPromptOpen ? questionPrompt(t) : ''}
   </div>`;
 };
 
 // 不把问题输入藏在分类按钮上方。用户先选大类，再决定要不要补一句具体情境；
-// 关闭弹窗不会清掉已选分类，仍可以直接继续抽牌。
+// 关闭弹窗不会清掉已选分类；再次点分类即可重新打开输入框。
 const questionPrompt = (type) => `
   <div class="zl-question-backdrop" data-zl-question-close>
     <section class="zl-question-modal" role="dialog" aria-modal="true" aria-labelledby="zl-question-title">
@@ -314,11 +310,8 @@ const bind = () => {
     const typeEl = event.target.closest('[data-zl-type]');
     if (typeEl) { model.type = typeEl.dataset.zlType; model.questionPromptOpen = true; return render(); }
     if (event.target.closest('[data-zl-question-continue]') || event.target.closest('[data-zl-question-skip]')) return beginQuestion();
-    if (event.target.closest('[data-zl-question-close]')) { model.questionPromptOpen = false; return render(); }
-    if (event.target.closest('[data-zl-to-shuffle]')) {
-      beginQuestion();
-      return;
-    }
+    const questionBackdrop = event.target.closest('[data-zl-question-close]');
+    if (questionBackdrop && event.target === questionBackdrop) { model.questionPromptOpen = false; return render(); }
     if (event.target.closest('[data-zl-shuffle]')) return startRitual();
     if (event.target.closest('[data-zl-to-spread]')) return go('spread');
     if (event.target.closest('[data-zl-to-reading]')) return go('reading');
