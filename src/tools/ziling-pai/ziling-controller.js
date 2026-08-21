@@ -2,10 +2,12 @@
 // 不经过主 app 的 store/notify 重渲染循环（避免动效被打断）。
 // 与主 app 仅两处相连：openZiling 入参（命盘 + 主题回调）。删本目录即可整体移除。
 import { ensureZilingStyles } from './ziling-styles.js';
-import { QUESTION_TYPES, buildSpread, assembleReading } from './ziling-view-model.js';
+import {
+  QUESTION_TYPES, DRAW_LEVELS, getDrawPool, resolveMajorCard, buildSpread, assembleReading,
+} from './ziling-view-model.js';
 import { renderCard, renderZoomCard } from './ziling-card.js';
 import { createChartAdapter } from './chart-adapter.js';
-import { starfield, baguaRing, dipper, backArt } from './ziling-art.js';
+import { starfield, baguaRing, dipper } from './ziling-art.js';
 
 const SCREENS = ['cover', 'types', 'shuffle', 'reading'];
 
@@ -17,9 +19,6 @@ let model = null;
 let chart = null;
 let onThemeChange = null;
 
-const reduced = () => {
-  try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch { return false; }
-};
 const currentTheme = () => document.documentElement.getAttribute('data-theme') || 'star';
 const clearTimers = () => { (model?.timers || []).forEach(clearTimeout); if (model) model.timers = []; };
 
@@ -35,25 +34,16 @@ const DEAL_LAYOUT = [
 ];
 
 const DRAW_STEPS = [
-  { title: '第一抽 · 主星', hint: '先抽主星，它定下这一问的核心气质。' },
-  { title: '第二抽 · 甲级辅星', hint: '再抽甲级辅星，看此事最有力的助推。' },
-  { title: '第三抽 · 乙级辅星', hint: '接着抽乙级辅星，它带来更细的提醒。' },
-  { title: '第四抽 · 丙级辅星', hint: '再抽丙级辅星，留意这一步的顺逆。' },
-  { title: '第五抽 · 四化', hint: '最后抽四化牌，看这件事会往哪里转。' },
+  { title: '第一抽 · 主星', hint: '从 16 张主星牌中凭直觉选一张，它定下这一问的核心气质。' },
+  { title: '第二抽 · 甲级辅星', hint: '从 14 张甲级辅星中选一张，看此事最有力的助推。' },
+  { title: '第三抽 · 乙级辅星', hint: '从 32 张乙级辅星中选一张，它带来更细的提醒。' },
+  { title: '第四抽 · 丙级辅星', hint: '从 17 张丙级辅星中选一张，留意这一步的顺逆。' },
+  { title: '第五抽 · 四化', hint: '从 12 张四化牌中选一张，看这件事会往哪里转。' },
 ];
 
-// 牌堆背面 = 正式牌背（与落盘后的牌背一致：北斗 + 紫灵牌字样）
-const pileBack = (seed) => `${backArt(seed)}<span class="zl-back-title">紫 灵 牌</span>`;
-const renderPile = () => `
-  <span class="zl-pile">
-    <span class="zl-pile-card">${pileBack(5)}</span>
-    <span class="zl-pile-card">${pileBack(9)}</span>
-    <span class="zl-pile-card">${pileBack(13)}</span>
-  </span>`;
-
-const renderDealStage = (spread, revealedCount) => `
+const renderDealStage = (spread) => `
   <div class="zl-deal">
-    ${spread.slice(0, revealedCount).map((card, i) => {
+    ${spread.map((card, i) => {
       const L = DEAL_LAYOUT[i];
       return `<div class="zl-slot is-revealed"
         style="left:${L.left};top:${L.top};width:${L.w};z-index:${L.z};animation-delay:${(i * 0.12).toFixed(2)}s">
@@ -62,13 +52,6 @@ const renderDealStage = (spread, revealedCount) => `
         ${renderCard({ card, idx: i })}
       </div>`;
     }).join('')}
-    ${revealedCount < spread.length ? (() => {
-      const next = DEAL_LAYOUT[revealedCount];
-      return `<button class="zl-draw-pile" type="button" data-zl-draw-card aria-label="${DRAW_STEPS[revealedCount].title}"
-        style="left:${next.left};top:${next.top};width:${next.w};z-index:${next.z}">
-        <span class="zl-slot-label">${next.label}</span>${renderPile()}<span class="zl-draw-pile-hint">点此抽牌</span>
-      </button>`;
-    })() : ''}
   </div>`;
 
 // ---- 各屏内容 ----
@@ -125,22 +108,68 @@ const questionPrompt = (type) => `
     </section>
   </div>`;
 
+const drawModeScreen = () => `
+  <div class="zl-draw-mode">
+    <button class="zl-mode-card is-full" type="button" data-zl-full-draw>
+      <span class="zl-mode-badge">更有仪式感</span>
+      <strong>完整抽牌</strong>
+      <span>五级牌库依次铺开，亲手选择 5 次</span>
+      <em>约 1–2 分钟</em>
+    </button>
+    <button class="zl-mode-card" type="button" data-zl-quick-draw>
+      <strong>简化抽牌</strong>
+      <span>一次抽齐五张，直接查看完整牌阵</span>
+      <em>约 10 秒</em>
+    </button>
+  </div>`;
+
+const drawGrid = () => {
+  const dense = model.drawPool.length > 20 ? 'is-dense' : model.drawPool.length > 16 ? 'is-medium' : '';
+  return `
+    <div class="zl-deck-grid ${dense}" aria-label="${DRAW_LEVELS[model.drawLevelIndex]}牌库，共${model.drawPool.length}张">
+      ${model.drawPool.map((card, i) => `
+        <button class="zl-deck-choice" type="button" data-zl-pick-card="${i}" aria-label="选择第${i + 1}张牌">
+          <span class="zl-mini-back" style="--zl-card-order:${i}">
+            <span class="zl-mini-star">✦</span><span class="zl-mini-name">紫灵</span>
+          </span>
+        </button>`).join('')}
+    </div>
+    <button class="zl-draw-switch" type="button" data-zl-quick-draw>不想逐张选？改用简化抽牌</button>`;
+};
+
+const revealPickedCard = () => {
+  const isEmptyMajor = model.drawLevelIndex === 0 && model.pendingCard?.['空宫'];
+  const next = model.drawLevelIndex < DRAW_STEPS.length - 1 ? DRAW_STEPS[model.drawLevelIndex + 1].title : '查看完整牌阵';
+  return `
+    <div class="zl-picked-wrap">
+      <div class="zl-picked-kicker">你抽到的是</div>
+      <div class="zl-picked-card">${renderCard({ card: model.pendingCard, idx: model.pendingIndex })}</div>
+      ${isEmptyMajor ? '<div class="zl-empty-note">抽中空宫：确认后会按你所问的宫位，借对宫主星入阵。</div>' : ''}
+      <button class="zl-btn" type="button" data-zl-confirm-card>收下这张 · ${next} →</button>
+    </div>`;
+};
+
+const completedDraw = () => `
+  <div class="zl-stage">${renderDealStage(model.spread)}</div>
+  <div class="zl-sub zl-complete-hint">轻点任意一张牌可放大查看</div>
+  <button class="zl-btn" data-zl-to-reading style="width:230px;height:52px;font-size:15px">解这一阵 →</button>`;
+
 const shuffleScreen = () => {
-  if (!model.spread) model.spread = buildSpread({ typeKey: model.type, chart });
-  const done = model.revealCount === model.spread.length;
-  const step = DRAW_STEPS[model.revealCount];
-  const title = done ? '五星已成阵' : step.title;
-  const hint = done ? '轻点任意一张牌查看释义，再解这一阵。' : step.hint;
-  const btn = done
-    ? `<button class="zl-btn" data-zl-to-reading style="width:230px;height:52px;font-size:15px">解这一阵 →</button>`
-    : `<div class="zl-draw-progress">已抽 ${model.revealCount} / 5 张 · 点牌堆抽下一张</div>`;
+  const choosingMode = !model.drawMode;
+  const done = model.phase === 'done';
+  const revealing = model.phase === 'reveal';
+  const step = DRAW_STEPS[model.drawLevelIndex] || DRAW_STEPS[0];
+  const title = choosingMode ? '选择抽牌方式' : done ? '五星已成阵' : step.title;
+  const hint = choosingMode
+    ? '想慢慢选，还是快速看结果？两种方式使用同一套牌。'
+    : done ? `${model.drawMode === 'quick' ? '已为你一次抽齐五张牌。' : '五次选择已完成。'}牌阵就在这里。` : step.hint;
+  const body = choosingMode ? drawModeScreen() : done ? completedDraw() : revealing ? revealPickedCard() : drawGrid();
   return `
   <div class="zl-pad" style="align-items:center">
     <div class="zl-kicker">STEP 02</div>
     <div class="zl-h" style="font-size:22px;margin-top:9px">${title}</div>
     <div class="zl-sub" style="margin-top:7px;min-height:17px">${hint}</div>
-    <div class="zl-stage">${renderDealStage(model.spread, model.revealCount)}</div>
-    ${btn}
+    ${body}
   </div>`;
 };
 
@@ -213,7 +242,9 @@ const goBack = () => { const i = SCREENS.indexOf(model.screen); if (i > 0) go(SC
 const beginQuestion = () => {
   if (!model.type) return;
   model.questionPromptOpen = false;
-  model.phase = 'drawing'; model.revealCount = 0; model.spread = buildSpread({ typeKey: model.type, chart });
+  model.drawMode = null; model.drawLevelIndex = 0; model.drawPool = [];
+  model.pendingCard = null; model.pendingResolvedCard = null; model.spread = [];
+  model.phase = 'mode';
   go('shuffle');
 };
 
@@ -239,10 +270,62 @@ const setTheme = (theme) => {
   render();
 };
 
-const drawNextCard = () => {
-  if (!model.spread || model.revealCount >= model.spread.length) return;
-  model.revealCount += 1;
-  model.phase = model.revealCount === model.spread.length ? 'done' : 'drawing';
+const shuffled = (cards) => {
+  const result = [...cards];
+  for (let i = result.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+};
+
+const prepareDrawLevel = (index) => {
+  model.drawLevelIndex = index;
+  model.drawPool = shuffled(getDrawPool(DRAW_LEVELS[index]));
+  model.pendingCard = null;
+  model.pendingResolvedCard = null;
+  model.phase = 'choosing';
+};
+
+const startFullDraw = () => {
+  model.drawMode = 'full';
+  model.spread = [];
+  prepareDrawLevel(0);
+  render();
+};
+
+const startQuickDraw = () => {
+  model.drawMode = 'quick';
+  model.spread = buildSpread({ typeKey: model.type, chart });
+  model.phase = 'done';
+  render();
+};
+
+const pickFullDrawCard = (index) => {
+  if (model.drawMode !== 'full' || model.phase !== 'choosing') return;
+  const picked = model.drawPool[index];
+  if (!picked) return;
+  model.pendingIndex = index;
+  model.pendingCard = picked;
+  model.pendingResolvedCard = model.drawLevelIndex === 0
+    ? resolveMajorCard({ card: picked, typeKey: model.type, chart })
+    : picked;
+  model.phase = 'reveal';
+  render();
+};
+
+const confirmFullDrawCard = () => {
+  if (model.drawMode !== 'full' || model.phase !== 'reveal' || !model.pendingResolvedCard) return;
+  model.spread.push(model.pendingResolvedCard);
+  const nextIndex = model.drawLevelIndex + 1;
+  if (nextIndex >= DRAW_LEVELS.length) {
+    model.pendingCard = null;
+    model.pendingResolvedCard = null;
+    model.phase = 'done';
+    render();
+    return;
+  }
+  prepareDrawLevel(nextIndex);
   render();
 };
 
@@ -258,16 +341,21 @@ const bind = () => {
     if (event.target.closest('[data-zl-question-continue]') || event.target.closest('[data-zl-question-skip]')) return beginQuestion();
     const questionBackdrop = event.target.closest('[data-zl-question-close]');
     if (questionBackdrop && event.target === questionBackdrop) { model.questionPromptOpen = false; return render(); }
-    if (event.target.closest('[data-zl-draw-card]')) return drawNextCard();
+    if (event.target.closest('[data-zl-full-draw]')) return startFullDraw();
+    if (event.target.closest('[data-zl-quick-draw]')) return startQuickDraw();
+    const pickedCard = event.target.closest('[data-zl-pick-card]');
+    if (pickedCard) return pickFullDrawCard(Number(pickedCard.dataset.zlPickCard));
+    if (event.target.closest('[data-zl-confirm-card]')) return confirmFullDrawCard();
     if (event.target.closest('[data-zl-to-reading]')) return go('reading');
     if (event.target.closest('[data-zl-restart]')) {
-      model.type = null; model.question = ''; model.questionPromptOpen = false; model.phase = 'idle'; model.revealCount = 0; model.spread = null;
+      model.type = null; model.question = ''; model.questionPromptOpen = false; model.phase = 'idle';
+      model.drawMode = null; model.drawLevelIndex = 0; model.drawPool = []; model.pendingCard = null; model.pendingResolvedCard = null; model.spread = null;
       return go('cover');
     }
     // 大卡已开：点任意处（含背景与大卡本身）关闭
     if (event.target.closest('[data-zl-zoom]')) return closeZoom();
     const card = event.target.closest('[data-zl-card]');
-    if (card && model.screen === 'shuffle' && model.revealCount === model.spread?.length) return openZoom(Number(card.dataset.zlCard));
+    if (card && model.screen === 'shuffle' && model.phase === 'done') return openZoom(Number(card.dataset.zlCard));
   });
 
   // 问句输入：只存值、不重渲染（避免打断输入）
@@ -282,7 +370,10 @@ export const openZiling = ({ astrolabeData = null, onTheme = null } = {}) => {
   ensureZilingStyles();
   chart = createChartAdapter(astrolabeData);
   onThemeChange = onTheme;
-  model = { screen: 'cover', type: null, question: '', questionPromptOpen: false, phase: 'idle', revealCount: 0, spread: null, timers: [] };
+  model = {
+    screen: 'cover', type: null, question: '', questionPromptOpen: false, phase: 'idle', drawMode: null,
+    drawLevelIndex: 0, drawPool: [], pendingCard: null, pendingResolvedCard: null, spread: null, timers: [],
+  };
   if (!root) {
     root = document.createElement('div');
     root.className = 'zl-overlay';

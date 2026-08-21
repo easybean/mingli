@@ -47,9 +47,29 @@ const POOLS = {
   四化: [...ZILING_DECK.四化, ...Array.from({ length: 8 }, () => ({ ...EMPTY_HUA }))],
 };
 
+export const DRAW_LEVELS = ['主星', '甲级辅星', '乙级辅星', '丙级辅星', '四化'];
+
+// 完整抽牌界面只拿到一份浅拷贝，避免洗牌改变领域牌库本身。
+export const getDrawPool = (level) => (POOLS[level] || []).map((card) => ({ ...card }));
+
 const findMajor = (name) => ZILING_DECK.主星.find((c) => c['名'] === name) || null;
 
 const pick = (arr, rng) => arr[Math.floor(rng() * arr.length)] || arr[0];
+
+// 实体主星牌含两张空宫。用户抽中空宫时，牌面仍展示空宫；确认后按命盘借对宫主星成阵。
+export const resolveMajorCard = ({ card, typeKey, chart = null, rng = Math.random } = {}) => {
+  if (!card || !card['空宫']) return card;
+  const q = QUESTION_TYPES.find((t) => t.key === typeKey) || QUESTION_TYPES[QUESTION_TYPES.length - 1];
+  let borrowed = null;
+  let via = '重抽';
+  if (chart && chart.ready) {
+    const opp = chart.getOpposite(q.palace);
+    const name = opp && !opp.空宫 ? (opp.主星[0] || {})['名'] : null;
+    if (name) { borrowed = findMajor(name); via = '对宫'; }
+  }
+  if (!borrowed) borrowed = pick(ZILING_DECK.主星, rng);
+  return { ...borrowed, _fromEmpty: true, _via: via };
+};
 
 // drawSpread(rng=Math.random) → [主星, 甲, 乙, 丙, 四化]（主星可能是空宫，待 buildSpread 补实）
 export const drawSpread = (rng = Math.random) => [
@@ -63,19 +83,8 @@ export const drawSpread = (rng = Math.random) => [
 // buildSpread：抽一阵并按官方规则补实主星空宫——主星位永远是实星，四化空宫保留。
 // 主星空宫补星：有命盘借真命盘对宫之星（命盘加持），对宫亦空/无命盘则随机重抽。
 export const buildSpread = ({ typeKey, chart = null, rng = Math.random } = {}) => {
-  const q = QUESTION_TYPES.find((t) => t.key === typeKey) || QUESTION_TYPES[QUESTION_TYPES.length - 1];
   const spread = drawSpread(rng);
-  if (spread[0] && spread[0]['空宫']) {
-    let borrowed = null;
-    let via = '重抽';
-    if (chart && chart.ready) {
-      const opp = chart.getOpposite(q.palace);
-      const name = opp && !opp.空宫 ? (opp.主星[0] || {})['名'] : null;
-      if (name) { borrowed = findMajor(name); via = '对宫'; }
-    }
-    if (!borrowed) borrowed = pick(ZILING_DECK.主星, rng);
-    spread[0] = { ...borrowed, _fromEmpty: true, _via: via };
-  }
+  spread[0] = resolveMajorCard({ card: spread[0], typeKey, chart, rng });
   return spread;
 };
 
