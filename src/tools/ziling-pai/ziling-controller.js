@@ -22,16 +22,7 @@ let onThemeChange = null;
 const currentTheme = () => document.documentElement.getAttribute('data-theme') || 'star';
 const clearTimers = () => { (model?.timers || []).forEach(clearTimeout); if (model) model.timers = []; };
 
-// ---- 牌阵发牌位（300x320 舞台内）。两排：①主星+四化并排 ②甲乙丙
-// 注意：水平定位只用像素 left，不用 transform/translateX——zl-rise 入场动画会动 transform，
-// 用 translateX 定位会被动画覆盖导致牌挤到正中重叠。 ----
-const DEAL_LAYOUT = [
-  { left: '14%', top: '24px', z: 2, w: '34%', label: '主星' },
-  { left: '2%', top: '216px', z: 1, w: '31%', label: '甲级辅星' },
-  { left: '34.5%', top: '216px', z: 1, w: '31%', label: '乙级辅星' },
-  { left: '67%', top: '216px', z: 1, w: '31%', label: '丙级辅星' },
-  { left: '52%', top: '24px', z: 2, w: '34%', label: '四化' },
-];
+const DEAL_LABELS = ['主星', '甲级辅星', '乙级辅星', '丙级辅星', '四化'];
 
 const DRAW_STEPS = [
   { title: '第一抽 · 主星', hint: '从 16 张主星牌中凭直觉选一张，它定下这一问的核心气质。' },
@@ -41,17 +32,17 @@ const DRAW_STEPS = [
   { title: '第五抽 · 四化', hint: '从 12 张四化牌中选一张，看这件事会往哪里转。' },
 ];
 
+const renderDealCard = (spread, index) => `
+  <div class="zl-final-card is-revealed" style="animation-delay:${(index * 0.1).toFixed(2)}s">
+    <div class="zl-slot-label">${DEAL_LABELS[index]}</div>
+    <div class="zl-glow"></div>
+    ${renderCard({ card: spread[index], idx: index })}
+  </div>`;
+
 const renderDealStage = (spread) => `
   <div class="zl-deal">
-    ${spread.map((card, i) => {
-      const L = DEAL_LAYOUT[i];
-      return `<div class="zl-slot is-revealed"
-        style="left:${L.left};top:${L.top};width:${L.w};z-index:${L.z};animation-delay:${(i * 0.12).toFixed(2)}s">
-        <div class="zl-slot-label">${L.label}</div>
-        <div class="zl-glow"></div>
-        ${renderCard({ card, idx: i })}
-      </div>`;
-    }).join('')}
+    <div class="zl-deal-primary">${renderDealCard(spread, 0)}${renderDealCard(spread, 4)}</div>
+    <div class="zl-deal-aux">${renderDealCard(spread, 1)}${renderDealCard(spread, 2)}${renderDealCard(spread, 3)}</div>
   </div>`;
 
 // ---- 各屏内容 ----

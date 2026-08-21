@@ -106,10 +106,21 @@ const CSS = `
 .zl-question-continue{ flex:1.1; height:46px; font-size:14px; }
 
 /* ---- shuffle stage ---- */
-.zl-stage{ position:relative; width:100%; height:400px; margin-top:14px; display:flex; align-items:center; justify-content:center; }
-.zl-deal{ position:relative; width:100%; max-width:380px; height:380px; }
-.zl-slot{ position:absolute; animation:zl-rise .6s cubic-bezier(.2,.7,.3,1) both; }
-.zl-slot-label{ position:absolute; left:0; right:0; top:-18px; color:var(--zl-gold); font-size:9px; line-height:1; letter-spacing:1.3px; text-align:center; white-space:nowrap; }
+.zl-stage{ position:relative; width:100%; height:auto; margin-top:20px; display:flex; align-items:center; justify-content:center; }
+.zl-deal{ width:100%; max-width:430px; display:flex; flex-direction:column; gap:32px; padding:16px 0 8px; }
+.zl-deal-primary{ display:flex; justify-content:center; align-items:flex-start; gap:16px; }
+.zl-deal-aux{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); align-items:flex-start; gap:10px; }
+.zl-final-card{ position:relative; min-width:0; animation:zl-rise .6s cubic-bezier(.2,.7,.3,1) both; }
+.zl-deal-primary .zl-final-card{ width:min(44%,165px); }
+.zl-slot-label{ position:static; margin-bottom:8px; color:var(--zl-gold); font-size:10px; line-height:1.2; letter-spacing:1.3px; text-align:center; white-space:nowrap; }
+.zl-final-card .zl-card{ aspect-ratio:auto; height:205px; }
+.zl-deal-primary .zl-card{ height:250px; }
+.zl-final-card .zl-face-head{ padding:9px 10px 8px; }
+.zl-final-card .zl-illust{ width:52px; height:52px; margin-top:8px; }
+.zl-deal-primary .zl-illust{ width:64px; height:64px; }
+.zl-final-card .zl-cardname{ margin-top:7px; }
+.zl-final-card .zl-cw{ margin-top:6px; -webkit-line-clamp:3; font-size:10px; line-height:1.4; }
+.zl-final-card .zl-hint{ padding-top:4px; }
 
 .zl-draw-mode{ width:100%; max-width:430px; display:flex; flex-direction:column; gap:13px; margin-top:28px; }
 .zl-mode-card{ position:relative; width:100%; min-height:126px; display:flex; flex-direction:column; align-items:flex-start; justify-content:center;
@@ -228,7 +239,7 @@ const CSS = `
 /* glow on reveal */
 .zl-glow{ position:absolute; inset:-8px; border-radius:16px; pointer-events:none; opacity:0;
   background:radial-gradient(circle, rgba(214,178,94,.5), transparent 70%); }
-.zl-slot.is-revealed .zl-glow{ animation:zl-halo .9s ease-out; }
+.zl-final-card.is-revealed .zl-glow{ animation:zl-halo .9s ease-out; }
 
 /* ---- 放大大卡 ---- */
 .zl-zoom-backdrop{ position:absolute; inset:0; z-index:50; display:flex; align-items:center; justify-content:center;

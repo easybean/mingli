@@ -41,6 +41,7 @@ const main = async () => {
     errors.push('简化模式抽到空宫时必须先展示待引星，再由用户点击从剩余主星中随机引星');
   }
   if (!/backArt\(11 \+ i \* 7\)/.test(controller) || /zl-mini-name/.test(controller)) errors.push('铺开的实体牌必须保留原版北斗七星牌背');
+  if (!/zl-deal-primary/.test(controller) || !/zl-deal-aux/.test(controller)) errors.push('五星成阵必须使用上下两行自适应牌阵，不能用重叠的绝对定位');
   if (!/model\.spread\.push\(model\.pendingCard\)/.test(controller)) errors.push('用户确认的每级牌面必须依次进入最终牌阵');
 
   if (errors.length) {
