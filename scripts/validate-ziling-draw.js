@@ -29,20 +29,22 @@ const main = async () => {
   const chart = { ready: true, getOpposite: () => ({ 空宫: false, 主星: [{ 名: '紫微' }] }) };
   const resolved = viewModel.resolveMajorCard({ card: emptyMajor, typeKey: 'career', chart });
   if (resolved?.名 !== '紫微' || !resolved?._fromEmpty || resolved?._via !== '对宫') {
-    errors.push('完整抽牌抽中主星空宫时，必须按问事宫位借对宫主星入阵');
+    errors.push('简化抽牌抽中主星空宫时，必须继续按既有规则补实牌阵');
   }
 
   const controller = fs.readFileSync(path.join(__dirname, '../src/tools/ziling-pai/ziling-controller.js'), 'utf8');
   if (!/data-zl-full-draw/.test(controller) || !/data-zl-quick-draw/.test(controller)) errors.push('STEP 02 必须同时提供完整与简化抽牌');
   if (!/data-zl-pick-card/.test(controller) || !/data-zl-confirm-card/.test(controller)) errors.push('完整模式必须先选牌、揭面，再确认进入下一级');
+  if (!/data-zl-redraw-major/.test(controller) || !/model\.drawPool = model\.drawPool\.filter/.test(controller)
+    || /resolveMajorCard\(\{ card: picked/.test(controller)) errors.push('完整模式抽中主星空宫时必须由用户从剩余牌中主动重抽');
   if (!/backArt\(11 \+ i \* 7\)/.test(controller) || /zl-mini-name/.test(controller)) errors.push('铺开的实体牌必须保留原版北斗七星牌背');
-  if (!/model\.spread\.push\(model\.pendingResolvedCard\)/.test(controller)) errors.push('用户确认的每级牌面必须依次进入最终牌阵');
+  if (!/model\.spread\.push\(model\.pendingCard\)/.test(controller)) errors.push('用户确认的每级牌面必须依次进入最终牌阵');
 
   if (errors.length) {
     errors.forEach((error) => console.error(`FAIL ${error}`));
     process.exit(1);
   }
-  console.log('PASS ziling draw: full 16/14/32/17/12 pools, empty-major resolution, reveal confirmation and quick mode');
+  console.log('PASS ziling draw: full 16/14/32/17/12 pools, manual empty-major redraw, reveal confirmation and quick mode');
 };
 
 main().catch((error) => {

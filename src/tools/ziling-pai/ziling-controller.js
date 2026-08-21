@@ -3,7 +3,7 @@
 // 与主 app 仅两处相连：openZiling 入参（命盘 + 主题回调）。删本目录即可整体移除。
 import { ensureZilingStyles } from './ziling-styles.js';
 import {
-  QUESTION_TYPES, DRAW_LEVELS, getDrawPool, resolveMajorCard, buildSpread, assembleReading,
+  QUESTION_TYPES, DRAW_LEVELS, getDrawPool, buildSpread, assembleReading,
 } from './ziling-view-model.js';
 import { renderCard, renderZoomCard } from './ziling-card.js';
 import { createChartAdapter } from './chart-adapter.js';
@@ -144,8 +144,9 @@ const revealPickedCard = () => {
     <div class="zl-picked-wrap">
       <div class="zl-picked-kicker">你抽到的是</div>
       <div class="zl-picked-card">${renderCard({ card: model.pendingCard, idx: model.pendingIndex })}</div>
-      ${isEmptyMajor ? '<div class="zl-empty-note">抽中空宫：确认后会按你所问的宫位，借对宫主星入阵。</div>' : ''}
-      <button class="zl-btn" type="button" data-zl-confirm-card>收下这张 · ${next} →</button>
+      ${isEmptyMajor
+        ? '<div class="zl-empty-note">这张是空宫牌，不替你随机补牌。回到剩余主星中，再凭直觉亲自抽一张。</div><button class="zl-btn" type="button" data-zl-redraw-major>空宫 · 我自己再抽一张 →</button>'
+        : `<button class="zl-btn" type="button" data-zl-confirm-card>收下这张 · ${next} →</button>`}
     </div>`;
 };
 
@@ -243,7 +244,7 @@ const beginQuestion = () => {
   if (!model.type) return;
   model.questionPromptOpen = false;
   model.drawMode = null; model.drawLevelIndex = 0; model.drawPool = [];
-  model.pendingCard = null; model.pendingResolvedCard = null; model.spread = [];
+  model.pendingCard = null; model.spread = [];
   model.phase = 'mode';
   go('shuffle');
 };
@@ -283,7 +284,6 @@ const prepareDrawLevel = (index) => {
   model.drawLevelIndex = index;
   model.drawPool = shuffled(getDrawPool(DRAW_LEVELS[index]));
   model.pendingCard = null;
-  model.pendingResolvedCard = null;
   model.phase = 'choosing';
 };
 
@@ -307,20 +307,25 @@ const pickFullDrawCard = (index) => {
   if (!picked) return;
   model.pendingIndex = index;
   model.pendingCard = picked;
-  model.pendingResolvedCard = model.drawLevelIndex === 0
-    ? resolveMajorCard({ card: picked, typeKey: model.type, chart })
-    : picked;
   model.phase = 'reveal';
   render();
 };
 
+const redrawEmptyMajor = () => {
+  if (model.drawMode !== 'full' || model.phase !== 'reveal' || model.drawLevelIndex !== 0 || !model.pendingCard?.['空宫']) return;
+  model.drawPool = model.drawPool.filter((card, index) => index !== model.pendingIndex);
+  model.pendingCard = null;
+  model.phase = 'choosing';
+  render();
+};
+
 const confirmFullDrawCard = () => {
-  if (model.drawMode !== 'full' || model.phase !== 'reveal' || !model.pendingResolvedCard) return;
-  model.spread.push(model.pendingResolvedCard);
+  if (model.drawMode !== 'full' || model.phase !== 'reveal' || !model.pendingCard
+    || (model.drawLevelIndex === 0 && model.pendingCard['空宫'])) return;
+  model.spread.push(model.pendingCard);
   const nextIndex = model.drawLevelIndex + 1;
   if (nextIndex >= DRAW_LEVELS.length) {
     model.pendingCard = null;
-    model.pendingResolvedCard = null;
     model.phase = 'done';
     render();
     return;
@@ -345,11 +350,12 @@ const bind = () => {
     if (event.target.closest('[data-zl-quick-draw]')) return startQuickDraw();
     const pickedCard = event.target.closest('[data-zl-pick-card]');
     if (pickedCard) return pickFullDrawCard(Number(pickedCard.dataset.zlPickCard));
+    if (event.target.closest('[data-zl-redraw-major]')) return redrawEmptyMajor();
     if (event.target.closest('[data-zl-confirm-card]')) return confirmFullDrawCard();
     if (event.target.closest('[data-zl-to-reading]')) return go('reading');
     if (event.target.closest('[data-zl-restart]')) {
       model.type = null; model.question = ''; model.questionPromptOpen = false; model.phase = 'idle';
-      model.drawMode = null; model.drawLevelIndex = 0; model.drawPool = []; model.pendingCard = null; model.pendingResolvedCard = null; model.spread = null;
+      model.drawMode = null; model.drawLevelIndex = 0; model.drawPool = []; model.pendingCard = null; model.spread = null;
       return go('cover');
     }
     // 大卡已开：点任意处（含背景与大卡本身）关闭
@@ -372,7 +378,7 @@ export const openZiling = ({ astrolabeData = null, onTheme = null } = {}) => {
   onThemeChange = onTheme;
   model = {
     screen: 'cover', type: null, question: '', questionPromptOpen: false, phase: 'idle', drawMode: null,
-    drawLevelIndex: 0, drawPool: [], pendingCard: null, pendingResolvedCard: null, spread: null, timers: [],
+    drawLevelIndex: 0, drawPool: [], pendingCard: null, spread: null, timers: [],
   };
   if (!root) {
     root = document.createElement('div');
