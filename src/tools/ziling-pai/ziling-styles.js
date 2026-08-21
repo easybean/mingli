@@ -130,16 +130,13 @@ const CSS = `
   background:radial-gradient(circle at 50% 36%,rgba(122,86,172,.35),transparent 36%),linear-gradient(150deg,#211733,#090711);
   border:1px solid rgba(214,178,94,.38); box-shadow:0 10px 20px -13px rgba(0,0,0,.9),inset 0 0 16px rgba(214,178,94,.08);
   transition:transform .2s ease,filter .2s ease,box-shadow .2s ease; }
-.zl-mini-back::before{ content:''; position:absolute; inset:5px; border:1px solid rgba(214,178,94,.2); border-radius:6px; }
-.zl-mini-star{ color:#D6B25E; font-size:18px; text-shadow:0 0 10px rgba(214,178,94,.55); }
-.zl-mini-name{ margin-top:4px; color:#E8C77A; font-family:'Noto Serif SC',serif; font-size:8px; letter-spacing:2px; }
+.zl-mini-back::before{ content:''; position:absolute; inset:5px; z-index:1; pointer-events:none; border:1px solid rgba(214,178,94,.2); border-radius:6px; }
+.zl-mini-back > svg{ position:absolute; inset:0; width:100%; height:100%; }
 .zl-deck-choice:nth-child(3n+1) .zl-mini-back{ transform:rotate(-1.2deg); }
 .zl-deck-choice:nth-child(3n) .zl-mini-back{ transform:rotate(1.2deg); }
 .zl-deck-choice:hover .zl-mini-back,.zl-deck-choice:focus-visible .zl-mini-back{ transform:translateY(-5px) rotate(0); filter:brightness(1.2);
   box-shadow:0 16px 26px -13px rgba(0,0,0,.95),0 0 0 2px var(--zl-gold-line); }
 .zl-deck-choice:focus-visible{ outline:none; }
-.zl-deck-grid.is-dense .zl-mini-star{ font-size:14px; }
-.zl-deck-grid.is-dense .zl-mini-name{ font-size:6px; letter-spacing:1px; }
 .zl-draw-switch{ margin:15px 0 8px; padding:10px; border:0; background:none; color:var(--zl-muted); font:inherit; font-size:12px; text-decoration:underline; cursor:pointer; }
 
 .zl-picked-wrap{ width:100%; display:flex; flex-direction:column; align-items:center; margin-top:18px; }

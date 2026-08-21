@@ -35,6 +35,7 @@ const main = async () => {
   const controller = fs.readFileSync(path.join(__dirname, '../src/tools/ziling-pai/ziling-controller.js'), 'utf8');
   if (!/data-zl-full-draw/.test(controller) || !/data-zl-quick-draw/.test(controller)) errors.push('STEP 02 必须同时提供完整与简化抽牌');
   if (!/data-zl-pick-card/.test(controller) || !/data-zl-confirm-card/.test(controller)) errors.push('完整模式必须先选牌、揭面，再确认进入下一级');
+  if (!/backArt\(11 \+ i \* 7\)/.test(controller) || /zl-mini-name/.test(controller)) errors.push('铺开的实体牌必须保留原版北斗七星牌背');
   if (!/model\.spread\.push\(model\.pendingResolvedCard\)/.test(controller)) errors.push('用户确认的每级牌面必须依次进入最终牌阵');
 
   if (errors.length) {

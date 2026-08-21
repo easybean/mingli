@@ -1,6 +1,6 @@
 {
   "name": "mingli",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "private": true,
   "description": "紫微斗数排盘 API 与可视化页面 Demo",
   "main": "server.js",

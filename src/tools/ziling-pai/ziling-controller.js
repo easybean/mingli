@@ -7,7 +7,7 @@ import {
 } from './ziling-view-model.js';
 import { renderCard, renderZoomCard } from './ziling-card.js';
 import { createChartAdapter } from './chart-adapter.js';
-import { starfield, baguaRing, dipper } from './ziling-art.js';
+import { starfield, baguaRing, dipper, backArt } from './ziling-art.js';
 
 const SCREENS = ['cover', 'types', 'shuffle', 'reading'];
 
@@ -130,7 +130,7 @@ const drawGrid = () => {
       ${model.drawPool.map((card, i) => `
         <button class="zl-deck-choice" type="button" data-zl-pick-card="${i}" aria-label="选择第${i + 1}张牌">
           <span class="zl-mini-back" style="--zl-card-order:${i}">
-            <span class="zl-mini-star">✦</span><span class="zl-mini-name">紫灵</span>
+            ${backArt(11 + i * 7)}
           </span>
         </button>`).join('')}
     </div>
