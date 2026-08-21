@@ -7,7 +7,7 @@ import { renderCard, renderZoomCard } from './ziling-card.js';
 import { createChartAdapter } from './chart-adapter.js';
 import { starfield, baguaRing, dipper, backArt } from './ziling-art.js';
 
-const SCREENS = ['cover', 'types', 'shuffle', 'spread', 'reading'];
+const SCREENS = ['cover', 'types', 'shuffle', 'reading'];
 
 const esc = (s) => String(s == null ? '' : s)
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -27,32 +27,48 @@ const clearTimers = () => { (model?.timers || []).forEach(clearTimeout); if (mod
 // 注意：水平定位只用像素 left，不用 transform/translateX——zl-rise 入场动画会动 transform，
 // 用 translateX 定位会被动画覆盖导致牌挤到正中重叠。 ----
 const DEAL_LAYOUT = [
-  { left: '14%', top: '4px', z: 2, w: '34%' },     // 主星（一排左，放大）
-  { left: '2%', top: '196px', z: 1, w: '31%' },    // 甲（二排铺满）
-  { left: '34.5%', top: '196px', z: 1, w: '31%' }, // 乙
-  { left: '67%', top: '196px', z: 1, w: '31%' },   // 丙
-  { left: '52%', top: '4px', z: 2, w: '34%' },     // 四化（一排右，放大）
+  { left: '14%', top: '24px', z: 2, w: '34%', label: '主星' },
+  { left: '2%', top: '216px', z: 1, w: '31%', label: '甲级辅星' },
+  { left: '34.5%', top: '216px', z: 1, w: '31%', label: '乙级辅星' },
+  { left: '67%', top: '216px', z: 1, w: '31%', label: '丙级辅星' },
+  { left: '52%', top: '24px', z: 2, w: '34%', label: '四化' },
+];
+
+const DRAW_STEPS = [
+  { title: '第一抽 · 主星', hint: '先抽主星，它定下这一问的核心气质。' },
+  { title: '第二抽 · 甲级辅星', hint: '再抽甲级辅星，看此事最有力的助推。' },
+  { title: '第三抽 · 乙级辅星', hint: '接着抽乙级辅星，它带来更细的提醒。' },
+  { title: '第四抽 · 丙级辅星', hint: '再抽丙级辅星，留意这一步的顺逆。' },
+  { title: '第五抽 · 四化', hint: '最后抽四化牌，看这件事会往哪里转。' },
 ];
 
 // 牌堆背面 = 正式牌背（与落盘后的牌背一致：北斗 + 紫灵牌字样）
-const pileBack = (seed) => `${backArt(seed)}<div class="zl-back-title">紫 灵 牌</div>`;
+const pileBack = (seed) => `${backArt(seed)}<span class="zl-back-title">紫 灵 牌</span>`;
 const renderPile = () => `
-  <div class="zl-pile">
-    <div class="zl-pile-card">${pileBack(5)}</div>
-    <div class="zl-pile-card">${pileBack(9)}</div>
-    <div class="zl-pile-card">${pileBack(13)}</div>
-  </div>`;
+  <span class="zl-pile">
+    <span class="zl-pile-card">${pileBack(5)}</span>
+    <span class="zl-pile-card">${pileBack(9)}</span>
+    <span class="zl-pile-card">${pileBack(13)}</span>
+  </span>`;
 
 const renderDealStage = (spread, revealedCount) => `
   <div class="zl-deal">
-    ${spread.map((card, i) => {
+    ${spread.slice(0, revealedCount).map((card, i) => {
       const L = DEAL_LAYOUT[i];
-      return `<div class="zl-slot ${i < revealedCount ? 'is-revealed' : ''}"
+      return `<div class="zl-slot is-revealed"
         style="left:${L.left};top:${L.top};width:${L.w};z-index:${L.z};animation-delay:${(i * 0.12).toFixed(2)}s">
+        <div class="zl-slot-label">${L.label}</div>
         <div class="zl-glow"></div>
-        ${renderCard({ card, sealed: i >= revealedCount, idx: i })}
+        ${renderCard({ card, idx: i })}
       </div>`;
     }).join('')}
+    ${revealedCount < spread.length ? (() => {
+      const next = DEAL_LAYOUT[revealedCount];
+      return `<button class="zl-draw-pile" type="button" data-zl-draw-card aria-label="${DRAW_STEPS[revealedCount].title}"
+        style="left:${next.left};top:${next.top};width:${next.w};z-index:${next.z}">
+        <span class="zl-slot-label">${next.label}</span>${renderPile()}<span class="zl-draw-pile-hint">点此抽牌</span>
+      </button>`;
+    })() : ''}
   </div>`;
 
 // ---- 各屏内容 ----
@@ -110,53 +126,22 @@ const questionPrompt = (type) => `
   </div>`;
 
 const shuffleScreen = () => {
-  const done = model.phase === 'done' && model.spread;
-  const title = done ? '五星已定' : '洗牌 · 静心';
-  const hint = done ? '牌阵已成，可入阵中细看' : '心念你要问的事，准备好了就洗牌';
-  const stage = done ? renderDealStage(model.spread, 5) : renderPile();
+  if (!model.spread) model.spread = buildSpread({ typeKey: model.type, chart });
+  const done = model.revealCount === model.spread.length;
+  const step = DRAW_STEPS[model.revealCount];
+  const title = done ? '五星已成阵' : step.title;
+  const hint = done ? '轻点任意一张牌查看释义，再解这一阵。' : step.hint;
   const btn = done
-    ? `<button class="zl-btn" data-zl-to-spread style="width:230px;height:52px;font-size:15px">查看牌阵 →</button>`
-    : `<button class="zl-btn" id="zl-shuffle-btn" data-zl-shuffle style="width:230px;height:52px;font-size:15px">开始洗牌</button>`;
+    ? `<button class="zl-btn" data-zl-to-reading style="width:230px;height:52px;font-size:15px">解这一阵 →</button>`
+    : `<div class="zl-draw-progress">已抽 ${model.revealCount} / 5 张 · 点牌堆抽下一张</div>`;
   return `
   <div class="zl-pad" style="align-items:center">
     <div class="zl-kicker">STEP 02</div>
-    <div class="zl-h" id="zl-shuffle-title" style="font-size:22px;margin-top:9px">${title}</div>
-    <div class="zl-sub" id="zl-shuffle-hint" style="margin-top:7px;min-height:17px">${hint}</div>
-    <div class="zl-stage" id="zl-stage">${stage}</div>
+    <div class="zl-h" style="font-size:22px;margin-top:9px">${title}</div>
+    <div class="zl-sub" style="margin-top:7px;min-height:17px">${hint}</div>
+    <div class="zl-stage">${renderDealStage(model.spread, model.revealCount)}</div>
     ${btn}
   </div>`;
-};
-
-const spreadScreen = () => {
-  if (!model.spread) model.spread = buildSpread({ typeKey: model.type, chart });
-  const sp = model.spread;
-  const t = QUESTION_TYPES.find((x) => x.key === model.type);
-  return `
-  <div class="zl-pad">
-    <div class="zl-kicker">STEP 03 · ${t ? t.name : ''}</div>
-    <div class="zl-h" style="font-size:20px;margin-top:8px">${spreadQuestion()}</div>
-    <div class="zl-sub" style="margin-top:6px">五星已落阵 · 轻点任意一张看其释义</div>
-    <div class="zl-spread">
-      <div class="zl-spread-label">命主 · 主星</div>
-      <div style="width:150px;z-index:2;position:relative">${renderCard({ card: sp[0], idx: 0 })}</div>
-      <div style="width:128px;z-index:1;position:relative;margin-top:10px">${renderCard({ card: sp[4], idx: 4 })}</div>
-      <div class="zl-spread-label muted" style="margin-top:8px">化曜 · 四化（修饰主星）</div>
-      <div style="width:100%;margin-top:18px">
-        <div class="zl-spread-label muted" style="text-align:center">辅曜 · 甲 / 乙 / 丙</div>
-        <div class="zl-aux-row">
-          <div>${renderCard({ card: sp[1], idx: 1 })}</div>
-          <div>${renderCard({ card: sp[2], idx: 2 })}</div>
-          <div>${renderCard({ card: sp[3], idx: 3 })}</div>
-        </div>
-      </div>
-    </div>
-    <button class="zl-btn" data-zl-to-reading style="margin-top:24px;width:100%;height:50px;font-size:15px">解此一阵 →</button>
-  </div>`;
-};
-
-const spreadQuestion = () => {
-  const r = assembleReading({ spread: model.spread, typeKey: model.type, chart, question: model.question });
-  return r.questionText || '此一事';
 };
 
 const readingScreen = () => {
@@ -164,7 +149,7 @@ const readingScreen = () => {
   const r = assembleReading({ spread: model.spread, typeKey: model.type, chart, question: model.question });
   return `
   <div class="zl-pad">
-    <div class="zl-kicker">STEP 04 · 解读</div>
+    <div class="zl-kicker">STEP 03 · 解读</div>
     <div class="zl-h" style="font-size:24px;font-weight:700;margin-top:10px">${r.title}</div>
     <div class="zl-chips">${r.chips.map((c) => `<span class="zl-chip" style="background:${c.color}">${c.label}</span>`).join('')}</div>
     <div class="zl-sections">
@@ -180,7 +165,7 @@ const readingScreen = () => {
 };
 
 const SCREEN_RENDER = {
-  cover: coverScreen, types: typesScreen, shuffle: shuffleScreen, spread: spreadScreen, reading: readingScreen,
+  cover: coverScreen, types: typesScreen, shuffle: shuffleScreen, reading: readingScreen,
 };
 
 const ambient = () => {
@@ -228,7 +213,7 @@ const goBack = () => { const i = SCREENS.indexOf(model.screen); if (i > 0) go(SC
 const beginQuestion = () => {
   if (!model.type) return;
   model.questionPromptOpen = false;
-  model.phase = 'idle'; model.revealCount = 0; model.spread = null;
+  model.phase = 'drawing'; model.revealCount = 0; model.spread = buildSpread({ typeKey: model.type, chart });
   go('shuffle');
 };
 
@@ -254,50 +239,11 @@ const setTheme = (theme) => {
   render();
 };
 
-const startRitual = () => {
-  model.spread = buildSpread({ typeKey: model.type, chart });
-  const stage = root.querySelector('#zl-stage');
-  const titleEl = root.querySelector('#zl-shuffle-title');
-  const hintEl = root.querySelector('#zl-shuffle-hint');
-  const btn = root.querySelector('#zl-shuffle-btn');
-
-  if (reduced()) {
-    model.phase = 'done'; model.revealCount = 5; render(); return;
-  }
-
-  model.phase = 'shuffling';
-  const pile = stage.querySelector('.zl-pile');
-  if (pile) pile.classList.add('is-shuffling');
-  if (btn) { btn.disabled = true; btn.textContent = '洗牌中…'; }
-  if (titleEl) titleEl.textContent = '洗牌中…';
-  if (hintEl) hintEl.textContent = '星屑流转，牌序重定';
-
-  model.timers.push(setTimeout(() => {
-    model.phase = 'dealing';
-    stage.innerHTML = renderDealStage(model.spread, 0);
-    if (titleEl) titleEl.textContent = '落牌成阵';
-    if (hintEl) hintEl.textContent = '五星依次归位，静待揭示';
-    const slots = stage.querySelectorAll('.zl-slot');
-    [0, 1, 2, 3, 4].forEach((i) => {
-      model.timers.push(setTimeout(() => {
-        const slot = slots[i];
-        if (!slot) return;
-        slot.classList.add('is-revealed');
-        const card = slot.querySelector('.zl-card');
-        if (card) card.classList.remove('is-sealed');
-        model.revealCount = i + 1;
-      }, 700 + i * 620));
-    });
-    model.timers.push(setTimeout(() => {
-      model.phase = 'done';
-      if (titleEl) titleEl.textContent = '五星已定';
-      if (hintEl) hintEl.textContent = '牌阵已成，可入阵中细看';
-      if (btn) {
-        btn.disabled = false; btn.textContent = '查看牌阵 →';
-        btn.id = ''; btn.removeAttribute('data-zl-shuffle'); btn.setAttribute('data-zl-to-spread', '');
-      }
-    }, 700 + 5 * 620 + 400));
-  }, 1500));
+const drawNextCard = () => {
+  if (!model.spread || model.revealCount >= model.spread.length) return;
+  model.revealCount += 1;
+  model.phase = model.revealCount === model.spread.length ? 'done' : 'drawing';
+  render();
 };
 
 const bind = () => {
@@ -312,8 +258,7 @@ const bind = () => {
     if (event.target.closest('[data-zl-question-continue]') || event.target.closest('[data-zl-question-skip]')) return beginQuestion();
     const questionBackdrop = event.target.closest('[data-zl-question-close]');
     if (questionBackdrop && event.target === questionBackdrop) { model.questionPromptOpen = false; return render(); }
-    if (event.target.closest('[data-zl-shuffle]')) return startRitual();
-    if (event.target.closest('[data-zl-to-spread]')) return go('spread');
+    if (event.target.closest('[data-zl-draw-card]')) return drawNextCard();
     if (event.target.closest('[data-zl-to-reading]')) return go('reading');
     if (event.target.closest('[data-zl-restart]')) {
       model.type = null; model.question = ''; model.questionPromptOpen = false; model.phase = 'idle'; model.revealCount = 0; model.spread = null;
@@ -322,7 +267,7 @@ const bind = () => {
     // 大卡已开：点任意处（含背景与大卡本身）关闭
     if (event.target.closest('[data-zl-zoom]')) return closeZoom();
     const card = event.target.closest('[data-zl-card]');
-    if (card && model.screen === 'spread') return openZoom(Number(card.dataset.zlCard));
+    if (card && model.screen === 'shuffle' && model.revealCount === model.spread?.length) return openZoom(Number(card.dataset.zlCard));
   });
 
   // 问句输入：只存值、不重渲染（避免打断输入）

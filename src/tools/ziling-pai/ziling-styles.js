@@ -107,7 +107,7 @@ const CSS = `
 
 /* ---- shuffle stage ---- */
 .zl-stage{ position:relative; width:100%; height:400px; margin-top:14px; display:flex; align-items:center; justify-content:center; }
-.zl-pile{ position:relative; width:120px; height:168px; }
+.zl-pile{ position:relative; display:block; width:100%; height:100%; }
 .zl-pile-card{ position:absolute; inset:0; border-radius:12px; overflow:hidden;
   background:linear-gradient(165deg,#19132B,#0B0815); border:1px solid rgba(214,178,94,.32);
   box-shadow:0 14px 30px -16px rgba(0,0,0,.8),inset 0 0 22px rgba(122,86,172,.22); }
@@ -116,6 +116,15 @@ const CSS = `
 .zl-pile.is-shuffling .zl-pile-card:nth-child(3){ animation:zl-shuffle-r 1.05s ease-in-out infinite; }
 .zl-deal{ position:relative; width:100%; max-width:380px; height:380px; }
 .zl-slot{ position:absolute; animation:zl-rise .6s cubic-bezier(.2,.7,.3,1) both; }
+.zl-slot-label{ position:absolute; left:0; right:0; top:-18px; color:var(--zl-gold); font-size:9px; line-height:1; letter-spacing:1.3px; text-align:center; white-space:nowrap; }
+.zl-draw-pile{ position:absolute; height:auto; aspect-ratio:5 / 7; padding:0; border:0; background:none; cursor:pointer;
+  animation:zl-rise .45s cubic-bezier(.2,.7,.3,1) both; }
+.zl-draw-pile .zl-pile{ transition:transform .2s ease,filter .2s ease; }
+.zl-draw-pile:hover .zl-pile,.zl-draw-pile:focus-visible .zl-pile{ transform:translateY(-4px); filter:brightness(1.16); }
+.zl-draw-pile:focus-visible{ outline:2px solid var(--zl-gold); outline-offset:5px; border-radius:13px; }
+.zl-draw-pile-hint{ position:absolute; left:50%; bottom:10px; transform:translateX(-50%); z-index:2; padding:4px 8px; border-radius:10px;
+  background:rgba(9,7,16,.72); color:#F4ECD7; font-size:9px; letter-spacing:1px; white-space:nowrap; }
+.zl-draw-progress{ min-height:52px; display:flex; align-items:center; justify-content:center; color:var(--zl-muted); font-size:12px; letter-spacing:.5px; }
 
 /* ---- spread ---- */
 .zl-spread{ margin-top:14px; display:flex; flex-direction:column; align-items:center; }
