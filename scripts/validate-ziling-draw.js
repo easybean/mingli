@@ -24,19 +24,22 @@ const main = async () => {
     if (viewModel.getDrawPool(level).length !== count) errors.push(`${level}牌库必须有${count}张实体牌`);
   });
 
-  const majorPool = viewModel.getDrawPool('主星');
-  const emptyMajor = majorPool.find((card) => card.空宫);
-  const chart = { ready: true, getOpposite: () => ({ 空宫: false, 主星: [{ 名: '紫微' }] }) };
-  const resolved = viewModel.resolveMajorCard({ card: emptyMajor, typeKey: 'career', chart });
-  if (resolved?.名 !== '紫微' || !resolved?._fromEmpty || resolved?._via !== '对宫') {
-    errors.push('简化抽牌抽中主星空宫时，必须继续按既有规则补实牌阵');
-  }
+  const traceSpread = Object.keys(expectedCounts).map((level) => viewModel.getDrawPool(level).find((card) => !card.空宫));
+  const traceReading = viewModel.assembleReading({
+    spread: traceSpread, typeKey: 'career', chart: null, question: '', drawTrace: { mode: 'full', emptyMajorCount: 2 },
+  });
+  if (!traceReading.sections.some((section) => section.h === '抽牌轨迹' && /连续 2 次遇到空宫/.test(section.body))
+    || !traceReading.chips.some((chip) => chip.label === '曾遇空宫 × 2')) errors.push('空宫次数必须进入最终印记与解读');
 
   const controller = fs.readFileSync(path.join(__dirname, '../src/tools/ziling-pai/ziling-controller.js'), 'utf8');
   if (!/data-zl-full-draw/.test(controller) || !/data-zl-quick-draw/.test(controller)) errors.push('STEP 02 必须同时提供完整与简化抽牌');
   if (!/data-zl-pick-card/.test(controller) || !/data-zl-confirm-card/.test(controller)) errors.push('完整模式必须先选牌、揭面，再确认进入下一级');
   if (!/data-zl-redraw-major/.test(controller) || !/model\.drawPool = model\.drawPool\.filter/.test(controller)
     || /resolveMajorCard\(\{ card: picked/.test(controller)) errors.push('完整模式抽中主星空宫时必须由用户从剩余牌中主动重抽');
+  if (!/model\.spread = drawSpread\(\)/.test(controller) || !/phase = 'quick-empty'/.test(controller)
+    || !/data-zl-quick-redraw-major/.test(controller) || !/model\.quickMajorPool\.splice/.test(controller)) {
+    errors.push('简化模式抽到空宫时必须先展示待引星，再由用户点击从剩余主星中随机引星');
+  }
   if (!/backArt\(11 \+ i \* 7\)/.test(controller) || /zl-mini-name/.test(controller)) errors.push('铺开的实体牌必须保留原版北斗七星牌背');
   if (!/model\.spread\.push\(model\.pendingCard\)/.test(controller)) errors.push('用户确认的每级牌面必须依次进入最终牌阵');
 
@@ -44,7 +47,7 @@ const main = async () => {
     errors.forEach((error) => console.error(`FAIL ${error}`));
     process.exit(1);
   }
-  console.log('PASS ziling draw: full 16/14/32/17/12 pools, manual empty-major redraw, reveal confirmation and quick mode');
+  console.log('PASS ziling draw: full pools, manual/quick empty-major redraw, persistent trace imprint and reading');
 };
 
 main().catch((error) => {

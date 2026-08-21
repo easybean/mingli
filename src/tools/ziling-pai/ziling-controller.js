@@ -3,7 +3,7 @@
 // 与主 app 仅两处相连：openZiling 入参（命盘 + 主题回调）。删本目录即可整体移除。
 import { ensureZilingStyles } from './ziling-styles.js';
 import {
-  QUESTION_TYPES, DRAW_LEVELS, getDrawPool, buildSpread, assembleReading,
+  QUESTION_TYPES, DRAW_LEVELS, getDrawPool, drawSpread, buildSpread, assembleReading,
 } from './ziling-view-model.js';
 import { renderCard, renderZoomCard } from './ziling-card.js';
 import { createChartAdapter } from './chart-adapter.js';
@@ -152,19 +152,30 @@ const revealPickedCard = () => {
 
 const completedDraw = () => `
   <div class="zl-stage">${renderDealStage(model.spread)}</div>
+  ${model.emptyMajorCount ? `<div class="zl-draw-imprint">特殊印记 · 曾遇空宫 × ${model.emptyMajorCount}</div>` : ''}
   <div class="zl-sub zl-complete-hint">轻点任意一张牌可放大查看</div>
   <button class="zl-btn" data-zl-to-reading style="width:230px;height:52px;font-size:15px">解这一阵 →</button>`;
+
+const quickEmptyDraw = () => `
+  <div class="zl-stage">${renderDealStage(model.spread)}</div>
+  <div class="zl-empty-note zl-quick-empty-note">
+    ${model.emptyMajorCount > 1 ? `已经连续 ${model.emptyMajorCount} 次遇到空宫。` : '主星位置抽到空宫。'}
+    此局主意尚未显现，请亲手点击，引出下一张主星。
+  </div>
+  <button class="zl-btn zl-quick-redraw" type="button" data-zl-quick-redraw-major>再抽一张主星 →</button>`;
 
 const shuffleScreen = () => {
   const choosingMode = !model.drawMode;
   const done = model.phase === 'done';
   const revealing = model.phase === 'reveal';
+  const quickEmpty = model.phase === 'quick-empty';
   const step = DRAW_STEPS[model.drawLevelIndex] || DRAW_STEPS[0];
-  const title = choosingMode ? '选择抽牌方式' : done ? '五星已成阵' : step.title;
+  const title = choosingMode ? '选择抽牌方式' : done ? '五星已成阵' : quickEmpty ? '空宫 · 待引星' : step.title;
   const hint = choosingMode
     ? '想慢慢选，还是快速看结果？两种方式使用同一套牌。'
-    : done ? `${model.drawMode === 'quick' ? '已为你一次抽齐五张牌。' : '五次选择已完成。'}牌阵就在这里。` : step.hint;
-  const body = choosingMode ? drawModeScreen() : done ? completedDraw() : revealing ? revealPickedCard() : drawGrid();
+    : done ? `${model.drawMode === 'quick' ? '已为你一次抽齐五张牌。' : '五次选择已完成。'}牌阵就在这里。`
+      : quickEmpty ? '空宫不是废牌，它意味着这一问的主轴还没有直接显现。' : step.hint;
+  const body = choosingMode ? drawModeScreen() : done ? completedDraw() : quickEmpty ? quickEmptyDraw() : revealing ? revealPickedCard() : drawGrid();
   return `
   <div class="zl-pad" style="align-items:center">
     <div class="zl-kicker">STEP 02</div>
@@ -176,7 +187,10 @@ const shuffleScreen = () => {
 
 const readingScreen = () => {
   if (!model.spread) model.spread = buildSpread({ typeKey: model.type, chart });
-  const r = assembleReading({ spread: model.spread, typeKey: model.type, chart, question: model.question });
+  const r = assembleReading({
+    spread: model.spread, typeKey: model.type, chart, question: model.question,
+    drawTrace: { mode: model.drawMode, emptyMajorCount: model.emptyMajorCount },
+  });
   return `
   <div class="zl-pad">
     <div class="zl-kicker">STEP 03 · 解读</div>
@@ -244,7 +258,7 @@ const beginQuestion = () => {
   if (!model.type) return;
   model.questionPromptOpen = false;
   model.drawMode = null; model.drawLevelIndex = 0; model.drawPool = [];
-  model.pendingCard = null; model.spread = [];
+  model.pendingCard = null; model.spread = []; model.emptyMajorCount = 0; model.quickMajorPool = [];
   model.phase = 'mode';
   go('shuffle');
 };
@@ -290,14 +304,22 @@ const prepareDrawLevel = (index) => {
 const startFullDraw = () => {
   model.drawMode = 'full';
   model.spread = [];
+  model.emptyMajorCount = 0;
+  model.quickMajorPool = [];
   prepareDrawLevel(0);
   render();
 };
 
 const startQuickDraw = () => {
   model.drawMode = 'quick';
-  model.spread = buildSpread({ typeKey: model.type, chart });
-  model.phase = 'done';
+  model.spread = drawSpread();
+  model.emptyMajorCount = model.spread[0]?.['空宫'] ? 1 : 0;
+  model.quickMajorPool = getDrawPool('主星');
+  if (model.emptyMajorCount) {
+    const emptyIndex = model.quickMajorPool.findIndex((card) => card['空宫']);
+    if (emptyIndex >= 0) model.quickMajorPool.splice(emptyIndex, 1);
+  }
+  model.phase = model.emptyMajorCount ? 'quick-empty' : 'done';
   render();
 };
 
@@ -307,7 +329,22 @@ const pickFullDrawCard = (index) => {
   if (!picked) return;
   model.pendingIndex = index;
   model.pendingCard = picked;
+  if (model.drawLevelIndex === 0 && picked['空宫']) model.emptyMajorCount += 1;
   model.phase = 'reveal';
+  render();
+};
+
+const redrawQuickMajor = () => {
+  if (model.drawMode !== 'quick' || model.phase !== 'quick-empty' || !model.quickMajorPool.length) return;
+  const index = Math.floor(Math.random() * model.quickMajorPool.length);
+  const [picked] = model.quickMajorPool.splice(index, 1);
+  model.spread[0] = picked;
+  if (picked?.['空宫']) {
+    model.emptyMajorCount += 1;
+    model.phase = 'quick-empty';
+  } else {
+    model.phase = 'done';
+  }
   render();
 };
 
@@ -351,11 +388,13 @@ const bind = () => {
     const pickedCard = event.target.closest('[data-zl-pick-card]');
     if (pickedCard) return pickFullDrawCard(Number(pickedCard.dataset.zlPickCard));
     if (event.target.closest('[data-zl-redraw-major]')) return redrawEmptyMajor();
+    if (event.target.closest('[data-zl-quick-redraw-major]')) return redrawQuickMajor();
     if (event.target.closest('[data-zl-confirm-card]')) return confirmFullDrawCard();
     if (event.target.closest('[data-zl-to-reading]')) return go('reading');
     if (event.target.closest('[data-zl-restart]')) {
       model.type = null; model.question = ''; model.questionPromptOpen = false; model.phase = 'idle';
       model.drawMode = null; model.drawLevelIndex = 0; model.drawPool = []; model.pendingCard = null; model.spread = null;
+      model.emptyMajorCount = 0; model.quickMajorPool = [];
       return go('cover');
     }
     // 大卡已开：点任意处（含背景与大卡本身）关闭
@@ -378,7 +417,7 @@ export const openZiling = ({ astrolabeData = null, onTheme = null } = {}) => {
   onThemeChange = onTheme;
   model = {
     screen: 'cover', type: null, question: '', questionPromptOpen: false, phase: 'idle', drawMode: null,
-    drawLevelIndex: 0, drawPool: [], pendingCard: null, spread: null, timers: [],
+    drawLevelIndex: 0, drawPool: [], pendingCard: null, spread: null, emptyMajorCount: 0, quickMajorPool: [], timers: [],
   };
   if (!root) {
     root = document.createElement('div');

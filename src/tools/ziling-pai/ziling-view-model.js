@@ -180,6 +180,16 @@ const sectionHua = (hua, leadName) => {
   return `四化「${name}」落在主星之上，把「${leadName}」往好的方向推：${body}。整体偏吉，但行动的火候仍由你自己拿捏。`;
 };
 
+const sectionDrawTrace = (drawTrace, leadName) => {
+  const count = Number(drawTrace?.emptyMajorCount || 0);
+  if (!count) return null;
+  const opening = count > 1
+    ? `你在引出主星前，连续 ${count} 次遇到空宫。`
+    : '你在引出主星前，先遇到了一次空宫。';
+  return `${opening}最终显现的是「${leadName}」。这表示本次问事的核心力量并非一开始就清楚：局势仍有未定之处，或关键信息尚未完全浮出。`
+    + '先观察、试探和补足信息，再借最终主星的力量行动，会比急着下结论更贴合这一阵。';
+};
+
 // 直断：开头直接回答问题（围绕用户问句 + 结论表 + 主轴/四化一句）
 const sectionVerdict = (q, lead, hua, question) => {
   const lean = huaLean(hua);
@@ -193,14 +203,15 @@ const sectionVerdict = (q, lead, hua, question) => {
   return `${ask}——本阵给的方向是：${verdict}。（${huaTail}）下面把这一卦拆开来看。`;
 };
 
-// assembleReading({ spread, typeKey, chart, question }) → { title, questionText, chips, sections }
-export const assembleReading = ({ spread, typeKey, chart, question }) => {
+// assembleReading({ spread, typeKey, chart, question, drawTrace }) → { title, questionText, chips, sections }
+export const assembleReading = ({ spread, typeKey, chart, question, drawTrace = null }) => {
   const q = QUESTION_TYPES.find((t) => t.key === typeKey) || QUESTION_TYPES[QUESTION_TYPES.length - 1];
   const [lead, jia, yi, bing, hua] = spread;
   const ask = (question || '').trim();
 
   const sections = [
     { h: '直断', body: sectionVerdict(q, lead, hua, ask) },
+    { h: '抽牌轨迹', body: sectionDrawTrace(drawTrace, lead['名']) },
     { h: '本阵主调', body: sectionLead(lead, hua, q) },
     { h: '命盘底子', body: sectionChart(q, chart, lead['名']) },
     { h: '助力与变量', body: sectionAux(jia, yi, bing, q) },
@@ -209,11 +220,13 @@ export const assembleReading = ({ spread, typeKey, chart, question }) => {
   ].filter((s) => s.body);
 
   const chips = spread.map((c) => ({ label: c['名'], color: LEVEL_COLOR[c['级别']] || '#C9A646' }));
+  if (drawTrace?.emptyMajorCount) chips.push({ label: `曾遇空宫 × ${drawTrace.emptyMajorCount}`, color: '#6B4E96' });
 
   return {
     title: ask ? '此阵的解读' : `「${q.name}」· 此阵的解读`,
     questionText: ask || QUESTION_TEXT[q.key] || '',
     chips,
     sections,
+    drawTrace: drawTrace || null,
   };
 };

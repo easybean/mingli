@@ -145,6 +145,10 @@ const CSS = `
 .zl-picked-card .zl-hint{ display:none; }
 .zl-empty-note{ max-width:300px; margin:13px 0 0; padding:9px 12px; border-radius:11px; background:var(--zl-surface-2); color:var(--zl-ink-muted); font-size:12px; line-height:1.6; text-align:center; }
 .zl-picked-wrap > .zl-btn{ width:100%; max-width:310px; height:50px; margin-top:18px; font-size:14px; }
+.zl-draw-imprint{ margin:-5px 0 9px; padding:6px 12px; border:1px solid rgba(180,152,220,.38); border-radius:15px;
+  background:rgba(122,86,172,.14); color:var(--zl-ink); font-size:12px; letter-spacing:.5px; }
+.zl-quick-empty-note{ max-width:340px; margin:-2px 0 13px; }
+.zl-quick-redraw{ width:230px; height:52px; font-size:14px; }
 .zl-complete-hint{ margin:-2px 0 12px; }
 
 /* ---- spread ---- */
