@@ -37,7 +37,10 @@ export const renderStoryPage = (state) => {
         ${node.choices.map((choice) => `<button class="story-choice ${feedback?.choiceId === choice.id ? 'is-selected' : ''}" type="button" data-story-choice="${escapeHtml(choice.id)}" ${feedback ? 'disabled' : ''}><strong>${escapeHtml(choice.label)}</strong></button>`).join('')}
       </section>
       ${feedback ? `<section class="story-feedback"><p class="feedback-eyebrow">这一手的回响</p><p>${escapeHtml(feedback.immediate)}</p>${feedback.delayedHint ? `<small>${escapeHtml(feedback.delayedHint)}</small>` : ''}<button class="button button-primary" type="button" data-story-advance>进入下一幕 →</button></section>` : ''}
-      <details class="story-evidence"><summary>${escapeHtml(definition?.evidenceLabel || '为什么会出现这个局')}</summary>${node.evidence.map((item) => `<p><b>${escapeHtml(item.title)}</b>${escapeHtml(item.body)}</p>`).join('')}</details>
+      <section class="story-evidence" aria-label="${escapeHtml(definition?.evidenceLabel || '为什么会出现这个局')}">
+        <h2>${escapeHtml(definition?.evidenceLabel || '为什么会出现这个局')}</h2>
+        ${node.evidence.map((item) => `<p><b>${escapeHtml(item.title)}</b>${escapeHtml(item.body)}</p>`).join('')}
+      </section>
     </section>
   `;
 };

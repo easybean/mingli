@@ -33,6 +33,9 @@ const main = async () => {
   if (/data-auth-|data-logout|account-form|type="password"/.test(profile) || !/本机数据/.test(profile)) errors.push('profile must retain only local-data controls, not auth or sync entry points');
   const chart = fs.readFileSync(path.join(__dirname, '../src/pages/chart-page.js'), 'utf8');
   if (!/data-page="birth">去生成命盘/.test(chart)) errors.push('empty chart must lead to birth input, not a legacy route');
+  const story = fs.readFileSync(path.join(__dirname, '../src/pages/story-page.js'), 'utf8');
+  if (/<details class="story-evidence"/.test(story) || !/<section class="story-evidence"/.test(story)
+    || !/<h2>\$\{escapeHtml\(definition\?\.evidenceLabel/.test(story)) errors.push('story evidence must render fully expanded below choices');
 
   if (errors.length) {
     errors.forEach((error) => console.error(`FAIL ${error}`));
