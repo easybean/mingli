@@ -1,3 +1,5 @@
-export const profileForStoryDefinition = (definition, astrolabeData) => definition?.themeId === 'relationship'
-  ? astrolabeData?.reading?.relationshipStoryProfile
-  : astrolabeData?.reading?.workStoryProfile;
+export const profileForStoryDefinition = (definition, astrolabeData) => {
+  if (definition?.themeId === 'relationship') return astrolabeData?.reading?.relationshipStoryProfile;
+  if (definition?.themeId === 'finance') return astrolabeData?.reading?.financeStoryProfile;
+  return astrolabeData?.reading?.workStoryProfile;
+};

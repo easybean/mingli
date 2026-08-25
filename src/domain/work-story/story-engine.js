@@ -221,7 +221,9 @@ export const resolveEnding = ({ definition, profile, session }) => {
   const highestFocus = profile.rankedFocuses?.[0] || 'safety';
   const focusLabel = definition?.themeId === 'relationship'
     ? ({ clarity: '把期待说清', waiting: '等待带来的消耗', peer: '把猜测交回事实', time: '时间边界', boundary: '投入边界', slow: '可观察的节奏' }[highestFocus] || '当前关系节奏')
-    : ({ safety: '安全余量', opportunity: '机会窗口', recovery: '身心负荷', transition: '外部变化', negotiation: '权责边界' }[highestFocus] || '当前局面');
+    : definition?.themeId === 'finance'
+      ? ({ runway: '现金安全线', income: '收入恢复', invest: '小额验证机会', external: '外部回款与合作', pressure: '资金压力', reset: '暂停与止损' }[highestFocus] || '当前财务节奏')
+      : ({ safety: '安全余量', opportunity: '机会窗口', recovery: '身心负荷', transition: '外部变化', negotiation: '权责边界' }[highestFocus] || '当前局面');
   const qualityVariant = (ending.summary.qualityVariants || []).find((item) => (item.when?.flags || []).every((flag) => session.flags?.[flag]));
   return { ...clone(ending), title: ending.summary.title, summaryText: ending.summary.core, qualityText: qualityVariant?.text || '', action: ending.action.instruction, choicesSummary: session.choices.slice(-3).map((item) => item.choiceLabel), chartContrast: `命盘底色这一轮更容易牵动${focusLabel}；而你实际连续选择的是${session.choices.slice(-3).map((item) => item.choiceLabel).join('、')}。` };
 };

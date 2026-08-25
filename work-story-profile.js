@@ -356,4 +356,75 @@ const buildRelationshipStoryProfile = ({ summary = {}, bazi = {}, palaces = [], 
   };
 };
 
-module.exports = { buildWorkStoryProfile, buildRelationshipStoryProfile };
+// 财务线只讨论现金余量、收入恢复和可承受投入，不把命盘包装成收益承诺。
+// F01–F06 仍要求八字、紫微宫位、当前运限三层同时成立。
+const FINANCE_RULES = [
+  { id: 'F01', ruleId: 'F01_cash_floor', focus: 'runway', bazi: ['正财', '偏财', '正印', '偏印'], palace: '财帛', stars: [...POSITIVE_STARS, ...PRESSURE_STARS], copy: '财星或印星更显眼，先知道最低生活线和还能撑多久，会比凭感觉省钱更有用。' },
+  { id: 'F02', ruleId: 'F02_income_repair', focus: 'income', bazi: ['正官', '七杀', '食神', '伤官'], palace: '官禄', stars: [...POSITIVE_STARS, ...CHANGE_STARS, ...PRESSURE_STARS], copy: '官杀或食伤更显眼，收入恢复更适合落到职责、交付和能收款的具体动作。' },
+  { id: 'F03', ruleId: 'F03_bounded_invest', focus: 'invest', bazi: ['正财', '偏财', '食神', '伤官'], palace: '财帛', stars: [...POSITIVE_STARS, ...CHANGE_STARS], copy: '财星与食伤信号更显眼，可以看机会，但投入需要有金额上限和验证期限。' },
+  { id: 'F04', ruleId: 'F04_external_cash', focus: 'external', bazi: ['比肩', '劫财', '食神', '伤官'], palace: '迁移', stars: [...POSITIVE_STARS, ...CHANGE_STARS, ...PRESSURE_STARS], copy: '比劫或食伤更显眼，客户、合作和外部项目会影响现金流，条件要先说清。' },
+  { id: 'F05', ruleId: 'F05_pressure_cost', focus: 'pressure', bazi: ['正印', '偏印', '正官', '七杀'], palace: '福德', stars: [...POSITIVE_STARS, ...PRESSURE_STARS], copy: '印星或官杀更显眼，资金压力会连着睡眠和判断力，不能把身心成本漏算。' },
+  { id: 'F06', ruleId: 'F06_stop_loss', focus: 'reset', bazi: ['正财', '偏财', '比肩', '劫财', '正印', '偏印'], palace: '财帛', stars: [...PRESSURE_STARS, ...CHANGE_STARS, ...POSITIVE_STARS], copy: '财星、比劫或印星更显眼，及时暂停一笔还没被验证的投入，也是一种主动选择。' },
+];
+
+const buildFinanceStoryProfile = ({ summary = {}, bazi = {}, palaces = [], horoscope = {} }) => {
+  const gods = countGods(bazi);
+  const currentGods = [deriveCurrentLuckGod(bazi, horoscope), deriveCurrentDaYunGod(bazi, horoscope)].filter(Boolean);
+  const palaceMap = new Map(palaces.map((palace) => [palace.name, palace]));
+  const tags = new Set(['finance-story']);
+  const weights = { runway: 0, income: 0, invest: 0, external: 0, pressure: 0, reset: 0 };
+  const evidenceByRuleId = {};
+  const fusionMatrix = {};
+  const hasGod = (names) => names.some((name) => (gods[name] || 0) > 0 || currentGods.includes(name));
+
+  FINANCE_RULES.forEach((rule) => {
+    const palace = palaceMap.get(rule.palace);
+    const ziweiStars = starsOf(palace).filter((star) => rule.stars.includes(star));
+    const period = ['decadal', 'yearly', 'monthly']
+      .map((level) => activeFlowEvidence({ palaces, horoscope, level, flowingPalaceName: rule.palace }))
+      .filter(Boolean)
+      .map((flow) => ({ ...flow, matchedStars: flow.stars.filter((star) => rule.stars.includes(star)), activated: flow.mutagen.filter((star) => rule.stars.includes(star)) }))
+      .find((flow) => flow.matchedStars.length || flow.activated.length);
+    const baziHit = hasGod(rule.bazi);
+    const ziweiHit = ziweiStars.length > 0;
+    const periodHit = Boolean(period);
+    const complete = baziHit && ziweiHit && periodHit;
+    fusionMatrix[rule.id] = {
+      bazi: { hit: baziHit, gods: rule.bazi.filter((name) => (gods[name] || 0) > 0 || currentGods.includes(name)) },
+      ziwei: { hit: ziweiHit, palace: rule.palace, stars: ziweiStars },
+      period: period ? { hit: true, level: period.level, natalPalace: period.natalPalace, stars: period.matchedStars, mutagenActivation: period.activated } : { hit: false },
+      complete,
+    };
+    if (!complete) return;
+    tags.add(`astro:fusion:${rule.id}`);
+    weights[rule.focus] += 4;
+    if (currentGods.some((god) => rule.bazi.includes(god))) weights[rule.focus] += 2;
+    const matchedGods = fusionMatrix[rule.id].bazi.gods.slice(0, 2).join('、') || '相关十神';
+    const activation = period.activated.length ? `，并见四化会照${period.activated.join('、')}` : '';
+    evidenceByRuleId[rule.ruleId] = [
+      { title: '八字底色', body: `${rule.copy}（当前相关信号见${matchedGods}）` },
+      { title: '紫微结构', body: `${rule.palace}宫见${ziweiStars.slice(0, 3).join('、')}，这一轮要把账面事实和承受力一起看。` },
+      { title: '当前运限', body: `${period.label}${activation}。` },
+    ];
+  });
+
+  const fallback = { title: '命理依据（部分匹配）', body: '这一条目前只有部分命盘信号，只参与剧情排序，不被写成确定的财务结论。' };
+  FINANCE_RULES.forEach((rule) => { if (!evidenceByRuleId[rule.ruleId]) evidenceByRuleId[rule.ruleId] = [fallback]; });
+  const rankedFocuses = Object.entries(weights).sort((a, b) => b[1] - a[1]).map(([key]) => key);
+  return {
+    version: '0.6.0',
+    available: Boolean(bazi.dayMaster?.stem && ['财帛', '官禄', '福德', '迁移'].every((name) => palaceMap.has(name)) && horoscope?.yearly && horoscope?.monthly),
+    tags: [...tags], weights, rankedFocuses,
+    initialState: {},
+    initialWorkState: {
+      runway: clamp(44 + weights.runway + weights.income - weights.pressure),
+      optionality: clamp(40 + weights.invest + weights.external + Math.floor(weights.income / 2)),
+      load: clamp(48 + weights.pressure + weights.reset - Math.floor(weights.runway / 2)),
+    },
+    contextLine: `这段时间，财务上更值得先看的是${({ runway: '现金安全线', income: '收入恢复', invest: '小额验证机会', external: '外部回款与合作', pressure: '资金压力', reset: '暂停与止损' }[rankedFocuses[0]] || '现金余量')}。`,
+    evidenceByRuleId, fusionMatrix,
+    source: { gender: summary.gender || '' },
+  };
+};
+
+module.exports = { buildWorkStoryProfile, buildRelationshipStoryProfile, buildFinanceStoryProfile };

@@ -68,10 +68,10 @@ export const createWorkStoryViewModel = ({ definition, profile, session }) => {
       transition: node.copy?.transition || transitionFallback(session),
       evidence: node.evidenceSlots.flatMap((slot) => {
         const byRule = (slot.ruleIds || []).map((ruleId) => profile?.evidenceByRuleId?.[ruleId] || []);
-        const relationshipChain = definition?.themeId === 'relationship'
+        const themeChain = definition?.themeId && definition.themeId !== 'work'
           ? byRule.find((items) => items.length >= 3 && items.every((item) => !/部分匹配/.test(item.title || '')))
           : null;
-        const matched = relationshipChain || byRule.flat();
+        const matched = themeChain || byRule.flat();
         return matched.length ? matched : [{ title: '命理依据（部分匹配）', body: `这幕由当前${definition?.themeLabel || '人生'}主题与阶段信号共同排序；完整三层组合依据不足，因此不把它写成确定结论。` }];
       }),
     } : null,

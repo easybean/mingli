@@ -36,7 +36,7 @@ export const STORY_THEMES = [
   {
     id: 'finance', label: '财务岔路', description: '收入、储备和风险承担的取舍。',
     entries: [
-      { id: 'finance_runway', title: '收入不稳，先守住还是再投入', conflict: '安全垫与机会', status: 'upcoming' },
+      { id: 'finance_runway', storyId: 'finance_runway', title: '收入不稳，先守住还是再投入', conflict: '安全垫与机会', status: 'available' },
       { id: 'finance_commitment', title: '一笔长期支出要不要承担', conflict: '当下压力与未来安排', status: 'upcoming' },
       { id: 'finance_risk', title: '面对高回报选择，风险该怎么定', conflict: '增长与可承受损失', status: 'upcoming' },
       { id: 'finance_income_volatility', title: '收入不稳定，固定安排与弹性机会怎么选', conflict: '稳定现金与上行空间', status: 'upcoming' },

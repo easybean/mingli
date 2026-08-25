@@ -33,12 +33,14 @@ const main = async () => {
   }
   const workAvailable = availableEntries.filter((entry) => entry.themeId === 'work');
   const relationshipAvailable = availableEntries.filter((entry) => entry.themeId === 'relationship');
-  if (availableEntries.length !== 5 || workAvailable.length !== 4 || relationshipAvailable.length !== 1
+  const financeAvailable = availableEntries.filter((entry) => entry.themeId === 'finance');
+  if (availableEntries.length !== 6 || workAvailable.length !== 4 || relationshipAvailable.length !== 1 || financeAvailable.length !== 1
     || workAvailable.map((entry) => entry.id).join(',') !== 'job_lost,job_exit,offer_choice,career_switch'
     || relationshipAvailable[0]?.id !== 'relationship_unclear' || relationshipAvailable[0]?.storyId !== 'relationship_unclear'
-    || upcomingEntries.length !== entries.length - 5
+    || financeAvailable[0]?.id !== 'finance_runway' || financeAvailable[0]?.storyId !== 'finance_runway'
+    || upcomingEntries.length !== entries.length - 6
     || entries.some((entry) => entry.status !== 'available' && entry.status !== 'upcoming')) {
-    errors.push('exactly four work stories and relationship_unclear may be available; every other catalog entry must remain upcoming');
+    errors.push('exactly four work, one relationship and finance_runway may be available; every other catalog entry must remain upcoming');
   }
   const eventsSource = fs.readFileSync(path.join(__dirname, '../src/app/events.js'), 'utf8');
   const homeSource = fs.readFileSync(path.join(__dirname, '../src/pages/home-page.js'), 'utf8');

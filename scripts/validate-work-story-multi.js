@@ -15,26 +15,29 @@ const main = async () => {
   const offerUrl = dataUrl(read('src/content/work-stories/offer-choice.js'));
   const careerSwitchUrl = dataUrl(read('src/content/work-stories/career-switch.js'));
   const relationshipUrl = dataUrl(read('src/content/work-stories/relationship-unclear.js'));
+  const financeUrl = dataUrl(read('src/content/work-stories/finance-runway.js'));
   const lifeUrl = dataUrl("export const createInitialLifeState=()=>({pressure:50,opportunity:50,relationship:50,stability:50,resources:50,wellbeing:50}); export const applyLifeStateDelta=(state,delta)=>Object.fromEntries(Object.keys(state).map((key)=>[key,Math.max(0,Math.min(100,(state[key]||50)+(delta[key]||0)))]));");
   const engineUrl = dataUrl(read('src/domain/work-story/story-engine.js').replace("from '../life-state.js'", `from '${lifeUrl}'`));
-  const registryUrl = dataUrl(read('src/domain/work-story/story-registry.js')
+  const registryWithFinanceUrl = dataUrl(read('src/domain/work-story/story-registry.js')
     .replace("from '../../content/work-stories/unemployed-month-five.js'", `from '${oldUrl}'`)
     .replace("from '../../content/work-stories/employed-want-leave.js'", `from '${employedUrl}'`)
     .replace("from '../../content/work-stories/offer-choice.js'", `from '${offerUrl}'`)
     .replace("from '../../content/work-stories/career-switch.js'", `from '${careerSwitchUrl}'`)
-    .replace("from '../../content/work-stories/relationship-unclear.js'", `from '${relationshipUrl}'`));
+    .replace("from '../../content/work-stories/relationship-unclear.js'", `from '${relationshipUrl}'`)
+    .replace("from '../../content/work-stories/finance-runway.js'", `from '${financeUrl}'`));
   const shareModelUrl = dataUrl(read('src/domain/work-story/share-model.js'));
   const shareCardUrl = dataUrl(read('src/components/work-story-share-card.js')
     .replace("from '../domain/work-story/share-model.js'", `from '${shareModelUrl}'`));
-  const [oldContent, employedContent, offerContent, careerSwitchContent, relationshipContent, engine, registry, shareModel, shareCard] = await Promise.all([
-    import(oldUrl), import(employedUrl), import(offerUrl), import(careerSwitchUrl), import(relationshipUrl), import(engineUrl), import(registryUrl), import(shareModelUrl), import(shareCardUrl),
+  const [oldContent, employedContent, offerContent, careerSwitchContent, relationshipContent, financeContent, engine, registry, shareModel, shareCard] = await Promise.all([
+    import(oldUrl), import(employedUrl), import(offerUrl), import(careerSwitchUrl), import(relationshipUrl), import(financeUrl), import(engineUrl), import(registryWithFinanceUrl), import(shareModelUrl), import(shareCardUrl),
   ]);
   const oldDefinition = oldContent.UNEMPLOYED_MONTH_FIVE;
   const employedDefinition = employedContent.EMPLOYED_WANT_LEAVE;
   const offerDefinition = offerContent.OFFER_CHOICE;
   const careerSwitchDefinition = careerSwitchContent.CAREER_SWITCH;
   const relationshipDefinition = relationshipContent.RELATIONSHIP_UNCLEAR;
-  [oldDefinition, employedDefinition, offerDefinition, careerSwitchDefinition, relationshipDefinition].forEach((definition) => {
+  const financeDefinition = financeContent.FINANCE_RUNWAY;
+  [oldDefinition, employedDefinition, offerDefinition, careerSwitchDefinition, relationshipDefinition, financeDefinition].forEach((definition) => {
     const contractErrors = engine.validateStoryDefinition(definition);
     if (contractErrors.length) errors.push(`${definition?.id || 'unknown'} contract: ${contractErrors.join('；')}`);
   });
@@ -42,7 +45,8 @@ const main = async () => {
     || registry.getWorkStoryDefinitionForEntry('job_exit')?.id !== employedDefinition.id
     || registry.getWorkStoryDefinitionForEntry('offer_choice')?.id !== offerDefinition.id
     || registry.getWorkStoryDefinitionForEntry('career_switch')?.id !== careerSwitchDefinition.id
-    || registry.getWorkStoryDefinitionForEntry('relationship_unclear')?.id !== relationshipDefinition.id) {
+    || registry.getWorkStoryDefinitionForEntry('relationship_unclear')?.id !== relationshipDefinition.id
+    || registry.getWorkStoryDefinitionForEntry('finance_runway')?.id !== financeDefinition.id) {
     errors.push('each available catalog entry must resolve its own definition');
   }
   const registeredWorkStories = [oldDefinition.id, employedDefinition.id, offerDefinition.id, careerSwitchDefinition.id]

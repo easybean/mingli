@@ -3,6 +3,7 @@ import { EMPLOYED_WANT_LEAVE } from '../../content/work-stories/employed-want-le
 import { OFFER_CHOICE } from '../../content/work-stories/offer-choice.js';
 import { CAREER_SWITCH } from '../../content/work-stories/career-switch.js';
 import { RELATIONSHIP_UNCLEAR } from '../../content/work-stories/relationship-unclear.js';
+import { FINANCE_RUNWAY } from '../../content/work-stories/finance-runway.js';
 
 // A story is resolved once at the boundary. Pages and the engine must never
 // guess from the entry again: doing so is how two stories can leak into one
@@ -38,6 +39,7 @@ registerWorkStoryDefinition(EMPLOYED_WANT_LEAVE);
 registerWorkStoryDefinition(OFFER_CHOICE);
 registerWorkStoryDefinition(CAREER_SWITCH);
 registerWorkStoryDefinition(RELATIONSHIP_UNCLEAR);
+registerWorkStoryDefinition(FINANCE_RUNWAY);
 
 export const getWorkStoryDefinition = (storyId) => definitions.get(storyId) || null;
 
