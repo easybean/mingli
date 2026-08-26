@@ -17,6 +17,7 @@ let cosmosMounted = false;
 
 const render = () => {
   document.documentElement.setAttribute('data-theme', state.ui.theme);
+  appRoot.classList.toggle('app-shell--home', state.activePage === 'home');
   if (state.ui.theme.startsWith('star') && cosmosRoot && !cosmosMounted) {
     cosmosRoot.innerHTML = renderCosmos();
     cosmosMounted = true;

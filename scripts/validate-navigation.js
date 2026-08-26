@@ -37,9 +37,13 @@ const main = async () => {
   if (/<details class="story-evidence"/.test(story) || !/<section class="story-evidence"/.test(story)
     || !/<h2>\$\{escapeHtml\(definition\?\.evidenceLabel/.test(story)) errors.push('story evidence must render fully expanded below choices');
   const pagesCss = fs.readFileSync(path.join(__dirname, '../src/styles/pages.css'), 'utf8');
-  if (!/\.app-shell:has\(\.choice-landing\).*max-width:\s*1120px/s.test(pagesCss)
+  const mainSource = fs.readFileSync(path.join(__dirname, '../src/app/main.js'), 'utf8');
+  if (!/classList\.toggle\('app-shell--home', state\.activePage === 'home'\)/.test(mainSource)
+    || !/\.app-shell\.app-shell--home.*max-width:\s*1120px/s.test(pagesCss)
     || !/@media \(min-width:\s*920px\).*\.choice-landing.*grid-template-columns/s.test(pagesCss)
-    || !/@media \(max-width:\s*420px\).*\.story-theme-panel__head/s.test(pagesCss)) errors.push('home page must adapt independently across phone, tablet and desktop widths');
+    || !/\.choice-landing, \.choice-landing > \*, \.choice-section, \.story-theme-panel \{ min-width: 0; width: 100%; max-width: 100%; \}/.test(pagesCss)
+    || !/grid-template-columns:\s*minmax\(0, 1fr\)/.test(pagesCss)
+    || !/@media \(max-width:\s*420px\).*\.story-theme-panel__head/s.test(pagesCss)) errors.push('home page must adapt independently across phone, tablet and desktop widths without horizontal page overflow');
 
   if (errors.length) {
     errors.forEach((error) => console.error(`FAIL ${error}`));
