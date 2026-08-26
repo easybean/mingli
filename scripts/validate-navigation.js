@@ -43,7 +43,7 @@ const main = async () => {
     || !/@media \(min-width:\s*920px\).*\.choice-landing.*grid-template-columns/s.test(pagesCss)
     || !/\.choice-landing, \.choice-landing > \*, \.choice-section, \.story-theme-panel \{ min-width: 0; width: 100%; max-width: 100%; \}/.test(pagesCss)
     || !/grid-template-columns:\s*minmax\(0, 1fr\)/.test(pagesCss)
-    || !/@media \(max-width:\s*699px\).*\.story-theme-tabs.*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\).*\.story-theme-tab:last-child:nth-child\(odd\).*grid-column:\s*1 \/ -1/s.test(pagesCss)
+    || !/@media \(max-width:\s*699px\).*\.story-theme-tabs.*display:\s*flex.*overflow-x:\s*auto.*padding-right:\s*32px.*\.story-theme-tab.*min-width:\s*max-content/s.test(pagesCss)
     || !/@media \(max-width:\s*420px\).*\.story-theme-panel__head/s.test(pagesCss)) errors.push('home page must adapt independently across phone, tablet and desktop widths without horizontal page overflow');
 
   if (errors.length) {

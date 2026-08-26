@@ -2008,8 +2008,7 @@
   .work-entry { padding: 16px; }
 }
 @media (max-width: 699px) {
-  .story-theme-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: visible; padding-bottom: 0; }
-  .story-theme-tab { width: 100%; min-width: 0; padding-inline: 8px; white-space: normal; line-height: 1.35; }
-  .story-theme-tab:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .story-theme-tabs { display: flex; gap: 6px; overflow-x: auto; overflow-y: hidden; padding-right: 32px; scroll-padding-inline: 0 32px; }
+  .story-theme-tab { width: auto; min-width: max-content; min-height: 40px; padding-inline: 9px; font-size: .78rem; white-space: nowrap; }
 }
 .story-conflict { margin-top: 15px; padding-top: 12px; border-top: 1px solid var(--line); color: var(--text-secondary); font-size: .9rem; }.story-conflict b { display:block; color:var(--accent); font-size:.74rem; margin-bottom:4px; }.story-echo { margin:16px 0; padding:14px 16px; border-radius:12px; background:color-mix(in srgb,var(--surface) 88%,var(--accent) 12%); }.story-echo p:last-child{margin-bottom:0;line-height:1.65;}
