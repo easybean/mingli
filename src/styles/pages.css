@@ -1983,4 +1983,27 @@
 .work-story-share-preview { display: grid; gap: 14px; margin: 26px 0 18px; padding: 22px 18px; overflow: hidden; border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--line)); border-radius: 18px; background: radial-gradient(100% 80% at 0% 0%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 72%), var(--surface); }.work-story-share-preview__brand { margin: 0; color: var(--accent); font-size: .72rem; letter-spacing: .12em; }.work-story-share-preview h2 { margin: 0; font: 600 1.55rem/1.35 var(--font-serif); }.work-story-share-preview__tone, .work-story-share-preview p, .work-story-share-preview small { margin: 0; color: var(--text-secondary); line-height: 1.65; }.work-story-share-preview div { display: grid; gap: 6px; }.work-story-share-preview b { font-size: .84rem; }.work-story-share-preview ol { display: grid; gap: 5px; margin: 0; padding-left: 1.3rem; color: var(--text-secondary); font-size: .88rem; line-height: 1.55; }.work-story-share-preview small { overflow-wrap: anywhere; font-size: .76rem; }
 @media (max-width: 420px) { .work-story-share-preview { margin-inline: -2px; padding: 18px 15px; border-radius: 15px; }.work-story-share-preview h2 { font-size: 1.35rem; }.work-story-share-preview ol { font-size: .84rem; } }
 @media (min-width: 700px) { .work-entry-grid { grid-template-columns: repeat(3, 1fr); }.more-entries .work-entry-grid { grid-template-columns: repeat(2, 1fr); }.story-theme-tabs { flex-wrap: wrap; overflow: visible; } }
+/* 首页需要浏览完整主题目录；只在首页放宽，做题和结果页继续保持阅读宽度。 */
+@media (min-width: 700px) {
+  .app-shell:has(.choice-landing) { max-width: 1120px; padding-inline: 28px; }
+  .choice-landing { max-width: none; }
+  .story-theme-panel { padding: 22px; }
+  .work-entry { min-height: 126px; }
+}
+@media (min-width: 920px) {
+  .choice-landing { grid-template-columns: minmax(0, 1fr) 280px; column-gap: 30px; align-items: start; }
+  .choice-hero, .choice-section { grid-column: 1; }
+  .choice-hero { padding-top: 34px; }
+  .choice-hero h1 { font-size: clamp(2.8rem, 5vw, 4.4rem); }
+  .sample-route-card { grid-column: 2; grid-row: 1 / span 2; position: sticky; top: 28px; margin-top: 82px; }
+  .choice-landing > .choice-disclaimer { grid-column: 1 / -1; }
+}
+@media (max-width: 420px) {
+  .choice-landing { padding-top: 30px; }
+  .choice-hero { padding: 10px 2px 20px; }
+  .story-theme-panel { padding: 14px; }
+  .story-theme-panel__head { display: grid; }
+  .story-theme-panel__head > span { justify-self: start; }
+  .work-entry { padding: 16px; }
+}
 .story-conflict { margin-top: 15px; padding-top: 12px; border-top: 1px solid var(--line); color: var(--text-secondary); font-size: .9rem; }.story-conflict b { display:block; color:var(--accent); font-size:.74rem; margin-bottom:4px; }.story-echo { margin:16px 0; padding:14px 16px; border-radius:12px; background:color-mix(in srgb,var(--surface) 88%,var(--accent) 12%); }.story-echo p:last-child{margin-bottom:0;line-height:1.65;}

@@ -36,6 +36,10 @@ const main = async () => {
   const story = fs.readFileSync(path.join(__dirname, '../src/pages/story-page.js'), 'utf8');
   if (/<details class="story-evidence"/.test(story) || !/<section class="story-evidence"/.test(story)
     || !/<h2>\$\{escapeHtml\(definition\?\.evidenceLabel/.test(story)) errors.push('story evidence must render fully expanded below choices');
+  const pagesCss = fs.readFileSync(path.join(__dirname, '../src/styles/pages.css'), 'utf8');
+  if (!/\.app-shell:has\(\.choice-landing\).*max-width:\s*1120px/s.test(pagesCss)
+    || !/@media \(min-width:\s*920px\).*\.choice-landing.*grid-template-columns/s.test(pagesCss)
+    || !/@media \(max-width:\s*420px\).*\.story-theme-panel__head/s.test(pagesCss)) errors.push('home page must adapt independently across phone, tablet and desktop widths');
 
   if (errors.length) {
     errors.forEach((error) => console.error(`FAIL ${error}`));
