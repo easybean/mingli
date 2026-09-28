@@ -1,5 +1,12 @@
 const assert = require('node:assert/strict');
 const { buildDailyOutfit, beijingDate } = require('../daily-outfit');
+const table = require('../data/knowledge-rules/bazi-tiaohou-qiongtong.json').table;
+for (const stem of '甲乙丙丁戊己庚辛壬癸') {
+  for (const branch of '子丑寅卯辰巳午未申酉戌亥') {
+    assert.ok(Array.isArray(table[stem][branch]) && table[stem][branch].length);
+    assert.ok(table[stem][branch].every(value => '甲乙丙丁戊己庚辛壬癸'.includes(value) && value.length === 1));
+  }
+}
 const sample = buildDailyOutfit('2026-09-28');
 assert.equal(sample.day, '乙巳');
 assert.deepEqual(sample.groups.map((g) => g.element), ['土', '火', '水', '木', '金']);

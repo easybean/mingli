@@ -145,6 +145,14 @@ export const setError = (error) => {
 
 export const setAstrolabeData = (data) => {
   state.astrolabeData = data;
+  if (state.ui.outfitAfterChart) {
+    state.activePage = 'profile';
+    state.ui.generatedAt = todayInputValue();
+    saveBirthInput(state.birthInput);
+    saveChart({ astrolabeData: data, generatedAt: state.ui.generatedAt });
+    notify();
+    return;
+  }
   state.activePage = 'story';
   state.ui.portraitOpen = true;
   state.ui.generatedAt = todayInputValue();

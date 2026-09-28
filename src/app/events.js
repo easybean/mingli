@@ -80,6 +80,12 @@ export const bindEvents = (root) => {
     try {
       const data = await fetchAstrolabe(input);
       setAstrolabeData(data);
+      if (state.ui.outfitAfterChart) {
+        state.ui.outfitAfterChart = false;
+        setActivePage('profile');
+        openDailyOutfit(state, true);
+        return;
+      }
       const session = state.workStorySession;
       if (session) {
         track('chart_success', { entryId: session.entry, storyId: session.storyId });
@@ -94,7 +100,8 @@ export const bindEvents = (root) => {
   });
 
   root.addEventListener('click', (event) => {
-    if (event.target.closest('[data-daily-outfit]')) { openDailyOutfit(); return; }
+    const outfitEntry = event.target.closest('[data-daily-outfit]');
+    if (outfitEntry) { openDailyOutfit(state, outfitEntry.dataset.dailyOutfit === 'personal', () => { state.ui.outfitAfterChart = true; setActivePage('birth'); }); return; }
     const themeButton = event.target.closest('[data-theme-set]');
     if (themeButton) {
       setTheme(themeButton.dataset.themeSet);

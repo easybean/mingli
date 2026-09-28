@@ -6,6 +6,7 @@ const path = require('path');
 const EVENT_NAMES = new Set([
   'theme_view', 'theme_select', 'entry_select', 'birth_submit', 'chart_success',
   'story_start', 'story_stage', 'story_complete', 'story_restart', 'share', 'save', 'copy',
+  'outfit_open', 'outfit_personal', 'outfit_save_click', 'outfit_share_complete',
 ]);
 const ID = /^[a-z][a-z0-9_]{0,63}$/;
 const SESSION_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[4-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;

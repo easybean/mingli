@@ -1067,7 +1067,7 @@ const buildFiveElementGuide = ({ dayStem, dayElement, monthBranch, useSpiritTopi
   if (tiaohou && tiaohou.favored.length) {
     // 调候优先：依书取当月寒暖燥湿之所需，例如夏月燥土宜借水润。
     favored = tiaohou.favored;
-    basis = `依《穷通宝鉴》调候，${tiaohou.monthLabel}生人取「${tiaohou.stems.join('')}」润燥，宜借${favored.join('、')}之气调和`;
+    basis = `按项目整理的《穷通宝鉴》调候表，以日干「${dayStem}」与月支「${monthBranch}」取${favored.join('、')}作为配色参考；这是简化的调候取色，不等同完整八字喜用判断`;
     source = BAZI_TIAOHOU_RULES.sourceTitle;
   } else if (useSpiritTopic === '用神倾向先扶身' || useSpiritTopic === '用神倾向重印比') {
     favored = [resource, peer];
@@ -1085,6 +1085,7 @@ const buildFiveElementGuide = ({ dayStem, dayElement, monthBranch, useSpiritTopi
     favored: [...new Set(favored)].filter(Boolean),
     basis,
     source,
+    method: tiaohou ? 'seasonal-table' : 'structural-reference',
     useSpiritTopic,
   };
 };

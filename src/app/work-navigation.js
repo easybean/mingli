@@ -9,6 +9,6 @@ export const workPageFor = ({ astrolabeData, workStorySession } = {}) => {
 export const navItemForPage = (page) => (WORK_FLOW_PAGES.has(page) ? 'work' : page);
 
 export const resolvedAppPage = ({ requestedPage, astrolabeData, workStorySession } = {}) => {
-  if (requestedPage === 'work') return workPageFor({ astrolabeData, workStorySession });
+  if (requestedPage === 'work') return 'home';
   return APP_PAGES.has(requestedPage) ? requestedPage : workPageFor({ astrolabeData, workStorySession });
 };

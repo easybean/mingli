@@ -60,18 +60,18 @@ const ELEMENT_PROFILE = {
 
 const ROLE_LABEL = ['首选方向', '搭配方向'];
 const ROLE_NOTE = [
-  '是你这张盘当下最该补的一气，建议作为常戴主色。',
-  '与首选相生相成，作辅助、点缀即可，不必喧宾夺主。',
+  '可以作为日常主色灵感，并不是必须补足的五行。',
+  '是另一种可选配色，可单独使用或少量点缀，不代表与首选必然相生。',
 ];
 
-const PRINCIPLE = '为什么挑这些材质：命理里把饰品按「颜色 + 质地」归到五行——青绿属木、赤红属火、土黄属土、白银属金、黑蓝属水。所以选的不是「好看的石头」，而是「能补上你当下偏缺那一气」的颜色和材质；玉石、水晶、木头、金属里都能找到对应，挑一种顺手的即可。';
+const PRINCIPLE = '这里按可见颜色提供五行搭配灵感：青绿属木、红紫属火、黄棕属土、白银属金、黑蓝属水。材质不用于判定效果；已有的衣服、包或表带都可以，不必购买贵重饰品。';
 
 export const createAccessoryViewModel = (state) => {
   const data = state.astrolabeData;
   if (!data) {
     return {
       ready: false,
-      emptyText: '先在首页生成命盘，这里会按你的八字五行喜用，给出适合的材质和颜色方向。',
+      emptyText: '先生成命盘，就能查看八字调候配色参考。暂时不填也可以看今日通用色卡。',
     };
   }
 
@@ -79,11 +79,12 @@ export const createAccessoryViewModel = (state) => {
   if (!guide || !guide.favored?.length) {
     return {
       ready: false,
-      emptyText: '当前命盘暂时判断不出清晰的五行喜用，换个命盘或之后再看。',
+      emptyText: '当前命盘缺少配色参考数据，请重新生成命盘；也可以先看通用色卡。',
     };
   }
 
   const favored = guide.favored.filter((element) => ELEMENT_PROFILE[element]);
+  if (!favored.length) return { ready: false, emptyText: '配色参考数据暂不可用，请重新生成命盘或查看通用色卡。' };
   const items = favored.map((element, index) => {
     const profile = ELEMENT_PROFILE[element];
     return {
@@ -97,17 +98,17 @@ export const createAccessoryViewModel = (state) => {
   });
 
   // 推理链：日主 → 当月调候缺什么 → 该补哪几气（basis 已含书目依据）。
-  const intro = `你是「${guide.dayElement}」日主。${guide.basis}。也就是说，与其只按「自己喜欢什么颜色」来挑，不如顺着「${favored.join('、')}」这几气来配，更贴合你这张盘当下的偏缺。`;
+  const intro = `你是「${guide.dayElement}」日主。参考色系为${favored.join('、')}。依据出生的日干与月支作简化调候取色，不等同完整喜用判断，也不表示你缺这些五行。喜欢、舒适和实际场合更重要。`;
 
   return {
     ready: true,
     dayElement: guide.dayElement,
-    basis: guide.basis,
+    basis: '按出生的日干与月支查询项目整理的调候表；不作为完整八字喜用结论。',
     source: guide.source || '',
     intro,
     principle: PRINCIPLE,
     items,
     howto: '贴身常戴就行，颜色、材质对上即可，不必追求贵重——戴着顺眼、心里安定，比什么都重要。',
-    disclaimer: '这是按八字五行喜用给的搭配方向，是一种偏好参考，不是护身或转运的承诺。',
+    disclaimer: '八字调候配色仅供民俗与审美参考，不承诺转运或改善收益。',
   };
 };

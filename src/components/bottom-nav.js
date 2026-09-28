@@ -5,7 +5,7 @@ const NAV_ICONS = {
 };
 
 const navItems = [
-  { id: 'work', label: '工作岔路' },
+  { id: 'work', label: '首页' },
   { id: 'chart', label: '命盘' },
   { id: 'profile', label: '我的' },
 ];

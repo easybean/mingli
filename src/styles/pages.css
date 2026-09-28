@@ -1976,6 +1976,10 @@
 .outfit-status, .outfit-tip { font-size: 12px; color: #766C5E; margin: 12px 0; line-height: 1.6; }
 .outfit-preview { width: 100%; height: auto; display: block; border-radius: 8px; box-shadow: 0 6px 24px #302d2820; }.outfit-preview[hidden] { display: none; }
 .outfit-actions button { flex: 1; }.outfit-actions [data-save] { background: #302D28; color: #F5F0E6; }
+.outfit-explanation { font-size: 13px; line-height: 1.8; overflow-wrap: anywhere; }
+.outfit-dialog [hidden] { display: none !important; }
+.home-question { background: var(--surface, #201a2b); color: var(--text-primary, #f4e7ce); }
+.home-question > small { color: inherit; }
 .choice-landing, .birth-page, .story-page, .result-page { max-width: 680px; padding-top: 48px; }
 .choice-hero { padding: 18px 4px 28px; }
 .choice-hero h1, .result-page h1 { margin: 8px 0 14px; font: 600 clamp(2rem, 9vw, 3.4rem)/1.13 var(--font-serif); letter-spacing: -.05em; }

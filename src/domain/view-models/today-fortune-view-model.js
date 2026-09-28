@@ -47,7 +47,7 @@ export const createTodayFortuneViewModel = (state) => {
     label: `${god}日`,
     line,
     favoredHint: inFavored
-      ? `今天走的是「${flowElement}」气，正对你的喜用——顺势使，会比平时省力。`
+      ? `今天的天干属「${flowElement}」，与调候参考色系有交集；可以当作搭配灵感，不代表事情会更顺利。`
       : '',
   };
 };

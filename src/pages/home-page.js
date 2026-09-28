@@ -19,13 +19,15 @@ export const renderHomePage = (state) => {
   return `
     <section class="page choice-landing">
       <header class="choice-hero">
-        <p class="page-kicker">MINGLI · 人生岔路</p>
-        <h1>命盘决定局，<br>选择决定走法。</h1>
-        <p>从你眼前真实的处境出发，走一段由命盘、运限和选择共同推动的互动推演。</p>
+        <p class="page-kicker">MINGLI · 日常里的命理灵感</p>
+        <h1>给今天一点颜色，<br>给心事一个出口。</h1>
+        <p>看看今天怎么搭，为心里的一件事抽张牌。想再深入一点，也可以从命盘出发，预演人生的选择。</p>
       </header>
       <section class="choice-section">
         <button type="button" class="outfit-entry" data-daily-outfit><span>DAILY COLOUR / 五行穿衣</span><strong>今天，穿什么颜色？</strong><small>今日与明日配色 · 生成专属日期色卡 ↗</small><i aria-hidden="true"><b></b><b></b><b></b></i></button>
-        <p class="section-eyebrow">先选你正在面对的主题</p>
+        <button type="button" class="outfit-entry home-question" data-ziling-open><span>紫灵牌问事</span><strong>心里有件事，想理一理</strong><small>抽一组牌，换个角度看问题 · 趣味占卜 ↗</small></button>
+        <p class="section-eyebrow">遇到一个选择 · 人生岔路</p>
+        ${state?.astrolabeData && state?.workStorySession ? `<button type="button" class="button button-secondary" data-page="${state.workStorySession.completed ? 'result' : 'story'}">${state.workStorySession.completed ? '查看上次推演结果' : '继续上次的推演'} →</button>` : ''}
         ${renderThemeTabs(activeTheme.id)}
         <section id="story-theme-panel" class="story-theme-panel" role="tabpanel" aria-labelledby="story-theme-tab-${escapeHtml(activeTheme.id)}" tabindex="0">
           <div class="story-theme-panel__head"><div><h2>${escapeHtml(activeTheme.label)}</h2><p>${escapeHtml(activeTheme.description)}</p></div><span>${summary.available ? `${summary.available} 套可体验` : '筹备中'}</span></div>
@@ -34,6 +36,7 @@ export const renderHomePage = (state) => {
           ${activeTheme.id === 'relationship' ? '<p class="choice-disclaimer">若存在威胁、控制、暴力、被跟踪或人身安全风险，请优先联系可信的现实支持；本体验不处理安全危机。</p>' : ''}
         </section>
       </section>
+      <button type="button" class="button button-secondary" data-page="chart">了解我的命盘 →</button>
       <aside class="sample-route-card">
         <span>这一局不是测验</span>
         <strong>同一张命盘，不同选择，会走向不同路线。</strong>
