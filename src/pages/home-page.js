@@ -24,6 +24,7 @@ export const renderHomePage = (state) => {
         <p>从你眼前真实的处境出发，走一段由命盘、运限和选择共同推动的互动推演。</p>
       </header>
       <section class="choice-section">
+        <button type="button" class="outfit-entry" data-daily-outfit><span>DAILY COLOUR / 五行穿衣</span><strong>今天，穿什么颜色？</strong><small>今日与明日配色 · 生成专属日期色卡 ↗</small><i aria-hidden="true"><b></b><b></b><b></b></i></button>
         <p class="section-eyebrow">先选你正在面对的主题</p>
         ${renderThemeTabs(activeTheme.id)}
         <section id="story-theme-panel" class="story-theme-panel" role="tabpanel" aria-labelledby="story-theme-tab-${escapeHtml(activeTheme.id)}" tabindex="0">

@@ -1,4 +1,5 @@
 import { fetchAstrolabe } from '../api/mingli-api.js';
+import { openDailyOutfit } from '../components/daily-outfit.js';
 import {
   setActivePage,
   setAstrolabeData,
@@ -93,6 +94,7 @@ export const bindEvents = (root) => {
   });
 
   root.addEventListener('click', (event) => {
+    if (event.target.closest('[data-daily-outfit]')) { openDailyOutfit(); return; }
     const themeButton = event.target.closest('[data-theme-set]');
     if (themeButton) {
       setTheme(themeButton.dataset.themeSet);

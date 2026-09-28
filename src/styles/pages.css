@@ -1960,6 +1960,22 @@
   line-height: 1.6;
 }
 /* 0.1.0 工作岔路主流程 */
+.outfit-entry { position: relative; display: grid; gap: 12px; width: 100%; margin: 0 0 28px; padding: 26px 22px; text-align: left; color: #302D28; background: #F5F0E6; border: 1px solid #D9D0C1; border-radius: 18px; overflow: hidden; }
+.outfit-entry > span { font-size: 10px; letter-spacing: .13em; }
+.outfit-entry > strong { font: 600 25px/1.4 var(--font-serif); position: relative; z-index: 1; }
+.outfit-entry > small { font-size: 11px; color: #766C5E; }
+.outfit-entry i { display: flex; gap: 5px; margin-top: 4px; }
+.outfit-entry i b { display: block; width: 42px; height: 48px; border-radius: 22px 22px 3px 3px; background: #B9C9AD; }
+.outfit-entry i b:nth-child(2) { background: #E8D9A9; }.outfit-entry i b:nth-child(3) { background: #B9A17B; }
+.outfit-dialog { box-sizing: border-box; width: min(560px, calc(100vw - 24px)); max-height: calc(100dvh - 32px); padding: 18px; border: 1px solid #D9D0C1; border-radius: 20px; background: #F5F0E6; color: #302D28; overflow: auto; }
+.outfit-dialog::backdrop { background: #110e19b8; }
+.outfit-dialog header { display: flex; justify-content: space-between; align-items: center; gap: 12px; }.outfit-dialog header strong { font-size: 15px; }
+.outfit-dialog button { min-height: 44px; border: 1px solid #D1C5B3; border-radius: 24px; background: transparent; color: #302D28; padding: 8px 18px; }
+.outfit-dialog [data-close] { font-size: 24px; padding: 0; width: 44px; }
+.outfit-date, .outfit-actions { display: flex; gap: 8px; margin: 14px 0; }.outfit-date button[aria-pressed="true"] { background: #302D28; color: #F5F0E6; }
+.outfit-status, .outfit-tip { font-size: 12px; color: #766C5E; margin: 12px 0; line-height: 1.6; }
+.outfit-preview { width: 100%; height: auto; display: block; border-radius: 8px; box-shadow: 0 6px 24px #302d2820; }.outfit-preview[hidden] { display: none; }
+.outfit-actions button { flex: 1; }.outfit-actions [data-save] { background: #302D28; color: #F5F0E6; }
 .choice-landing, .birth-page, .story-page, .result-page { max-width: 680px; padding-top: 48px; }
 .choice-hero { padding: 18px 4px 28px; }
 .choice-hero h1, .result-page h1 { margin: 8px 0 14px; font: 600 clamp(2rem, 9vw, 3.4rem)/1.13 var(--font-serif); letter-spacing: -.05em; }

@@ -5,6 +5,7 @@ const { URL } = require('url');
 const { astro } = require('iztro');
 const { Lunar, LunarUtil, Solar } = require('lunar-typescript');
 const { tenGod } = require('./bazi-utils');
+const { buildDailyOutfit } = require('./daily-outfit');
 const { buildKnowledgeProfile } = require('./knowledge');
 const { buildLifeGame } = require('./life-game');
 const { buildWorkStoryProfile, buildRelationshipStoryProfile, buildFinanceStoryProfile } = require('./work-story-profile');
@@ -1034,6 +1035,12 @@ const server = http.createServer((req, res) => {
 
   if (url.pathname === '/api/health') {
     json(res, 200, { ok: true });
+    return;
+  }
+
+  if (url.pathname === '/api/daily-outfit') {
+    try { json(res, 200, buildDailyOutfit(url.searchParams.get('date') || undefined)); }
+    catch (error) { json(res, 400, { error: error.message }); }
     return;
   }
 
