@@ -119,6 +119,7 @@ export const notify = () => {
 };
 
 export const setActivePage = (page) => {
+  if (page !== 'birth') state.ui.outfitAfterChart = false;
   state.activePage = resolvedAppPage({ requestedPage: page, astrolabeData: state.astrolabeData, workStorySession: state.workStorySession });
   state.ui.todayHelpOpen = false;
   notify();
@@ -230,6 +231,7 @@ export const pickRevealTheme = (theme) => {
 
 // 重新填写出生信息：清掉命盘与进度，回到出生表单。
 export const clearAstrolabe = () => {
+  state.ui.outfitAfterChart = false;
   state.astrolabeData = null;
   state.activePage = 'home';
   state.selectedWorkEntry = null;
@@ -250,6 +252,7 @@ export const selectWorkEntry = (entry) => {
   const catalogEntry = WORK_STORY_ENTRIES.find((item) => item.id === entry);
   const definition = getWorkStoryDefinitionForEntry(entry);
   if (!catalogEntry || catalogEntry.status !== 'available' || !definition) return;
+  state.ui.outfitAfterChart = false;
   state.selectedWorkEntry = entry;
   // A chart already exists when the user changes entry from another tab. Do
   // not request their birth data again; construct an isolated session instead.
