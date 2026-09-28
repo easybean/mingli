@@ -1977,6 +1977,8 @@
 .outfit-preview { width: 100%; height: auto; display: block; border-radius: 8px; box-shadow: 0 6px 24px #302d2820; }.outfit-preview[hidden] { display: none; }
 .outfit-actions button { flex: 1; }.outfit-actions [data-save] { background: #302D28; color: #F5F0E6; }
 .outfit-explanation { font-size: 13px; line-height: 1.8; overflow-wrap: anywhere; }
+.outfit-source { font-size: 12px; line-height: 1.7; overflow-wrap: anywhere; }.outfit-source a { color: #665036; text-decoration: underline; }
+.outfit-consent { display: flex; gap: 8px; align-items: center; min-height: 44px; }.outfit-consent input { flex: 0 0 auto; width: 18px; height: 18px; }
 .outfit-dialog [hidden] { display: none !important; }
 .home-question { background: var(--surface, #201a2b); color: var(--text-primary, #f4e7ce); }
 .home-question > small { color: inherit; }

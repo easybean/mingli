@@ -76,6 +76,7 @@ export const createAccessoryViewModel = (state) => {
   }
 
   const guide = data.reading?.fiveElement;
+  if (guide?.status === 'conditional-paused') return { ready: false, paused: true, emptyText: `${guide.basis} ${guide.caveat}`, source: guide.source, sourceUrl: guide.sourceUrl, locator: guide.locator };
   if (!guide || !guide.favored?.length) {
     return {
       ready: false,
@@ -98,13 +99,15 @@ export const createAccessoryViewModel = (state) => {
   });
 
   // 推理链：日主 → 当月调候缺什么 → 该补哪几气（basis 已含书目依据）。
-  const intro = `你是「${guide.dayElement}」日主。参考色系为${favored.join('、')}。依据出生的日干与月支作简化调候取色，不等同完整喜用判断，也不表示你缺这些五行。喜欢、舒适和实际场合更重要。`;
+  const intro = `你是「${guide.dayElement}」日主。参考色系为${favored.join('、')}。${guide.basis || '依据日干与节气月支作基础取色。'} 不表示你缺这些五行，喜欢和舒适更重要。${guide.caveat || ''}`;
 
   return {
     ready: true,
     dayElement: guide.dayElement,
     basis: '按出生的日干与月支查询项目整理的调候表；不作为完整八字喜用结论。',
     source: guide.source || '',
+    sourceUrl: guide.sourceUrl || '',
+    locator: guide.locator || '',
     intro,
     principle: PRINCIPLE,
     items,

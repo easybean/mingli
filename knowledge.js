@@ -2,7 +2,7 @@ const ZIWEI_RULES = require('./data/knowledge-rules/ziwei-handbook-stage1.json')
 const BAZI_RULES = require('./data/knowledge-rules/bazi-basics-stage1.json');
 const ZIWEI_STAGE2_RULES = require('./data/knowledge-rules/ziwei-faweilu-stage2.json');
 const BAZI_STAGE2_RULES = require('./data/knowledge-rules/bazi-zipingzhenquan-stage2.json');
-const BAZI_TIAOHOU_RULES = require('./data/knowledge-rules/bazi-tiaohou-qiongtong.json');
+const { buildAuditedGuide } = require('./tiaohou-guide');
 const { STEM_ELEMENTS } = require('./bazi-utils');
 const { getActiveKnowledgeCatalog, getCatalogSummary } = require('./knowledge-catalog');
 
@@ -1027,68 +1027,8 @@ const inferPatternAdvice = ({ rootCount, topTenGods }) => {
   };
 };
 
-// 五行喜用推导：把"用神倾向 + 调候 + 日主五行"翻译成 1~2 个喜用五行，
-// 供前端做"适合佩戴的材质/颜色"等生活化延伸（不接电商，只做命盘延伸解读）。
-const ELEMENT_GENERATES = { 木: '火', 火: '土', 土: '金', 金: '水', 水: '木' }; // 我生（食伤）
-const ELEMENT_CONTROLS = { 木: '土', 火: '金', 土: '水', 金: '木', 水: '火' }; // 我克（财）
-const elementGeneratedBy = (el) => Object.keys(ELEMENT_GENERATES).find((k) => ELEMENT_GENERATES[k] === el); // 生我（印）
-
-// 查《穷通宝鉴》调候用神表：日干×月支 -> 主要调候用神天干，再折算成喜用五行。
-// 调候只看寒暖燥湿之中和（夏燥宜润、冬寒宜暖），不靠旺衰判断，确定性强，
-// 故作为生活化延伸（喜用五行）的首选依据；查不到才回退结构取用。
-const lookupTiaohou = (dayStem, monthBranch) => {
-  const stems = BAZI_TIAOHOU_RULES.table?.[dayStem]?.[monthBranch];
-  if (!stems || !stems.length) return null;
-  // 按主辅顺序把天干折成五行，去重保序，取前两种作喜用方向。
-  const elements = [];
-  for (const stem of stems) {
-    const element = STEM_ELEMENTS[stem];
-    if (element && !elements.includes(element)) elements.push(element);
-  }
-  return {
-    stems,
-    favored: elements.slice(0, 2),
-    monthLabel: BAZI_TIAOHOU_RULES.monthLabel?.[monthBranch] || '',
-  };
-};
-
-const buildFiveElementGuide = ({ dayStem, dayElement, monthBranch, useSpiritTopic }) => {
-  if (!dayElement) return null;
-  const resource = elementGeneratedBy(dayElement); // 印·生我
-  const peer = dayElement; // 比·同我
-  const output = ELEMENT_GENERATES[dayElement]; // 食伤·我生
-  const wealth = ELEMENT_CONTROLS[dayElement]; // 财·我克
-
-  let favored;
-  let basis;
-  let source = '';
-
-  const tiaohou = lookupTiaohou(dayStem, monthBranch);
-  if (tiaohou && tiaohou.favored.length) {
-    // 调候优先：依书取当月寒暖燥湿之所需，例如夏月燥土宜借水润。
-    favored = tiaohou.favored;
-    basis = `按项目整理的《穷通宝鉴》调候表，以日干「${dayStem}」与月支「${monthBranch}」取${favored.join('、')}作为配色参考；这是简化的调候取色，不等同完整八字喜用判断`;
-    source = BAZI_TIAOHOU_RULES.sourceTitle;
-  } else if (useSpiritTopic === '用神倾向先扶身' || useSpiritTopic === '用神倾向重印比') {
-    favored = [resource, peer];
-    basis = '日主偏需扶持，宜先补生扶之气';
-  } else if (useSpiritTopic === '用神倾向宜泄秀') {
-    favored = [output, wealth];
-    basis = '本气偏旺，宜顺势泄秀、转成产出';
-  } else {
-    favored = [output, resource];
-    basis = '结构求中和，宜兼顾流通';
-  }
-
-  return {
-    dayElement,
-    favored: [...new Set(favored)].filter(Boolean),
-    basis,
-    source,
-    method: tiaohou ? 'seasonal-table' : 'structural-reference',
-    useSpiritTopic,
-  };
-};
+// Unresolved conditional rules must not silently fall back to another method.
+const buildFiveElementGuide = ({ dayStem, monthBranch }) => buildAuditedGuide(dayStem, monthBranch);
 
 const makeReference = ({ domain, source, topic, summary, chapter, themes = [] }) => ({
   domain,

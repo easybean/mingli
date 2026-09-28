@@ -4,11 +4,17 @@ const fs = require('fs');
 const path = require('path');
 const analyticsDir = path.resolve(process.argv[2] || process.env.ANALYTICS_DIR || path.join(__dirname, '..', 'data', 'analytics'));
 const events = [];
+const { summarizeOutfit } = require('../outfit-analytics');
 const files = fs.existsSync(analyticsDir) ? fs.readdirSync(analyticsDir).filter((name) => /^\d{4}-\d{2}-\d{2}\.jsonl$/.test(name)).sort() : [];
 files.forEach((name) => fs.readFileSync(path.join(analyticsDir, name), 'utf8').split('\n').filter(Boolean).forEach((line) => {
   try { const item = JSON.parse(line); if (item?.sessionId && item?.event) events.push(item); } catch { /* Ignore a partial final append. */ }
 }));
 if (!events.length) { console.log('No analytics events.'); process.exit(0); }
+const outfit = summarizeOutfit(events);
+console.log('OUTFIT ACTIONS (save click != saved; native share return != published)');
+console.table(outfit.actions);
+console.log('OUTFIT D1 (consenting browser IDs only; first observed in retained logs, not lifetime new users; Beijing calendar days)');
+console.table(outfit.cohorts.map(row => ({ ...row, d1: row.mature ? `${(row.returned / row.observedBrowsers * 100).toFixed(1)}%` : '观察中，次日尚未完整结束' })));
 const sessionsFor = (predicate) => new Set(events.filter(predicate).map((item) => item.sessionId));
 const percent = (numerator, denominator) => (denominator ? `${((numerator / denominator) * 100).toFixed(1)}%` : '—');
 const funnelDefinitions = [

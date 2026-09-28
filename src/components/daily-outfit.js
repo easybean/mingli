@@ -1,5 +1,5 @@
 import { createAccessoryViewModel } from '../domain/view-models/accessory-view-model.js';
-import { track } from '../app/analytics.js';
+import { track, trackOutfitVisit, outfitRetentionEnabled, setOutfitRetention } from '../app/analytics.js';
 
 // Personal choices reuse the API's complete five-element palette, not a second mapping.
 export const buildPersonalOutfit = (data, favored) => {
@@ -64,6 +64,7 @@ export const drawOutfitPoster = (canvas, data) => {
 export const openDailyOutfit = (state = {}, initialPersonal = false, onChart = () => {}) => {
   if (document.querySelector('.outfit-dialog')) return;
   track('outfit_open');
+  trackOutfitVisit();
   if (initialPersonal) track('outfit_personal');
   const origin = document.activeElement;
   const dialog = document.createElement('dialog');
@@ -71,13 +72,25 @@ export const openDailyOutfit = (state = {}, initialPersonal = false, onChart = (
   dialog.innerHTML = `<header><strong>五行穿搭</strong><button type="button" data-close aria-label="关闭五行穿衣">×</button></header>
     <div class="outfit-date"><button type="button" data-mode="public">今日色卡</button><button type="button" data-mode="personal">我的搭配</button></div>
     <div class="outfit-date"><button type="button" data-offset="0" aria-pressed="true">今天</button><button type="button" data-offset="1" aria-pressed="false">明天</button></div>
-    <p class="outfit-explanation"></p><button type="button" data-chart hidden>去生成命盘</button>
+    <p class="outfit-explanation"></p><p class="outfit-source" hidden><a target="_blank" rel="noopener noreferrer">查看原文</a><span></span></p><button type="button" data-chart hidden>去生成命盘</button>
     <p class="outfit-status" role="status">正在准备今日配色…</p><img class="outfit-preview" alt="五行穿衣分享图片" hidden>
     <div class="outfit-actions"><button type="button" data-save disabled>保存图片</button><button type="button" data-share disabled>分享色卡</button></div>
-    <p class="outfit-tip">可长按图片保存到相册 · 民俗配色灵感</p>`;
+    <p class="outfit-tip">可长按图片保存到相册 · 民俗配色灵感</p>
+    <label class="outfit-tip outfit-consent"><input type="checkbox" data-retention>允许匿名统计穿搭回访（可选，关闭不影响使用）</label>
+    <p class="outfit-tip">开启后，仅为此浏览器保存一个随机标识，有效期30天，不关联出生资料。服务端统计日志保留90天。关闭后停止发送并清除本机标识，既有日志按期清理。</p>`;
   document.body.append(dialog); dialog.showModal();
   let request = 0, file = null, objectUrl = '', date = '', personal = initialPersonal, offsetValue = 0;
-  const model = createAccessoryViewModel(state);
+  let model = createAccessoryViewModel(state);
+  const dayStem = state.astrolabeData?.bazi?.dayMaster?.stem;
+  const monthBranch = state.astrolabeData?.bazi?.pillars?.find(pillar => pillar.label === '月柱')?.zhi;
+  const hasBirthKeys = Boolean(dayStem && monthBranch);
+  let guidePromise;
+  dialog.querySelector('[data-retention]').checked = outfitRetentionEnabled();
+  dialog.addEventListener('change', (event) => {
+    if (!event.target.matches('[data-retention]')) return;
+    event.target.checked = setOutfitRetention(event.target.checked);
+    if (event.target.checked) trackOutfitVisit();
+  });
   const explanation = dialog.querySelector('.outfit-explanation');
   const status = dialog.querySelector('[role="status"]');
   const img = dialog.querySelector('img');
@@ -90,15 +103,32 @@ export const openDailyOutfit = (state = {}, initialPersonal = false, onChart = (
     file = null;
     buttons.forEach((button) => { button.disabled = true; }); img.hidden = true;
     dialog.querySelectorAll('[data-mode]').forEach((button) => button.setAttribute('aria-pressed', String((button.dataset.mode === 'personal') === personal)));
-    dialog.querySelector('[data-chart]').hidden = !personal || model.ready;
-    explanation.textContent = personal ? (model.ready ? `${model.intro} ${model.principle}` : model.emptyText) : '通用版：同一天大家看到的配色相同，按日支五行法提供民俗灵感。不是穿衣禁忌，也不预测收益。';
-    if (personal && !model.ready) { status.textContent = '无需填写资料，也可以切回今日色卡。'; return; }
+    dialog.querySelector('.outfit-source').hidden = true;
+    dialog.querySelector('[data-chart]').hidden = !personal || hasBirthKeys;
+    explanation.textContent = personal ? '正在获取当前版本的取色依据，不沿用缓存中的旧结论。' : '通用版：同一天大家看到的配色相同，按日支五行法提供民俗灵感。不是穿衣禁忌，也不预测收益。';
+    if (personal && !hasBirthKeys) { explanation.textContent = '先生成命盘，再查看个人搭配；旧数据缺少日干月支时也需重新生成。'; status.textContent = '无需填写资料，也可以切回今日色卡。'; return; }
     status.textContent = '正在准备配色…';
     dialog.querySelectorAll('[data-offset]').forEach((button) => button.setAttribute('aria-pressed', String(Number(button.dataset.offset) === offset)));
     const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
     const day = new Date(`${today}T12:00:00+08:00`); day.setTime(day.getTime() + offset * 86400000);
     const requestedDate = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit' }).format(day);
     try {
+      if (personal) {
+        if (!guidePromise) guidePromise = fetch(`/api/outfit-guide?dayStem=${encodeURIComponent(dayStem)}&monthBranch=${encodeURIComponent(monthBranch)}`).then(async response => {
+          if (!response.ok) throw new Error('个人依据暂时无法获取，请重试；不会退回旧版结论。');
+          return response.json();
+        }).catch(error => { guidePromise = null; throw error; });
+        const guide = await guidePromise;
+        if (current !== request || !dialog.isConnected) return;
+        model = createAccessoryViewModel({ astrolabeData: { reading: { fiveElement: guide } } });
+        explanation.textContent = model.ready ? `${model.intro} ${model.principle}` : model.emptyText;
+        const source = dialog.querySelector('.outfit-source');
+        source.hidden = false;
+        source.querySelector('a').href = /^https:\/\/(zh\.wikisource\.org|upload\.wikimedia\.org)\//.test(guide.sourceUrl || '') ? guide.sourceUrl : 'https://zh.wikisource.org/wiki/穷通宝鉴';
+        source.querySelector('a').textContent = guide.source;
+        source.querySelector('span').textContent = ` · 定位「${guide.locator}」。${guide.verification}。`;
+        if (!model.ready) { status.textContent = '这一项先不硬下结论，今日通用色卡仍可用。'; return; }
+      }
       const response = await fetch(`/api/daily-outfit?date=${requestedDate}`);
       if (!response.ok) throw new Error('暂时没能取到配色，请点今天或明天重试。');
       const publicData = await response.json();

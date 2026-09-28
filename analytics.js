@@ -7,6 +7,7 @@ const EVENT_NAMES = new Set([
   'theme_view', 'theme_select', 'entry_select', 'birth_submit', 'chart_success',
   'story_start', 'story_stage', 'story_complete', 'story_restart', 'share', 'save', 'copy',
   'outfit_open', 'outfit_personal', 'outfit_save_click', 'outfit_share_complete',
+  'outfit_visit',
 ]);
 const ID = /^[a-z][a-z0-9_]{0,63}$/;
 const SESSION_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[4-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -32,8 +33,11 @@ const optionalId = (value) => value === undefined || (typeof value === 'string' 
 
 const validateAnalyticsEvent = (body) => {
   if (!body || typeof body !== 'object' || Array.isArray(body)) return null;
-  if (Object.keys(body).some((key) => !['event', 'sessionId', 'themeId', 'entryId', 'storyId', 'stage'].includes(key))) return null;
-  const { event, sessionId, themeId, entryId, storyId, stage } = body;
+  if (Object.keys(body).some((key) => !['event', 'sessionId', 'themeId', 'entryId', 'storyId', 'stage', 'visitorId'].includes(key))) return null;
+  const { event, sessionId, themeId, entryId, storyId, stage, visitorId } = body;
+  if (event === 'outfit_visit') {
+    if (typeof visitorId !== 'string' || !SESSION_ID.test(visitorId) || themeId !== undefined || entryId !== undefined || storyId !== undefined || stage !== undefined) return null;
+  } else if (visitorId !== undefined) return null;
   if (!EVENT_NAMES.has(event) || typeof sessionId !== 'string' || !SESSION_ID.test(sessionId)) return null;
   if (![themeId, entryId, storyId].every(optionalId)
     || (themeId && !THEME_IDS.has(themeId)) || (entryId && !ENTRY_IDS.has(entryId)) || (storyId && !STORY_IDS.has(storyId))) return null;
@@ -49,7 +53,7 @@ const validateAnalyticsEvent = (body) => {
   if ((required[event] || []).some((key) => body[key] === undefined)) return null;
   // Rebuild, rather than spreading input, so unknown fields cannot be stored.
   return {
-    event, sessionId, ...(themeId ? { themeId } : {}), ...(entryId ? { entryId } : {}),
+    event, sessionId, ...(visitorId ? { visitorId } : {}), ...(themeId ? { themeId } : {}), ...(entryId ? { entryId } : {}),
     ...(storyId ? { storyId } : {}), ...(stage ? { stage } : {}), at: new Date().toISOString(),
   };
 };
