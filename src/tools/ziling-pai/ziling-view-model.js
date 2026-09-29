@@ -21,22 +21,10 @@ const QUESTION_TEXT = {
   estate: '此时置业时机如何？', study: '这个方向值得深耕吗？', all: '我眼下整体如何？',
 };
 
-// 直断结论表：问题类型 × 四化倾向(favor顺 / caution阻 / neutral惯性) → 直接给方向
-const VERDICT = {
-  career: { favor: '偏宜接、可顺势推进', caution: '先别急着接，有变数要理清再说', neutral: '接不接都不强求，看你准备够不够' },
-  wealth: { favor: '财气偏旺，可顺势进取，但别贪快钱', caution: '财气偏紧，不宜贪进，先守住为上', neutral: '财气平平，多靠日常积累、少指望横财' },
-  love: { favor: '这段偏宜继续、推进，气候是顺的', caution: '眼下宜缓，有心结要先解、别硬推', neutral: '顺其自然，别强求也别急着断' },
-  health: { favor: '状态偏稳，按部就班养着即可', caution: '有要留意处，别硬扛、早处理早安心', neutral: '无大起伏，规律作息是关键' },
-  social: { favor: '关系偏顺，可主动靠近、借力', caution: '先拿捏好边界，别交浅言深', neutral: '不冷不热，看你想投入多少' },
-  travel: { favor: '宜动，此行偏顺、可放心走', caution: '宜守或缓行，有变数先备好退路', neutral: '动守皆可，按实际需要定' },
-  estate: { favor: '时机偏成熟，可认真看、择优下手', caution: '先别急着下手，再等等、多比比', neutral: '不催不拖，按自己节奏来' },
-  study: { favor: '这方向偏值得深耕，投入有回响', caution: '先确认是否真合适，别盲目投入', neutral: '可学，但回报偏慢，要有耐心' },
-  all: { favor: '整体偏顺，是可以往前走的时候', caution: '整体偏滞，宜稳守、先把根基理清', neutral: '平稳无大波，靠日常选择慢慢累积' },
-};
 
 // 机制牌：主星空宫（借对宫）、四化空宫（惯性）
-const EMPTY_MAJOR = { 级别: '主星', 名: '空宫', 空宫: true, 五行: '', 中心词: '此事暂无明确主轴，须借对宫之星而论', 牌义: '主星落空宫：这件事本身没有定数、主轴不明，借你命盘对宫的本命主星来看。' };
-const EMPTY_HUA = { 级别: '四化', 名: '四化空', 空宫: true, 方位五行: '', 本意: '惯性而行', 牌义: '四化落空：当下没有明显的禄、权、科、忌力量介入，事情大概率按自身惯性发展。' };
+const EMPTY_MAJOR = { 级别: '主星', 名: '空宫', 空宫: true, 五行: '', 中心词: '主星待引，由你主动再抽', 牌义: '这张是抽牌机制中的空宫牌。确认后从剩余主星中主动再抽；不代表现实中的事情没有希望。' };
+const EMPTY_HUA = { 级别: '四化', 名: '四化空', 空宫: true, 方位五行: '', 本意: '本阵无额外四化提示', 牌义: '本次没有抽到禄、权、科、忌提示；这是牌阵记录，不证明现实平稳或不会变化。' };
 
 // 抽牌池：主星 14+2空宫=16；四化 4+8空宫=12（忠实实体牌库概率）
 const POOLS = {
@@ -80,153 +68,79 @@ export const drawSpread = (rng = Math.random) => [
   pick(POOLS.四化, rng),
 ];
 
-// buildSpread：抽一阵并按官方规则补实主星空宫——主星位永远是实星，四化空宫保留。
-// 主星空宫补星：有命盘借真命盘对宫之星（命盘加持），对宫亦空/无命盘则随机重抽。
+// Legacy compatibility helper. The interactive controller never calls this:
+// both current modes require the user to handle empty-major redraw explicitly.
 export const buildSpread = ({ typeKey, chart = null, rng = Math.random } = {}) => {
   const spread = drawSpread(rng);
   spread[0] = resolveMajorCard({ card: spread[0], typeKey, chart, rng });
   return spread;
 };
 
-// ---- 文本小工具 ----
-const parts = (str, n) => String(str || '').split(/[、，,；;]/).map((s) => s.trim()).filter(Boolean).slice(0, n).join('、');
-const firstSentence = (str) => String(str || '').split(/[。；;]/).map((s) => s.trim()).filter(Boolean)[0] || '';
-// 宫名规范：命宫自带「宫」字，其余两字宫名补上「宫」
-const palaceLabel = (name) => (String(name).endsWith('宫') ? name : `${name}宫`);
-
-const LEVEL_COLOR = { 主星: '#C8452F', 甲级辅星: '#7A56AC', 乙级辅星: '#3F93A8', 丙级辅星: '#4E927A', 四化: '#C9A646' };
-
-// 四化倾向：favor=偏顺读优势 / caution=偏阻读缺陷 / neutral=空宫按惯性
-const huaLean = (hua) => {
-  if (hua['空宫']) return 'neutral';
-  return hua['名'] === '化忌' ? 'caution' : 'favor';
+// Reading uses curated symbolic cues, never raw medical/financial card claims.
+export const QUESTION_INTENTS = { explore: '看清走向', advance: '想推进', leave: '想退出', compare: '两个选择之间' };
+export const QUESTION_FOCUS = { progress: '进展', stability: '稳定', cost: '时间与成本', connection: '沟通与关系' };
+export const QUESTION_WINDOWS = { open: '不限定', week: '未来7天', month: '未来30天' };
+const MAIN_CUES = {
+  贪狼: '机会多，也容易分散注意力', 太阴: '先整理感受，再核对细节', 天相: '双方的分工和承诺需要对齐', 廉贞: '愿望与边界需要一起说清',
+  天同: '舒服的节奏与必要的改变之间需要取舍', 七杀: '有行动的冲劲，也要留出回旋空间', 破军: '旧办法可能需要调整，但改变也有代价', 巨门: '话有没有说清楚，比猜测更重要',
+  天府: '先盘点已有资源，再考虑下一步', 紫微: '谁来作主、谁来承担需要明确', 太阳: '主动付出前，也看看自己能承受多少', 天机: '备选方案很多，先核实关键条件',
+  武曲: '把投入、回报与执行条件摆到桌面上', 天梁: '经验和原则能提供参照，也别忽略实际情境',
+};
+const AUX_CUES = {
+  文曲: '表达能打开局面，也要核对彼此是否理解一致', 左辅: '可以寻找明确分工的协作', 擎羊: '直接推进可能碰到冲突，需要先讲边界', 铃星: '反复的小摩擦值得单独处理',
+  右弼: '有人支持时，也要确认支持到哪一步', 地空: '想象和落地之间可能有距离，先做验证', 禄存: '可用资源需要盘点，不等于一定有收益', 天钺: '可以向有经验的人核实一个关键问题',
+  陀罗: '阻滞或反复的意象，适合拆小步骤', 文昌: '文字、记录和清楚的说明能减少误会', 地劫: '额外消耗的意象，先明确能承受的边界', 天马: '变化与移动的意象，先核对安排是否可行',
+  天魁: '可以主动寻求具体帮助，不把等待贵人当计划', 火星: '节奏过急的意象，先停一下再回应',
+};
+const YI_CUES = {
+  月德:'寻求善意的协调', 天虚:'区分期待与已经确认的事实', 孤辰:'给独立思考留空间', 天空:'把设想变成一个小验证', 天官:'核对正式流程', 三台:'把阶段目标写清', 龙池:'让成果能够被看见', 解神:'找一个可以缓解僵局的切口',
+  寡宿:'别用沉默代替表达', 华盖:'留出专注做事的空间', 天贵:'向熟悉情况的人求证', 红鸾:'把好感和实际承诺分开看', 封诰:'核对口头认可是否有明确记录', 破碎:'留意零碎的额外开销', 天德:'给协商留余地', 天寿:'考虑长期可持续的节奏',
+  蜚廉:'先核实传来的消息', 天福:'看见已有的支持', 天才:'尝试用已有技能解决问题', 凤阁:'把表达整理得更清楚', 八座:'确认合作中的位置', 阴煞:'不把猜测当作对方的真实意图', 天厨:'留出照顾日常生活的空间', 台辅:'把需要的支持说具体',
+  天巫:'核实角色变化的条件', 恩光:'辨认具体而非想象中的帮助', 天姚:'吸引力之外也看相处方式', 咸池:'一时情绪不必立刻变成决定', 天月:'留意自己的负荷，不作疾病判断', 天刑:'先确认规则与边界', 天哭:'给失落情绪一点表达空间', 天喜:'把积极互动变成具体沟通',
+};
+const BING_CUES = {
+  伏兵:'留意尚未确认的安排', 青龙:'抓住一次明确的沟通机会', 大耗:'盘点累计投入', 力士:'有行动力也要量力', 奏书:'重要内容留文字确认', 博士:'先补足相关知识', 天伤:'不要勉强自己承担过量事务', 官府:'核对手续与规则',
+  小耗:'留意小额反复消耗', 空亡:'未落实的事项先保留判断', 病符:'照顾自己的日常节奏，不由牌判断病情', 旬中:'给不确定事项留缓冲', 飞廉:'核实消息来源', 将军:'明确执行者和责任', 截路:'准备一个替代方案', 天使:'优先处理实际需要', 喜神:'留意双方愿意合作的时刻',
+};
+const HUA_CUES = { 化禄:'资源与吸引力：看机会具体提供什么，不等同获利保证', 化权:'推动与掌控：明确谁决定，也留意压力是否集中', 化科:'说明与认可：让信息、成果和依据可被核实', 化忌:'牵制与执着：找出最难放下或最易卡住的一点', 四化空:'本阵没有额外四化提示，不能据此预测现实平稳或没有变化' };
+const TENSION = new Set(['擎羊','铃星','地空','陀罗','地劫','火星']);
+const VARIABLES = new Set(['天虚','天空','破碎','阴煞','蜚廉','天刑','天哭']);
+const FRICTION = new Set(['伏兵','大耗','小耗','空亡','旬中','截路']);
+const FOCUS_ACTION = {
+  progress:'观察是否出现了一个有负责人、有时间点的下一步，而不只是“再看看”。',
+  stability:'观察已经谈好的安排是否持续兑现；一次积极表态不等于稳定。',
+  cost:'记下实际花去的时间与成本，看看是否开始超出自己原先设定的界限。',
+  connection:'观察对方是否回应具体问题、尊重已表达的边界，而不只看语气好不好。',
 };
 
-// 主星某轴的优势/缺陷字段
-const axisText = (card, axis, side) => parts(card[`${axis}${side}`] || card[`性格${side}`], 3);
-
-// 本阵主调（主星 / 空宫补星 / 四化翻面）。主星已由 buildSpread 补实，恒为实星。
-const sectionLead = (lead, hua, q) => {
-  const lean = huaLean(hua);
-  const huaName = hua['名'];
-  const star = lead;
-  let prefix;
-
-  if (lead['_fromEmpty']) {
-    prefix = lead['_via'] === '对宫'
-      ? `主星本落空宫、此事主轴本虚——便借你命盘里${palaceLabel(q.palace)}的对宫之星「${star['名']}」立轴：${parts(star['中心词'], 2)}。`
-      : `主星本落空宫、此事主轴本虚——重抽一星「${star['名']}」为此事立轴：${parts(star['中心词'], 2)}。`;
-  } else {
-    prefix = `命主以「${star['名']}」领此一阵，定下这件事的底色——${parts(star['中心词'], 2)}。`;
-  }
-
-  let body;
-  if (lean === 'favor') {
-    body = `${prefix}叠上${huaName}，这股力量偏顺，更容易走向它好的一面：${axisText(star, q.axis, '优势')}。`;
-  } else if (lean === 'caution') {
-    body = `${prefix}但叠了化忌，眼下偏阻，要留意它的另一面：${axisText(star, q.axis, '缺陷')}。`;
-  } else {
-    body = `${prefix}这次没有明显的四化介入，事情多半按它本来的性子走——顺则${axisText(star, q.axis, '优势')}，滞则${axisText(star, q.axis, '缺陷')}，全看你怎么用。`;
-  }
-  // 按问题领域补一句（财运 / 健康）
-  if (q.extra && star[q.extra]) {
-    const label = q.extra === '财运' ? '财上' : '身体上';
-    body += `${label}，这颗星偏「${parts(star[q.extra], 2)}」，可一并参看。`;
-  }
-  return body;
-};
-
-// 命盘底子（命盘加持：本命此宫底子 + 与今日抽到主星的呼应；仅在有命盘时出）
-const sectionChart = (q, chart, leadName) => {
-  if (!chart || !chart.ready) return null;
-  const p = chart.getPalace(q.palace);
-  if (!p) return null;
-  if (p.空宫) {
-    return `回到你的命盘，这件事看${palaceLabel(q.palace)}——本命此宫无主星、力量须借对宫，所以这类事你本就容易"看人脸色而动"，更需要自己先拿定主意。`;
-  }
-  const stars = p.主星.map((s) => s['名']).join('、');
-  const bits = [];
-  if (p.庙旺) bits.push(`星势${p.庙旺}`);
-  if (p.四化 && p.四化.length) bits.push(`带${p.四化.join('、')}`);
-  const tail = bits.length ? `（${bits.join('，')}）` : '';
-  const hit = p.主星.some((s) => s['名'] === leadName);
-  const echo = hit
-    ? `巧的是，今日抽到的「${leadName}」正应你本命此宫——象与命相合，这一卦的信号格外清晰、格外贴你。`
-    : `这是你面对此事长期自带的底子；今日抽到的牌象是"此刻之象"，把两层叠起来看，才既贴你、又贴当下。`;
-  return `回到你的命盘，这件事看${palaceLabel(q.palace)}，本命坐「${stars}」${tail}。${echo}`;
-};
-
-// 助力与变量（甲=主力助援 / 乙=次要变量 / 丙=时机底噪，三角色分述）
-const sectionAux = (jia, yi, bing, q) => {
-  const jiaText = parts(jia[`${q.axis}优势`] || jia['事业优势'] || jia['中心词'], 3);
-  const yiText = firstSentence(yi['解释']);
-  const bingGood = bing['吉凶'] === '吉';
-  const bingText = firstSentence(bing['释义']);
-  return `甲级「${jia['名']}」是这一阵最实的助力——它给的是${jiaText}这类正面支援，遇事多往这处借力。`
-    + `乙级「${yi['名']}」点出一重次要变量：主${yi['主'] || '—'}，${yiText}，推进时顺手用上、或留个心。`
-    + `丙级「${bing['名']}」是背景里的时机与底噪，${bingGood ? '偏吉' : '偏扰'}——${bingText}。`;
-};
-
-// 吉凶走向（四化，点名主星）
-const sectionHua = (hua, leadName) => {
-  if (hua['空宫']) {
-    return '四化落空——当下没有明显的禄、权、科、忌介入，这件事大概率按它自身的惯性发展。既没有外力推、也没有外力拦，结果更多取决于你日常选择的累积。';
-  }
-  const name = hua['名'];
-  const body = parts(hua['会意'] || hua['本意'], 3);
-  if (name === '化忌') {
-    return `四化「化忌」落在主星之上，给「${leadName}」添一重变数：${body}。不必慌——留三分余地、把没看清的先看清，反而更稳。`;
-  }
-  return `四化「${name}」落在主星之上，把「${leadName}」往好的方向推：${body}。整体偏吉，但行动的火候仍由你自己拿捏。`;
-};
-
-const sectionDrawTrace = (drawTrace, leadName) => {
-  const count = Number(drawTrace?.emptyMajorCount || 0);
-  if (!count) return null;
-  const opening = count > 1
-    ? `你在引出主星前，连续 ${count} 次遇到空宫。`
-    : '你在引出主星前，先遇到了一次空宫。';
-  return `${opening}最终显现的是「${leadName}」。这表示本次问事的核心力量并非一开始就清楚：局势仍有未定之处，或关键信息尚未完全浮出。`
-    + '先观察、试探和补足信息，再借最终主星的力量行动，会比急着下结论更贴合这一阵。';
-};
-
-// 直断：开头直接回答问题（围绕用户问句 + 结论表 + 主轴/四化一句）
-const sectionVerdict = (q, lead, hua, question) => {
-  const lean = huaLean(hua);
-  const verdict = (VERDICT[q.key] || VERDICT.all)[lean];
-  const ask = question ? `你问「${question}」` : `你问的这件「${q.name}」事`;
-  const huaTail = lean === 'favor'
-    ? `主轴落在「${lead['名']}」，又得${hua['名']}之助`
-    : lean === 'caution'
-      ? `主轴落在「${lead['名']}」，却遇化忌生变`
-      : `主轴落在「${lead['名']}」，四化落空、全凭它本身的惯性`;
-  return `${ask}——本阵给的方向是：${verdict}。（${huaTail}）下面把这一卦拆开来看。`;
-};
-
-// assembleReading({ spread, typeKey, chart, question, drawTrace }) → { title, questionText, chips, sections }
-export const assembleReading = ({ spread, typeKey, chart, question, drawTrace = null }) => {
-  const q = QUESTION_TYPES.find((t) => t.key === typeKey) || QUESTION_TYPES[QUESTION_TYPES.length - 1];
-  const [lead, jia, yi, bing, hua] = spread;
-  const ask = (question || '').trim();
-
+export const assembleReading = ({ spread, typeKey, chart, question = '', drawTrace = null, intent = 'explore', focus = 'progress', window = 'open' }) => {
+  if (!Array.isArray(spread) || spread.length !== 5 || spread.some(card => !card?.名) || spread[0].空宫) throw new Error('请先完成五张牌，空宫须由你主动补抽。');
+  const q = QUESTION_TYPES.find(type => type.key === typeKey) || QUESTION_TYPES.at(-1);
+  const [lead,jia,yi,bing,hua] = spread;
+  const ask = String(question).trim().slice(0,160);
+  const safeIntent = Object.hasOwn(QUESTION_INTENTS,intent) ? intent : 'explore';
+  const safeFocus = Object.hasOwn(QUESTION_FOCUS,focus) ? focus : 'progress';
+  const safeWindow = Object.hasOwn(QUESTION_WINDOWS,window) ? window : 'open';
+  const sensitive = ['health','wealth','estate'].includes(q.key) || /彩票|中奖|博彩|赌博|下注|股票|基金|投资|借贷|贷款|停药|疾病|病情|诊断|癌|怀孕|手术|自杀|自残|暴力|跟踪/.test(ask);
+  const tense = TENSION.has(jia.名), variable = VARIABLES.has(yi.名), friction = FRICTION.has(bing.名);
+  const mixed = tense || variable || friction || hua.名 === '化忌';
+  const starts = { explore:'先看清这件事的条件', advance:'想推进，可以先找一个可撤回的小步骤', leave:'想退出，先分清要离开的是什么', compare:'两个选择，先用同一套条件比较' };
+  const summary = sensitive ? '这一阵只作象征性自我整理，不对健康、安全、中奖或收益作预测。'
+    : `${starts[safeIntent]}：${mixed ? '牌组中有牵制或消耗的意象，先处理卡点。' : '牌组可用来整理资源与分工，但不代表事情一定顺利。'}`;
+  const tension = `${lead.名}提示「${MAIN_CUES[lead.名] || '先整理事情的主线'}」；${jia.名}则提醒「${AUX_CUES[jia.名] || '核对具体支持与限制'}」。${tense ? '两张合看，重点不是一味加速，而是辨认行动会碰到的边界。' : '两张合看，先把想法与可用的支持对应起来。'}${variable || friction ? `同时，${variable ? yi.名 : bing.名}提示还有细节需要核实。` : ''}`;
   const sections = [
-    { h: '直断', body: sectionVerdict(q, lead, hua, ask) },
-    { h: '抽牌轨迹', body: sectionDrawTrace(drawTrace, lead['名']) },
-    { h: '本阵主调', body: sectionLead(lead, hua, q) },
-    { h: '命盘底子', body: sectionChart(q, chart, lead['名']) },
-    { h: '助力与变量', body: sectionAux(jia, yi, bing, q) },
-    { h: '吉凶走向', body: sectionHua(hua, lead['名']) },
-    { h: '给你的一句', body: '牌象只照见趋势的轮廓，真正落子的是你。若心已有所向，此阵不过添一分笃定；若仍迟疑，便把它当作一次与自己对话的契机。' },
-  ].filter((s) => s.body);
-
-  const chips = spread.map((c) => ({ label: c['名'], color: LEVEL_COLOR[c['级别']] || '#C9A646' }));
-  if (drawTrace?.emptyMajorCount) chips.push({ label: `曾遇空宫 × ${drawTrace.emptyMajorCount}`, color: '#6B4E96' });
-
-  return {
-    title: ask ? '此阵的解读' : `「${q.name}」· 此阵的解读`,
-    questionText: ask || QUESTION_TEXT[q.key] || '',
-    chips,
-    sections,
-    drawTrace: drawTrace || null,
-  };
+    {h:'你提供的情况',body:`${ask || `未填写具体事情，按${q.name}通用主题阅读。`}\n你选择：${QUESTION_INTENTS[safeIntent]}；更在意${QUESTION_FOCUS[safeFocus]}；观察范围：${QUESTION_WINDOWS[safeWindow]}。这是你设定的复盘范围，不是预言应验日期。`},
+    {h:'五张牌，分别提醒什么',body:[`核心 · ${lead.名}：${MAIN_CUES[lead.名] || '主线待梳理'}`,`推动或牵制 · ${jia.名}：${AUX_CUES[jia.名] || '支持与限制需要核实'}`,`容易忽略的变量 · ${yi.名}：${YI_CUES[yi.名] || '核实具体情况'}`,`过程提醒 · ${bing.名}：${BING_CUES[bing.名] || '给过程留余地'}`,`表达方式 · ${hua.名}：${HUA_CUES[hua.名] || HUA_CUES.四化空}`].join('\n')},
+  ];
+  const palace = chart?.ready ? chart.getPalace(q.palace) : null;
+  sections.push({h:'命盘中的信息',body:palace ? `相关本命宫：${q.palace}。${palace.空宫 ? '此宫没有本命主星，不能据此推断性格软弱或事情无望。' : `主星：${palace.主星.map(star=>star.名).join('、')}。`}${palace.四化?.length ? `本命四化：${palace.四化.join('、')}。` : ''}${palace.主星?.some(star=>star.名===lead.名) ? `本次抽到的${lead.名}也在此宫，这是同星对应，不代表预测更准确。` : ''}这里只展示本命对应，尚未纳入流年流月；抽牌不会改变命盘。` : '本轮没有可用的相关本命宫资料，以下是随机牌象的象征性阅读，不冒充命盘推断。'});
+  const emptyCount = Math.min(2, Math.max(0, Number(drawTrace?.emptyMajorCount)||0));
+  if(emptyCount) sections.push({h:'抽牌轨迹',body:`${emptyCount>1 ? `连续 ${emptyCount} 次遇到空宫` : '先遇到一次空宫'}，之后由你主动引出${lead.名}。这是抽牌过程的记录，可以作为“先停一下再看”的仪式提醒，不证明现实信息不足或结果注定延迟。`});
+  sections.push({h:'解读依据与边界',body:'牌位分工和组合解释是本产品的阅读框架，采用整理后的星曜象征，不是传统紫微唯一牌法。问题原句用于保留上下文，方向来自你明确选择的意图与关注点；本版不是自由语义理解，也没有经过预测准确率验证。'});
+  if(sensitive) sections.push({h:'这类问题的边界',body:'不能用牌判断疾病、是否停药、出行安全、是否中奖或投资收益，也不推断他人的隐藏事实。相关决定请依据现实信息和适当的专业支持。'});
+  return { version:'ziling-reading-2', title:'这一阵，先看清什么', questionText:ask || QUESTION_TEXT[q.key], summary, tension,
+    observation:sensitive ? '把能够核实的事实与担心的猜测分开记录；不要把本阵当作现实结论。' : FOCUS_ACTION[safeFocus],
+    intent:safeIntent,focus:safeFocus,window:safeWindow,sensitive,
+    chips:spread.map(card=>({label:card.名,color:'#C9A646'})).concat(emptyCount?[{label:`曾遇空宫 × ${emptyCount}`,color:'#6B4E96'}]:[]),
+    sections,drawTrace:{mode:drawTrace?.mode === 'full' ? 'full' : 'quick',emptyMajorCount:emptyCount} };
 };

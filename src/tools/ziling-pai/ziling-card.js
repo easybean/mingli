@@ -152,7 +152,7 @@ export const renderZoomCard = (card) => {
         <span class="zl-zoom-tag">${esc(m.short)}${fm.wuxing ? ` · ${esc(fm.wuxing)}` : ''}</span>
         ${fm.centerWord ? `<div class="zl-zoom-cw">${esc(fm.centerWord)}</div>` : ''}
       </div>
-      <div class="zl-zoom-body">${rows}</div>
+      <div class="zl-zoom-body"><p class="zl-sub">以下为原始牌面象征资料，不是对你本人性格、健康或财务结果的判断。</p>${rows}</div>
       <div class="zl-zoom-hint">轻点任意处关闭</div>
     </div>`;
 };

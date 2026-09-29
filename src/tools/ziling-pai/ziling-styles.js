@@ -275,4 +275,15 @@ const CSS = `
 @media (prefers-reduced-motion: reduce){
   .zl-overlay *, .zl-overlay *::before, .zl-overlay *::after{ animation:none !important; transition:none !important; }
 }
+.zl-field{display:grid;gap:6px;margin:12px 0;color:var(--zl-ink);font-size:13px;}
+.zl-field select{width:100%;min-height:44px;border:1px solid var(--zl-gold-line);border-radius:10px;background:var(--zl-surface);color:var(--zl-ink);padding:8px;font-size:16px;}
+.zl-question-modal{max-height:calc(100dvh - 36px);overflow-y:auto;}
+.zl-section-body,.zl-result-lead p{white-space:pre-line;overflow-wrap:anywhere;line-height:1.8;}
+.zl-result-lead{border:1px solid var(--zl-gold-line);border-radius:16px;padding:18px;background:var(--zl-surface);}
+.zl-result-lead h3{font-size:14px;color:var(--zl-gold);margin:14px 0 8px;}
+.zl-result-lead p{font-size:15px;color:var(--zl-ink);}
+.zl-pad>.zl-btn{flex-shrink:0;margin-top:12px;min-height:48px;}
+.zl-section .zl-btn{margin:8px 8px 0 0;min-height:44px;font-size:13px;}
+.zl-section h3,.zl-pad [role="status"]{color:var(--zl-ink);overflow-wrap:anywhere;}
+.zl-section .zl-qinput{min-height:100px;font-size:16px;}
 `;

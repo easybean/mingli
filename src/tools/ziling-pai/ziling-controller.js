@@ -3,11 +3,13 @@
 // 与主 app 仅两处相连：openZiling 入参（命盘 + 主题回调）。删本目录即可整体移除。
 import { ensureZilingStyles } from './ziling-styles.js';
 import {
-  QUESTION_TYPES, DRAW_LEVELS, getDrawPool, drawSpread, buildSpread, assembleReading,
+  QUESTION_TYPES, DRAW_LEVELS, getDrawPool, drawSpread, assembleReading,
+  QUESTION_INTENTS, QUESTION_FOCUS, QUESTION_WINDOWS,
 } from './ziling-view-model.js';
 import { renderCard, renderZoomCard } from './ziling-card.js';
 import { createChartAdapter } from './chart-adapter.js';
 import { starfield, baguaRing, dipper, backArt } from './ziling-art.js';
+import { loadReadings, saveReading, updateReview, deleteReading, REVIEW_LABELS } from './ziling-history.js';
 
 const SCREENS = ['cover', 'types', 'shuffle', 'reading'];
 
@@ -26,7 +28,7 @@ const DEAL_LABELS = ['主星', '甲级辅星', '乙级辅星', '丙级辅星', '
 
 const DRAW_STEPS = [
   { title: '第一抽 · 主星', hint: '从 16 张主星牌中凭直觉选一张，它定下这一问的核心气质。' },
-  { title: '第二抽 · 甲级辅星', hint: '从 14 张甲级辅星中选一张，看此事最有力的助推。' },
+  { title: '第二抽 · 甲级辅星', hint: '从 14 张甲级辅星中选一张，看最强的推动或牵制。' },
   { title: '第三抽 · 乙级辅星', hint: '从 32 张乙级辅星中选一张，它带来更细的提醒。' },
   { title: '第四抽 · 丙级辅星', hint: '从 17 张丙级辅星中选一张，留意这一步的顺逆。' },
   { title: '第五抽 · 四化', hint: '从 12 张四化牌中选一张，看这件事会往哪里转。' },
@@ -58,6 +60,7 @@ const coverScreen = () => `
       <div class="zl-cover-lede">以紫微斗数的五星成阵，<br>为你今日心中一事，落一道趋势的微光。</div>
       <div class="zl-pill">趣 味 占 卜 · 非 宿 命</div>
       <button class="zl-btn" data-zl-to-types style="margin-top:36px;width:230px;height:54px;font-size:16px">开始问事 →</button>
+      <button class="zl-btn zl-btn-ghost" data-zl-history style="margin-top:14px">我的问事记录</button>
     </div>
     <div class="zl-disclaimer">结果仅为趋势提示，非定论 · 行动取决于你</div>
   </div>`;
@@ -68,14 +71,14 @@ const typesScreen = () => {
   <div class="zl-pad">
     <div class="zl-kicker">STEP 01</div>
     <div class="zl-h" style="font-size:23px;margin-top:9px">你想问的，是哪一类事？</div>
-    <div class="zl-sub" style="margin-top:7px">择一而问，心念越定，牌象越清</div>
+    <div class="zl-sub" style="margin-top:7px">一次聚焦一件事，问题更具体，讨论才更贴题</div>
     <div class="zl-types">
       ${QUESTION_TYPES.map((x) => `
-        <div class="zl-type ${model.type === x.key ? 'is-sel' : ''}" data-zl-type="${x.key}">
+        <button type="button" class="zl-type ${model.type === x.key ? 'is-sel' : ''}" data-zl-type="${x.key}">
           <div class="zl-type-glyph">${x.glyph}</div>
           <div class="zl-type-name">${x.name}</div>
           <div class="zl-type-en">${x.en}</div>
-        </div>`).join('')}
+        </button>`).join('')}
     </div>
     ${model.questionPromptOpen ? questionPrompt(t) : ''}
   </div>`;
@@ -90,8 +93,11 @@ const questionPrompt = (type) => `
       <div class="zl-question-kicker">${esc(type?.name || '这一类事')}</div>
       <h2 id="zl-question-title">这一次，你具体想问什么？</h2>
       <p>写一句就好，比如“该不该接这个 offer”。不写也没关系，牌会按你选的类别来解。</p>
-      <textarea class="zl-qinput zl-qinput-modal" data-zl-question rows="3" maxlength="40" autofocus
+      <textarea class="zl-qinput zl-qinput-modal" data-zl-question rows="3" maxlength="160" autofocus
         placeholder="可留空，写下此刻最想问的一句">${esc(model.question)}</textarea>
+      <label class="zl-field">这次想看什么<select data-zl-intent>${Object.entries(QUESTION_INTENTS).map(([key,label])=>`<option value="${key}" ${model.intent===key?'selected':''}>${label}</option>`).join('')}</select></label>
+      <label class="zl-field">更在意哪一点<select data-zl-focus>${Object.entries(QUESTION_FOCUS).map(([key,label])=>`<option value="${key}" ${model.focus===key?'selected':''}>${label}</option>`).join('')}</select></label>
+      <label class="zl-field">打算观察多久<select data-zl-window>${Object.entries(QUESTION_WINDOWS).map(([key,label])=>`<option value="${key}" ${model.window===key?'selected':''}>${label}</option>`).join('')}</select></label>
       <div class="zl-question-actions">
         <button class="zl-question-skip" type="button" data-zl-question-skip>不填，直接继续</button>
         <button class="zl-btn zl-question-continue" type="button" data-zl-question-continue>继续 →</button>
@@ -176,31 +182,33 @@ const shuffleScreen = () => {
   </div>`;
 };
 
+// Result and history rendering keep all user-origin text escaped.
+const displayDate = value => { const date=new Date(value); return Number.isFinite(date.getTime()) ? date.toLocaleDateString('zh-CN') : '日期未知'; };
+const historyScreen = () => `<div class="zl-pad"><h2 class="zl-h">我的问事记录</h2><p class="zl-sub">只在当前浏览器保存，最多20条。不会云同步；清除浏览器数据后无法恢复。复盘是主观反馈，不等于预测准确率。</p>
+  ${loadReadings().map(row=>`<article class="zl-section"><h3>${esc(row.reading.questionText)}</h3><p>${esc(displayDate(row.createdAt))} · ${esc(REVIEW_LABELS[row.review?.outcome] || '还没结果')}</p>${row.dueAt ? `<p>计划复盘：${esc(displayDate(row.dueAt))}（不是应验日）</p>`:''}<button class="zl-btn zl-btn-ghost" data-zl-record="${esc(row.id)}">查看原阵与复盘</button><button class="zl-btn zl-btn-ghost" data-zl-delete="${esc(row.id)}">删除这条</button></article>`).join('') || '<p class="zl-sub">还没有记录。解读结束后，你可以选择保存这一阵。</p>'}
+  <button class="zl-btn" data-zl-new>新问一件事</button><p role="status">${esc(model.message||'')}</p></div>`;
+
 const readingScreen = () => {
-  if (!model.spread) model.spread = buildSpread({ typeKey: model.type, chart });
-  const r = assembleReading({
-    spread: model.spread, typeKey: model.type, chart, question: model.question,
-    drawTrace: { mode: model.drawMode, emptyMajorCount: model.emptyMajorCount },
-  });
-  return `
-  <div class="zl-pad">
-    <div class="zl-kicker">STEP 03 · 解读</div>
-    <div class="zl-h" style="font-size:24px;font-weight:700;margin-top:10px">${r.title}</div>
-    <div class="zl-chips">${r.chips.map((c) => `<span class="zl-chip" style="background:${c.color}">${c.label}</span>`).join('')}</div>
-    <div class="zl-sections">
-      ${r.sections.map((s) => `
-        <div class="zl-section">
-          <div class="zl-section-h"><span class="zl-dot"></span><span>${s.h}</span></div>
-          <div class="zl-section-body">${s.body}</div>
-        </div>`).join('')}
-    </div>
-    <div class="zl-foot">结果仅为趋势提示，非定论，行动取决于你。<br>愿此一阵，助你看清心之所向。</div>
-    <button class="zl-btn zl-btn-ghost" data-zl-restart style="margin-top:18px;width:100%;height:50px;font-size:15px">再问一事 ↺</button>
-  </div>`;
+  if (!model.reading) {
+    if (!model.spread?.length || model.spread[0]?.空宫) return '<div class="zl-pad">请先完成抽牌。<button class="zl-btn" data-zl-back>返回抽牌</button></div>';
+    model.reading = assembleReading({spread:model.spread,typeKey:model.type,chart,question:model.question,intent:model.intent,focus:model.focus,window:model.window,drawTrace:{mode:model.drawMode,emptyMajorCount:model.emptyMajorCount}});
+    model.readingId = globalThis.crypto?.randomUUID?.() || `reading-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    model.createdAt = new Date().toISOString();
+  }
+  const r=model.reading;
+  const saved=loadReadings().find(row=>row.id===model.readingId);
+  return `<div class="zl-pad"><div class="zl-kicker">STEP 03 · ${model.fromHistory?'原始记录':'解读'}</div>
+    <h2 class="zl-h">${esc(r.title)}</h2><p class="zl-sub">${esc(r.questionText)}</p><p class="zl-sub">${esc(displayDate(model.createdAt))} · ${esc(QUESTION_WINDOWS[r.window] || '不限定')} · ${esc(r.version)}</p>
+    <div class="zl-chips">${r.chips.map(c=>`<span class="zl-chip">${esc(c.label)}</span>`).join('')}</div>
+    <section class="zl-section zl-result-lead"><h3>这一阵怎么看</h3><p>${esc(r.summary)}</p><h3>最值得留意的矛盾</h3><p>${esc(r.tension)}</p><h3>接下来观察什么</h3><p>${esc(r.observation)}</p></section>
+    <div class="zl-sections">${r.sections.map(s=>`<section class="zl-section"><h3 class="zl-section-h">${esc(s.h)}</h3><div class="zl-section-body">${esc(s.body)}</div></section>`).join('')}</div>
+    <p class="zl-foot">随机牌象与本命信息分开展示。仅供象征性自我整理，不是事实预测。</p>
+    ${saved ? `<section class="zl-section"><h3>回来看看，事情后来怎样了？</h3><p>原解读保持不变，你的反馈单独记录。</p><label class="zl-field">结果<select data-zl-review>${Object.entries(REVIEW_LABELS).map(([key,label])=>`<option value="${key}" ${saved.review?.outcome===key?'selected':''}>${label}</option>`).join('')}</select></label><textarea class="zl-qinput" data-zl-review-note maxlength="500" aria-label="复盘记录" placeholder="写下实际发生的事，也可以记录哪里没说中">${esc(saved.review?.note||'')}</textarea><button class="zl-btn" data-zl-review-save>保存复盘</button></section>` : `<p class="zl-sub">保存会将问句、牌名和原始解读留在本机，不含完整出生资料。请勿填写他人敏感信息。</p><button class="zl-btn" data-zl-save>保存这一阵到本机</button>`}
+    <p role="status">${esc(model.message||'')}</p><button class="zl-btn zl-btn-ghost" data-zl-history>查看问事记录</button><button class="zl-btn zl-btn-ghost" data-zl-new>新问一件事</button></div>`;
 };
 
 const SCREEN_RENDER = {
-  cover: coverScreen, types: typesScreen, shuffle: shuffleScreen, reading: readingScreen,
+  cover: coverScreen, types: typesScreen, shuffle: shuffleScreen, reading: readingScreen, history: historyScreen,
 };
 
 const ambient = () => {
@@ -244,9 +252,10 @@ const render = () => {
 
 // ---- 动作 ----
 const go = (screen) => { clearTimers(); closeZoom(); model.screen = screen; render(); };
-const goBack = () => { const i = SCREENS.indexOf(model.screen); if (i > 0) go(SCREENS[i - 1]); };
+const goBack = () => { if(model.screen==='history')return go('cover'); if(model.screen==='reading'&&model.fromHistory)return go('history'); const i = SCREENS.indexOf(model.screen); if (i > 0) go(SCREENS[i - 1]); };
 const beginQuestion = () => {
   if (!model.type) return;
+  model.reading=null;model.readingId=null;model.fromHistory=false;model.message='';
   model.questionPromptOpen = false;
   model.drawMode = null; model.drawLevelIndex = 0; model.drawPool = [];
   model.pendingCard = null; model.spread = []; model.emptyMajorCount = 0; model.quickMajorPool = [];
@@ -293,6 +302,7 @@ const prepareDrawLevel = (index) => {
 };
 
 const startFullDraw = () => {
+  model.reading=null;model.readingId=null;model.fromHistory=false;
   model.drawMode = 'full';
   model.spread = [];
   model.emptyMajorCount = 0;
@@ -302,6 +312,7 @@ const startFullDraw = () => {
 };
 
 const startQuickDraw = () => {
+  model.reading=null;model.readingId=null;model.fromHistory=false;
   model.drawMode = 'quick';
   model.spread = drawSpread();
   model.emptyMajorCount = model.spread[0]?.['空宫'] ? 1 : 0;
@@ -369,9 +380,17 @@ const bind = () => {
     const themeTab = event.target.closest('[data-zl-theme]');
     if (themeTab) return setTheme(themeTab.dataset.zlTheme);
     if (event.target.closest('[data-zl-to-types]')) return go('types');
+    if (event.target.closest('[data-zl-history]')) { model.message='';return go('history'); }
+    const record=event.target.closest('[data-zl-record]');
+    if(record){ const row=loadReadings().find(row=>row.id===record.dataset.zlRecord);if(!row)return;model.reading=row.reading;model.readingId=row.id;model.type=row.type;model.createdAt=row.createdAt;model.fromHistory=true;model.message='';return go('reading'); }
+    const removal=event.target.closest('[data-zl-delete]');
+    if(removal){if(confirm('删除这条本机记录？删除后无法恢复。')){model.message=deleteReading(removal.dataset.zlDelete)?'这条本机记录已删除，无法恢复。':'删除失败，请重试。';render();}return;}
+    if(event.target.closest('[data-zl-save]')){const result=saveReading({id:model.readingId,reading:model.reading,type:model.type,createdAt:model.createdAt});model.message=result.ok?'已保存原阵；以后复盘不会改写原解读。':result.message;return render();}
+    if(event.target.closest('[data-zl-review-save]')){model.message=updateReview(model.readingId,root.querySelector('[data-zl-review]').value,root.querySelector('[data-zl-review-note]').value)?'复盘已保存，原解读未修改。':'复盘保存失败，请重试。';return render();}
     const typeEl = event.target.closest('[data-zl-type]');
     if (typeEl) { model.type = typeEl.dataset.zlType; model.questionPromptOpen = true; return render(); }
-    if (event.target.closest('[data-zl-question-continue]') || event.target.closest('[data-zl-question-skip]')) return beginQuestion();
+    if (event.target.closest('[data-zl-question-skip]')) { model.question='';return beginQuestion(); }
+    if (event.target.closest('[data-zl-question-continue]')) return beginQuestion();
     const questionBackdrop = event.target.closest('[data-zl-question-close]');
     if (questionBackdrop && event.target === questionBackdrop) { model.questionPromptOpen = false; return render(); }
     if (event.target.closest('[data-zl-full-draw]')) return startFullDraw();
@@ -382,7 +401,8 @@ const bind = () => {
     if (event.target.closest('[data-zl-quick-redraw-major]')) return redrawQuickMajor();
     if (event.target.closest('[data-zl-confirm-card]')) return confirmFullDrawCard();
     if (event.target.closest('[data-zl-to-reading]')) return go('reading');
-    if (event.target.closest('[data-zl-restart]')) {
+    if (event.target.closest('[data-zl-restart]') || event.target.closest('[data-zl-new]')) {
+      model.reading=null;model.readingId=null;model.fromHistory=false;model.message='';model.intent='explore';model.focus='progress';model.window='open';
       model.type = null; model.question = ''; model.questionPromptOpen = false; model.phase = 'idle';
       model.drawMode = null; model.drawLevelIndex = 0; model.drawPool = []; model.pendingCard = null; model.spread = null;
       model.emptyMajorCount = 0; model.quickMajorPool = [];
@@ -399,6 +419,7 @@ const bind = () => {
     const q = event.target.closest('[data-zl-question]');
     if (q) model.question = q.value;
   });
+  root.addEventListener('change',event=>{for(const key of ['intent','focus','window'])if(event.target.matches(`[data-zl-${key}]`))model[key]=event.target.value;});
 };
 
 // ---- 公开 API ----
@@ -408,6 +429,7 @@ export const openZiling = ({ astrolabeData = null, onTheme = null } = {}) => {
   onThemeChange = onTheme;
   model = {
     screen: 'cover', type: null, question: '', questionPromptOpen: false, phase: 'idle', drawMode: null,
+    intent:'explore',focus:'progress',window:'open',reading:null,readingId:null,fromHistory:false,message:'',
     drawLevelIndex: 0, drawPool: [], pendingCard: null, spread: null, emptyMajorCount: 0, quickMajorPool: [], timers: [],
   };
   if (!root) {
