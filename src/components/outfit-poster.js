@@ -107,7 +107,6 @@ export const drawOutfitPoster = (canvas, data) => {
   const footer = canvas.height - 142;
   rule(footer);
   text('穿得舒服，自己喜欢更重要。', 48, footer + 51, 36, { weight: 600 });
-  text('ming.mimedtech.com', 1032, footer + 51, 30, { align: 'right' });
   text(data.personal ? '八字调候取色 · 民俗配色参考 · 不含完整出生资料' : '日支五行法 · 北京时间换日 · 民俗配色参考', 48, footer + 98, 28);
   return canvas;
 };

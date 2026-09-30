@@ -124,6 +124,7 @@ const escapeHtml = value => String(value).replace(/[&<>"']/g, character => ({
           }
         }
         const content = drawnText.map(record => record.text).join('\n');
+        if (/ming\.mimedtech\.com|https?:\/\//i.test(content)) errors.push('Poster must not display a website URL');
         const allText = normalize(content);
         const shared = outfitShareText(test.data);
         for (const privateValue of privateValues) {
