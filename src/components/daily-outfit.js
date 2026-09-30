@@ -4,53 +4,8 @@ import { track, trackOutfitVisit, outfitRetentionEnabled, setOutfitRetention } f
 import { buildPersonalOutfit, outfitShareText, OUTFIT_SCENES } from '../domain/outfit-presentation.js';
 export { buildPersonalOutfit } from '../domain/outfit-presentation.js';
 
-// The preview and exported PNG are the same canvas, so saved images match the screen.
-export const drawOutfitPoster = (canvas, data) => {
-  canvas.width = 1080; canvas.height = 1440;
-  const c = canvas.getContext('2d');
-  const text = (value, x, y, size, color = '#302D28', serif = false) => {
-    c.fillStyle = color; c.font = `${serif ? '600' : '400'} ${size}px ${serif ? '"Noto Serif SC", serif' : '"Noto Sans SC", sans-serif'}`;
-    c.fillText(value, x, y);
-  };
-  const line = (y) => { c.strokeStyle = '#D9D0C1'; c.lineWidth = 1; c.beginPath(); c.moveTo(72, y); c.lineTo(1008, y); c.stroke(); };
-  c.fillStyle = '#F5F0E6'; c.fillRect(0, 0, 1080, 1440);
-  // Fine paper-like dots; deterministic, no external images or fonts required.
-  c.fillStyle = '#D7CDBC'; for (let x = 14; x < 1080; x += 37) for (let y = 19; y < 1440; y += 41) c.fillRect(x, y, 1, 1);
-  text('MINGLI   /   DAILY COLOUR', 72, 88, 24, '#766C5E');
-  text(data.date.replaceAll('-', '.'), 754, 88, 27);
-  line(118);
-  text('把日子，穿成喜欢的颜色。', 72, 198, 45, '#302D28', true);
-  text(data.personal ? '我的搭配 · 长期参考色系，不是每日吉凶预测' : `通用版 · 农历${data.lunar} · ${data.day}日 · 日支属${data.element}`, 72, 255, 27, '#766C5E');
-  text(data.personal ? '我的参考配色' : '主推配色 / 大吉色', 72, 329, 27);
-  const top = data.groups[0];
-  top.hex.forEach((hex, i) => {
-    const x = 72 + i * 316;
-    c.fillStyle = hex; c.beginPath(); c.roundRect(x, 362, 304, 290, [110, 110, 10, 10]); c.fill();
-    text(top.colors[i], x + 20, 700, 33, '#302D28', true);
-    text(['主色灵感', '同色系搭配', '配饰点缀'][i], x + 20, 738, 20, '#766C5E');
-  });
-  line(776);
-  if (data.personal) {
-    text('可以这样选', 72, 826, 28);
-    data.referenceColors.forEach((colors, i) => text(colors, 72, 884 + i * 50, 27));
-    text('已有的衣服就能搭，不必特意购买饰品。', 72, 998, 25, '#675E52');
-  }
-  data.groups.slice(1).forEach((group, i) => {
-    const y = 826 + i * 64;
-    text(group.label, 72, y, 26);
-    group.hex.forEach((hex, j) => { c.fillStyle = hex; c.beginPath(); c.arc(240 + j * 42, y - 10, 13, 0, Math.PI * 2); c.fill(); c.strokeStyle = '#D0C6B8'; c.stroke(); });
-    text(group.colors.join(' / '), 380, y, 27, '#675E52');
-  });
-  line(1060);
-  text(data.personal ? `${data.sceneLabel}这样搭` : '这一天，试试这样搭', 72, 1123, 31, '#302D28', true);
-  text(`01   ${data.looks[0]}`, 72, 1176, 29);
-  text(`02   ${data.looks[1]}`, 72, 1225, 29);
-  text('不换整套，也可以用包、鞋或配饰点一点颜色。', 72, 1278, 23, '#766C5E');
-  line(1310);
-  text('MINGLI · 五行穿衣   /   ming.mimedtech.com', 72, 1353, 23);
-  text(`${data.rule} · 民俗配色参考`, 72, 1393, 20, '#766C5E');
-  return canvas;
-};
+import { drawOutfitPoster } from "./outfit-poster.js";
+export { drawOutfitPoster } from "./outfit-poster.js";
 
 export const openDailyOutfit = (state = {}, initialPersonal = false, onChart = () => {}) => {
   if (document.querySelector('.outfit-dialog')) return;

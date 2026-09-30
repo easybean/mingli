@@ -52,7 +52,7 @@ const assert = require('node:assert/strict');
    if(personal.referenceColors.length!==1)issues.push('dedup');
    const canvas=document.createElement('canvas'), ctx=canvas.getContext('2d');
    const original=ctx.fillText.bind(ctx);
-   ctx.fillText=(text,x,y)=>{if(x+ctx.measureText(text).width>1080)issues.push(text);original(text,x,y);};
+   ctx.fillText=(text,x,y)=>{const width=ctx.measureText(text).width;const left=ctx.textAlign==='center'?x-width/2:ctx.textAlign==='right'?x-width:x;if(left<0||left+width>canvas.width||y>canvas.height)issues.push(text);original(text,x,y);};
    drawOutfitPoster(canvas,personal);
   }
   return issues;

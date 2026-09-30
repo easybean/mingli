@@ -12,6 +12,7 @@ export const buildPersonalOutfit = (data, favored, selectedElement, scene = 'eve
   }[style];
   return { ...data, personal: true, groups: [top], scene: style, sceneLabel: OUTFIT_SCENES[style],
     referenceColors: groups.map(group => group.colors.join(' / ')),
+    referencePalettes: groups,
     overlap: groups.some(group => group.element === data.groups[0].element),
     looks, rule: '个人版 · 八字调候配色参考' };
 };

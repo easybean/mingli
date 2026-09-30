@@ -11,6 +11,8 @@ const { buildDailyOutfit } = require('../daily-outfit');
     assert.equal(personal.groups[0].element, element);
     assert.equal(personal.scene, scene);
     assert.equal(personal.looks.length, 2);
+    assert.deepEqual(personal.referencePalettes.map(group => group.element), [...new Set(['水', element])]);
+    assert.ok(personal.referencePalettes.every(group => group.colors.length === 3 && group.hex.length === 3));
     const text = outfitShareText({ ...personal, birthDate: 'SECRET_BIRTH', birthPlace: 'SECRET_PLACE' });
     assert.ok(!text.includes('SECRET_'));
     assert.ok(text.includes(personal.groups[0].colors[0]));
