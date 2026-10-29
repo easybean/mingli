@@ -58,8 +58,28 @@ const send = (el, type, props = {}) => { const e = new Event(type, { cancelable:
     const fan = new Element(), cards = Array.from({ length: count }, () => new Element()); fan.querySelectorAll = () => cards;
     const range = new Element(), prev = new Element(), next = new Element(); const state = {};
     dispose = bindRitual(makeRoot({ '[data-zl-fan]': fan, '[data-zl-fan-range]': range, '[data-zl-fan-counter]': new Element(), '[data-zl-fan-prev]': prev, '[data-zl-fan-next]': next }), state, {});
-    send(fan, 'pointerdown', pointer); send(fan, 'pointermove', { ...pointer, clientX: 30 }); send(fan, 'pointerup', pointer);
+    const initialCenter = state.fanCenter;
+    send(fan, 'pointerdown', pointer); send(fan, 'pointermove', { ...pointer, clientX: 190 });
+    // 触屏会先隐式捕获到牌按钮；转交给扇形容器时，按钮的 lostpointercapture 向上冒泡。
+    const childLost = new Event('lostpointercapture');
+    Object.defineProperties(childLost, { target: { value: cards[0] }, pointerId: { value: 1 } });
+    fan.dispatchEvent(childLost);
+    send(fan, 'pointermove', { ...pointer, clientX: 100 });
+    assert(state.fanCenter > initialCenter + 2, '子牌交出触摸捕获后，整副牌必须继续跟手');
+    send(fan, 'pointerup', pointer);
     assert(state.suppressPickUntil > time, '拖动之后不能误触选牌');
+    send(fan, 'pointerdown', pointer);
+    send(fan, 'pointermove', { ...pointer, clientX: 240 });
+    send(fan, 'lostpointercapture', { pointerId: 1 });
+    const releasedCenter = state.fanCenter;
+    send(fan, 'pointermove', { ...pointer, clientX: 320 });
+    assert.equal(state.fanCenter, releasedCenter, '容器真正丢失捕获时必须停止');
+    state.suppressPickUntil = 0;
+    send(fan, 'pointerdown', pointer); send(fan, 'pointermove', { ...pointer, clientY: 250 }); send(fan, 'pointerup', pointer);
+    assert(state.suppressPickUntil > time, '斜滑/竖滑不能误判为轻点');
+    state.suppressPickUntil = 0;
+    send(fan, 'pointerdown', pointer); send(fan, 'pointerup', pointer);
+    assert.equal(state.suppressPickUntil, 0, '未拖动的轻点仍可选牌');
     for (let i = 0; i < count; i++) { range.value = i; send(range, 'input'); assert.equal(state.fanCenter, i); assert.equal(cards[i].tabIndex, 0); }
     send(fan, 'keydown', { key: 'Home' }); assert.equal(state.fanCenter, 0); assert.equal(prev.disabled, true);
     send(fan, 'keydown', { key: 'End' }); assert.equal(state.fanCenter, count - 1); assert.equal(next.disabled, true);

@@ -29,10 +29,10 @@ export const RITUAL_CSS = `
 .zl-ritual-rail strong{font-size:12px;font-weight:500;}
 .zl-ritual-rail .is-current{border-color:var(--zl-gold-line);box-shadow:inset 0 0 15px rgba(214,178,94,.07);}
 .zl-ritual-rail .is-current span,.zl-ritual-rail .is-filled strong{color:var(--zl-gold);}
-.zl-fan{position:relative;width:calc(100% + 52px);height:265px;flex-shrink:0;overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:grab;isolation:isolate;}
+.zl-fan{position:relative;width:calc(100% + 52px);height:265px;flex-shrink:0;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:grab;isolation:isolate;}
 .zl-fan.is-dragging{cursor:grabbing;}
 .zl-fan-guide{position:absolute;left:50%;top:65px;width:500px;height:500px;border:1px solid var(--zl-gold-line);border-radius:50%;transform:translateX(-50%);opacity:.18;pointer-events:none;}
-.zl-fan-card{position:absolute;left:calc(50% - 49px);top:46px;width:98px;height:137px;border:0;padding:0;border-radius:10px;background:none;cursor:pointer;transition:transform .22s cubic-bezier(.22,.75,.25,1);touch-action:pan-y;}
+.zl-fan-card{position:absolute;left:calc(50% - 49px);top:46px;width:98px;height:137px;border:0;padding:0;border-radius:10px;background:none;cursor:pointer;transition:transform .22s cubic-bezier(.22,.75,.25,1);touch-action:none;}
 .zl-fan-card .zl-mini-back{pointer-events:none;transition:transform .22s ease,box-shadow .22s ease;}
 .zl-fan-card.is-current .zl-mini-back{transform:translateY(-9px);border-color:#F0DCA0;box-shadow:0 0 22px rgba(214,178,94,.18),0 12px 22px rgba(0,0,0,.4);}
 .zl-fan.is-dragging .zl-fan-card{transition:none;}

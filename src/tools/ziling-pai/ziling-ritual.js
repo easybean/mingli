@@ -94,7 +94,7 @@ export function bindRitual(root, model, actions) {
     const cards = [...fan.querySelectorAll('[data-zl-pick-card]')];
     const range = root.querySelector('[data-zl-fan-range]');
     const counter = root.querySelector('[data-zl-fan-counter]');
-    let pointer = null, startX = 0, startCenter = 0, moved = false;
+    let pointer = null, startX = 0, startY = 0, startCenter = 0, moved = false;
     const max = cards.length - 1;
     model.fanCenter = clamp(model.fanCenter ?? Math.floor(max / 2), 0, max);
     const paint = () => {
@@ -118,13 +118,15 @@ export function bindRitual(root, model, actions) {
     const setCenter = value => { model.fanCenter = clamp(value, 0, max); paint(); };
     on(fan, 'pointerdown', event => {
       if (!event.isPrimary || event.button !== 0 || pointer !== null) return;
-      pointer = event.pointerId; startX = event.clientX; startCenter = model.fanCenter; moved = false;
+      pointer = event.pointerId; startX = event.clientX; startY = event.clientY; startCenter = model.fanCenter; moved = false;
       // 不在 down 时 capture，否则手机上的轻点目标会变成容器。
     });
     on(fan, 'pointermove', event => {
       if (event.pointerId !== pointer) return;
       const dx = event.clientX - startX;
-      if (Math.abs(dx) > 7) { moved = true; fan.setPointerCapture(pointer); fan.classList.add('is-dragging'); }
+      if (!moved && Math.hypot(dx, event.clientY - startY) > 7) {
+        moved = true; fan.setPointerCapture(pointer); fan.classList.add('is-dragging');
+      }
       if (moved) { model.fanCenter = clamp(startCenter - dx / 33, 0, max); schedule(); }
     });
     const stop = event => {
@@ -133,7 +135,9 @@ export function bindRitual(root, model, actions) {
       if (moved || event.type === 'pointercancel') model.suppressPickUntil = performance.now() + 350;
       setCenter(Math.round(model.fanCenter));
     };
-    for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) on(fan, type, stop);
+    for (const type of ['pointerup', 'pointercancel']) on(fan, type, stop);
+    // 触屏从子牌的隐式捕获转为容器捕获时，子牌会冒泡此事件；那不是手指结束。
+    on(fan, 'lostpointercapture', event => { if (event.target === fan) stop(event); });
     on(window, 'pointerup', stop);
     const cancelDrag = () => { pointer = null; fan.classList.remove('is-dragging'); setCenter(Math.round(model.fanCenter)); };
     on(window, 'blur', cancelDrag);
