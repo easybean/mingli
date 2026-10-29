@@ -2,6 +2,8 @@
 // 全部类名以 zl- 前缀、限定在 .zl-overlay 内，跟随 <html data-theme>。
 // 整个工具自包含：删 src/tools/ziling-pai/ 即可干净移除，不动 tokens.css。
 
+import { RITUAL_CSS } from './ziling-ritual-styles.js';
+
 let injected = false;
 
 export const ensureZilingStyles = () => {
@@ -9,7 +11,7 @@ export const ensureZilingStyles = () => {
   injected = true;
   const style = document.createElement('style');
   style.id = 'ziling-styles';
-  style.textContent = CSS;
+  style.textContent = CSS + RITUAL_CSS;
   document.head.appendChild(style);
 };
 

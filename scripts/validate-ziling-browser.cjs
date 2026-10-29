@@ -47,17 +47,25 @@ const assert=require('node:assert/strict');
   await page.locator('[data-zl-question-skip]').click();
   await page.evaluate(()=>{Math.random=()=>0.999;});
   await page.locator('[data-zl-full-draw]').click();
+  await page.locator('[data-zl-charge-tap]').click();
+  await page.locator('[data-zl-mix-tap]').click();
+  await page.locator('[data-zl-mix-done]').click();
   assert.equal(await page.locator('[data-zl-pick-card]').count(),16);
   for(const count of [16,15]){
+   await page.locator('[data-zl-fan-range]').press('End');
    await page.locator('[data-zl-pick-card]').last().click();
+   await page.locator('[data-zl-flip-card]').click();
    assert.equal(await page.locator('[data-zl-to-reading]').count(),0);
    await page.locator('[data-zl-redraw-major]').click();
    assert.equal(await page.locator('[data-zl-pick-card]').count(),count-1);
   }
   for(const count of [14,14,32,17,12]){
    assert.equal(await page.locator('[data-zl-pick-card]').count(),count);
+   await page.locator('[data-zl-fan-range]').press('Home');
    await page.locator('[data-zl-pick-card]').first().click();
+   await page.locator('[data-zl-flip-card]').click();
    await page.locator('[data-zl-confirm-card]').click();
+   await page.locator(count===12?'[data-zl-to-reading]':'[data-zl-pick-center]').waitFor();
   }
   await page.locator('[data-zl-to-reading]').click();
   assert.match(await page.locator('.zl-screen').innerText(),/连续 2 次遇到空宫/);
