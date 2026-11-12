@@ -156,8 +156,38 @@ const SCENES = [
 const GENERAL_LENS = {career:'事业',wealth:'收支',love:'感情',health:'健康',social:'人际',travel:'出行',estate:'居住',study:'学习',all:'这一问'};
 const PEOPLE = new Set(['紫微','巨门','太阳','天相','廉贞']);
 const MEANS = new Set(['天府','武曲','太阴','天梁']);
+const WEALTH_ASK = /财运|财气|财禄|偏财|正财|彩票|中奖|博彩|赌博|投注|下注|双色球|大乐透|刮刮乐|福彩|体彩/;
+
+// 本牌组的问财读法。分别标记进财、耗财和起落；喜庆、人缘、科名不自动算作钱财。
+const MONEY_CUES = {
+  武曲:'正财，钱从本事和实作中来',天府:'财库，看积蓄和留财',太阴:'积财，重在慢慢攒下',天相:'看稳定的进项',贪狼:'偏财与欲望相伴，重在财路的变化',廉贞:'偏财带波动，得失都不稳',
+  七杀:'来去都快，进项不等于积蓄',破军:'破旧换新，钱财多有支出',太阳:'钱往外用，人情与开销是主调',天机:'周转，钱分几次进出',天同:'受惠之象，多是小处得益',天梁:'长辈或前人的扶持',巨门:'不显眼的财源，要从话语与门路里看',紫微:'看资源怎样归拢、由谁作主',
+  禄存:'守禄，把已有的钱财留住',地劫:'劫耗，手中财物有流失之象',地空:'财落空，看得见却难落袋',陀罗:'财路拖滞，周转不畅',擎羊:'争中取财，财上带损',铃星:'突来突去，财气有起落',火星:'来势急，得失也急',右弼:'财源有旁路，不只一处进项',
+  左辅:'旁人搭手，是否得财还看同阵',天钺:'借人之助取得资源',天魁:'有引路之人的助力',天马:'动中求财，重点在流转',文昌:'凭知识与文书经营',文曲:'分期、往来与账目的节奏',
+  天福:'福禄，是正面陪衬',天厨:'食禄，偏向日常享用',破碎:'零碎损耗，财不易聚',
+  大耗:'大笔耗散，拖累留财',小耗:'细水般的小开销',空亡:'落空，有财象也难坐实',天伤:'虚耗，有付出未能留下之象',喜神:'添喜气，本身不是财星',青龙:'添喜庆，不单凭此星断财',
+  化禄:'添禄，把进财和增益的意味提亮',化忌:'收束与牵绊，财事易有不畅',化科:'显名与认可，不直接添财',化权:'主掌控与调度，不直接等于钱财增加',四化空:'没有额外四化，照前四张读，不加吉凶',
+};
+const GAIN = new Set(['武曲','天府','太阴','天相','天同','贪狼','廉贞','右弼','禄存','天福','天厨','化禄','铃星','火星']);
+const DRAIN = new Set(['破军','太阳','地劫','地空','陀罗','擎羊','破碎','小耗','大耗','天伤','空亡','化忌','铃星','火星','廉贞']);
+const moneyCue = c => MONEY_CUES[c.名] || (c.级别==='乙级辅星' ? `取“${c.主}”之象，是这阵的背景，不单定财运` : `过程里看${BING_CUES[c.名] || '这张星的本义'}，不是直接的财禄或耗财星`);
+const readMoney = spread => {
+  const [lead,jia,yi,bing,hua] = spread;
+  const gains=spread.filter(c=>GAIN.has(c.名)), drains=spread.filter(c=>DRAIN.has(c.名));
+  const names=cards=>cards.map(c=>c.名).join('、');
+  const mixed=gains.length && drains.length;
+  const small=mixed && drains.every(c=>['小耗','破碎'].includes(c.名));
+  const title=small?'财中带小耗':mixed?'财气有起落':gains.length?'这阵有财气':drains.length?'这阵偏耗':'财象未明';
+  const summary=small?`${names(gains)}带财气，${names(drains)}点的是零碎开销。主调仍有财，只是攒下来的比进来的薄一些。`
+    :mixed?`进的一面看${names(gains)}，耗的一面看${names(drains)}。这阵不是单纯的旺或弱，要把“有财路”和“留得住”分开读。`
+    :gains.length?`${names(gains)}带出财禄，整组牌的财气偏顺。${gains.some(c=>c.名==='禄存') && gains.some(c=>c.名==='化禄')?'禄存守财，化禄添财：一个讲留得住，一个讲有增益。':'其余牌里没有明显的耗星与它相冲。'}`
+    :drains.length?`${names(drains)}把重心带到了支出、阻滞或消耗。这组牌更像钱往外走，聚财的力量不明显。`
+    :'这五张里没有鲜明的财禄或耗财星。牌有自己的主调，但不必硬判财旺，也不必硬判破财。';
+  return {title,summary,readingKind:'wealth-symbols',
+    tension:`主星${lead.名}讲的是${moneyCue(lead)}。甲辅${jia.名}落在旁边，取“${moneyCue(jia)}”的意思。`,
+    observation:`${yi.名}是${moneyCue(yi)}；${bing.名}是${moneyCue(bing)}。最后看${hua.名}：${moneyCue(hua)}。`};
+};
 const LIMITS = [
-  [/彩票|中奖|博彩|赌博|投注|下注|双色球|大乐透|刮刮乐/,'中奖','牌不能给出中奖号码、判断哪期容易中，也不能改变开奖概率。','如果是为了决定要不要再买一注，这次抽牌不能作为加注的理由。'],
   [/疾病|病情|诊断|吃药|停药|怀孕|手术|癌症|身体不适|能治好|看病/,'健康','这五张牌不能判断病情、是否怀孕或治疗结果。','把症状和出现的时间记下来，交给专业医护人员判断；不要凭牌调整用药。'],
   [/股票|基金|投资|收益率|借贷|贷款|涨跌|加仓|回本|翻倍/,'资金风险','这组牌不能预测涨跌、能否回本或借款结果。','先把决定所依赖的金额、期限和可能损失列清楚；牌面不是交易或借贷依据。'],
   [/自杀|自残|家暴|暴力|跟踪|人身安全|出行安全|车祸/,'安全','是否安全不能由牌面判断；出现现实风险时，不要等抽牌给答案。','如果你或他人正处于危险中，请先到安全的地方，联系当地紧急服务或可信任的人。'],
@@ -171,10 +201,11 @@ export const assembleReading = ({ spread, typeKey, chart, question = '', drawTra
   const safeIntent = Object.hasOwn(QUESTION_INTENTS,intent) ? intent : 'explore';
   const safeFocus = Object.hasOwn(QUESTION_FOCUS,focus) ? focus : 'progress';
   const safeWindow = Object.hasOwn(QUESTION_WINDOWS,window) ? window : 'open';
-  const limit = LIMITS.find(([rx]) => rx.test(ask)) || (q.key === 'health' ? LIMITS[1] : null);
-  const sensitive = Boolean(limit) || ['wealth','estate'].includes(q.key);
+  const limit = LIMITS.find(([rx]) => rx.test(ask)) || (q.key === 'health' ? LIMITS[0] : null);
   // 具体问句优先，不能让“事业”分类或句中的“客户”盖过“尾款”。
   const s = SCENES.find(item => item.pattern.test(ask));
+  const money = !limit && (WEALTH_ASK.test(ask) || (!s && q.key==='wealth')) ? readMoney(spread) : null;
+  const sensitive = Boolean(limit || money) || ['wealth','estate'].includes(q.key);
   const lens = PEOPLE.has(lead.名) ? 0 : MEANS.has(lead.名) ? 1 : 2;
   const snag = hua.名 === '化忌' || TENSION.has(jia.名) || VARIABLES.has(yi.名) || FRICTION.has(bing.名);
   const main = MAIN_CUES[lead.名], aux = AUX_CUES[jia.名];
@@ -202,12 +233,13 @@ export const assembleReading = ({ spread, typeKey, chart, question = '', drawTra
   const sections = [
     {h:'五张牌的依据',body:[`主星 · ${lead.名}：${main}`,`甲辅 · ${jia.名}：${aux}`,`乙辅 · ${yi.名}：${YI_CUES[yi.名]}`,`丙辅 · ${bing.名}：${BING_CUES[bing.名]}`,`四化 · ${hua.名}：${HUA_CUES[hua.名]}`].join('\n')},
   ];
+  if(money) sections[0].body = spread.map(c=>`${c.级别} · ${c.名}：${moneyCue(c)}`).join('\n');
   const palace = chart?.ready ? chart.getPalace(q.palace) : null;
   sections.push({h:'命盘中的信息',body:palace ? `相关本命宫：${q.palace}。${palace.空宫 ? '此宫没有本命主星，不能据此推断性格软弱或事情无望。' : `主星：${palace.主星.map(star=>star.名).join('、')}。`}${palace.四化?.length ? `本命四化：${palace.四化.join('、')}。` : ''}${palace.主星?.some(star=>star.名===lead.名) ? `本次抽到的${lead.名}也在此宫，这是同星对应，不代表预测更准确。` : ''}这里只展示本命对应，尚未纳入流年流月；抽牌不会改变命盘。` : '本轮没有可用的相关本命宫资料，以下是随机牌象的象征性阅读，不冒充命盘推断。'});
   const emptyCount = Math.min(2, Math.max(0, Number(drawTrace?.emptyMajorCount)||0));
   if(emptyCount) sections.push({h:'抽牌轨迹',body:`${emptyCount>1 ? `连续 ${emptyCount} 次遇到空宫` : '先遇到一次空宫'}，之后由你主动引出${lead.名}。这是抽牌过程的记录，可以作为“先停一下再看”的仪式提醒，不证明现实信息不足或结果注定延迟。`});
   return { version:'ziling-reading-3', title:limit ? `关于${limit[1]}，牌能说到哪里` : topic, questionText:ask || `未填写问句 · ${q.name}`, summary, tension, observation,
-    intent:safeIntent,focus:safeFocus,window:safeWindow,sensitive,
+    ...money, intent:safeIntent,focus:safeFocus,window:safeWindow,sensitive,
     chips:spread.map(card=>({label:card.名,color:'#C9A646'})).concat(emptyCount?[{label:`曾遇空宫 × ${emptyCount}`,color:'#6B4E96'}]:[]),
     sections,drawTrace:{mode:drawTrace?.mode === 'full' ? 'full' : 'quick',emptyMajorCount:emptyCount} };
 };

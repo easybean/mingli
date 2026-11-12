@@ -23,7 +23,26 @@ const read=f=>fs.readFileSync(path.join(__dirname,'../src/tools/ziling-pai',f),'
  assert.match(make({spread:conflict}).tension,/冲突/);assert.ok(!make({spread:conflict}).tension.includes('最实的助力'));
  for(const typeKey of ['health','wealth','estate'])assert.equal(make({typeKey}).sensitive,true);
  assert.equal(make({question:'彩票会中奖吗'}).sensitive,true);
- assert.match(make({question:'彩票会中奖吗'}).summary,/中奖号码/);
+ const money = names=>make({typeKey:'wealth',question:'今天买彩票能不能中',spread:names.map((n,i)=>vm.getDrawPool(vm.DRAW_LEVELS[i]).find(c=>c.名===n))});
+ for(const [names,title] of [
+   [['武曲','禄存','天福','喜神','化禄'],'这阵有财气'],
+   [['破军','地劫','破碎','大耗','化忌'],'这阵偏耗'],
+   [['武曲','禄存','天福','大耗','化忌'],'财气有起落'],
+   [['武曲','禄存','天福','小耗','四化空'],'财中带小耗'],
+   [['天机','文昌','三台','喜神','四化空'],'财象未明'],
+ ]){
+   const r=money(names);
+   assert.equal(r.title,title);assert.equal(r.readingKind,'wealth-symbols');
+   const body=[r.summary,r.tension,r.observation].join('');
+   for(const name of names) assert(body.includes(name));
+   assert(!/中奖|概率|加注|投注|号码/.test(body));
+ }
+ for(const [i,level] of vm.DRAW_LEVELS.entries())for(const c of vm.getDrawPool(level)){
+   if(!i && c.空宫)continue;
+   const cards=[...spread];cards[i]=c;
+   assert(!JSON.stringify(make({question:'近期财运如何',spread:cards})).includes('undefined'));
+ }
+ assert.equal(make({question:'问财运，能不能停药'}).readingKind,undefined);
  const withLead=name=>[vm.getDrawPool('主星').find(c=>c.名===name),...spread.slice(1)];
  assert.match(make({question:topics[1],spread:withLead('武曲')}).tension,/金额、验收/);
  assert.match(make({question:topics[1],spread:withLead('巨门')}).tension,/经手的人/);

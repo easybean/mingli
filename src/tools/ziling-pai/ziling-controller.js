@@ -240,7 +240,7 @@ const readingScreen = () => {
   return `<div class="zl-pad"><div class="zl-kicker">STEP 03 · ${model.fromHistory?'原始记录':'解读'}</div>
     <h2 class="zl-h">${esc(r.title)}</h2><p class="zl-sub">${esc(r.questionText)}</p><p class="zl-sub">${esc(displayDate(model.createdAt))}${r.window && r.window !== 'open' ? ' · 复盘范围：' + esc(QUESTION_WINDOWS[r.window]) : ''}</p>
     <div class="zl-chips">${r.chips.map(c=>`<span class="zl-chip">${esc(c.label)}</span>`).join('')}</div>
-    <section class="zl-section zl-result-lead"><h3>先说你问的事</h3><p>${esc(r.summary)}</p><h3>为什么这样读</h3><p>${esc(r.tension)}</p><h3>现实中看哪一步</h3><p>${esc(r.observation)}</p></section>
+    <section class="zl-section zl-result-lead"><h3>${r.readingKind==='wealth-symbols'?'先看整阵财气':'先说你问的事'}</h3><p>${esc(r.summary)}</p><h3>${r.readingKind==='wealth-symbols'?'主星与甲辅':'为什么这样读'}</h3><p>${esc(r.tension)}</p><h3>${r.readingKind==='wealth-symbols'?'乙辅、丙辅与四化':'现实中看哪一步'}</h3><p>${esc(r.observation)}</p></section>
     <div class="zl-sections">${r.sections.map(s=>s.h==='五张牌的依据'
       ? `<details class="zl-section"><summary>${esc(s.h)}</summary><div class="zl-section-body">${esc(s.body)}</div></details>`
       : `<section class="zl-section"><h3 class="zl-section-h">${esc(s.h)}</h3><div class="zl-section-body">${esc(s.body)}</div></section>`).join('')}</div>
