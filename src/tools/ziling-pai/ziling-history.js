@@ -5,7 +5,7 @@ export const loadReadings = () => {
     const raw = localStorage.getItem(KEY);
     if (!raw || raw.length > 500000) return [];
     const rows = JSON.parse(raw);
-    return Array.isArray(rows) ? rows.filter(row => row && typeof row.id === 'string' && typeof row.createdAt === 'string' && row.reading?.version === 'ziling-reading-2'
+    return Array.isArray(rows) ? rows.filter(row => row && typeof row.id === 'string' && typeof row.createdAt === 'string' && ['ziling-reading-2','ziling-reading-3'].includes(row.reading?.version)
       && ['summary','tension','observation','questionText'].every(key=>typeof row.reading[key]==='string')
       && Array.isArray(row.reading.chips) && row.reading.chips.every(chip=>chip&&typeof chip.label==='string')
       && Array.isArray(row.reading.sections) && row.reading.sections.every(section=>section&&typeof section.h==='string'&&typeof section.body==='string')).slice(0,20) : [];

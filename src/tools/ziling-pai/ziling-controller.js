@@ -4,7 +4,7 @@
 import { ensureZilingStyles } from './ziling-styles.js';
 import {
   QUESTION_TYPES, DRAW_LEVELS, getDrawPool, drawSpread, assembleReading,
-  QUESTION_INTENTS, QUESTION_FOCUS, QUESTION_WINDOWS,
+  QUESTION_WINDOWS,
 } from './ziling-view-model.js';
 import { renderCard, renderZoomCard } from './ziling-card.js';
 import { createChartAdapter } from './chart-adapter.js';
@@ -97,8 +97,6 @@ const questionPrompt = (type) => `
       <p>写一句就好，比如“该不该接这个 offer”。不写也没关系，牌会按你选的类别来解。</p>
       <textarea class="zl-qinput zl-qinput-modal" data-zl-question rows="3" maxlength="160" autofocus
         placeholder="可留空，写下此刻最想问的一句">${esc(model.question)}</textarea>
-      <label class="zl-field">这次想看什么<select data-zl-intent>${Object.entries(QUESTION_INTENTS).map(([key,label])=>`<option value="${key}" ${model.intent===key?'selected':''}>${label}</option>`).join('')}</select></label>
-      <label class="zl-field">更在意哪一点<select data-zl-focus>${Object.entries(QUESTION_FOCUS).map(([key,label])=>`<option value="${key}" ${model.focus===key?'selected':''}>${label}</option>`).join('')}</select></label>
       <label class="zl-field">打算观察多久<select data-zl-window>${Object.entries(QUESTION_WINDOWS).map(([key,label])=>`<option value="${key}" ${model.window===key?'selected':''}>${label}</option>`).join('')}</select></label>
       <div class="zl-question-actions">
         <button class="zl-question-skip" type="button" data-zl-question-skip>不填，直接继续</button>
@@ -240,10 +238,12 @@ const readingScreen = () => {
   const r=model.reading;
   const saved=loadReadings().find(row=>row.id===model.readingId);
   return `<div class="zl-pad"><div class="zl-kicker">STEP 03 · ${model.fromHistory?'原始记录':'解读'}</div>
-    <h2 class="zl-h">${esc(r.title)}</h2><p class="zl-sub">${esc(r.questionText)}</p><p class="zl-sub">${esc(displayDate(model.createdAt))} · ${esc(QUESTION_WINDOWS[r.window] || '不限定')} · ${esc(r.version)}</p>
+    <h2 class="zl-h">${esc(r.title)}</h2><p class="zl-sub">${esc(r.questionText)}</p><p class="zl-sub">${esc(displayDate(model.createdAt))}${r.window && r.window !== 'open' ? ' · 复盘范围：' + esc(QUESTION_WINDOWS[r.window]) : ''}</p>
     <div class="zl-chips">${r.chips.map(c=>`<span class="zl-chip">${esc(c.label)}</span>`).join('')}</div>
-    <section class="zl-section zl-result-lead"><h3>这一阵怎么看</h3><p>${esc(r.summary)}</p><h3>最值得留意的矛盾</h3><p>${esc(r.tension)}</p><h3>接下来观察什么</h3><p>${esc(r.observation)}</p></section>
-    <div class="zl-sections">${r.sections.map(s=>`<section class="zl-section"><h3 class="zl-section-h">${esc(s.h)}</h3><div class="zl-section-body">${esc(s.body)}</div></section>`).join('')}</div>
+    <section class="zl-section zl-result-lead"><h3>先说你问的事</h3><p>${esc(r.summary)}</p><h3>为什么这样读</h3><p>${esc(r.tension)}</p><h3>现实中看哪一步</h3><p>${esc(r.observation)}</p></section>
+    <div class="zl-sections">${r.sections.map(s=>s.h==='五张牌的依据'
+      ? `<details class="zl-section"><summary>${esc(s.h)}</summary><div class="zl-section-body">${esc(s.body)}</div></details>`
+      : `<section class="zl-section"><h3 class="zl-section-h">${esc(s.h)}</h3><div class="zl-section-body">${esc(s.body)}</div></section>`).join('')}</div>
     <p class="zl-foot">随机牌象与本命信息分开展示。仅供象征性自我整理，不是事实预测。</p>
     ${saved ? `<section class="zl-section"><h3>回来看看，事情后来怎样了？</h3><p>原解读保持不变，你的反馈单独记录。</p><label class="zl-field">结果<select data-zl-review>${Object.entries(REVIEW_LABELS).map(([key,label])=>`<option value="${key}" ${saved.review?.outcome===key?'selected':''}>${label}</option>`).join('')}</select></label><textarea class="zl-qinput" data-zl-review-note maxlength="500" aria-label="复盘记录" placeholder="写下实际发生的事，也可以记录哪里没说中">${esc(saved.review?.note||'')}</textarea><button class="zl-btn" data-zl-review-save>保存复盘</button></section>` : `<p class="zl-sub">保存会将问句、牌名和原始解读留在本机，不含完整出生资料。请勿填写他人敏感信息。</p><button class="zl-btn" data-zl-save>保存这一阵到本机</button>`}
     <p role="status">${esc(model.message||'')}</p><button class="zl-btn zl-btn-ghost" data-zl-history>查看问事记录</button><button class="zl-btn zl-btn-ghost" data-zl-new>新问一件事</button></div>`;
